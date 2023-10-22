@@ -33,13 +33,12 @@ export const AuthMutations = extendType({
         email: nonNull('String'),
         password: nonNull('String'),
       },
-      resolve: async (_parent, { name, email, password }, ctx) => {
+      resolve: async (_parent, { email, password }, ctx) => {
         const hashedPassword = await hash(password, 10)
         const user = await ctx.prisma.user.create({
           data: {
-            name,
             email,
-            password: hashedPassword,
+            passwordHash: hashedPassword,
           },
         })
         ctx.res.setHeader(
@@ -70,7 +69,7 @@ export const AuthMutations = extendType({
         if (!user) {
           throw new UserInputError(`No user found for email: ${email}`)
         }
-        const passwordValid = await compare(password, user.password)
+        const passwordValid = await compare(password, user.passwordHash)
         if (!passwordValid) {
           throw new UserInputError('Invalid password')
         }
@@ -114,17 +113,17 @@ export const AuthMutations = extendType({
           // get current user and verify currentPassword before changing;
           const user = await ctx.prisma.user.findUnique({
             where: { id: ctx.userId },
-            select: { password: true },
+            select: { passwordHash: true },
           })
           if (!user) {
             return false
           }
-          const validPass = await compare(currentPassword, user.password)
+          const validPass = await compare(currentPassword, user.passwordHash)
           if (!validPass) throw new UserInputError('Incorrect Current Password, Error: 1015')
           const hashPassword = await hash(password, 10)
 
           await ctx.prisma.user.update({
-            data: { password: hashPassword },
+            data: { passwordHash: hashPassword },
             where: { id: ctx.userId },
           })
           return true

@@ -1,9 +1,11 @@
 import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | undefined;
 export type InputMaybe<T> = T | undefined;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -89,6 +91,15 @@ export type AggregateTask = {
   _sum?: Maybe<TaskSumAggregateOutputType>;
 };
 
+export type AggregateTaskAnswer = {
+  __typename?: 'AggregateTaskAnswer';
+  _avg?: Maybe<TaskAnswerAvgAggregateOutputType>;
+  _count?: Maybe<TaskAnswerCountAggregateOutputType>;
+  _max?: Maybe<TaskAnswerMaxAggregateOutputType>;
+  _min?: Maybe<TaskAnswerMinAggregateOutputType>;
+  _sum?: Maybe<TaskAnswerSumAggregateOutputType>;
+};
+
 export type AggregateTest = {
   __typename?: 'AggregateTest';
   _avg?: Maybe<TestAvgAggregateOutputType>;
@@ -114,33 +125,40 @@ export type Answer = {
   createdAt: Scalars['DateTime'];
   id: Scalars['Int'];
   response: Array<Response>;
+  taskAnswers: Array<TaskAnswer>;
   test: Test;
   testId: Scalars['Int'];
-  user: User;
-  userId: Scalars['Int'];
 };
 
 
 export type AnswerResponseArgs = {
   cursor?: InputMaybe<ResponseWhereUniqueInput>;
   distinct?: InputMaybe<Array<InputMaybe<ResponseScalarFieldEnum>>>;
-  orderBy?: InputMaybe<Array<InputMaybe<ResponseOrderByWithRelationAndSearchRelevanceInput>>>;
+  orderBy?: InputMaybe<Array<InputMaybe<ResponseOrderByWithRelationInput>>>;
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<ResponseWhereInput>;
+};
+
+
+export type AnswerTaskAnswersArgs = {
+  cursor?: InputMaybe<TaskAnswerWhereUniqueInput>;
+  distinct?: InputMaybe<Array<InputMaybe<TaskAnswerScalarFieldEnum>>>;
+  orderBy?: InputMaybe<Array<InputMaybe<TaskAnswerOrderByWithRelationInput>>>;
+  skip?: InputMaybe<Scalars['Int']>;
+  take?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<TaskAnswerWhereInput>;
 };
 
 export type AnswerAvgAggregateOutputType = {
   __typename?: 'AnswerAvgAggregateOutputType';
   id?: Maybe<Scalars['Float']>;
   testId?: Maybe<Scalars['Float']>;
-  userId?: Maybe<Scalars['Float']>;
 };
 
 export type AnswerAvgOrderByAggregateInput = {
   id?: InputMaybe<SortOrder>;
   testId?: InputMaybe<SortOrder>;
-  userId?: InputMaybe<SortOrder>;
 };
 
 export type AnswerCountAggregateOutputType = {
@@ -150,7 +168,6 @@ export type AnswerCountAggregateOutputType = {
   createdAt: Scalars['Int'];
   id: Scalars['Int'];
   testId: Scalars['Int'];
-  userId: Scalars['Int'];
 };
 
 export type AnswerCountOrderByAggregateInput = {
@@ -158,20 +175,20 @@ export type AnswerCountOrderByAggregateInput = {
   createdAt?: InputMaybe<SortOrder>;
   id?: InputMaybe<SortOrder>;
   testId?: InputMaybe<SortOrder>;
-  userId?: InputMaybe<SortOrder>;
 };
 
 export type AnswerCountOutputType = {
   __typename?: 'AnswerCountOutputType';
   response: Scalars['Int'];
+  taskAnswers: Scalars['Int'];
 };
 
 export type AnswerCreateInput = {
   answer?: InputMaybe<Scalars['String']>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
   response?: InputMaybe<ResponseCreateNestedManyWithoutAnswersInput>;
+  taskAnswers?: InputMaybe<TaskAnswerCreateNestedManyWithoutAnswerModelInput>;
   test: TestCreateNestedOneWithoutAnswersInput;
-  user: UserCreateNestedOneWithoutAnswersInput;
 };
 
 export type AnswerCreateManyInput = {
@@ -179,30 +196,16 @@ export type AnswerCreateManyInput = {
   createdAt?: InputMaybe<Scalars['DateTime']>;
   id?: InputMaybe<Scalars['Int']>;
   testId: Scalars['Int'];
-  userId: Scalars['Int'];
 };
 
 export type AnswerCreateManyTestInput = {
   answer?: InputMaybe<Scalars['String']>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
   id?: InputMaybe<Scalars['Int']>;
-  userId: Scalars['Int'];
 };
 
 export type AnswerCreateManyTestInputEnvelope = {
   data: AnswerCreateManyTestInput;
-  skipDuplicates?: InputMaybe<Scalars['Boolean']>;
-};
-
-export type AnswerCreateManyUserInput = {
-  answer?: InputMaybe<Scalars['String']>;
-  createdAt?: InputMaybe<Scalars['DateTime']>;
-  id?: InputMaybe<Scalars['Int']>;
-  testId: Scalars['Int'];
-};
-
-export type AnswerCreateManyUserInputEnvelope = {
-  data: AnswerCreateManyUserInput;
   skipDuplicates?: InputMaybe<Scalars['Boolean']>;
 };
 
@@ -219,15 +222,19 @@ export type AnswerCreateNestedManyWithoutTestInput = {
   createMany?: InputMaybe<AnswerCreateManyTestInputEnvelope>;
 };
 
-export type AnswerCreateNestedManyWithoutUserInput = {
-  connect?: InputMaybe<Array<InputMaybe<AnswerWhereUniqueInput>>>;
-  connectOrCreate?: InputMaybe<Array<InputMaybe<AnswerCreateOrConnectWithoutUserInput>>>;
-  create?: InputMaybe<Array<InputMaybe<AnswerCreateWithoutUserInput>>>;
-  createMany?: InputMaybe<AnswerCreateManyUserInputEnvelope>;
+export type AnswerCreateNestedOneWithoutTaskAnswersInput = {
+  connect?: InputMaybe<AnswerWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<AnswerCreateOrConnectWithoutTaskAnswersInput>;
+  create?: InputMaybe<AnswerCreateWithoutTaskAnswersInput>;
 };
 
 export type AnswerCreateOrConnectWithoutResponseInput = {
   create: AnswerCreateWithoutResponseInput;
+  where: AnswerWhereUniqueInput;
+};
+
+export type AnswerCreateOrConnectWithoutTaskAnswersInput = {
+  create: AnswerCreateWithoutTaskAnswersInput;
   where: AnswerWhereUniqueInput;
 };
 
@@ -236,30 +243,25 @@ export type AnswerCreateOrConnectWithoutTestInput = {
   where: AnswerWhereUniqueInput;
 };
 
-export type AnswerCreateOrConnectWithoutUserInput = {
-  create: AnswerCreateWithoutUserInput;
-  where: AnswerWhereUniqueInput;
-};
-
 export type AnswerCreateWithoutResponseInput = {
   answer?: InputMaybe<Scalars['String']>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
+  taskAnswers?: InputMaybe<TaskAnswerCreateNestedManyWithoutAnswerModelInput>;
   test: TestCreateNestedOneWithoutAnswersInput;
-  user: UserCreateNestedOneWithoutAnswersInput;
+};
+
+export type AnswerCreateWithoutTaskAnswersInput = {
+  answer?: InputMaybe<Scalars['String']>;
+  createdAt?: InputMaybe<Scalars['DateTime']>;
+  response?: InputMaybe<ResponseCreateNestedManyWithoutAnswersInput>;
+  test: TestCreateNestedOneWithoutAnswersInput;
 };
 
 export type AnswerCreateWithoutTestInput = {
   answer?: InputMaybe<Scalars['String']>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
   response?: InputMaybe<ResponseCreateNestedManyWithoutAnswersInput>;
-  user: UserCreateNestedOneWithoutAnswersInput;
-};
-
-export type AnswerCreateWithoutUserInput = {
-  answer?: InputMaybe<Scalars['String']>;
-  createdAt?: InputMaybe<Scalars['DateTime']>;
-  response?: InputMaybe<ResponseCreateNestedManyWithoutAnswersInput>;
-  test: TestCreateNestedOneWithoutAnswersInput;
+  taskAnswers?: InputMaybe<TaskAnswerCreateNestedManyWithoutAnswerModelInput>;
 };
 
 export type AnswerListRelationFilter = {
@@ -274,7 +276,6 @@ export type AnswerMaxAggregateOutputType = {
   createdAt?: Maybe<Scalars['DateTime']>;
   id?: Maybe<Scalars['Int']>;
   testId?: Maybe<Scalars['Int']>;
-  userId?: Maybe<Scalars['Int']>;
 };
 
 export type AnswerMaxOrderByAggregateInput = {
@@ -282,7 +283,6 @@ export type AnswerMaxOrderByAggregateInput = {
   createdAt?: InputMaybe<SortOrder>;
   id?: InputMaybe<SortOrder>;
   testId?: InputMaybe<SortOrder>;
-  userId?: InputMaybe<SortOrder>;
 };
 
 export type AnswerMinAggregateOutputType = {
@@ -291,7 +291,6 @@ export type AnswerMinAggregateOutputType = {
   createdAt?: Maybe<Scalars['DateTime']>;
   id?: Maybe<Scalars['Int']>;
   testId?: Maybe<Scalars['Int']>;
-  userId?: Maybe<Scalars['Int']>;
 };
 
 export type AnswerMinOrderByAggregateInput = {
@@ -299,21 +298,10 @@ export type AnswerMinOrderByAggregateInput = {
   createdAt?: InputMaybe<SortOrder>;
   id?: InputMaybe<SortOrder>;
   testId?: InputMaybe<SortOrder>;
-  userId?: InputMaybe<SortOrder>;
 };
 
 export type AnswerOrderByRelationAggregateInput = {
   _count?: InputMaybe<SortOrder>;
-};
-
-export enum AnswerOrderByRelevanceFieldEnum {
-  Answer = 'answer'
-}
-
-export type AnswerOrderByRelevanceInput = {
-  fields: AnswerOrderByRelevanceFieldEnum;
-  search: Scalars['String'];
-  sort: SortOrder;
 };
 
 export type AnswerOrderByWithAggregationInput = {
@@ -326,27 +314,28 @@ export type AnswerOrderByWithAggregationInput = {
   createdAt?: InputMaybe<SortOrder>;
   id?: InputMaybe<SortOrder>;
   testId?: InputMaybe<SortOrder>;
-  userId?: InputMaybe<SortOrder>;
 };
 
-export type AnswerOrderByWithRelationAndSearchRelevanceInput = {
-  _relevance?: InputMaybe<AnswerOrderByRelevanceInput>;
+export type AnswerOrderByWithRelationInput = {
   answer?: InputMaybe<SortOrderInput>;
   createdAt?: InputMaybe<SortOrder>;
   id?: InputMaybe<SortOrder>;
   response?: InputMaybe<ResponseOrderByRelationAggregateInput>;
-  test?: InputMaybe<TestOrderByWithRelationAndSearchRelevanceInput>;
+  taskAnswers?: InputMaybe<TaskAnswerOrderByRelationAggregateInput>;
+  test?: InputMaybe<TestOrderByWithRelationInput>;
   testId?: InputMaybe<SortOrder>;
-  user?: InputMaybe<UserOrderByWithRelationAndSearchRelevanceInput>;
-  userId?: InputMaybe<SortOrder>;
+};
+
+export type AnswerRelationFilter = {
+  is?: InputMaybe<AnswerWhereInput>;
+  isNot?: InputMaybe<AnswerWhereInput>;
 };
 
 export enum AnswerScalarFieldEnum {
   Answer = 'answer',
   CreatedAt = 'createdAt',
   Id = 'id',
-  TestId = 'testId',
-  UserId = 'userId'
+  TestId = 'testId'
 }
 
 export type AnswerScalarWhereInput = {
@@ -357,7 +346,6 @@ export type AnswerScalarWhereInput = {
   createdAt?: InputMaybe<DateTimeFilter>;
   id?: InputMaybe<IntFilter>;
   testId?: InputMaybe<IntFilter>;
-  userId?: InputMaybe<IntFilter>;
 };
 
 export type AnswerScalarWhereWithAggregatesInput = {
@@ -368,20 +356,17 @@ export type AnswerScalarWhereWithAggregatesInput = {
   createdAt?: InputMaybe<DateTimeWithAggregatesFilter>;
   id?: InputMaybe<IntWithAggregatesFilter>;
   testId?: InputMaybe<IntWithAggregatesFilter>;
-  userId?: InputMaybe<IntWithAggregatesFilter>;
 };
 
 export type AnswerSumAggregateOutputType = {
   __typename?: 'AnswerSumAggregateOutputType';
   id?: Maybe<Scalars['Int']>;
   testId?: Maybe<Scalars['Int']>;
-  userId?: Maybe<Scalars['Int']>;
 };
 
 export type AnswerSumOrderByAggregateInput = {
   id?: InputMaybe<SortOrder>;
   testId?: InputMaybe<SortOrder>;
-  userId?: InputMaybe<SortOrder>;
 };
 
 export type AnswerUncheckedCreateInput = {
@@ -389,8 +374,8 @@ export type AnswerUncheckedCreateInput = {
   createdAt?: InputMaybe<Scalars['DateTime']>;
   id?: InputMaybe<Scalars['Int']>;
   response?: InputMaybe<ResponseUncheckedCreateNestedManyWithoutAnswersInput>;
+  taskAnswers?: InputMaybe<TaskAnswerUncheckedCreateNestedManyWithoutAnswerModelInput>;
   testId: Scalars['Int'];
-  userId: Scalars['Int'];
 };
 
 export type AnswerUncheckedCreateNestedManyWithoutResponseInput = {
@@ -406,19 +391,20 @@ export type AnswerUncheckedCreateNestedManyWithoutTestInput = {
   createMany?: InputMaybe<AnswerCreateManyTestInputEnvelope>;
 };
 
-export type AnswerUncheckedCreateNestedManyWithoutUserInput = {
-  connect?: InputMaybe<Array<InputMaybe<AnswerWhereUniqueInput>>>;
-  connectOrCreate?: InputMaybe<Array<InputMaybe<AnswerCreateOrConnectWithoutUserInput>>>;
-  create?: InputMaybe<Array<InputMaybe<AnswerCreateWithoutUserInput>>>;
-  createMany?: InputMaybe<AnswerCreateManyUserInputEnvelope>;
-};
-
 export type AnswerUncheckedCreateWithoutResponseInput = {
   answer?: InputMaybe<Scalars['String']>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
   id?: InputMaybe<Scalars['Int']>;
+  taskAnswers?: InputMaybe<TaskAnswerUncheckedCreateNestedManyWithoutAnswerModelInput>;
   testId: Scalars['Int'];
-  userId: Scalars['Int'];
+};
+
+export type AnswerUncheckedCreateWithoutTaskAnswersInput = {
+  answer?: InputMaybe<Scalars['String']>;
+  createdAt?: InputMaybe<Scalars['DateTime']>;
+  id?: InputMaybe<Scalars['Int']>;
+  response?: InputMaybe<ResponseUncheckedCreateNestedManyWithoutAnswersInput>;
+  testId: Scalars['Int'];
 };
 
 export type AnswerUncheckedCreateWithoutTestInput = {
@@ -426,15 +412,7 @@ export type AnswerUncheckedCreateWithoutTestInput = {
   createdAt?: InputMaybe<Scalars['DateTime']>;
   id?: InputMaybe<Scalars['Int']>;
   response?: InputMaybe<ResponseUncheckedCreateNestedManyWithoutAnswersInput>;
-  userId: Scalars['Int'];
-};
-
-export type AnswerUncheckedCreateWithoutUserInput = {
-  answer?: InputMaybe<Scalars['String']>;
-  createdAt?: InputMaybe<Scalars['DateTime']>;
-  id?: InputMaybe<Scalars['Int']>;
-  response?: InputMaybe<ResponseUncheckedCreateNestedManyWithoutAnswersInput>;
-  testId: Scalars['Int'];
+  taskAnswers?: InputMaybe<TaskAnswerUncheckedCreateNestedManyWithoutAnswerModelInput>;
 };
 
 export type AnswerUncheckedUpdateInput = {
@@ -442,8 +420,8 @@ export type AnswerUncheckedUpdateInput = {
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
   id?: InputMaybe<IntFieldUpdateOperationsInput>;
   response?: InputMaybe<ResponseUncheckedUpdateManyWithoutAnswersNestedInput>;
+  taskAnswers?: InputMaybe<TaskAnswerUncheckedUpdateManyWithoutAnswerModelNestedInput>;
   testId?: InputMaybe<IntFieldUpdateOperationsInput>;
-  userId?: InputMaybe<IntFieldUpdateOperationsInput>;
 };
 
 export type AnswerUncheckedUpdateManyInput = {
@@ -451,7 +429,6 @@ export type AnswerUncheckedUpdateManyInput = {
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
   id?: InputMaybe<IntFieldUpdateOperationsInput>;
   testId?: InputMaybe<IntFieldUpdateOperationsInput>;
-  userId?: InputMaybe<IntFieldUpdateOperationsInput>;
 };
 
 export type AnswerUncheckedUpdateManyWithoutResponseInput = {
@@ -459,7 +436,6 @@ export type AnswerUncheckedUpdateManyWithoutResponseInput = {
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
   id?: InputMaybe<IntFieldUpdateOperationsInput>;
   testId?: InputMaybe<IntFieldUpdateOperationsInput>;
-  userId?: InputMaybe<IntFieldUpdateOperationsInput>;
 };
 
 export type AnswerUncheckedUpdateManyWithoutResponseNestedInput = {
@@ -479,7 +455,6 @@ export type AnswerUncheckedUpdateManyWithoutTestInput = {
   answer?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
   id?: InputMaybe<IntFieldUpdateOperationsInput>;
-  userId?: InputMaybe<IntFieldUpdateOperationsInput>;
 };
 
 export type AnswerUncheckedUpdateManyWithoutTestNestedInput = {
@@ -496,33 +471,20 @@ export type AnswerUncheckedUpdateManyWithoutTestNestedInput = {
   upsert?: InputMaybe<Array<InputMaybe<AnswerUpsertWithWhereUniqueWithoutTestInput>>>;
 };
 
-export type AnswerUncheckedUpdateManyWithoutUserInput = {
-  answer?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
-  createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
-  id?: InputMaybe<IntFieldUpdateOperationsInput>;
-  testId?: InputMaybe<IntFieldUpdateOperationsInput>;
-};
-
-export type AnswerUncheckedUpdateManyWithoutUserNestedInput = {
-  connect?: InputMaybe<Array<InputMaybe<AnswerWhereUniqueInput>>>;
-  connectOrCreate?: InputMaybe<Array<InputMaybe<AnswerCreateOrConnectWithoutUserInput>>>;
-  create?: InputMaybe<Array<InputMaybe<AnswerCreateWithoutUserInput>>>;
-  createMany?: InputMaybe<AnswerCreateManyUserInputEnvelope>;
-  delete?: InputMaybe<Array<InputMaybe<AnswerWhereUniqueInput>>>;
-  deleteMany?: InputMaybe<Array<InputMaybe<AnswerScalarWhereInput>>>;
-  disconnect?: InputMaybe<Array<InputMaybe<AnswerWhereUniqueInput>>>;
-  set?: InputMaybe<Array<InputMaybe<AnswerWhereUniqueInput>>>;
-  update?: InputMaybe<Array<InputMaybe<AnswerUpdateWithWhereUniqueWithoutUserInput>>>;
-  updateMany?: InputMaybe<Array<InputMaybe<AnswerUpdateManyWithWhereWithoutUserInput>>>;
-  upsert?: InputMaybe<Array<InputMaybe<AnswerUpsertWithWhereUniqueWithoutUserInput>>>;
-};
-
 export type AnswerUncheckedUpdateWithoutResponseInput = {
   answer?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
   id?: InputMaybe<IntFieldUpdateOperationsInput>;
+  taskAnswers?: InputMaybe<TaskAnswerUncheckedUpdateManyWithoutAnswerModelNestedInput>;
   testId?: InputMaybe<IntFieldUpdateOperationsInput>;
-  userId?: InputMaybe<IntFieldUpdateOperationsInput>;
+};
+
+export type AnswerUncheckedUpdateWithoutTaskAnswersInput = {
+  answer?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  id?: InputMaybe<IntFieldUpdateOperationsInput>;
+  response?: InputMaybe<ResponseUncheckedUpdateManyWithoutAnswersNestedInput>;
+  testId?: InputMaybe<IntFieldUpdateOperationsInput>;
 };
 
 export type AnswerUncheckedUpdateWithoutTestInput = {
@@ -530,23 +492,15 @@ export type AnswerUncheckedUpdateWithoutTestInput = {
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
   id?: InputMaybe<IntFieldUpdateOperationsInput>;
   response?: InputMaybe<ResponseUncheckedUpdateManyWithoutAnswersNestedInput>;
-  userId?: InputMaybe<IntFieldUpdateOperationsInput>;
-};
-
-export type AnswerUncheckedUpdateWithoutUserInput = {
-  answer?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
-  createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
-  id?: InputMaybe<IntFieldUpdateOperationsInput>;
-  response?: InputMaybe<ResponseUncheckedUpdateManyWithoutAnswersNestedInput>;
-  testId?: InputMaybe<IntFieldUpdateOperationsInput>;
+  taskAnswers?: InputMaybe<TaskAnswerUncheckedUpdateManyWithoutAnswerModelNestedInput>;
 };
 
 export type AnswerUpdateInput = {
   answer?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
   response?: InputMaybe<ResponseUpdateManyWithoutAnswersNestedInput>;
+  taskAnswers?: InputMaybe<TaskAnswerUpdateManyWithoutAnswerModelNestedInput>;
   test?: InputMaybe<TestUpdateOneRequiredWithoutAnswersNestedInput>;
-  user?: InputMaybe<UserUpdateOneRequiredWithoutAnswersNestedInput>;
 };
 
 export type AnswerUpdateManyMutationInput = {
@@ -560,11 +514,6 @@ export type AnswerUpdateManyWithWhereWithoutResponseInput = {
 };
 
 export type AnswerUpdateManyWithWhereWithoutTestInput = {
-  data: AnswerUpdateManyMutationInput;
-  where: AnswerScalarWhereInput;
-};
-
-export type AnswerUpdateManyWithWhereWithoutUserInput = {
   data: AnswerUpdateManyMutationInput;
   where: AnswerScalarWhereInput;
 };
@@ -596,18 +545,17 @@ export type AnswerUpdateManyWithoutTestNestedInput = {
   upsert?: InputMaybe<Array<InputMaybe<AnswerUpsertWithWhereUniqueWithoutTestInput>>>;
 };
 
-export type AnswerUpdateManyWithoutUserNestedInput = {
-  connect?: InputMaybe<Array<InputMaybe<AnswerWhereUniqueInput>>>;
-  connectOrCreate?: InputMaybe<Array<InputMaybe<AnswerCreateOrConnectWithoutUserInput>>>;
-  create?: InputMaybe<Array<InputMaybe<AnswerCreateWithoutUserInput>>>;
-  createMany?: InputMaybe<AnswerCreateManyUserInputEnvelope>;
-  delete?: InputMaybe<Array<InputMaybe<AnswerWhereUniqueInput>>>;
-  deleteMany?: InputMaybe<Array<InputMaybe<AnswerScalarWhereInput>>>;
-  disconnect?: InputMaybe<Array<InputMaybe<AnswerWhereUniqueInput>>>;
-  set?: InputMaybe<Array<InputMaybe<AnswerWhereUniqueInput>>>;
-  update?: InputMaybe<Array<InputMaybe<AnswerUpdateWithWhereUniqueWithoutUserInput>>>;
-  updateMany?: InputMaybe<Array<InputMaybe<AnswerUpdateManyWithWhereWithoutUserInput>>>;
-  upsert?: InputMaybe<Array<InputMaybe<AnswerUpsertWithWhereUniqueWithoutUserInput>>>;
+export type AnswerUpdateOneRequiredWithoutTaskAnswersNestedInput = {
+  connect?: InputMaybe<AnswerWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<AnswerCreateOrConnectWithoutTaskAnswersInput>;
+  create?: InputMaybe<AnswerCreateWithoutTaskAnswersInput>;
+  update?: InputMaybe<AnswerUpdateToOneWithWhereWithoutTaskAnswersInput>;
+  upsert?: InputMaybe<AnswerUpsertWithoutTaskAnswersInput>;
+};
+
+export type AnswerUpdateToOneWithWhereWithoutTaskAnswersInput = {
+  data: AnswerUpdateWithoutTaskAnswersInput;
+  where?: InputMaybe<AnswerWhereInput>;
 };
 
 export type AnswerUpdateWithWhereUniqueWithoutResponseInput = {
@@ -620,30 +568,25 @@ export type AnswerUpdateWithWhereUniqueWithoutTestInput = {
   where: AnswerWhereUniqueInput;
 };
 
-export type AnswerUpdateWithWhereUniqueWithoutUserInput = {
-  data: AnswerUpdateWithoutUserInput;
-  where: AnswerWhereUniqueInput;
-};
-
 export type AnswerUpdateWithoutResponseInput = {
   answer?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  taskAnswers?: InputMaybe<TaskAnswerUpdateManyWithoutAnswerModelNestedInput>;
   test?: InputMaybe<TestUpdateOneRequiredWithoutAnswersNestedInput>;
-  user?: InputMaybe<UserUpdateOneRequiredWithoutAnswersNestedInput>;
+};
+
+export type AnswerUpdateWithoutTaskAnswersInput = {
+  answer?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  response?: InputMaybe<ResponseUpdateManyWithoutAnswersNestedInput>;
+  test?: InputMaybe<TestUpdateOneRequiredWithoutAnswersNestedInput>;
 };
 
 export type AnswerUpdateWithoutTestInput = {
   answer?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
   response?: InputMaybe<ResponseUpdateManyWithoutAnswersNestedInput>;
-  user?: InputMaybe<UserUpdateOneRequiredWithoutAnswersNestedInput>;
-};
-
-export type AnswerUpdateWithoutUserInput = {
-  answer?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
-  createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
-  response?: InputMaybe<ResponseUpdateManyWithoutAnswersNestedInput>;
-  test?: InputMaybe<TestUpdateOneRequiredWithoutAnswersNestedInput>;
+  taskAnswers?: InputMaybe<TaskAnswerUpdateManyWithoutAnswerModelNestedInput>;
 };
 
 export type AnswerUpsertWithWhereUniqueWithoutResponseInput = {
@@ -658,10 +601,10 @@ export type AnswerUpsertWithWhereUniqueWithoutTestInput = {
   where: AnswerWhereUniqueInput;
 };
 
-export type AnswerUpsertWithWhereUniqueWithoutUserInput = {
-  create: AnswerCreateWithoutUserInput;
-  update: AnswerUpdateWithoutUserInput;
-  where: AnswerWhereUniqueInput;
+export type AnswerUpsertWithoutTaskAnswersInput = {
+  create: AnswerCreateWithoutTaskAnswersInput;
+  update: AnswerUpdateWithoutTaskAnswersInput;
+  where?: InputMaybe<AnswerWhereInput>;
 };
 
 export type AnswerWhereInput = {
@@ -672,10 +615,9 @@ export type AnswerWhereInput = {
   createdAt?: InputMaybe<DateTimeFilter>;
   id?: InputMaybe<IntFilter>;
   response?: InputMaybe<ResponseListRelationFilter>;
+  taskAnswers?: InputMaybe<TaskAnswerListRelationFilter>;
   test?: InputMaybe<TestRelationFilter>;
   testId?: InputMaybe<IntFilter>;
-  user?: InputMaybe<UserRelationFilter>;
-  userId?: InputMaybe<IntFilter>;
 };
 
 export type AnswerWhereUniqueInput = {
@@ -686,10 +628,9 @@ export type AnswerWhereUniqueInput = {
   createdAt?: InputMaybe<DateTimeFilter>;
   id?: InputMaybe<Scalars['Int']>;
   response?: InputMaybe<ResponseListRelationFilter>;
+  taskAnswers?: InputMaybe<TaskAnswerListRelationFilter>;
   test?: InputMaybe<TestRelationFilter>;
   testId?: InputMaybe<IntFilter>;
-  user?: InputMaybe<UserRelationFilter>;
-  userId?: InputMaybe<IntFilter>;
 };
 
 export type BatchPayload = {
@@ -752,6 +693,8 @@ export type Direction = {
   responses: Array<Response>;
   specialization: Specialization;
   specializationId: Scalars['Int'];
+  test?: Maybe<Test>;
+  testId?: Maybe<Scalars['Int']>;
   title: Scalars['String'];
   type?: Maybe<DirectionType>;
 };
@@ -760,21 +703,28 @@ export type Direction = {
 export type DirectionResponsesArgs = {
   cursor?: InputMaybe<ResponseWhereUniqueInput>;
   distinct?: InputMaybe<Array<InputMaybe<ResponseScalarFieldEnum>>>;
-  orderBy?: InputMaybe<Array<InputMaybe<ResponseOrderByWithRelationAndSearchRelevanceInput>>>;
+  orderBy?: InputMaybe<Array<InputMaybe<ResponseOrderByWithRelationInput>>>;
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<ResponseWhereInput>;
+};
+
+
+export type DirectionTestArgs = {
+  where?: InputMaybe<TestWhereInput>;
 };
 
 export type DirectionAvgAggregateOutputType = {
   __typename?: 'DirectionAvgAggregateOutputType';
   id?: Maybe<Scalars['Float']>;
   specializationId?: Maybe<Scalars['Float']>;
+  testId?: Maybe<Scalars['Float']>;
 };
 
 export type DirectionAvgOrderByAggregateInput = {
   id?: InputMaybe<SortOrder>;
   specializationId?: InputMaybe<SortOrder>;
+  testId?: InputMaybe<SortOrder>;
 };
 
 export type DirectionCountAggregateOutputType = {
@@ -784,6 +734,7 @@ export type DirectionCountAggregateOutputType = {
   description: Scalars['Int'];
   id: Scalars['Int'];
   specializationId: Scalars['Int'];
+  testId: Scalars['Int'];
   title: Scalars['Int'];
   type: Scalars['Int'];
 };
@@ -793,6 +744,7 @@ export type DirectionCountOrderByAggregateInput = {
   description?: InputMaybe<SortOrder>;
   id?: InputMaybe<SortOrder>;
   specializationId?: InputMaybe<SortOrder>;
+  testId?: InputMaybe<SortOrder>;
   title?: InputMaybe<SortOrder>;
   type?: InputMaybe<SortOrder>;
 };
@@ -807,6 +759,7 @@ export type DirectionCreateInput = {
   description: Scalars['String'];
   responses?: InputMaybe<ResponseCreateNestedManyWithoutDirectionInput>;
   specialization: SpecializationCreateNestedOneWithoutDirectionsInput;
+  test?: InputMaybe<TestCreateNestedOneWithoutDirectionInput>;
   title: Scalars['String'];
   type?: InputMaybe<DirectionType>;
 };
@@ -816,6 +769,7 @@ export type DirectionCreateManyInput = {
   description: Scalars['String'];
   id?: InputMaybe<Scalars['Int']>;
   specializationId: Scalars['Int'];
+  testId?: InputMaybe<Scalars['Int']>;
   title: Scalars['String'];
   type?: InputMaybe<DirectionType>;
 };
@@ -824,6 +778,7 @@ export type DirectionCreateManySpecializationInput = {
   createdAt?: InputMaybe<Scalars['DateTime']>;
   description: Scalars['String'];
   id?: InputMaybe<Scalars['Int']>;
+  testId?: InputMaybe<Scalars['Int']>;
   title: Scalars['String'];
   type?: InputMaybe<DirectionType>;
 };
@@ -833,11 +788,32 @@ export type DirectionCreateManySpecializationInputEnvelope = {
   skipDuplicates?: InputMaybe<Scalars['Boolean']>;
 };
 
+export type DirectionCreateManyTestInput = {
+  createdAt?: InputMaybe<Scalars['DateTime']>;
+  description: Scalars['String'];
+  id?: InputMaybe<Scalars['Int']>;
+  specializationId: Scalars['Int'];
+  title: Scalars['String'];
+  type?: InputMaybe<DirectionType>;
+};
+
+export type DirectionCreateManyTestInputEnvelope = {
+  data: DirectionCreateManyTestInput;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']>;
+};
+
 export type DirectionCreateNestedManyWithoutSpecializationInput = {
   connect?: InputMaybe<Array<InputMaybe<DirectionWhereUniqueInput>>>;
   connectOrCreate?: InputMaybe<Array<InputMaybe<DirectionCreateOrConnectWithoutSpecializationInput>>>;
   create?: InputMaybe<Array<InputMaybe<DirectionCreateWithoutSpecializationInput>>>;
   createMany?: InputMaybe<DirectionCreateManySpecializationInputEnvelope>;
+};
+
+export type DirectionCreateNestedManyWithoutTestInput = {
+  connect?: InputMaybe<Array<InputMaybe<DirectionWhereUniqueInput>>>;
+  connectOrCreate?: InputMaybe<Array<InputMaybe<DirectionCreateOrConnectWithoutTestInput>>>;
+  create?: InputMaybe<Array<InputMaybe<DirectionCreateWithoutTestInput>>>;
+  createMany?: InputMaybe<DirectionCreateManyTestInputEnvelope>;
 };
 
 export type DirectionCreateNestedOneWithoutResponsesInput = {
@@ -856,10 +832,16 @@ export type DirectionCreateOrConnectWithoutSpecializationInput = {
   where: DirectionWhereUniqueInput;
 };
 
+export type DirectionCreateOrConnectWithoutTestInput = {
+  create: DirectionCreateWithoutTestInput;
+  where: DirectionWhereUniqueInput;
+};
+
 export type DirectionCreateWithoutResponsesInput = {
   createdAt?: InputMaybe<Scalars['DateTime']>;
   description: Scalars['String'];
   specialization: SpecializationCreateNestedOneWithoutDirectionsInput;
+  test?: InputMaybe<TestCreateNestedOneWithoutDirectionInput>;
   title: Scalars['String'];
   type?: InputMaybe<DirectionType>;
 };
@@ -868,6 +850,16 @@ export type DirectionCreateWithoutSpecializationInput = {
   createdAt?: InputMaybe<Scalars['DateTime']>;
   description: Scalars['String'];
   responses?: InputMaybe<ResponseCreateNestedManyWithoutDirectionInput>;
+  test?: InputMaybe<TestCreateNestedOneWithoutDirectionInput>;
+  title: Scalars['String'];
+  type?: InputMaybe<DirectionType>;
+};
+
+export type DirectionCreateWithoutTestInput = {
+  createdAt?: InputMaybe<Scalars['DateTime']>;
+  description: Scalars['String'];
+  responses?: InputMaybe<ResponseCreateNestedManyWithoutDirectionInput>;
+  specialization: SpecializationCreateNestedOneWithoutDirectionsInput;
   title: Scalars['String'];
   type?: InputMaybe<DirectionType>;
 };
@@ -884,6 +876,7 @@ export type DirectionMaxAggregateOutputType = {
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
   specializationId?: Maybe<Scalars['Int']>;
+  testId?: Maybe<Scalars['Int']>;
   title?: Maybe<Scalars['String']>;
   type?: Maybe<DirectionType>;
 };
@@ -893,6 +886,7 @@ export type DirectionMaxOrderByAggregateInput = {
   description?: InputMaybe<SortOrder>;
   id?: InputMaybe<SortOrder>;
   specializationId?: InputMaybe<SortOrder>;
+  testId?: InputMaybe<SortOrder>;
   title?: InputMaybe<SortOrder>;
   type?: InputMaybe<SortOrder>;
 };
@@ -903,6 +897,7 @@ export type DirectionMinAggregateOutputType = {
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
   specializationId?: Maybe<Scalars['Int']>;
+  testId?: Maybe<Scalars['Int']>;
   title?: Maybe<Scalars['String']>;
   type?: Maybe<DirectionType>;
 };
@@ -912,23 +907,13 @@ export type DirectionMinOrderByAggregateInput = {
   description?: InputMaybe<SortOrder>;
   id?: InputMaybe<SortOrder>;
   specializationId?: InputMaybe<SortOrder>;
+  testId?: InputMaybe<SortOrder>;
   title?: InputMaybe<SortOrder>;
   type?: InputMaybe<SortOrder>;
 };
 
 export type DirectionOrderByRelationAggregateInput = {
   _count?: InputMaybe<SortOrder>;
-};
-
-export enum DirectionOrderByRelevanceFieldEnum {
-  Description = 'description',
-  Title = 'title'
-}
-
-export type DirectionOrderByRelevanceInput = {
-  fields: DirectionOrderByRelevanceFieldEnum;
-  search: Scalars['String'];
-  sort: SortOrder;
 };
 
 export type DirectionOrderByWithAggregationInput = {
@@ -941,18 +926,20 @@ export type DirectionOrderByWithAggregationInput = {
   description?: InputMaybe<SortOrder>;
   id?: InputMaybe<SortOrder>;
   specializationId?: InputMaybe<SortOrder>;
+  testId?: InputMaybe<SortOrderInput>;
   title?: InputMaybe<SortOrder>;
   type?: InputMaybe<SortOrderInput>;
 };
 
-export type DirectionOrderByWithRelationAndSearchRelevanceInput = {
-  _relevance?: InputMaybe<DirectionOrderByRelevanceInput>;
+export type DirectionOrderByWithRelationInput = {
   createdAt?: InputMaybe<SortOrder>;
   description?: InputMaybe<SortOrder>;
   id?: InputMaybe<SortOrder>;
   responses?: InputMaybe<ResponseOrderByRelationAggregateInput>;
-  specialization?: InputMaybe<SpecializationOrderByWithRelationAndSearchRelevanceInput>;
+  specialization?: InputMaybe<SpecializationOrderByWithRelationInput>;
   specializationId?: InputMaybe<SortOrder>;
+  test?: InputMaybe<TestOrderByWithRelationInput>;
+  testId?: InputMaybe<SortOrderInput>;
   title?: InputMaybe<SortOrder>;
   type?: InputMaybe<SortOrderInput>;
 };
@@ -967,6 +954,7 @@ export enum DirectionScalarFieldEnum {
   Description = 'description',
   Id = 'id',
   SpecializationId = 'specializationId',
+  TestId = 'testId',
   Title = 'title',
   Type = 'type'
 }
@@ -979,6 +967,7 @@ export type DirectionScalarWhereInput = {
   description?: InputMaybe<StringFilter>;
   id?: InputMaybe<IntFilter>;
   specializationId?: InputMaybe<IntFilter>;
+  testId?: InputMaybe<IntNullableFilter>;
   title?: InputMaybe<StringFilter>;
   type?: InputMaybe<EnumDirectionTypeNullableFilter>;
 };
@@ -991,6 +980,7 @@ export type DirectionScalarWhereWithAggregatesInput = {
   description?: InputMaybe<StringWithAggregatesFilter>;
   id?: InputMaybe<IntWithAggregatesFilter>;
   specializationId?: InputMaybe<IntWithAggregatesFilter>;
+  testId?: InputMaybe<IntNullableWithAggregatesFilter>;
   title?: InputMaybe<StringWithAggregatesFilter>;
   type?: InputMaybe<EnumDirectionTypeNullableWithAggregatesFilter>;
 };
@@ -999,11 +989,13 @@ export type DirectionSumAggregateOutputType = {
   __typename?: 'DirectionSumAggregateOutputType';
   id?: Maybe<Scalars['Int']>;
   specializationId?: Maybe<Scalars['Int']>;
+  testId?: Maybe<Scalars['Int']>;
 };
 
 export type DirectionSumOrderByAggregateInput = {
   id?: InputMaybe<SortOrder>;
   specializationId?: InputMaybe<SortOrder>;
+  testId?: InputMaybe<SortOrder>;
 };
 
 export enum DirectionType {
@@ -1017,6 +1009,7 @@ export type DirectionUncheckedCreateInput = {
   id?: InputMaybe<Scalars['Int']>;
   responses?: InputMaybe<ResponseUncheckedCreateNestedManyWithoutDirectionInput>;
   specializationId: Scalars['Int'];
+  testId?: InputMaybe<Scalars['Int']>;
   title: Scalars['String'];
   type?: InputMaybe<DirectionType>;
 };
@@ -1028,11 +1021,19 @@ export type DirectionUncheckedCreateNestedManyWithoutSpecializationInput = {
   createMany?: InputMaybe<DirectionCreateManySpecializationInputEnvelope>;
 };
 
+export type DirectionUncheckedCreateNestedManyWithoutTestInput = {
+  connect?: InputMaybe<Array<InputMaybe<DirectionWhereUniqueInput>>>;
+  connectOrCreate?: InputMaybe<Array<InputMaybe<DirectionCreateOrConnectWithoutTestInput>>>;
+  create?: InputMaybe<Array<InputMaybe<DirectionCreateWithoutTestInput>>>;
+  createMany?: InputMaybe<DirectionCreateManyTestInputEnvelope>;
+};
+
 export type DirectionUncheckedCreateWithoutResponsesInput = {
   createdAt?: InputMaybe<Scalars['DateTime']>;
   description: Scalars['String'];
   id?: InputMaybe<Scalars['Int']>;
   specializationId: Scalars['Int'];
+  testId?: InputMaybe<Scalars['Int']>;
   title: Scalars['String'];
   type?: InputMaybe<DirectionType>;
 };
@@ -1042,6 +1043,17 @@ export type DirectionUncheckedCreateWithoutSpecializationInput = {
   description: Scalars['String'];
   id?: InputMaybe<Scalars['Int']>;
   responses?: InputMaybe<ResponseUncheckedCreateNestedManyWithoutDirectionInput>;
+  testId?: InputMaybe<Scalars['Int']>;
+  title: Scalars['String'];
+  type?: InputMaybe<DirectionType>;
+};
+
+export type DirectionUncheckedCreateWithoutTestInput = {
+  createdAt?: InputMaybe<Scalars['DateTime']>;
+  description: Scalars['String'];
+  id?: InputMaybe<Scalars['Int']>;
+  responses?: InputMaybe<ResponseUncheckedCreateNestedManyWithoutDirectionInput>;
+  specializationId: Scalars['Int'];
   title: Scalars['String'];
   type?: InputMaybe<DirectionType>;
 };
@@ -1052,6 +1064,7 @@ export type DirectionUncheckedUpdateInput = {
   id?: InputMaybe<IntFieldUpdateOperationsInput>;
   responses?: InputMaybe<ResponseUncheckedUpdateManyWithoutDirectionNestedInput>;
   specializationId?: InputMaybe<IntFieldUpdateOperationsInput>;
+  testId?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
   title?: InputMaybe<StringFieldUpdateOperationsInput>;
   type?: InputMaybe<NullableEnumDirectionTypeFieldUpdateOperationsInput>;
 };
@@ -1061,6 +1074,7 @@ export type DirectionUncheckedUpdateManyInput = {
   description?: InputMaybe<StringFieldUpdateOperationsInput>;
   id?: InputMaybe<IntFieldUpdateOperationsInput>;
   specializationId?: InputMaybe<IntFieldUpdateOperationsInput>;
+  testId?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
   title?: InputMaybe<StringFieldUpdateOperationsInput>;
   type?: InputMaybe<NullableEnumDirectionTypeFieldUpdateOperationsInput>;
 };
@@ -1069,6 +1083,7 @@ export type DirectionUncheckedUpdateManyWithoutSpecializationInput = {
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
   description?: InputMaybe<StringFieldUpdateOperationsInput>;
   id?: InputMaybe<IntFieldUpdateOperationsInput>;
+  testId?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
   title?: InputMaybe<StringFieldUpdateOperationsInput>;
   type?: InputMaybe<NullableEnumDirectionTypeFieldUpdateOperationsInput>;
 };
@@ -1087,11 +1102,35 @@ export type DirectionUncheckedUpdateManyWithoutSpecializationNestedInput = {
   upsert?: InputMaybe<Array<InputMaybe<DirectionUpsertWithWhereUniqueWithoutSpecializationInput>>>;
 };
 
+export type DirectionUncheckedUpdateManyWithoutTestInput = {
+  createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  description?: InputMaybe<StringFieldUpdateOperationsInput>;
+  id?: InputMaybe<IntFieldUpdateOperationsInput>;
+  specializationId?: InputMaybe<IntFieldUpdateOperationsInput>;
+  title?: InputMaybe<StringFieldUpdateOperationsInput>;
+  type?: InputMaybe<NullableEnumDirectionTypeFieldUpdateOperationsInput>;
+};
+
+export type DirectionUncheckedUpdateManyWithoutTestNestedInput = {
+  connect?: InputMaybe<Array<InputMaybe<DirectionWhereUniqueInput>>>;
+  connectOrCreate?: InputMaybe<Array<InputMaybe<DirectionCreateOrConnectWithoutTestInput>>>;
+  create?: InputMaybe<Array<InputMaybe<DirectionCreateWithoutTestInput>>>;
+  createMany?: InputMaybe<DirectionCreateManyTestInputEnvelope>;
+  delete?: InputMaybe<Array<InputMaybe<DirectionWhereUniqueInput>>>;
+  deleteMany?: InputMaybe<Array<InputMaybe<DirectionScalarWhereInput>>>;
+  disconnect?: InputMaybe<Array<InputMaybe<DirectionWhereUniqueInput>>>;
+  set?: InputMaybe<Array<InputMaybe<DirectionWhereUniqueInput>>>;
+  update?: InputMaybe<Array<InputMaybe<DirectionUpdateWithWhereUniqueWithoutTestInput>>>;
+  updateMany?: InputMaybe<Array<InputMaybe<DirectionUpdateManyWithWhereWithoutTestInput>>>;
+  upsert?: InputMaybe<Array<InputMaybe<DirectionUpsertWithWhereUniqueWithoutTestInput>>>;
+};
+
 export type DirectionUncheckedUpdateWithoutResponsesInput = {
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
   description?: InputMaybe<StringFieldUpdateOperationsInput>;
   id?: InputMaybe<IntFieldUpdateOperationsInput>;
   specializationId?: InputMaybe<IntFieldUpdateOperationsInput>;
+  testId?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
   title?: InputMaybe<StringFieldUpdateOperationsInput>;
   type?: InputMaybe<NullableEnumDirectionTypeFieldUpdateOperationsInput>;
 };
@@ -1101,6 +1140,17 @@ export type DirectionUncheckedUpdateWithoutSpecializationInput = {
   description?: InputMaybe<StringFieldUpdateOperationsInput>;
   id?: InputMaybe<IntFieldUpdateOperationsInput>;
   responses?: InputMaybe<ResponseUncheckedUpdateManyWithoutDirectionNestedInput>;
+  testId?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
+  title?: InputMaybe<StringFieldUpdateOperationsInput>;
+  type?: InputMaybe<NullableEnumDirectionTypeFieldUpdateOperationsInput>;
+};
+
+export type DirectionUncheckedUpdateWithoutTestInput = {
+  createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  description?: InputMaybe<StringFieldUpdateOperationsInput>;
+  id?: InputMaybe<IntFieldUpdateOperationsInput>;
+  responses?: InputMaybe<ResponseUncheckedUpdateManyWithoutDirectionNestedInput>;
+  specializationId?: InputMaybe<IntFieldUpdateOperationsInput>;
   title?: InputMaybe<StringFieldUpdateOperationsInput>;
   type?: InputMaybe<NullableEnumDirectionTypeFieldUpdateOperationsInput>;
 };
@@ -1110,6 +1160,7 @@ export type DirectionUpdateInput = {
   description?: InputMaybe<StringFieldUpdateOperationsInput>;
   responses?: InputMaybe<ResponseUpdateManyWithoutDirectionNestedInput>;
   specialization?: InputMaybe<SpecializationUpdateOneRequiredWithoutDirectionsNestedInput>;
+  test?: InputMaybe<TestUpdateOneWithoutDirectionNestedInput>;
   title?: InputMaybe<StringFieldUpdateOperationsInput>;
   type?: InputMaybe<NullableEnumDirectionTypeFieldUpdateOperationsInput>;
 };
@@ -1126,6 +1177,11 @@ export type DirectionUpdateManyWithWhereWithoutSpecializationInput = {
   where: DirectionScalarWhereInput;
 };
 
+export type DirectionUpdateManyWithWhereWithoutTestInput = {
+  data: DirectionUpdateManyMutationInput;
+  where: DirectionScalarWhereInput;
+};
+
 export type DirectionUpdateManyWithoutSpecializationNestedInput = {
   connect?: InputMaybe<Array<InputMaybe<DirectionWhereUniqueInput>>>;
   connectOrCreate?: InputMaybe<Array<InputMaybe<DirectionCreateOrConnectWithoutSpecializationInput>>>;
@@ -1138,6 +1194,20 @@ export type DirectionUpdateManyWithoutSpecializationNestedInput = {
   update?: InputMaybe<Array<InputMaybe<DirectionUpdateWithWhereUniqueWithoutSpecializationInput>>>;
   updateMany?: InputMaybe<Array<InputMaybe<DirectionUpdateManyWithWhereWithoutSpecializationInput>>>;
   upsert?: InputMaybe<Array<InputMaybe<DirectionUpsertWithWhereUniqueWithoutSpecializationInput>>>;
+};
+
+export type DirectionUpdateManyWithoutTestNestedInput = {
+  connect?: InputMaybe<Array<InputMaybe<DirectionWhereUniqueInput>>>;
+  connectOrCreate?: InputMaybe<Array<InputMaybe<DirectionCreateOrConnectWithoutTestInput>>>;
+  create?: InputMaybe<Array<InputMaybe<DirectionCreateWithoutTestInput>>>;
+  createMany?: InputMaybe<DirectionCreateManyTestInputEnvelope>;
+  delete?: InputMaybe<Array<InputMaybe<DirectionWhereUniqueInput>>>;
+  deleteMany?: InputMaybe<Array<InputMaybe<DirectionScalarWhereInput>>>;
+  disconnect?: InputMaybe<Array<InputMaybe<DirectionWhereUniqueInput>>>;
+  set?: InputMaybe<Array<InputMaybe<DirectionWhereUniqueInput>>>;
+  update?: InputMaybe<Array<InputMaybe<DirectionUpdateWithWhereUniqueWithoutTestInput>>>;
+  updateMany?: InputMaybe<Array<InputMaybe<DirectionUpdateManyWithWhereWithoutTestInput>>>;
+  upsert?: InputMaybe<Array<InputMaybe<DirectionUpsertWithWhereUniqueWithoutTestInput>>>;
 };
 
 export type DirectionUpdateOneRequiredWithoutResponsesNestedInput = {
@@ -1158,10 +1228,16 @@ export type DirectionUpdateWithWhereUniqueWithoutSpecializationInput = {
   where: DirectionWhereUniqueInput;
 };
 
+export type DirectionUpdateWithWhereUniqueWithoutTestInput = {
+  data: DirectionUpdateWithoutTestInput;
+  where: DirectionWhereUniqueInput;
+};
+
 export type DirectionUpdateWithoutResponsesInput = {
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
   description?: InputMaybe<StringFieldUpdateOperationsInput>;
   specialization?: InputMaybe<SpecializationUpdateOneRequiredWithoutDirectionsNestedInput>;
+  test?: InputMaybe<TestUpdateOneWithoutDirectionNestedInput>;
   title?: InputMaybe<StringFieldUpdateOperationsInput>;
   type?: InputMaybe<NullableEnumDirectionTypeFieldUpdateOperationsInput>;
 };
@@ -1170,6 +1246,16 @@ export type DirectionUpdateWithoutSpecializationInput = {
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
   description?: InputMaybe<StringFieldUpdateOperationsInput>;
   responses?: InputMaybe<ResponseUpdateManyWithoutDirectionNestedInput>;
+  test?: InputMaybe<TestUpdateOneWithoutDirectionNestedInput>;
+  title?: InputMaybe<StringFieldUpdateOperationsInput>;
+  type?: InputMaybe<NullableEnumDirectionTypeFieldUpdateOperationsInput>;
+};
+
+export type DirectionUpdateWithoutTestInput = {
+  createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  description?: InputMaybe<StringFieldUpdateOperationsInput>;
+  responses?: InputMaybe<ResponseUpdateManyWithoutDirectionNestedInput>;
+  specialization?: InputMaybe<SpecializationUpdateOneRequiredWithoutDirectionsNestedInput>;
   title?: InputMaybe<StringFieldUpdateOperationsInput>;
   type?: InputMaybe<NullableEnumDirectionTypeFieldUpdateOperationsInput>;
 };
@@ -1177,6 +1263,12 @@ export type DirectionUpdateWithoutSpecializationInput = {
 export type DirectionUpsertWithWhereUniqueWithoutSpecializationInput = {
   create: DirectionCreateWithoutSpecializationInput;
   update: DirectionUpdateWithoutSpecializationInput;
+  where: DirectionWhereUniqueInput;
+};
+
+export type DirectionUpsertWithWhereUniqueWithoutTestInput = {
+  create: DirectionCreateWithoutTestInput;
+  update: DirectionUpdateWithoutTestInput;
   where: DirectionWhereUniqueInput;
 };
 
@@ -1196,6 +1288,8 @@ export type DirectionWhereInput = {
   responses?: InputMaybe<ResponseListRelationFilter>;
   specialization?: InputMaybe<SpecializationRelationFilter>;
   specializationId?: InputMaybe<IntFilter>;
+  test?: InputMaybe<TestNullableRelationFilter>;
+  testId?: InputMaybe<IntNullableFilter>;
   title?: InputMaybe<StringFilter>;
   type?: InputMaybe<EnumDirectionTypeNullableFilter>;
 };
@@ -1210,6 +1304,8 @@ export type DirectionWhereUniqueInput = {
   responses?: InputMaybe<ResponseListRelationFilter>;
   specialization?: InputMaybe<SpecializationRelationFilter>;
   specializationId?: InputMaybe<IntFilter>;
+  test?: InputMaybe<TestNullableRelationFilter>;
+  testId?: InputMaybe<IntNullableFilter>;
   title?: InputMaybe<StringFilter>;
   type?: InputMaybe<EnumDirectionTypeNullableFilter>;
 };
@@ -1551,17 +1647,6 @@ export type MessageOrderByRelationAggregateInput = {
   _count?: InputMaybe<SortOrder>;
 };
 
-export enum MessageOrderByRelevanceFieldEnum {
-  Files = 'files',
-  Text = 'text'
-}
-
-export type MessageOrderByRelevanceInput = {
-  fields: MessageOrderByRelevanceFieldEnum;
-  search: Scalars['String'];
-  sort: SortOrder;
-};
-
 export type MessageOrderByWithAggregationInput = {
   _avg?: InputMaybe<MessageAvgOrderByAggregateInput>;
   _count?: InputMaybe<MessageCountOrderByAggregateInput>;
@@ -1576,14 +1661,13 @@ export type MessageOrderByWithAggregationInput = {
   text?: InputMaybe<SortOrder>;
 };
 
-export type MessageOrderByWithRelationAndSearchRelevanceInput = {
-  _relevance?: InputMaybe<MessageOrderByRelevanceInput>;
+export type MessageOrderByWithRelationInput = {
   createdAt?: InputMaybe<SortOrder>;
   files?: InputMaybe<SortOrder>;
-  group?: InputMaybe<MessagerGroupOrderByWithRelationAndSearchRelevanceInput>;
+  group?: InputMaybe<MessagerGroupOrderByWithRelationInput>;
   groupId?: InputMaybe<SortOrder>;
   id?: InputMaybe<SortOrder>;
-  sender?: InputMaybe<UserOrderByWithRelationAndSearchRelevanceInput>;
+  sender?: InputMaybe<UserOrderByWithRelationInput>;
   senderId?: InputMaybe<SortOrder>;
   text?: InputMaybe<SortOrder>;
 };
@@ -1889,7 +1973,7 @@ export type MessagerGroup = {
 export type MessagerGroupMessagesArgs = {
   cursor?: InputMaybe<MessageWhereUniqueInput>;
   distinct?: InputMaybe<Array<InputMaybe<MessageScalarFieldEnum>>>;
-  orderBy?: InputMaybe<Array<InputMaybe<MessageOrderByWithRelationAndSearchRelevanceInput>>>;
+  orderBy?: InputMaybe<Array<InputMaybe<MessageOrderByWithRelationInput>>>;
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<MessageWhereInput>;
@@ -1899,7 +1983,7 @@ export type MessagerGroupMessagesArgs = {
 export type MessagerGroupUsersArgs = {
   cursor?: InputMaybe<UserWhereUniqueInput>;
   distinct?: InputMaybe<Array<InputMaybe<UserScalarFieldEnum>>>;
-  orderBy?: InputMaybe<Array<InputMaybe<UserOrderByWithRelationAndSearchRelevanceInput>>>;
+  orderBy?: InputMaybe<Array<InputMaybe<UserOrderByWithRelationInput>>>;
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<UserWhereInput>;
@@ -2049,17 +2133,6 @@ export type MessagerGroupOrderByRelationAggregateInput = {
   _count?: InputMaybe<SortOrder>;
 };
 
-export enum MessagerGroupOrderByRelevanceFieldEnum {
-  Icon = 'icon',
-  Title = 'title'
-}
-
-export type MessagerGroupOrderByRelevanceInput = {
-  fields: MessagerGroupOrderByRelevanceFieldEnum;
-  search: Scalars['String'];
-  sort: SortOrder;
-};
-
 export type MessagerGroupOrderByWithAggregationInput = {
   _avg?: InputMaybe<MessagerGroupAvgOrderByAggregateInput>;
   _count?: InputMaybe<MessagerGroupCountOrderByAggregateInput>;
@@ -2074,8 +2147,7 @@ export type MessagerGroupOrderByWithAggregationInput = {
   title?: InputMaybe<SortOrder>;
 };
 
-export type MessagerGroupOrderByWithRelationAndSearchRelevanceInput = {
-  _relevance?: InputMaybe<MessagerGroupOrderByRelevanceInput>;
+export type MessagerGroupOrderByWithRelationInput = {
   active?: InputMaybe<SortOrder>;
   createdAt?: InputMaybe<SortOrder>;
   creatorId?: InputMaybe<SortOrderInput>;
@@ -2367,6 +2439,7 @@ export type Mutation = {
   createOneResponse: Response;
   createOneSpecialization: Specialization;
   createOneTask: Task;
+  createOneTaskAnswer: TaskAnswer;
   createOneTest: Test;
   createOneUser: User;
   deleteManyAnswer: BatchPayload;
@@ -2376,6 +2449,7 @@ export type Mutation = {
   deleteManyResponse: BatchPayload;
   deleteManySpecialization: BatchPayload;
   deleteManyTask: BatchPayload;
+  deleteManyTaskAnswer: BatchPayload;
   deleteManyTest: BatchPayload;
   deleteManyUser: BatchPayload;
   deleteOneAnswer?: Maybe<Answer>;
@@ -2385,8 +2459,12 @@ export type Mutation = {
   deleteOneResponse?: Maybe<Response>;
   deleteOneSpecialization?: Maybe<Specialization>;
   deleteOneTask?: Maybe<Task>;
+  deleteOneTaskAnswer?: Maybe<TaskAnswer>;
   deleteOneTest?: Maybe<Test>;
   deleteOneUser?: Maybe<User>;
+  login?: Maybe<User>;
+  logout?: Maybe<Scalars['Boolean']>;
+  signup?: Maybe<User>;
   updateField: Field;
   updateManyAnswer: BatchPayload;
   updateManyDirection: BatchPayload;
@@ -2395,6 +2473,7 @@ export type Mutation = {
   updateManyResponse: BatchPayload;
   updateManySpecialization: BatchPayload;
   updateManyTask: BatchPayload;
+  updateManyTaskAnswer: BatchPayload;
   updateManyTest: BatchPayload;
   updateManyUser: BatchPayload;
   updateModel: Model;
@@ -2405,8 +2484,10 @@ export type Mutation = {
   updateOneResponse: Response;
   updateOneSpecialization: Specialization;
   updateOneTask: Task;
+  updateOneTaskAnswer: TaskAnswer;
   updateOneTest: Test;
   updateOneUser: User;
+  updatePassword?: Maybe<Scalars['Boolean']>;
   upsertOneAnswer: Answer;
   upsertOneDirection: Direction;
   upsertOneMessage: Message;
@@ -2414,6 +2495,7 @@ export type Mutation = {
   upsertOneResponse: Response;
   upsertOneSpecialization: Specialization;
   upsertOneTask: Task;
+  upsertOneTaskAnswer: TaskAnswer;
   upsertOneTest: Test;
   upsertOneUser: User;
 };
@@ -2451,6 +2533,11 @@ export type MutationCreateOneSpecializationArgs = {
 
 export type MutationCreateOneTaskArgs = {
   data: TaskCreateInput;
+};
+
+
+export type MutationCreateOneTaskAnswerArgs = {
+  data: TaskAnswerCreateInput;
 };
 
 
@@ -2499,6 +2586,11 @@ export type MutationDeleteManyTaskArgs = {
 };
 
 
+export type MutationDeleteManyTaskAnswerArgs = {
+  where?: InputMaybe<TaskAnswerWhereInput>;
+};
+
+
 export type MutationDeleteManyTestArgs = {
   where?: InputMaybe<TestWhereInput>;
 };
@@ -2544,6 +2636,11 @@ export type MutationDeleteOneTaskArgs = {
 };
 
 
+export type MutationDeleteOneTaskAnswerArgs = {
+  where: TaskAnswerWhereUniqueInput;
+};
+
+
 export type MutationDeleteOneTestArgs = {
   where: TestWhereUniqueInput;
 };
@@ -2551,6 +2648,19 @@ export type MutationDeleteOneTestArgs = {
 
 export type MutationDeleteOneUserArgs = {
   where: UserWhereUniqueInput;
+};
+
+
+export type MutationLoginArgs = {
+  email: Scalars['String'];
+  password: Scalars['String'];
+};
+
+
+export type MutationSignupArgs = {
+  email: Scalars['String'];
+  name?: InputMaybe<Scalars['String']>;
+  password: Scalars['String'];
 };
 
 
@@ -2600,6 +2710,12 @@ export type MutationUpdateManySpecializationArgs = {
 export type MutationUpdateManyTaskArgs = {
   data: TaskUpdateManyMutationInput;
   where?: InputMaybe<TaskWhereInput>;
+};
+
+
+export type MutationUpdateManyTaskAnswerArgs = {
+  data: TaskAnswerUpdateManyMutationInput;
+  where?: InputMaybe<TaskAnswerWhereInput>;
 };
 
 
@@ -2663,6 +2779,12 @@ export type MutationUpdateOneTaskArgs = {
 };
 
 
+export type MutationUpdateOneTaskAnswerArgs = {
+  data: TaskAnswerUpdateInput;
+  where: TaskAnswerWhereUniqueInput;
+};
+
+
 export type MutationUpdateOneTestArgs = {
   data: TestUpdateInput;
   where: TestWhereUniqueInput;
@@ -2672,6 +2794,12 @@ export type MutationUpdateOneTestArgs = {
 export type MutationUpdateOneUserArgs = {
   data: UserUpdateInput;
   where: UserWhereUniqueInput;
+};
+
+
+export type MutationUpdatePasswordArgs = {
+  currentPassword: Scalars['String'];
+  password: Scalars['String'];
 };
 
 
@@ -2721,6 +2849,13 @@ export type MutationUpsertOneTaskArgs = {
   create: TaskCreateInput;
   update: TaskUpdateInput;
   where: TaskWhereUniqueInput;
+};
+
+
+export type MutationUpsertOneTaskAnswerArgs = {
+  create: TaskAnswerCreateInput;
+  update: TaskAnswerUpdateInput;
+  where: TaskAnswerWhereUniqueInput;
 };
 
 
@@ -2913,7 +3048,6 @@ export type NestedStringFilter = {
   lte?: InputMaybe<Scalars['String']>;
   not?: InputMaybe<NestedStringFilter>;
   notIn?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  search?: InputMaybe<Scalars['String']>;
   startsWith?: InputMaybe<Scalars['String']>;
 };
 
@@ -2928,7 +3062,6 @@ export type NestedStringNullableFilter = {
   lte?: InputMaybe<Scalars['String']>;
   not?: InputMaybe<NestedStringNullableFilter>;
   notIn?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  search?: InputMaybe<Scalars['String']>;
   startsWith?: InputMaybe<Scalars['String']>;
 };
 
@@ -2946,7 +3079,6 @@ export type NestedStringNullableWithAggregatesFilter = {
   lte?: InputMaybe<Scalars['String']>;
   not?: InputMaybe<NestedStringNullableWithAggregatesFilter>;
   notIn?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  search?: InputMaybe<Scalars['String']>;
   startsWith?: InputMaybe<Scalars['String']>;
 };
 
@@ -2964,7 +3096,6 @@ export type NestedStringWithAggregatesFilter = {
   lte?: InputMaybe<Scalars['String']>;
   not?: InputMaybe<NestedStringWithAggregatesFilter>;
   notIn?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  search?: InputMaybe<Scalars['String']>;
   startsWith?: InputMaybe<Scalars['String']>;
 };
 
@@ -2998,6 +3129,7 @@ export type Query = {
   aggregateResponse?: Maybe<AggregateResponse>;
   aggregateSpecialization?: Maybe<AggregateSpecialization>;
   aggregateTask?: Maybe<AggregateTask>;
+  aggregateTaskAnswer?: Maybe<AggregateTaskAnswer>;
   aggregateTest?: Maybe<AggregateTest>;
   aggregateUser?: Maybe<AggregateUser>;
   findFirstAnswer?: Maybe<Answer>;
@@ -3007,6 +3139,7 @@ export type Query = {
   findFirstResponse?: Maybe<Response>;
   findFirstSpecialization?: Maybe<Specialization>;
   findFirstTask?: Maybe<Task>;
+  findFirstTaskAnswer?: Maybe<TaskAnswer>;
   findFirstTest?: Maybe<Test>;
   findFirstUser?: Maybe<User>;
   findManyAnswer: Array<Answer>;
@@ -3022,6 +3155,8 @@ export type Query = {
   findManySpecialization: Array<Specialization>;
   findManySpecializationCount: Scalars['Int'];
   findManyTask: Array<Task>;
+  findManyTaskAnswer: Array<TaskAnswer>;
+  findManyTaskAnswerCount: Scalars['Int'];
   findManyTaskCount: Scalars['Int'];
   findManyTest: Array<Test>;
   findManyTestCount: Scalars['Int'];
@@ -3034,15 +3169,17 @@ export type Query = {
   findUniqueResponse?: Maybe<Response>;
   findUniqueSpecialization?: Maybe<Specialization>;
   findUniqueTask?: Maybe<Task>;
+  findUniqueTaskAnswer?: Maybe<TaskAnswer>;
   findUniqueTest?: Maybe<Test>;
   findUniqueUser?: Maybe<User>;
   getSchema: Schema;
+  me?: Maybe<User>;
 };
 
 
 export type QueryAggregateAnswerArgs = {
   cursor?: InputMaybe<AnswerWhereUniqueInput>;
-  orderBy?: InputMaybe<Array<InputMaybe<AnswerOrderByWithRelationAndSearchRelevanceInput>>>;
+  orderBy?: InputMaybe<Array<InputMaybe<AnswerOrderByWithRelationInput>>>;
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<AnswerWhereInput>;
@@ -3051,7 +3188,7 @@ export type QueryAggregateAnswerArgs = {
 
 export type QueryAggregateDirectionArgs = {
   cursor?: InputMaybe<DirectionWhereUniqueInput>;
-  orderBy?: InputMaybe<Array<InputMaybe<DirectionOrderByWithRelationAndSearchRelevanceInput>>>;
+  orderBy?: InputMaybe<Array<InputMaybe<DirectionOrderByWithRelationInput>>>;
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<DirectionWhereInput>;
@@ -3060,7 +3197,7 @@ export type QueryAggregateDirectionArgs = {
 
 export type QueryAggregateMessageArgs = {
   cursor?: InputMaybe<MessageWhereUniqueInput>;
-  orderBy?: InputMaybe<Array<InputMaybe<MessageOrderByWithRelationAndSearchRelevanceInput>>>;
+  orderBy?: InputMaybe<Array<InputMaybe<MessageOrderByWithRelationInput>>>;
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<MessageWhereInput>;
@@ -3069,7 +3206,7 @@ export type QueryAggregateMessageArgs = {
 
 export type QueryAggregateMessagerGroupArgs = {
   cursor?: InputMaybe<MessagerGroupWhereUniqueInput>;
-  orderBy?: InputMaybe<Array<InputMaybe<MessagerGroupOrderByWithRelationAndSearchRelevanceInput>>>;
+  orderBy?: InputMaybe<Array<InputMaybe<MessagerGroupOrderByWithRelationInput>>>;
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<MessagerGroupWhereInput>;
@@ -3078,7 +3215,7 @@ export type QueryAggregateMessagerGroupArgs = {
 
 export type QueryAggregateResponseArgs = {
   cursor?: InputMaybe<ResponseWhereUniqueInput>;
-  orderBy?: InputMaybe<Array<InputMaybe<ResponseOrderByWithRelationAndSearchRelevanceInput>>>;
+  orderBy?: InputMaybe<Array<InputMaybe<ResponseOrderByWithRelationInput>>>;
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<ResponseWhereInput>;
@@ -3087,7 +3224,7 @@ export type QueryAggregateResponseArgs = {
 
 export type QueryAggregateSpecializationArgs = {
   cursor?: InputMaybe<SpecializationWhereUniqueInput>;
-  orderBy?: InputMaybe<Array<InputMaybe<SpecializationOrderByWithRelationAndSearchRelevanceInput>>>;
+  orderBy?: InputMaybe<Array<InputMaybe<SpecializationOrderByWithRelationInput>>>;
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<SpecializationWhereInput>;
@@ -3096,16 +3233,25 @@ export type QueryAggregateSpecializationArgs = {
 
 export type QueryAggregateTaskArgs = {
   cursor?: InputMaybe<TaskWhereUniqueInput>;
-  orderBy?: InputMaybe<Array<InputMaybe<TaskOrderByWithRelationAndSearchRelevanceInput>>>;
+  orderBy?: InputMaybe<Array<InputMaybe<TaskOrderByWithRelationInput>>>;
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<TaskWhereInput>;
 };
 
 
+export type QueryAggregateTaskAnswerArgs = {
+  cursor?: InputMaybe<TaskAnswerWhereUniqueInput>;
+  orderBy?: InputMaybe<Array<InputMaybe<TaskAnswerOrderByWithRelationInput>>>;
+  skip?: InputMaybe<Scalars['Int']>;
+  take?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<TaskAnswerWhereInput>;
+};
+
+
 export type QueryAggregateTestArgs = {
   cursor?: InputMaybe<TestWhereUniqueInput>;
-  orderBy?: InputMaybe<Array<InputMaybe<TestOrderByWithRelationAndSearchRelevanceInput>>>;
+  orderBy?: InputMaybe<Array<InputMaybe<TestOrderByWithRelationInput>>>;
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<TestWhereInput>;
@@ -3114,7 +3260,7 @@ export type QueryAggregateTestArgs = {
 
 export type QueryAggregateUserArgs = {
   cursor?: InputMaybe<UserWhereUniqueInput>;
-  orderBy?: InputMaybe<Array<InputMaybe<UserOrderByWithRelationAndSearchRelevanceInput>>>;
+  orderBy?: InputMaybe<Array<InputMaybe<UserOrderByWithRelationInput>>>;
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<UserWhereInput>;
@@ -3124,7 +3270,7 @@ export type QueryAggregateUserArgs = {
 export type QueryFindFirstAnswerArgs = {
   cursor?: InputMaybe<AnswerWhereUniqueInput>;
   distinct?: InputMaybe<Array<InputMaybe<AnswerScalarFieldEnum>>>;
-  orderBy?: InputMaybe<Array<InputMaybe<AnswerOrderByWithRelationAndSearchRelevanceInput>>>;
+  orderBy?: InputMaybe<Array<InputMaybe<AnswerOrderByWithRelationInput>>>;
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<AnswerWhereInput>;
@@ -3134,7 +3280,7 @@ export type QueryFindFirstAnswerArgs = {
 export type QueryFindFirstDirectionArgs = {
   cursor?: InputMaybe<DirectionWhereUniqueInput>;
   distinct?: InputMaybe<Array<InputMaybe<DirectionScalarFieldEnum>>>;
-  orderBy?: InputMaybe<Array<InputMaybe<DirectionOrderByWithRelationAndSearchRelevanceInput>>>;
+  orderBy?: InputMaybe<Array<InputMaybe<DirectionOrderByWithRelationInput>>>;
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<DirectionWhereInput>;
@@ -3144,7 +3290,7 @@ export type QueryFindFirstDirectionArgs = {
 export type QueryFindFirstMessageArgs = {
   cursor?: InputMaybe<MessageWhereUniqueInput>;
   distinct?: InputMaybe<Array<InputMaybe<MessageScalarFieldEnum>>>;
-  orderBy?: InputMaybe<Array<InputMaybe<MessageOrderByWithRelationAndSearchRelevanceInput>>>;
+  orderBy?: InputMaybe<Array<InputMaybe<MessageOrderByWithRelationInput>>>;
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<MessageWhereInput>;
@@ -3154,7 +3300,7 @@ export type QueryFindFirstMessageArgs = {
 export type QueryFindFirstMessagerGroupArgs = {
   cursor?: InputMaybe<MessagerGroupWhereUniqueInput>;
   distinct?: InputMaybe<Array<InputMaybe<MessagerGroupScalarFieldEnum>>>;
-  orderBy?: InputMaybe<Array<InputMaybe<MessagerGroupOrderByWithRelationAndSearchRelevanceInput>>>;
+  orderBy?: InputMaybe<Array<InputMaybe<MessagerGroupOrderByWithRelationInput>>>;
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<MessagerGroupWhereInput>;
@@ -3164,7 +3310,7 @@ export type QueryFindFirstMessagerGroupArgs = {
 export type QueryFindFirstResponseArgs = {
   cursor?: InputMaybe<ResponseWhereUniqueInput>;
   distinct?: InputMaybe<Array<InputMaybe<ResponseScalarFieldEnum>>>;
-  orderBy?: InputMaybe<Array<InputMaybe<ResponseOrderByWithRelationAndSearchRelevanceInput>>>;
+  orderBy?: InputMaybe<Array<InputMaybe<ResponseOrderByWithRelationInput>>>;
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<ResponseWhereInput>;
@@ -3174,7 +3320,7 @@ export type QueryFindFirstResponseArgs = {
 export type QueryFindFirstSpecializationArgs = {
   cursor?: InputMaybe<SpecializationWhereUniqueInput>;
   distinct?: InputMaybe<Array<InputMaybe<SpecializationScalarFieldEnum>>>;
-  orderBy?: InputMaybe<Array<InputMaybe<SpecializationOrderByWithRelationAndSearchRelevanceInput>>>;
+  orderBy?: InputMaybe<Array<InputMaybe<SpecializationOrderByWithRelationInput>>>;
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<SpecializationWhereInput>;
@@ -3184,17 +3330,27 @@ export type QueryFindFirstSpecializationArgs = {
 export type QueryFindFirstTaskArgs = {
   cursor?: InputMaybe<TaskWhereUniqueInput>;
   distinct?: InputMaybe<Array<InputMaybe<TaskScalarFieldEnum>>>;
-  orderBy?: InputMaybe<Array<InputMaybe<TaskOrderByWithRelationAndSearchRelevanceInput>>>;
+  orderBy?: InputMaybe<Array<InputMaybe<TaskOrderByWithRelationInput>>>;
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<TaskWhereInput>;
 };
 
 
+export type QueryFindFirstTaskAnswerArgs = {
+  cursor?: InputMaybe<TaskAnswerWhereUniqueInput>;
+  distinct?: InputMaybe<Array<InputMaybe<TaskAnswerScalarFieldEnum>>>;
+  orderBy?: InputMaybe<Array<InputMaybe<TaskAnswerOrderByWithRelationInput>>>;
+  skip?: InputMaybe<Scalars['Int']>;
+  take?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<TaskAnswerWhereInput>;
+};
+
+
 export type QueryFindFirstTestArgs = {
   cursor?: InputMaybe<TestWhereUniqueInput>;
   distinct?: InputMaybe<Array<InputMaybe<TestScalarFieldEnum>>>;
-  orderBy?: InputMaybe<Array<InputMaybe<TestOrderByWithRelationAndSearchRelevanceInput>>>;
+  orderBy?: InputMaybe<Array<InputMaybe<TestOrderByWithRelationInput>>>;
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<TestWhereInput>;
@@ -3204,7 +3360,7 @@ export type QueryFindFirstTestArgs = {
 export type QueryFindFirstUserArgs = {
   cursor?: InputMaybe<UserWhereUniqueInput>;
   distinct?: InputMaybe<Array<InputMaybe<UserScalarFieldEnum>>>;
-  orderBy?: InputMaybe<Array<InputMaybe<UserOrderByWithRelationAndSearchRelevanceInput>>>;
+  orderBy?: InputMaybe<Array<InputMaybe<UserOrderByWithRelationInput>>>;
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<UserWhereInput>;
@@ -3214,7 +3370,7 @@ export type QueryFindFirstUserArgs = {
 export type QueryFindManyAnswerArgs = {
   cursor?: InputMaybe<AnswerWhereUniqueInput>;
   distinct?: InputMaybe<Array<InputMaybe<AnswerScalarFieldEnum>>>;
-  orderBy?: InputMaybe<Array<InputMaybe<AnswerOrderByWithRelationAndSearchRelevanceInput>>>;
+  orderBy?: InputMaybe<Array<InputMaybe<AnswerOrderByWithRelationInput>>>;
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<AnswerWhereInput>;
@@ -3224,7 +3380,7 @@ export type QueryFindManyAnswerArgs = {
 export type QueryFindManyAnswerCountArgs = {
   cursor?: InputMaybe<AnswerWhereUniqueInput>;
   distinct?: InputMaybe<Array<InputMaybe<AnswerScalarFieldEnum>>>;
-  orderBy?: InputMaybe<Array<InputMaybe<AnswerOrderByWithRelationAndSearchRelevanceInput>>>;
+  orderBy?: InputMaybe<Array<InputMaybe<AnswerOrderByWithRelationInput>>>;
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<AnswerWhereInput>;
@@ -3234,7 +3390,7 @@ export type QueryFindManyAnswerCountArgs = {
 export type QueryFindManyDirectionArgs = {
   cursor?: InputMaybe<DirectionWhereUniqueInput>;
   distinct?: InputMaybe<Array<InputMaybe<DirectionScalarFieldEnum>>>;
-  orderBy?: InputMaybe<Array<InputMaybe<DirectionOrderByWithRelationAndSearchRelevanceInput>>>;
+  orderBy?: InputMaybe<Array<InputMaybe<DirectionOrderByWithRelationInput>>>;
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<DirectionWhereInput>;
@@ -3244,7 +3400,7 @@ export type QueryFindManyDirectionArgs = {
 export type QueryFindManyDirectionCountArgs = {
   cursor?: InputMaybe<DirectionWhereUniqueInput>;
   distinct?: InputMaybe<Array<InputMaybe<DirectionScalarFieldEnum>>>;
-  orderBy?: InputMaybe<Array<InputMaybe<DirectionOrderByWithRelationAndSearchRelevanceInput>>>;
+  orderBy?: InputMaybe<Array<InputMaybe<DirectionOrderByWithRelationInput>>>;
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<DirectionWhereInput>;
@@ -3254,7 +3410,7 @@ export type QueryFindManyDirectionCountArgs = {
 export type QueryFindManyMessageArgs = {
   cursor?: InputMaybe<MessageWhereUniqueInput>;
   distinct?: InputMaybe<Array<InputMaybe<MessageScalarFieldEnum>>>;
-  orderBy?: InputMaybe<Array<InputMaybe<MessageOrderByWithRelationAndSearchRelevanceInput>>>;
+  orderBy?: InputMaybe<Array<InputMaybe<MessageOrderByWithRelationInput>>>;
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<MessageWhereInput>;
@@ -3264,7 +3420,7 @@ export type QueryFindManyMessageArgs = {
 export type QueryFindManyMessageCountArgs = {
   cursor?: InputMaybe<MessageWhereUniqueInput>;
   distinct?: InputMaybe<Array<InputMaybe<MessageScalarFieldEnum>>>;
-  orderBy?: InputMaybe<Array<InputMaybe<MessageOrderByWithRelationAndSearchRelevanceInput>>>;
+  orderBy?: InputMaybe<Array<InputMaybe<MessageOrderByWithRelationInput>>>;
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<MessageWhereInput>;
@@ -3274,7 +3430,7 @@ export type QueryFindManyMessageCountArgs = {
 export type QueryFindManyMessagerGroupArgs = {
   cursor?: InputMaybe<MessagerGroupWhereUniqueInput>;
   distinct?: InputMaybe<Array<InputMaybe<MessagerGroupScalarFieldEnum>>>;
-  orderBy?: InputMaybe<Array<InputMaybe<MessagerGroupOrderByWithRelationAndSearchRelevanceInput>>>;
+  orderBy?: InputMaybe<Array<InputMaybe<MessagerGroupOrderByWithRelationInput>>>;
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<MessagerGroupWhereInput>;
@@ -3284,7 +3440,7 @@ export type QueryFindManyMessagerGroupArgs = {
 export type QueryFindManyMessagerGroupCountArgs = {
   cursor?: InputMaybe<MessagerGroupWhereUniqueInput>;
   distinct?: InputMaybe<Array<InputMaybe<MessagerGroupScalarFieldEnum>>>;
-  orderBy?: InputMaybe<Array<InputMaybe<MessagerGroupOrderByWithRelationAndSearchRelevanceInput>>>;
+  orderBy?: InputMaybe<Array<InputMaybe<MessagerGroupOrderByWithRelationInput>>>;
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<MessagerGroupWhereInput>;
@@ -3294,7 +3450,7 @@ export type QueryFindManyMessagerGroupCountArgs = {
 export type QueryFindManyResponseArgs = {
   cursor?: InputMaybe<ResponseWhereUniqueInput>;
   distinct?: InputMaybe<Array<InputMaybe<ResponseScalarFieldEnum>>>;
-  orderBy?: InputMaybe<Array<InputMaybe<ResponseOrderByWithRelationAndSearchRelevanceInput>>>;
+  orderBy?: InputMaybe<Array<InputMaybe<ResponseOrderByWithRelationInput>>>;
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<ResponseWhereInput>;
@@ -3304,7 +3460,7 @@ export type QueryFindManyResponseArgs = {
 export type QueryFindManyResponseCountArgs = {
   cursor?: InputMaybe<ResponseWhereUniqueInput>;
   distinct?: InputMaybe<Array<InputMaybe<ResponseScalarFieldEnum>>>;
-  orderBy?: InputMaybe<Array<InputMaybe<ResponseOrderByWithRelationAndSearchRelevanceInput>>>;
+  orderBy?: InputMaybe<Array<InputMaybe<ResponseOrderByWithRelationInput>>>;
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<ResponseWhereInput>;
@@ -3314,7 +3470,7 @@ export type QueryFindManyResponseCountArgs = {
 export type QueryFindManySpecializationArgs = {
   cursor?: InputMaybe<SpecializationWhereUniqueInput>;
   distinct?: InputMaybe<Array<InputMaybe<SpecializationScalarFieldEnum>>>;
-  orderBy?: InputMaybe<Array<InputMaybe<SpecializationOrderByWithRelationAndSearchRelevanceInput>>>;
+  orderBy?: InputMaybe<Array<InputMaybe<SpecializationOrderByWithRelationInput>>>;
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<SpecializationWhereInput>;
@@ -3324,7 +3480,7 @@ export type QueryFindManySpecializationArgs = {
 export type QueryFindManySpecializationCountArgs = {
   cursor?: InputMaybe<SpecializationWhereUniqueInput>;
   distinct?: InputMaybe<Array<InputMaybe<SpecializationScalarFieldEnum>>>;
-  orderBy?: InputMaybe<Array<InputMaybe<SpecializationOrderByWithRelationAndSearchRelevanceInput>>>;
+  orderBy?: InputMaybe<Array<InputMaybe<SpecializationOrderByWithRelationInput>>>;
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<SpecializationWhereInput>;
@@ -3334,17 +3490,37 @@ export type QueryFindManySpecializationCountArgs = {
 export type QueryFindManyTaskArgs = {
   cursor?: InputMaybe<TaskWhereUniqueInput>;
   distinct?: InputMaybe<Array<InputMaybe<TaskScalarFieldEnum>>>;
-  orderBy?: InputMaybe<Array<InputMaybe<TaskOrderByWithRelationAndSearchRelevanceInput>>>;
+  orderBy?: InputMaybe<Array<InputMaybe<TaskOrderByWithRelationInput>>>;
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<TaskWhereInput>;
 };
 
 
+export type QueryFindManyTaskAnswerArgs = {
+  cursor?: InputMaybe<TaskAnswerWhereUniqueInput>;
+  distinct?: InputMaybe<Array<InputMaybe<TaskAnswerScalarFieldEnum>>>;
+  orderBy?: InputMaybe<Array<InputMaybe<TaskAnswerOrderByWithRelationInput>>>;
+  skip?: InputMaybe<Scalars['Int']>;
+  take?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<TaskAnswerWhereInput>;
+};
+
+
+export type QueryFindManyTaskAnswerCountArgs = {
+  cursor?: InputMaybe<TaskAnswerWhereUniqueInput>;
+  distinct?: InputMaybe<Array<InputMaybe<TaskAnswerScalarFieldEnum>>>;
+  orderBy?: InputMaybe<Array<InputMaybe<TaskAnswerOrderByWithRelationInput>>>;
+  skip?: InputMaybe<Scalars['Int']>;
+  take?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<TaskAnswerWhereInput>;
+};
+
+
 export type QueryFindManyTaskCountArgs = {
   cursor?: InputMaybe<TaskWhereUniqueInput>;
   distinct?: InputMaybe<Array<InputMaybe<TaskScalarFieldEnum>>>;
-  orderBy?: InputMaybe<Array<InputMaybe<TaskOrderByWithRelationAndSearchRelevanceInput>>>;
+  orderBy?: InputMaybe<Array<InputMaybe<TaskOrderByWithRelationInput>>>;
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<TaskWhereInput>;
@@ -3354,7 +3530,7 @@ export type QueryFindManyTaskCountArgs = {
 export type QueryFindManyTestArgs = {
   cursor?: InputMaybe<TestWhereUniqueInput>;
   distinct?: InputMaybe<Array<InputMaybe<TestScalarFieldEnum>>>;
-  orderBy?: InputMaybe<Array<InputMaybe<TestOrderByWithRelationAndSearchRelevanceInput>>>;
+  orderBy?: InputMaybe<Array<InputMaybe<TestOrderByWithRelationInput>>>;
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<TestWhereInput>;
@@ -3364,7 +3540,7 @@ export type QueryFindManyTestArgs = {
 export type QueryFindManyTestCountArgs = {
   cursor?: InputMaybe<TestWhereUniqueInput>;
   distinct?: InputMaybe<Array<InputMaybe<TestScalarFieldEnum>>>;
-  orderBy?: InputMaybe<Array<InputMaybe<TestOrderByWithRelationAndSearchRelevanceInput>>>;
+  orderBy?: InputMaybe<Array<InputMaybe<TestOrderByWithRelationInput>>>;
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<TestWhereInput>;
@@ -3374,7 +3550,7 @@ export type QueryFindManyTestCountArgs = {
 export type QueryFindManyUserArgs = {
   cursor?: InputMaybe<UserWhereUniqueInput>;
   distinct?: InputMaybe<Array<InputMaybe<UserScalarFieldEnum>>>;
-  orderBy?: InputMaybe<Array<InputMaybe<UserOrderByWithRelationAndSearchRelevanceInput>>>;
+  orderBy?: InputMaybe<Array<InputMaybe<UserOrderByWithRelationInput>>>;
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<UserWhereInput>;
@@ -3384,7 +3560,7 @@ export type QueryFindManyUserArgs = {
 export type QueryFindManyUserCountArgs = {
   cursor?: InputMaybe<UserWhereUniqueInput>;
   distinct?: InputMaybe<Array<InputMaybe<UserScalarFieldEnum>>>;
-  orderBy?: InputMaybe<Array<InputMaybe<UserOrderByWithRelationAndSearchRelevanceInput>>>;
+  orderBy?: InputMaybe<Array<InputMaybe<UserOrderByWithRelationInput>>>;
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<UserWhereInput>;
@@ -3426,6 +3602,11 @@ export type QueryFindUniqueTaskArgs = {
 };
 
 
+export type QueryFindUniqueTaskAnswerArgs = {
+  where: TaskAnswerWhereUniqueInput;
+};
+
+
 export type QueryFindUniqueTestArgs = {
   where: TestWhereUniqueInput;
 };
@@ -3452,13 +3633,14 @@ export type Response = {
   text?: Maybe<Scalars['String']>;
   user: User;
   userId: Scalars['Int'];
+  verdict?: Maybe<Scalars['String']>;
 };
 
 
 export type ResponseAnswersArgs = {
   cursor?: InputMaybe<AnswerWhereUniqueInput>;
   distinct?: InputMaybe<Array<InputMaybe<AnswerScalarFieldEnum>>>;
-  orderBy?: InputMaybe<Array<InputMaybe<AnswerOrderByWithRelationAndSearchRelevanceInput>>>;
+  orderBy?: InputMaybe<Array<InputMaybe<AnswerOrderByWithRelationInput>>>;
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<AnswerWhereInput>;
@@ -3468,7 +3650,7 @@ export type ResponseAnswersArgs = {
 export type ResponseTestsArgs = {
   cursor?: InputMaybe<TestWhereUniqueInput>;
   distinct?: InputMaybe<Array<InputMaybe<TestScalarFieldEnum>>>;
-  orderBy?: InputMaybe<Array<InputMaybe<TestOrderByWithRelationAndSearchRelevanceInput>>>;
+  orderBy?: InputMaybe<Array<InputMaybe<TestOrderByWithRelationInput>>>;
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<TestWhereInput>;
@@ -3495,6 +3677,7 @@ export type ResponseCountAggregateOutputType = {
   id: Scalars['Int'];
   text: Scalars['Int'];
   userId: Scalars['Int'];
+  verdict: Scalars['Int'];
 };
 
 export type ResponseCountOrderByAggregateInput = {
@@ -3503,6 +3686,7 @@ export type ResponseCountOrderByAggregateInput = {
   id?: InputMaybe<SortOrder>;
   text?: InputMaybe<SortOrder>;
   userId?: InputMaybe<SortOrder>;
+  verdict?: InputMaybe<SortOrder>;
 };
 
 export type ResponseCountOutputType = {
@@ -3518,6 +3702,7 @@ export type ResponseCreateInput = {
   tests?: InputMaybe<TestCreateNestedManyWithoutResponseInput>;
   text?: InputMaybe<Scalars['String']>;
   user: UserCreateNestedOneWithoutResponsesInput;
+  verdict?: InputMaybe<Scalars['String']>;
 };
 
 export type ResponseCreateManyDirectionInput = {
@@ -3525,6 +3710,7 @@ export type ResponseCreateManyDirectionInput = {
   id?: InputMaybe<Scalars['Int']>;
   text?: InputMaybe<Scalars['String']>;
   userId: Scalars['Int'];
+  verdict?: InputMaybe<Scalars['String']>;
 };
 
 export type ResponseCreateManyDirectionInputEnvelope = {
@@ -3538,6 +3724,7 @@ export type ResponseCreateManyInput = {
   id?: InputMaybe<Scalars['Int']>;
   text?: InputMaybe<Scalars['String']>;
   userId: Scalars['Int'];
+  verdict?: InputMaybe<Scalars['String']>;
 };
 
 export type ResponseCreateManyUserInput = {
@@ -3545,6 +3732,7 @@ export type ResponseCreateManyUserInput = {
   directionId: Scalars['Int'];
   id?: InputMaybe<Scalars['Int']>;
   text?: InputMaybe<Scalars['String']>;
+  verdict?: InputMaybe<Scalars['String']>;
 };
 
 export type ResponseCreateManyUserInputEnvelope = {
@@ -3604,6 +3792,7 @@ export type ResponseCreateWithoutAnswersInput = {
   tests?: InputMaybe<TestCreateNestedManyWithoutResponseInput>;
   text?: InputMaybe<Scalars['String']>;
   user: UserCreateNestedOneWithoutResponsesInput;
+  verdict?: InputMaybe<Scalars['String']>;
 };
 
 export type ResponseCreateWithoutDirectionInput = {
@@ -3612,6 +3801,7 @@ export type ResponseCreateWithoutDirectionInput = {
   tests?: InputMaybe<TestCreateNestedManyWithoutResponseInput>;
   text?: InputMaybe<Scalars['String']>;
   user: UserCreateNestedOneWithoutResponsesInput;
+  verdict?: InputMaybe<Scalars['String']>;
 };
 
 export type ResponseCreateWithoutTestsInput = {
@@ -3620,6 +3810,7 @@ export type ResponseCreateWithoutTestsInput = {
   direction: DirectionCreateNestedOneWithoutResponsesInput;
   text?: InputMaybe<Scalars['String']>;
   user: UserCreateNestedOneWithoutResponsesInput;
+  verdict?: InputMaybe<Scalars['String']>;
 };
 
 export type ResponseCreateWithoutUserInput = {
@@ -3628,6 +3819,7 @@ export type ResponseCreateWithoutUserInput = {
   direction: DirectionCreateNestedOneWithoutResponsesInput;
   tests?: InputMaybe<TestCreateNestedManyWithoutResponseInput>;
   text?: InputMaybe<Scalars['String']>;
+  verdict?: InputMaybe<Scalars['String']>;
 };
 
 export type ResponseListRelationFilter = {
@@ -3643,6 +3835,7 @@ export type ResponseMaxAggregateOutputType = {
   id?: Maybe<Scalars['Int']>;
   text?: Maybe<Scalars['String']>;
   userId?: Maybe<Scalars['Int']>;
+  verdict?: Maybe<Scalars['String']>;
 };
 
 export type ResponseMaxOrderByAggregateInput = {
@@ -3651,6 +3844,7 @@ export type ResponseMaxOrderByAggregateInput = {
   id?: InputMaybe<SortOrder>;
   text?: InputMaybe<SortOrder>;
   userId?: InputMaybe<SortOrder>;
+  verdict?: InputMaybe<SortOrder>;
 };
 
 export type ResponseMinAggregateOutputType = {
@@ -3660,6 +3854,7 @@ export type ResponseMinAggregateOutputType = {
   id?: Maybe<Scalars['Int']>;
   text?: Maybe<Scalars['String']>;
   userId?: Maybe<Scalars['Int']>;
+  verdict?: Maybe<Scalars['String']>;
 };
 
 export type ResponseMinOrderByAggregateInput = {
@@ -3668,20 +3863,11 @@ export type ResponseMinOrderByAggregateInput = {
   id?: InputMaybe<SortOrder>;
   text?: InputMaybe<SortOrder>;
   userId?: InputMaybe<SortOrder>;
+  verdict?: InputMaybe<SortOrder>;
 };
 
 export type ResponseOrderByRelationAggregateInput = {
   _count?: InputMaybe<SortOrder>;
-};
-
-export enum ResponseOrderByRelevanceFieldEnum {
-  Text = 'text'
-}
-
-export type ResponseOrderByRelevanceInput = {
-  fields: ResponseOrderByRelevanceFieldEnum;
-  search: Scalars['String'];
-  sort: SortOrder;
 };
 
 export type ResponseOrderByWithAggregationInput = {
@@ -3695,19 +3881,20 @@ export type ResponseOrderByWithAggregationInput = {
   id?: InputMaybe<SortOrder>;
   text?: InputMaybe<SortOrderInput>;
   userId?: InputMaybe<SortOrder>;
+  verdict?: InputMaybe<SortOrderInput>;
 };
 
-export type ResponseOrderByWithRelationAndSearchRelevanceInput = {
-  _relevance?: InputMaybe<ResponseOrderByRelevanceInput>;
+export type ResponseOrderByWithRelationInput = {
   answers?: InputMaybe<AnswerOrderByRelationAggregateInput>;
   createdAt?: InputMaybe<SortOrder>;
-  direction?: InputMaybe<DirectionOrderByWithRelationAndSearchRelevanceInput>;
+  direction?: InputMaybe<DirectionOrderByWithRelationInput>;
   directionId?: InputMaybe<SortOrder>;
   id?: InputMaybe<SortOrder>;
   tests?: InputMaybe<TestOrderByRelationAggregateInput>;
   text?: InputMaybe<SortOrderInput>;
-  user?: InputMaybe<UserOrderByWithRelationAndSearchRelevanceInput>;
+  user?: InputMaybe<UserOrderByWithRelationInput>;
   userId?: InputMaybe<SortOrder>;
+  verdict?: InputMaybe<SortOrderInput>;
 };
 
 export enum ResponseScalarFieldEnum {
@@ -3715,7 +3902,8 @@ export enum ResponseScalarFieldEnum {
   DirectionId = 'directionId',
   Id = 'id',
   Text = 'text',
-  UserId = 'userId'
+  UserId = 'userId',
+  Verdict = 'verdict'
 }
 
 export type ResponseScalarWhereInput = {
@@ -3727,6 +3915,7 @@ export type ResponseScalarWhereInput = {
   id?: InputMaybe<IntFilter>;
   text?: InputMaybe<StringNullableFilter>;
   userId?: InputMaybe<IntFilter>;
+  verdict?: InputMaybe<StringNullableFilter>;
 };
 
 export type ResponseScalarWhereWithAggregatesInput = {
@@ -3738,6 +3927,7 @@ export type ResponseScalarWhereWithAggregatesInput = {
   id?: InputMaybe<IntWithAggregatesFilter>;
   text?: InputMaybe<StringNullableWithAggregatesFilter>;
   userId?: InputMaybe<IntWithAggregatesFilter>;
+  verdict?: InputMaybe<StringNullableWithAggregatesFilter>;
 };
 
 export type ResponseSumAggregateOutputType = {
@@ -3761,6 +3951,7 @@ export type ResponseUncheckedCreateInput = {
   tests?: InputMaybe<TestUncheckedCreateNestedManyWithoutResponseInput>;
   text?: InputMaybe<Scalars['String']>;
   userId: Scalars['Int'];
+  verdict?: InputMaybe<Scalars['String']>;
 };
 
 export type ResponseUncheckedCreateNestedManyWithoutAnswersInput = {
@@ -3796,6 +3987,7 @@ export type ResponseUncheckedCreateWithoutAnswersInput = {
   tests?: InputMaybe<TestUncheckedCreateNestedManyWithoutResponseInput>;
   text?: InputMaybe<Scalars['String']>;
   userId: Scalars['Int'];
+  verdict?: InputMaybe<Scalars['String']>;
 };
 
 export type ResponseUncheckedCreateWithoutDirectionInput = {
@@ -3805,6 +3997,7 @@ export type ResponseUncheckedCreateWithoutDirectionInput = {
   tests?: InputMaybe<TestUncheckedCreateNestedManyWithoutResponseInput>;
   text?: InputMaybe<Scalars['String']>;
   userId: Scalars['Int'];
+  verdict?: InputMaybe<Scalars['String']>;
 };
 
 export type ResponseUncheckedCreateWithoutTestsInput = {
@@ -3814,6 +4007,7 @@ export type ResponseUncheckedCreateWithoutTestsInput = {
   id?: InputMaybe<Scalars['Int']>;
   text?: InputMaybe<Scalars['String']>;
   userId: Scalars['Int'];
+  verdict?: InputMaybe<Scalars['String']>;
 };
 
 export type ResponseUncheckedCreateWithoutUserInput = {
@@ -3823,6 +4017,7 @@ export type ResponseUncheckedCreateWithoutUserInput = {
   id?: InputMaybe<Scalars['Int']>;
   tests?: InputMaybe<TestUncheckedCreateNestedManyWithoutResponseInput>;
   text?: InputMaybe<Scalars['String']>;
+  verdict?: InputMaybe<Scalars['String']>;
 };
 
 export type ResponseUncheckedUpdateInput = {
@@ -3833,6 +4028,7 @@ export type ResponseUncheckedUpdateInput = {
   tests?: InputMaybe<TestUncheckedUpdateManyWithoutResponseNestedInput>;
   text?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   userId?: InputMaybe<IntFieldUpdateOperationsInput>;
+  verdict?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
 };
 
 export type ResponseUncheckedUpdateManyInput = {
@@ -3841,6 +4037,7 @@ export type ResponseUncheckedUpdateManyInput = {
   id?: InputMaybe<IntFieldUpdateOperationsInput>;
   text?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   userId?: InputMaybe<IntFieldUpdateOperationsInput>;
+  verdict?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
 };
 
 export type ResponseUncheckedUpdateManyWithoutAnswersInput = {
@@ -3849,6 +4046,7 @@ export type ResponseUncheckedUpdateManyWithoutAnswersInput = {
   id?: InputMaybe<IntFieldUpdateOperationsInput>;
   text?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   userId?: InputMaybe<IntFieldUpdateOperationsInput>;
+  verdict?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
 };
 
 export type ResponseUncheckedUpdateManyWithoutAnswersNestedInput = {
@@ -3869,6 +4067,7 @@ export type ResponseUncheckedUpdateManyWithoutDirectionInput = {
   id?: InputMaybe<IntFieldUpdateOperationsInput>;
   text?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   userId?: InputMaybe<IntFieldUpdateOperationsInput>;
+  verdict?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
 };
 
 export type ResponseUncheckedUpdateManyWithoutDirectionNestedInput = {
@@ -3891,6 +4090,7 @@ export type ResponseUncheckedUpdateManyWithoutTestsInput = {
   id?: InputMaybe<IntFieldUpdateOperationsInput>;
   text?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   userId?: InputMaybe<IntFieldUpdateOperationsInput>;
+  verdict?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
 };
 
 export type ResponseUncheckedUpdateManyWithoutTestsNestedInput = {
@@ -3911,6 +4111,7 @@ export type ResponseUncheckedUpdateManyWithoutUserInput = {
   directionId?: InputMaybe<IntFieldUpdateOperationsInput>;
   id?: InputMaybe<IntFieldUpdateOperationsInput>;
   text?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  verdict?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
 };
 
 export type ResponseUncheckedUpdateManyWithoutUserNestedInput = {
@@ -3934,6 +4135,7 @@ export type ResponseUncheckedUpdateWithoutAnswersInput = {
   tests?: InputMaybe<TestUncheckedUpdateManyWithoutResponseNestedInput>;
   text?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   userId?: InputMaybe<IntFieldUpdateOperationsInput>;
+  verdict?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
 };
 
 export type ResponseUncheckedUpdateWithoutDirectionInput = {
@@ -3943,6 +4145,7 @@ export type ResponseUncheckedUpdateWithoutDirectionInput = {
   tests?: InputMaybe<TestUncheckedUpdateManyWithoutResponseNestedInput>;
   text?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   userId?: InputMaybe<IntFieldUpdateOperationsInput>;
+  verdict?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
 };
 
 export type ResponseUncheckedUpdateWithoutTestsInput = {
@@ -3952,6 +4155,7 @@ export type ResponseUncheckedUpdateWithoutTestsInput = {
   id?: InputMaybe<IntFieldUpdateOperationsInput>;
   text?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   userId?: InputMaybe<IntFieldUpdateOperationsInput>;
+  verdict?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
 };
 
 export type ResponseUncheckedUpdateWithoutUserInput = {
@@ -3961,6 +4165,7 @@ export type ResponseUncheckedUpdateWithoutUserInput = {
   id?: InputMaybe<IntFieldUpdateOperationsInput>;
   tests?: InputMaybe<TestUncheckedUpdateManyWithoutResponseNestedInput>;
   text?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  verdict?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
 };
 
 export type ResponseUpdateInput = {
@@ -3970,11 +4175,13 @@ export type ResponseUpdateInput = {
   tests?: InputMaybe<TestUpdateManyWithoutResponseNestedInput>;
   text?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   user?: InputMaybe<UserUpdateOneRequiredWithoutResponsesNestedInput>;
+  verdict?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
 };
 
 export type ResponseUpdateManyMutationInput = {
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
   text?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  verdict?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
 };
 
 export type ResponseUpdateManyWithWhereWithoutAnswersInput = {
@@ -4077,6 +4284,7 @@ export type ResponseUpdateWithoutAnswersInput = {
   tests?: InputMaybe<TestUpdateManyWithoutResponseNestedInput>;
   text?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   user?: InputMaybe<UserUpdateOneRequiredWithoutResponsesNestedInput>;
+  verdict?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
 };
 
 export type ResponseUpdateWithoutDirectionInput = {
@@ -4085,6 +4293,7 @@ export type ResponseUpdateWithoutDirectionInput = {
   tests?: InputMaybe<TestUpdateManyWithoutResponseNestedInput>;
   text?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   user?: InputMaybe<UserUpdateOneRequiredWithoutResponsesNestedInput>;
+  verdict?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
 };
 
 export type ResponseUpdateWithoutTestsInput = {
@@ -4093,6 +4302,7 @@ export type ResponseUpdateWithoutTestsInput = {
   direction?: InputMaybe<DirectionUpdateOneRequiredWithoutResponsesNestedInput>;
   text?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   user?: InputMaybe<UserUpdateOneRequiredWithoutResponsesNestedInput>;
+  verdict?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
 };
 
 export type ResponseUpdateWithoutUserInput = {
@@ -4101,6 +4311,7 @@ export type ResponseUpdateWithoutUserInput = {
   direction?: InputMaybe<DirectionUpdateOneRequiredWithoutResponsesNestedInput>;
   tests?: InputMaybe<TestUpdateManyWithoutResponseNestedInput>;
   text?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  verdict?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
 };
 
 export type ResponseUpsertWithWhereUniqueWithoutAnswersInput = {
@@ -4140,6 +4351,7 @@ export type ResponseWhereInput = {
   text?: InputMaybe<StringNullableFilter>;
   user?: InputMaybe<UserRelationFilter>;
   userId?: InputMaybe<IntFilter>;
+  verdict?: InputMaybe<StringNullableFilter>;
 };
 
 export type ResponseWhereUniqueInput = {
@@ -4155,6 +4367,7 @@ export type ResponseWhereUniqueInput = {
   text?: InputMaybe<StringNullableFilter>;
   user?: InputMaybe<UserRelationFilter>;
   userId?: InputMaybe<IntFilter>;
+  verdict?: InputMaybe<StringNullableFilter>;
 };
 
 export type Schema = {
@@ -4186,7 +4399,7 @@ export type Specialization = {
 export type SpecializationDirectionsArgs = {
   cursor?: InputMaybe<DirectionWhereUniqueInput>;
   distinct?: InputMaybe<Array<InputMaybe<DirectionScalarFieldEnum>>>;
-  orderBy?: InputMaybe<Array<InputMaybe<DirectionOrderByWithRelationAndSearchRelevanceInput>>>;
+  orderBy?: InputMaybe<Array<InputMaybe<DirectionOrderByWithRelationInput>>>;
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<DirectionWhereInput>;
@@ -4274,16 +4487,6 @@ export type SpecializationMinOrderByAggregateInput = {
   title?: InputMaybe<SortOrder>;
 };
 
-export enum SpecializationOrderByRelevanceFieldEnum {
-  Title = 'title'
-}
-
-export type SpecializationOrderByRelevanceInput = {
-  fields: SpecializationOrderByRelevanceFieldEnum;
-  search: Scalars['String'];
-  sort: SortOrder;
-};
-
 export type SpecializationOrderByWithAggregationInput = {
   _avg?: InputMaybe<SpecializationAvgOrderByAggregateInput>;
   _count?: InputMaybe<SpecializationCountOrderByAggregateInput>;
@@ -4295,8 +4498,7 @@ export type SpecializationOrderByWithAggregationInput = {
   title?: InputMaybe<SortOrder>;
 };
 
-export type SpecializationOrderByWithRelationAndSearchRelevanceInput = {
-  _relevance?: InputMaybe<SpecializationOrderByRelevanceInput>;
+export type SpecializationOrderByWithRelationInput = {
   createdAt?: InputMaybe<SortOrder>;
   directions?: InputMaybe<DirectionOrderByRelationAggregateInput>;
   id?: InputMaybe<SortOrder>;
@@ -4435,7 +4637,6 @@ export type StringFilter = {
   mode?: InputMaybe<QueryMode>;
   not?: InputMaybe<NestedStringFilter>;
   notIn?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  search?: InputMaybe<Scalars['String']>;
   startsWith?: InputMaybe<Scalars['String']>;
 };
 
@@ -4451,7 +4652,6 @@ export type StringNullableFilter = {
   mode?: InputMaybe<QueryMode>;
   not?: InputMaybe<NestedStringNullableFilter>;
   notIn?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  search?: InputMaybe<Scalars['String']>;
   startsWith?: InputMaybe<Scalars['String']>;
 };
 
@@ -4478,7 +4678,6 @@ export type StringNullableWithAggregatesFilter = {
   mode?: InputMaybe<QueryMode>;
   not?: InputMaybe<NestedStringNullableWithAggregatesFilter>;
   notIn?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  search?: InputMaybe<Scalars['String']>;
   startsWith?: InputMaybe<Scalars['String']>;
 };
 
@@ -4497,17 +4696,19 @@ export type StringWithAggregatesFilter = {
   mode?: InputMaybe<QueryMode>;
   not?: InputMaybe<NestedStringWithAggregatesFilter>;
   notIn?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  search?: InputMaybe<Scalars['String']>;
   startsWith?: InputMaybe<Scalars['String']>;
 };
 
 export type Task = {
   __typename?: 'Task';
+  _count: TaskCountOutputType;
+  code?: Maybe<Scalars['String']>;
   correctMultipleAnswer: Array<Scalars['Int']>;
   correctSingleAnswer?: Maybe<Scalars['Int']>;
   createdAt: Scalars['DateTime'];
   id: Scalars['Int'];
   question: Scalars['String'];
+  taskAnswers: Array<TaskAnswer>;
   test?: Maybe<Test>;
   testId?: Maybe<Scalars['Int']>;
   type: TaskType;
@@ -4515,8 +4716,621 @@ export type Task = {
 };
 
 
+export type TaskTaskAnswersArgs = {
+  cursor?: InputMaybe<TaskAnswerWhereUniqueInput>;
+  distinct?: InputMaybe<Array<InputMaybe<TaskAnswerScalarFieldEnum>>>;
+  orderBy?: InputMaybe<Array<InputMaybe<TaskAnswerOrderByWithRelationInput>>>;
+  skip?: InputMaybe<Scalars['Int']>;
+  take?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<TaskAnswerWhereInput>;
+};
+
+
 export type TaskTestArgs = {
   where?: InputMaybe<TestWhereInput>;
+};
+
+export type TaskAnswer = {
+  __typename?: 'TaskAnswer';
+  answer: Scalars['String'];
+  answerModel: Answer;
+  answerModelId: Scalars['Int'];
+  id: Scalars['Int'];
+  task: Task;
+  taskId: Scalars['Int'];
+  user: User;
+  userId: Scalars['Int'];
+  verdict?: Maybe<Scalars['Int']>;
+};
+
+export type TaskAnswerAvgAggregateOutputType = {
+  __typename?: 'TaskAnswerAvgAggregateOutputType';
+  answerModelId?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
+  taskId?: Maybe<Scalars['Float']>;
+  userId?: Maybe<Scalars['Float']>;
+  verdict?: Maybe<Scalars['Float']>;
+};
+
+export type TaskAnswerAvgOrderByAggregateInput = {
+  answerModelId?: InputMaybe<SortOrder>;
+  id?: InputMaybe<SortOrder>;
+  taskId?: InputMaybe<SortOrder>;
+  userId?: InputMaybe<SortOrder>;
+  verdict?: InputMaybe<SortOrder>;
+};
+
+export type TaskAnswerCountAggregateOutputType = {
+  __typename?: 'TaskAnswerCountAggregateOutputType';
+  _all: Scalars['Int'];
+  answer: Scalars['Int'];
+  answerModelId: Scalars['Int'];
+  id: Scalars['Int'];
+  taskId: Scalars['Int'];
+  userId: Scalars['Int'];
+  verdict: Scalars['Int'];
+};
+
+export type TaskAnswerCountOrderByAggregateInput = {
+  answer?: InputMaybe<SortOrder>;
+  answerModelId?: InputMaybe<SortOrder>;
+  id?: InputMaybe<SortOrder>;
+  taskId?: InputMaybe<SortOrder>;
+  userId?: InputMaybe<SortOrder>;
+  verdict?: InputMaybe<SortOrder>;
+};
+
+export type TaskAnswerCreateInput = {
+  answer: Scalars['String'];
+  answerModel: AnswerCreateNestedOneWithoutTaskAnswersInput;
+  task: TaskCreateNestedOneWithoutTaskAnswersInput;
+  user: UserCreateNestedOneWithoutAnswersInput;
+  verdict?: InputMaybe<Scalars['Int']>;
+};
+
+export type TaskAnswerCreateManyAnswerModelInput = {
+  answer: Scalars['String'];
+  id?: InputMaybe<Scalars['Int']>;
+  taskId: Scalars['Int'];
+  userId: Scalars['Int'];
+  verdict?: InputMaybe<Scalars['Int']>;
+};
+
+export type TaskAnswerCreateManyAnswerModelInputEnvelope = {
+  data: TaskAnswerCreateManyAnswerModelInput;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type TaskAnswerCreateManyInput = {
+  answer: Scalars['String'];
+  answerModelId: Scalars['Int'];
+  id?: InputMaybe<Scalars['Int']>;
+  taskId: Scalars['Int'];
+  userId: Scalars['Int'];
+  verdict?: InputMaybe<Scalars['Int']>;
+};
+
+export type TaskAnswerCreateManyTaskInput = {
+  answer: Scalars['String'];
+  answerModelId: Scalars['Int'];
+  id?: InputMaybe<Scalars['Int']>;
+  userId: Scalars['Int'];
+  verdict?: InputMaybe<Scalars['Int']>;
+};
+
+export type TaskAnswerCreateManyTaskInputEnvelope = {
+  data: TaskAnswerCreateManyTaskInput;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type TaskAnswerCreateManyUserInput = {
+  answer: Scalars['String'];
+  answerModelId: Scalars['Int'];
+  id?: InputMaybe<Scalars['Int']>;
+  taskId: Scalars['Int'];
+  verdict?: InputMaybe<Scalars['Int']>;
+};
+
+export type TaskAnswerCreateManyUserInputEnvelope = {
+  data: TaskAnswerCreateManyUserInput;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type TaskAnswerCreateNestedManyWithoutAnswerModelInput = {
+  connect?: InputMaybe<Array<InputMaybe<TaskAnswerWhereUniqueInput>>>;
+  connectOrCreate?: InputMaybe<Array<InputMaybe<TaskAnswerCreateOrConnectWithoutAnswerModelInput>>>;
+  create?: InputMaybe<Array<InputMaybe<TaskAnswerCreateWithoutAnswerModelInput>>>;
+  createMany?: InputMaybe<TaskAnswerCreateManyAnswerModelInputEnvelope>;
+};
+
+export type TaskAnswerCreateNestedManyWithoutTaskInput = {
+  connect?: InputMaybe<Array<InputMaybe<TaskAnswerWhereUniqueInput>>>;
+  connectOrCreate?: InputMaybe<Array<InputMaybe<TaskAnswerCreateOrConnectWithoutTaskInput>>>;
+  create?: InputMaybe<Array<InputMaybe<TaskAnswerCreateWithoutTaskInput>>>;
+  createMany?: InputMaybe<TaskAnswerCreateManyTaskInputEnvelope>;
+};
+
+export type TaskAnswerCreateNestedManyWithoutUserInput = {
+  connect?: InputMaybe<Array<InputMaybe<TaskAnswerWhereUniqueInput>>>;
+  connectOrCreate?: InputMaybe<Array<InputMaybe<TaskAnswerCreateOrConnectWithoutUserInput>>>;
+  create?: InputMaybe<Array<InputMaybe<TaskAnswerCreateWithoutUserInput>>>;
+  createMany?: InputMaybe<TaskAnswerCreateManyUserInputEnvelope>;
+};
+
+export type TaskAnswerCreateOrConnectWithoutAnswerModelInput = {
+  create: TaskAnswerCreateWithoutAnswerModelInput;
+  where: TaskAnswerWhereUniqueInput;
+};
+
+export type TaskAnswerCreateOrConnectWithoutTaskInput = {
+  create: TaskAnswerCreateWithoutTaskInput;
+  where: TaskAnswerWhereUniqueInput;
+};
+
+export type TaskAnswerCreateOrConnectWithoutUserInput = {
+  create: TaskAnswerCreateWithoutUserInput;
+  where: TaskAnswerWhereUniqueInput;
+};
+
+export type TaskAnswerCreateWithoutAnswerModelInput = {
+  answer: Scalars['String'];
+  task: TaskCreateNestedOneWithoutTaskAnswersInput;
+  user: UserCreateNestedOneWithoutAnswersInput;
+  verdict?: InputMaybe<Scalars['Int']>;
+};
+
+export type TaskAnswerCreateWithoutTaskInput = {
+  answer: Scalars['String'];
+  answerModel: AnswerCreateNestedOneWithoutTaskAnswersInput;
+  user: UserCreateNestedOneWithoutAnswersInput;
+  verdict?: InputMaybe<Scalars['Int']>;
+};
+
+export type TaskAnswerCreateWithoutUserInput = {
+  answer: Scalars['String'];
+  answerModel: AnswerCreateNestedOneWithoutTaskAnswersInput;
+  task: TaskCreateNestedOneWithoutTaskAnswersInput;
+  verdict?: InputMaybe<Scalars['Int']>;
+};
+
+export type TaskAnswerListRelationFilter = {
+  every?: InputMaybe<TaskAnswerWhereInput>;
+  none?: InputMaybe<TaskAnswerWhereInput>;
+  some?: InputMaybe<TaskAnswerWhereInput>;
+};
+
+export type TaskAnswerMaxAggregateOutputType = {
+  __typename?: 'TaskAnswerMaxAggregateOutputType';
+  answer?: Maybe<Scalars['String']>;
+  answerModelId?: Maybe<Scalars['Int']>;
+  id?: Maybe<Scalars['Int']>;
+  taskId?: Maybe<Scalars['Int']>;
+  userId?: Maybe<Scalars['Int']>;
+  verdict?: Maybe<Scalars['Int']>;
+};
+
+export type TaskAnswerMaxOrderByAggregateInput = {
+  answer?: InputMaybe<SortOrder>;
+  answerModelId?: InputMaybe<SortOrder>;
+  id?: InputMaybe<SortOrder>;
+  taskId?: InputMaybe<SortOrder>;
+  userId?: InputMaybe<SortOrder>;
+  verdict?: InputMaybe<SortOrder>;
+};
+
+export type TaskAnswerMinAggregateOutputType = {
+  __typename?: 'TaskAnswerMinAggregateOutputType';
+  answer?: Maybe<Scalars['String']>;
+  answerModelId?: Maybe<Scalars['Int']>;
+  id?: Maybe<Scalars['Int']>;
+  taskId?: Maybe<Scalars['Int']>;
+  userId?: Maybe<Scalars['Int']>;
+  verdict?: Maybe<Scalars['Int']>;
+};
+
+export type TaskAnswerMinOrderByAggregateInput = {
+  answer?: InputMaybe<SortOrder>;
+  answerModelId?: InputMaybe<SortOrder>;
+  id?: InputMaybe<SortOrder>;
+  taskId?: InputMaybe<SortOrder>;
+  userId?: InputMaybe<SortOrder>;
+  verdict?: InputMaybe<SortOrder>;
+};
+
+export type TaskAnswerOrderByRelationAggregateInput = {
+  _count?: InputMaybe<SortOrder>;
+};
+
+export type TaskAnswerOrderByWithAggregationInput = {
+  _avg?: InputMaybe<TaskAnswerAvgOrderByAggregateInput>;
+  _count?: InputMaybe<TaskAnswerCountOrderByAggregateInput>;
+  _max?: InputMaybe<TaskAnswerMaxOrderByAggregateInput>;
+  _min?: InputMaybe<TaskAnswerMinOrderByAggregateInput>;
+  _sum?: InputMaybe<TaskAnswerSumOrderByAggregateInput>;
+  answer?: InputMaybe<SortOrder>;
+  answerModelId?: InputMaybe<SortOrder>;
+  id?: InputMaybe<SortOrder>;
+  taskId?: InputMaybe<SortOrder>;
+  userId?: InputMaybe<SortOrder>;
+  verdict?: InputMaybe<SortOrderInput>;
+};
+
+export type TaskAnswerOrderByWithRelationInput = {
+  answer?: InputMaybe<SortOrder>;
+  answerModel?: InputMaybe<AnswerOrderByWithRelationInput>;
+  answerModelId?: InputMaybe<SortOrder>;
+  id?: InputMaybe<SortOrder>;
+  task?: InputMaybe<TaskOrderByWithRelationInput>;
+  taskId?: InputMaybe<SortOrder>;
+  user?: InputMaybe<UserOrderByWithRelationInput>;
+  userId?: InputMaybe<SortOrder>;
+  verdict?: InputMaybe<SortOrderInput>;
+};
+
+export enum TaskAnswerScalarFieldEnum {
+  Answer = 'answer',
+  AnswerModelId = 'answerModelId',
+  Id = 'id',
+  TaskId = 'taskId',
+  UserId = 'userId',
+  Verdict = 'verdict'
+}
+
+export type TaskAnswerScalarWhereInput = {
+  AND?: InputMaybe<Array<InputMaybe<TaskAnswerScalarWhereInput>>>;
+  NOT?: InputMaybe<Array<InputMaybe<TaskAnswerScalarWhereInput>>>;
+  OR?: InputMaybe<Array<InputMaybe<TaskAnswerScalarWhereInput>>>;
+  answer?: InputMaybe<StringFilter>;
+  answerModelId?: InputMaybe<IntFilter>;
+  id?: InputMaybe<IntFilter>;
+  taskId?: InputMaybe<IntFilter>;
+  userId?: InputMaybe<IntFilter>;
+  verdict?: InputMaybe<IntNullableFilter>;
+};
+
+export type TaskAnswerScalarWhereWithAggregatesInput = {
+  AND?: InputMaybe<Array<InputMaybe<TaskAnswerScalarWhereWithAggregatesInput>>>;
+  NOT?: InputMaybe<Array<InputMaybe<TaskAnswerScalarWhereWithAggregatesInput>>>;
+  OR?: InputMaybe<Array<InputMaybe<TaskAnswerScalarWhereWithAggregatesInput>>>;
+  answer?: InputMaybe<StringWithAggregatesFilter>;
+  answerModelId?: InputMaybe<IntWithAggregatesFilter>;
+  id?: InputMaybe<IntWithAggregatesFilter>;
+  taskId?: InputMaybe<IntWithAggregatesFilter>;
+  userId?: InputMaybe<IntWithAggregatesFilter>;
+  verdict?: InputMaybe<IntNullableWithAggregatesFilter>;
+};
+
+export type TaskAnswerSumAggregateOutputType = {
+  __typename?: 'TaskAnswerSumAggregateOutputType';
+  answerModelId?: Maybe<Scalars['Int']>;
+  id?: Maybe<Scalars['Int']>;
+  taskId?: Maybe<Scalars['Int']>;
+  userId?: Maybe<Scalars['Int']>;
+  verdict?: Maybe<Scalars['Int']>;
+};
+
+export type TaskAnswerSumOrderByAggregateInput = {
+  answerModelId?: InputMaybe<SortOrder>;
+  id?: InputMaybe<SortOrder>;
+  taskId?: InputMaybe<SortOrder>;
+  userId?: InputMaybe<SortOrder>;
+  verdict?: InputMaybe<SortOrder>;
+};
+
+export type TaskAnswerUncheckedCreateInput = {
+  answer: Scalars['String'];
+  answerModelId: Scalars['Int'];
+  id?: InputMaybe<Scalars['Int']>;
+  taskId: Scalars['Int'];
+  userId: Scalars['Int'];
+  verdict?: InputMaybe<Scalars['Int']>;
+};
+
+export type TaskAnswerUncheckedCreateNestedManyWithoutAnswerModelInput = {
+  connect?: InputMaybe<Array<InputMaybe<TaskAnswerWhereUniqueInput>>>;
+  connectOrCreate?: InputMaybe<Array<InputMaybe<TaskAnswerCreateOrConnectWithoutAnswerModelInput>>>;
+  create?: InputMaybe<Array<InputMaybe<TaskAnswerCreateWithoutAnswerModelInput>>>;
+  createMany?: InputMaybe<TaskAnswerCreateManyAnswerModelInputEnvelope>;
+};
+
+export type TaskAnswerUncheckedCreateNestedManyWithoutTaskInput = {
+  connect?: InputMaybe<Array<InputMaybe<TaskAnswerWhereUniqueInput>>>;
+  connectOrCreate?: InputMaybe<Array<InputMaybe<TaskAnswerCreateOrConnectWithoutTaskInput>>>;
+  create?: InputMaybe<Array<InputMaybe<TaskAnswerCreateWithoutTaskInput>>>;
+  createMany?: InputMaybe<TaskAnswerCreateManyTaskInputEnvelope>;
+};
+
+export type TaskAnswerUncheckedCreateNestedManyWithoutUserInput = {
+  connect?: InputMaybe<Array<InputMaybe<TaskAnswerWhereUniqueInput>>>;
+  connectOrCreate?: InputMaybe<Array<InputMaybe<TaskAnswerCreateOrConnectWithoutUserInput>>>;
+  create?: InputMaybe<Array<InputMaybe<TaskAnswerCreateWithoutUserInput>>>;
+  createMany?: InputMaybe<TaskAnswerCreateManyUserInputEnvelope>;
+};
+
+export type TaskAnswerUncheckedCreateWithoutAnswerModelInput = {
+  answer: Scalars['String'];
+  id?: InputMaybe<Scalars['Int']>;
+  taskId: Scalars['Int'];
+  userId: Scalars['Int'];
+  verdict?: InputMaybe<Scalars['Int']>;
+};
+
+export type TaskAnswerUncheckedCreateWithoutTaskInput = {
+  answer: Scalars['String'];
+  answerModelId: Scalars['Int'];
+  id?: InputMaybe<Scalars['Int']>;
+  userId: Scalars['Int'];
+  verdict?: InputMaybe<Scalars['Int']>;
+};
+
+export type TaskAnswerUncheckedCreateWithoutUserInput = {
+  answer: Scalars['String'];
+  answerModelId: Scalars['Int'];
+  id?: InputMaybe<Scalars['Int']>;
+  taskId: Scalars['Int'];
+  verdict?: InputMaybe<Scalars['Int']>;
+};
+
+export type TaskAnswerUncheckedUpdateInput = {
+  answer?: InputMaybe<StringFieldUpdateOperationsInput>;
+  answerModelId?: InputMaybe<IntFieldUpdateOperationsInput>;
+  id?: InputMaybe<IntFieldUpdateOperationsInput>;
+  taskId?: InputMaybe<IntFieldUpdateOperationsInput>;
+  userId?: InputMaybe<IntFieldUpdateOperationsInput>;
+  verdict?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
+};
+
+export type TaskAnswerUncheckedUpdateManyInput = {
+  answer?: InputMaybe<StringFieldUpdateOperationsInput>;
+  answerModelId?: InputMaybe<IntFieldUpdateOperationsInput>;
+  id?: InputMaybe<IntFieldUpdateOperationsInput>;
+  taskId?: InputMaybe<IntFieldUpdateOperationsInput>;
+  userId?: InputMaybe<IntFieldUpdateOperationsInput>;
+  verdict?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
+};
+
+export type TaskAnswerUncheckedUpdateManyWithoutAnswerModelInput = {
+  answer?: InputMaybe<StringFieldUpdateOperationsInput>;
+  id?: InputMaybe<IntFieldUpdateOperationsInput>;
+  taskId?: InputMaybe<IntFieldUpdateOperationsInput>;
+  userId?: InputMaybe<IntFieldUpdateOperationsInput>;
+  verdict?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
+};
+
+export type TaskAnswerUncheckedUpdateManyWithoutAnswerModelNestedInput = {
+  connect?: InputMaybe<Array<InputMaybe<TaskAnswerWhereUniqueInput>>>;
+  connectOrCreate?: InputMaybe<Array<InputMaybe<TaskAnswerCreateOrConnectWithoutAnswerModelInput>>>;
+  create?: InputMaybe<Array<InputMaybe<TaskAnswerCreateWithoutAnswerModelInput>>>;
+  createMany?: InputMaybe<TaskAnswerCreateManyAnswerModelInputEnvelope>;
+  delete?: InputMaybe<Array<InputMaybe<TaskAnswerWhereUniqueInput>>>;
+  deleteMany?: InputMaybe<Array<InputMaybe<TaskAnswerScalarWhereInput>>>;
+  disconnect?: InputMaybe<Array<InputMaybe<TaskAnswerWhereUniqueInput>>>;
+  set?: InputMaybe<Array<InputMaybe<TaskAnswerWhereUniqueInput>>>;
+  update?: InputMaybe<Array<InputMaybe<TaskAnswerUpdateWithWhereUniqueWithoutAnswerModelInput>>>;
+  updateMany?: InputMaybe<Array<InputMaybe<TaskAnswerUpdateManyWithWhereWithoutAnswerModelInput>>>;
+  upsert?: InputMaybe<Array<InputMaybe<TaskAnswerUpsertWithWhereUniqueWithoutAnswerModelInput>>>;
+};
+
+export type TaskAnswerUncheckedUpdateManyWithoutTaskInput = {
+  answer?: InputMaybe<StringFieldUpdateOperationsInput>;
+  answerModelId?: InputMaybe<IntFieldUpdateOperationsInput>;
+  id?: InputMaybe<IntFieldUpdateOperationsInput>;
+  userId?: InputMaybe<IntFieldUpdateOperationsInput>;
+  verdict?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
+};
+
+export type TaskAnswerUncheckedUpdateManyWithoutTaskNestedInput = {
+  connect?: InputMaybe<Array<InputMaybe<TaskAnswerWhereUniqueInput>>>;
+  connectOrCreate?: InputMaybe<Array<InputMaybe<TaskAnswerCreateOrConnectWithoutTaskInput>>>;
+  create?: InputMaybe<Array<InputMaybe<TaskAnswerCreateWithoutTaskInput>>>;
+  createMany?: InputMaybe<TaskAnswerCreateManyTaskInputEnvelope>;
+  delete?: InputMaybe<Array<InputMaybe<TaskAnswerWhereUniqueInput>>>;
+  deleteMany?: InputMaybe<Array<InputMaybe<TaskAnswerScalarWhereInput>>>;
+  disconnect?: InputMaybe<Array<InputMaybe<TaskAnswerWhereUniqueInput>>>;
+  set?: InputMaybe<Array<InputMaybe<TaskAnswerWhereUniqueInput>>>;
+  update?: InputMaybe<Array<InputMaybe<TaskAnswerUpdateWithWhereUniqueWithoutTaskInput>>>;
+  updateMany?: InputMaybe<Array<InputMaybe<TaskAnswerUpdateManyWithWhereWithoutTaskInput>>>;
+  upsert?: InputMaybe<Array<InputMaybe<TaskAnswerUpsertWithWhereUniqueWithoutTaskInput>>>;
+};
+
+export type TaskAnswerUncheckedUpdateManyWithoutUserInput = {
+  answer?: InputMaybe<StringFieldUpdateOperationsInput>;
+  answerModelId?: InputMaybe<IntFieldUpdateOperationsInput>;
+  id?: InputMaybe<IntFieldUpdateOperationsInput>;
+  taskId?: InputMaybe<IntFieldUpdateOperationsInput>;
+  verdict?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
+};
+
+export type TaskAnswerUncheckedUpdateManyWithoutUserNestedInput = {
+  connect?: InputMaybe<Array<InputMaybe<TaskAnswerWhereUniqueInput>>>;
+  connectOrCreate?: InputMaybe<Array<InputMaybe<TaskAnswerCreateOrConnectWithoutUserInput>>>;
+  create?: InputMaybe<Array<InputMaybe<TaskAnswerCreateWithoutUserInput>>>;
+  createMany?: InputMaybe<TaskAnswerCreateManyUserInputEnvelope>;
+  delete?: InputMaybe<Array<InputMaybe<TaskAnswerWhereUniqueInput>>>;
+  deleteMany?: InputMaybe<Array<InputMaybe<TaskAnswerScalarWhereInput>>>;
+  disconnect?: InputMaybe<Array<InputMaybe<TaskAnswerWhereUniqueInput>>>;
+  set?: InputMaybe<Array<InputMaybe<TaskAnswerWhereUniqueInput>>>;
+  update?: InputMaybe<Array<InputMaybe<TaskAnswerUpdateWithWhereUniqueWithoutUserInput>>>;
+  updateMany?: InputMaybe<Array<InputMaybe<TaskAnswerUpdateManyWithWhereWithoutUserInput>>>;
+  upsert?: InputMaybe<Array<InputMaybe<TaskAnswerUpsertWithWhereUniqueWithoutUserInput>>>;
+};
+
+export type TaskAnswerUncheckedUpdateWithoutAnswerModelInput = {
+  answer?: InputMaybe<StringFieldUpdateOperationsInput>;
+  id?: InputMaybe<IntFieldUpdateOperationsInput>;
+  taskId?: InputMaybe<IntFieldUpdateOperationsInput>;
+  userId?: InputMaybe<IntFieldUpdateOperationsInput>;
+  verdict?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
+};
+
+export type TaskAnswerUncheckedUpdateWithoutTaskInput = {
+  answer?: InputMaybe<StringFieldUpdateOperationsInput>;
+  answerModelId?: InputMaybe<IntFieldUpdateOperationsInput>;
+  id?: InputMaybe<IntFieldUpdateOperationsInput>;
+  userId?: InputMaybe<IntFieldUpdateOperationsInput>;
+  verdict?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
+};
+
+export type TaskAnswerUncheckedUpdateWithoutUserInput = {
+  answer?: InputMaybe<StringFieldUpdateOperationsInput>;
+  answerModelId?: InputMaybe<IntFieldUpdateOperationsInput>;
+  id?: InputMaybe<IntFieldUpdateOperationsInput>;
+  taskId?: InputMaybe<IntFieldUpdateOperationsInput>;
+  verdict?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
+};
+
+export type TaskAnswerUpdateInput = {
+  answer?: InputMaybe<StringFieldUpdateOperationsInput>;
+  answerModel?: InputMaybe<AnswerUpdateOneRequiredWithoutTaskAnswersNestedInput>;
+  task?: InputMaybe<TaskUpdateOneRequiredWithoutTaskAnswersNestedInput>;
+  user?: InputMaybe<UserUpdateOneRequiredWithoutAnswersNestedInput>;
+  verdict?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
+};
+
+export type TaskAnswerUpdateManyMutationInput = {
+  answer?: InputMaybe<StringFieldUpdateOperationsInput>;
+  verdict?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
+};
+
+export type TaskAnswerUpdateManyWithWhereWithoutAnswerModelInput = {
+  data: TaskAnswerUpdateManyMutationInput;
+  where: TaskAnswerScalarWhereInput;
+};
+
+export type TaskAnswerUpdateManyWithWhereWithoutTaskInput = {
+  data: TaskAnswerUpdateManyMutationInput;
+  where: TaskAnswerScalarWhereInput;
+};
+
+export type TaskAnswerUpdateManyWithWhereWithoutUserInput = {
+  data: TaskAnswerUpdateManyMutationInput;
+  where: TaskAnswerScalarWhereInput;
+};
+
+export type TaskAnswerUpdateManyWithoutAnswerModelNestedInput = {
+  connect?: InputMaybe<Array<InputMaybe<TaskAnswerWhereUniqueInput>>>;
+  connectOrCreate?: InputMaybe<Array<InputMaybe<TaskAnswerCreateOrConnectWithoutAnswerModelInput>>>;
+  create?: InputMaybe<Array<InputMaybe<TaskAnswerCreateWithoutAnswerModelInput>>>;
+  createMany?: InputMaybe<TaskAnswerCreateManyAnswerModelInputEnvelope>;
+  delete?: InputMaybe<Array<InputMaybe<TaskAnswerWhereUniqueInput>>>;
+  deleteMany?: InputMaybe<Array<InputMaybe<TaskAnswerScalarWhereInput>>>;
+  disconnect?: InputMaybe<Array<InputMaybe<TaskAnswerWhereUniqueInput>>>;
+  set?: InputMaybe<Array<InputMaybe<TaskAnswerWhereUniqueInput>>>;
+  update?: InputMaybe<Array<InputMaybe<TaskAnswerUpdateWithWhereUniqueWithoutAnswerModelInput>>>;
+  updateMany?: InputMaybe<Array<InputMaybe<TaskAnswerUpdateManyWithWhereWithoutAnswerModelInput>>>;
+  upsert?: InputMaybe<Array<InputMaybe<TaskAnswerUpsertWithWhereUniqueWithoutAnswerModelInput>>>;
+};
+
+export type TaskAnswerUpdateManyWithoutTaskNestedInput = {
+  connect?: InputMaybe<Array<InputMaybe<TaskAnswerWhereUniqueInput>>>;
+  connectOrCreate?: InputMaybe<Array<InputMaybe<TaskAnswerCreateOrConnectWithoutTaskInput>>>;
+  create?: InputMaybe<Array<InputMaybe<TaskAnswerCreateWithoutTaskInput>>>;
+  createMany?: InputMaybe<TaskAnswerCreateManyTaskInputEnvelope>;
+  delete?: InputMaybe<Array<InputMaybe<TaskAnswerWhereUniqueInput>>>;
+  deleteMany?: InputMaybe<Array<InputMaybe<TaskAnswerScalarWhereInput>>>;
+  disconnect?: InputMaybe<Array<InputMaybe<TaskAnswerWhereUniqueInput>>>;
+  set?: InputMaybe<Array<InputMaybe<TaskAnswerWhereUniqueInput>>>;
+  update?: InputMaybe<Array<InputMaybe<TaskAnswerUpdateWithWhereUniqueWithoutTaskInput>>>;
+  updateMany?: InputMaybe<Array<InputMaybe<TaskAnswerUpdateManyWithWhereWithoutTaskInput>>>;
+  upsert?: InputMaybe<Array<InputMaybe<TaskAnswerUpsertWithWhereUniqueWithoutTaskInput>>>;
+};
+
+export type TaskAnswerUpdateManyWithoutUserNestedInput = {
+  connect?: InputMaybe<Array<InputMaybe<TaskAnswerWhereUniqueInput>>>;
+  connectOrCreate?: InputMaybe<Array<InputMaybe<TaskAnswerCreateOrConnectWithoutUserInput>>>;
+  create?: InputMaybe<Array<InputMaybe<TaskAnswerCreateWithoutUserInput>>>;
+  createMany?: InputMaybe<TaskAnswerCreateManyUserInputEnvelope>;
+  delete?: InputMaybe<Array<InputMaybe<TaskAnswerWhereUniqueInput>>>;
+  deleteMany?: InputMaybe<Array<InputMaybe<TaskAnswerScalarWhereInput>>>;
+  disconnect?: InputMaybe<Array<InputMaybe<TaskAnswerWhereUniqueInput>>>;
+  set?: InputMaybe<Array<InputMaybe<TaskAnswerWhereUniqueInput>>>;
+  update?: InputMaybe<Array<InputMaybe<TaskAnswerUpdateWithWhereUniqueWithoutUserInput>>>;
+  updateMany?: InputMaybe<Array<InputMaybe<TaskAnswerUpdateManyWithWhereWithoutUserInput>>>;
+  upsert?: InputMaybe<Array<InputMaybe<TaskAnswerUpsertWithWhereUniqueWithoutUserInput>>>;
+};
+
+export type TaskAnswerUpdateWithWhereUniqueWithoutAnswerModelInput = {
+  data: TaskAnswerUpdateWithoutAnswerModelInput;
+  where: TaskAnswerWhereUniqueInput;
+};
+
+export type TaskAnswerUpdateWithWhereUniqueWithoutTaskInput = {
+  data: TaskAnswerUpdateWithoutTaskInput;
+  where: TaskAnswerWhereUniqueInput;
+};
+
+export type TaskAnswerUpdateWithWhereUniqueWithoutUserInput = {
+  data: TaskAnswerUpdateWithoutUserInput;
+  where: TaskAnswerWhereUniqueInput;
+};
+
+export type TaskAnswerUpdateWithoutAnswerModelInput = {
+  answer?: InputMaybe<StringFieldUpdateOperationsInput>;
+  task?: InputMaybe<TaskUpdateOneRequiredWithoutTaskAnswersNestedInput>;
+  user?: InputMaybe<UserUpdateOneRequiredWithoutAnswersNestedInput>;
+  verdict?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
+};
+
+export type TaskAnswerUpdateWithoutTaskInput = {
+  answer?: InputMaybe<StringFieldUpdateOperationsInput>;
+  answerModel?: InputMaybe<AnswerUpdateOneRequiredWithoutTaskAnswersNestedInput>;
+  user?: InputMaybe<UserUpdateOneRequiredWithoutAnswersNestedInput>;
+  verdict?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
+};
+
+export type TaskAnswerUpdateWithoutUserInput = {
+  answer?: InputMaybe<StringFieldUpdateOperationsInput>;
+  answerModel?: InputMaybe<AnswerUpdateOneRequiredWithoutTaskAnswersNestedInput>;
+  task?: InputMaybe<TaskUpdateOneRequiredWithoutTaskAnswersNestedInput>;
+  verdict?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
+};
+
+export type TaskAnswerUpsertWithWhereUniqueWithoutAnswerModelInput = {
+  create: TaskAnswerCreateWithoutAnswerModelInput;
+  update: TaskAnswerUpdateWithoutAnswerModelInput;
+  where: TaskAnswerWhereUniqueInput;
+};
+
+export type TaskAnswerUpsertWithWhereUniqueWithoutTaskInput = {
+  create: TaskAnswerCreateWithoutTaskInput;
+  update: TaskAnswerUpdateWithoutTaskInput;
+  where: TaskAnswerWhereUniqueInput;
+};
+
+export type TaskAnswerUpsertWithWhereUniqueWithoutUserInput = {
+  create: TaskAnswerCreateWithoutUserInput;
+  update: TaskAnswerUpdateWithoutUserInput;
+  where: TaskAnswerWhereUniqueInput;
+};
+
+export type TaskAnswerWhereInput = {
+  AND?: InputMaybe<Array<InputMaybe<TaskAnswerWhereInput>>>;
+  NOT?: InputMaybe<Array<InputMaybe<TaskAnswerWhereInput>>>;
+  OR?: InputMaybe<Array<InputMaybe<TaskAnswerWhereInput>>>;
+  answer?: InputMaybe<StringFilter>;
+  answerModel?: InputMaybe<AnswerRelationFilter>;
+  answerModelId?: InputMaybe<IntFilter>;
+  id?: InputMaybe<IntFilter>;
+  task?: InputMaybe<TaskRelationFilter>;
+  taskId?: InputMaybe<IntFilter>;
+  user?: InputMaybe<UserRelationFilter>;
+  userId?: InputMaybe<IntFilter>;
+  verdict?: InputMaybe<IntNullableFilter>;
+};
+
+export type TaskAnswerWhereUniqueInput = {
+  AND?: InputMaybe<Array<InputMaybe<TaskAnswerWhereInput>>>;
+  NOT?: InputMaybe<Array<InputMaybe<TaskAnswerWhereInput>>>;
+  OR?: InputMaybe<Array<InputMaybe<TaskAnswerWhereInput>>>;
+  answer?: InputMaybe<StringFilter>;
+  answerModel?: InputMaybe<AnswerRelationFilter>;
+  answerModelId?: InputMaybe<IntFilter>;
+  id?: InputMaybe<Scalars['Int']>;
+  task?: InputMaybe<TaskRelationFilter>;
+  taskId?: InputMaybe<IntFilter>;
+  user?: InputMaybe<UserRelationFilter>;
+  userId?: InputMaybe<IntFilter>;
+  verdict?: InputMaybe<IntNullableFilter>;
 };
 
 export type TaskAvgAggregateOutputType = {
@@ -4537,6 +5351,7 @@ export type TaskAvgOrderByAggregateInput = {
 export type TaskCountAggregateOutputType = {
   __typename?: 'TaskCountAggregateOutputType';
   _all: Scalars['Int'];
+  code: Scalars['Int'];
   correctMultipleAnswer: Scalars['Int'];
   correctSingleAnswer: Scalars['Int'];
   createdAt: Scalars['Int'];
@@ -4548,6 +5363,7 @@ export type TaskCountAggregateOutputType = {
 };
 
 export type TaskCountOrderByAggregateInput = {
+  code?: InputMaybe<SortOrder>;
   correctMultipleAnswer?: InputMaybe<SortOrder>;
   correctSingleAnswer?: InputMaybe<SortOrder>;
   createdAt?: InputMaybe<SortOrder>;
@@ -4558,17 +5374,25 @@ export type TaskCountOrderByAggregateInput = {
   variants?: InputMaybe<SortOrder>;
 };
 
+export type TaskCountOutputType = {
+  __typename?: 'TaskCountOutputType';
+  taskAnswers: Scalars['Int'];
+};
+
 export type TaskCreateInput = {
+  code?: InputMaybe<Scalars['String']>;
   correctMultipleAnswer?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
   correctSingleAnswer?: InputMaybe<Scalars['Int']>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
   question: Scalars['String'];
+  taskAnswers?: InputMaybe<TaskAnswerCreateNestedManyWithoutTaskInput>;
   test?: InputMaybe<TestCreateNestedOneWithoutTasksInput>;
   type: TaskType;
   variants?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 export type TaskCreateManyInput = {
+  code?: InputMaybe<Scalars['String']>;
   correctMultipleAnswer?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
   correctSingleAnswer?: InputMaybe<Scalars['Int']>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
@@ -4580,6 +5404,7 @@ export type TaskCreateManyInput = {
 };
 
 export type TaskCreateManyTestInput = {
+  code?: InputMaybe<Scalars['String']>;
   correctMultipleAnswer?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
   correctSingleAnswer?: InputMaybe<Scalars['Int']>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
@@ -4601,16 +5426,40 @@ export type TaskCreateNestedManyWithoutTestInput = {
   createMany?: InputMaybe<TaskCreateManyTestInputEnvelope>;
 };
 
+export type TaskCreateNestedOneWithoutTaskAnswersInput = {
+  connect?: InputMaybe<TaskWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<TaskCreateOrConnectWithoutTaskAnswersInput>;
+  create?: InputMaybe<TaskCreateWithoutTaskAnswersInput>;
+};
+
+export type TaskCreateOrConnectWithoutTaskAnswersInput = {
+  create: TaskCreateWithoutTaskAnswersInput;
+  where: TaskWhereUniqueInput;
+};
+
 export type TaskCreateOrConnectWithoutTestInput = {
   create: TaskCreateWithoutTestInput;
   where: TaskWhereUniqueInput;
 };
 
-export type TaskCreateWithoutTestInput = {
+export type TaskCreateWithoutTaskAnswersInput = {
+  code?: InputMaybe<Scalars['String']>;
   correctMultipleAnswer?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
   correctSingleAnswer?: InputMaybe<Scalars['Int']>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
   question: Scalars['String'];
+  test?: InputMaybe<TestCreateNestedOneWithoutTasksInput>;
+  type: TaskType;
+  variants?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type TaskCreateWithoutTestInput = {
+  code?: InputMaybe<Scalars['String']>;
+  correctMultipleAnswer?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
+  correctSingleAnswer?: InputMaybe<Scalars['Int']>;
+  createdAt?: InputMaybe<Scalars['DateTime']>;
+  question: Scalars['String'];
+  taskAnswers?: InputMaybe<TaskAnswerCreateNestedManyWithoutTaskInput>;
   type: TaskType;
   variants?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
@@ -4631,6 +5480,7 @@ export type TaskListRelationFilter = {
 
 export type TaskMaxAggregateOutputType = {
   __typename?: 'TaskMaxAggregateOutputType';
+  code?: Maybe<Scalars['String']>;
   correctSingleAnswer?: Maybe<Scalars['Int']>;
   createdAt?: Maybe<Scalars['DateTime']>;
   id?: Maybe<Scalars['Int']>;
@@ -4640,6 +5490,7 @@ export type TaskMaxAggregateOutputType = {
 };
 
 export type TaskMaxOrderByAggregateInput = {
+  code?: InputMaybe<SortOrder>;
   correctSingleAnswer?: InputMaybe<SortOrder>;
   createdAt?: InputMaybe<SortOrder>;
   id?: InputMaybe<SortOrder>;
@@ -4650,6 +5501,7 @@ export type TaskMaxOrderByAggregateInput = {
 
 export type TaskMinAggregateOutputType = {
   __typename?: 'TaskMinAggregateOutputType';
+  code?: Maybe<Scalars['String']>;
   correctSingleAnswer?: Maybe<Scalars['Int']>;
   createdAt?: Maybe<Scalars['DateTime']>;
   id?: Maybe<Scalars['Int']>;
@@ -4659,6 +5511,7 @@ export type TaskMinAggregateOutputType = {
 };
 
 export type TaskMinOrderByAggregateInput = {
+  code?: InputMaybe<SortOrder>;
   correctSingleAnswer?: InputMaybe<SortOrder>;
   createdAt?: InputMaybe<SortOrder>;
   id?: InputMaybe<SortOrder>;
@@ -4671,23 +5524,13 @@ export type TaskOrderByRelationAggregateInput = {
   _count?: InputMaybe<SortOrder>;
 };
 
-export enum TaskOrderByRelevanceFieldEnum {
-  Question = 'question',
-  Variants = 'variants'
-}
-
-export type TaskOrderByRelevanceInput = {
-  fields: TaskOrderByRelevanceFieldEnum;
-  search: Scalars['String'];
-  sort: SortOrder;
-};
-
 export type TaskOrderByWithAggregationInput = {
   _avg?: InputMaybe<TaskAvgOrderByAggregateInput>;
   _count?: InputMaybe<TaskCountOrderByAggregateInput>;
   _max?: InputMaybe<TaskMaxOrderByAggregateInput>;
   _min?: InputMaybe<TaskMinOrderByAggregateInput>;
   _sum?: InputMaybe<TaskSumOrderByAggregateInput>;
+  code?: InputMaybe<SortOrderInput>;
   correctMultipleAnswer?: InputMaybe<SortOrder>;
   correctSingleAnswer?: InputMaybe<SortOrderInput>;
   createdAt?: InputMaybe<SortOrder>;
@@ -4698,20 +5541,27 @@ export type TaskOrderByWithAggregationInput = {
   variants?: InputMaybe<SortOrder>;
 };
 
-export type TaskOrderByWithRelationAndSearchRelevanceInput = {
-  _relevance?: InputMaybe<TaskOrderByRelevanceInput>;
+export type TaskOrderByWithRelationInput = {
+  code?: InputMaybe<SortOrderInput>;
   correctMultipleAnswer?: InputMaybe<SortOrder>;
   correctSingleAnswer?: InputMaybe<SortOrderInput>;
   createdAt?: InputMaybe<SortOrder>;
   id?: InputMaybe<SortOrder>;
   question?: InputMaybe<SortOrder>;
-  test?: InputMaybe<TestOrderByWithRelationAndSearchRelevanceInput>;
+  taskAnswers?: InputMaybe<TaskAnswerOrderByRelationAggregateInput>;
+  test?: InputMaybe<TestOrderByWithRelationInput>;
   testId?: InputMaybe<SortOrderInput>;
   type?: InputMaybe<SortOrder>;
   variants?: InputMaybe<SortOrder>;
+};
+
+export type TaskRelationFilter = {
+  is?: InputMaybe<TaskWhereInput>;
+  isNot?: InputMaybe<TaskWhereInput>;
 };
 
 export enum TaskScalarFieldEnum {
+  Code = 'code',
   CorrectMultipleAnswer = 'correctMultipleAnswer',
   CorrectSingleAnswer = 'correctSingleAnswer',
   CreatedAt = 'createdAt',
@@ -4726,6 +5576,7 @@ export type TaskScalarWhereInput = {
   AND?: InputMaybe<Array<InputMaybe<TaskScalarWhereInput>>>;
   NOT?: InputMaybe<Array<InputMaybe<TaskScalarWhereInput>>>;
   OR?: InputMaybe<Array<InputMaybe<TaskScalarWhereInput>>>;
+  code?: InputMaybe<StringNullableFilter>;
   correctMultipleAnswer?: InputMaybe<IntNullableListFilter>;
   correctSingleAnswer?: InputMaybe<IntNullableFilter>;
   createdAt?: InputMaybe<DateTimeFilter>;
@@ -4740,6 +5591,7 @@ export type TaskScalarWhereWithAggregatesInput = {
   AND?: InputMaybe<Array<InputMaybe<TaskScalarWhereWithAggregatesInput>>>;
   NOT?: InputMaybe<Array<InputMaybe<TaskScalarWhereWithAggregatesInput>>>;
   OR?: InputMaybe<Array<InputMaybe<TaskScalarWhereWithAggregatesInput>>>;
+  code?: InputMaybe<StringNullableWithAggregatesFilter>;
   correctMultipleAnswer?: InputMaybe<IntNullableListFilter>;
   correctSingleAnswer?: InputMaybe<IntNullableWithAggregatesFilter>;
   createdAt?: InputMaybe<DateTimeWithAggregatesFilter>;
@@ -4773,11 +5625,13 @@ export enum TaskType {
 }
 
 export type TaskUncheckedCreateInput = {
+  code?: InputMaybe<Scalars['String']>;
   correctMultipleAnswer?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
   correctSingleAnswer?: InputMaybe<Scalars['Int']>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
   id?: InputMaybe<Scalars['Int']>;
   question: Scalars['String'];
+  taskAnswers?: InputMaybe<TaskAnswerUncheckedCreateNestedManyWithoutTaskInput>;
   testId?: InputMaybe<Scalars['Int']>;
   type: TaskType;
   variants?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
@@ -4790,28 +5644,45 @@ export type TaskUncheckedCreateNestedManyWithoutTestInput = {
   createMany?: InputMaybe<TaskCreateManyTestInputEnvelope>;
 };
 
-export type TaskUncheckedCreateWithoutTestInput = {
+export type TaskUncheckedCreateWithoutTaskAnswersInput = {
+  code?: InputMaybe<Scalars['String']>;
   correctMultipleAnswer?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
   correctSingleAnswer?: InputMaybe<Scalars['Int']>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
   id?: InputMaybe<Scalars['Int']>;
   question: Scalars['String'];
+  testId?: InputMaybe<Scalars['Int']>;
+  type: TaskType;
+  variants?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type TaskUncheckedCreateWithoutTestInput = {
+  code?: InputMaybe<Scalars['String']>;
+  correctMultipleAnswer?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
+  correctSingleAnswer?: InputMaybe<Scalars['Int']>;
+  createdAt?: InputMaybe<Scalars['DateTime']>;
+  id?: InputMaybe<Scalars['Int']>;
+  question: Scalars['String'];
+  taskAnswers?: InputMaybe<TaskAnswerUncheckedCreateNestedManyWithoutTaskInput>;
   type: TaskType;
   variants?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 export type TaskUncheckedUpdateInput = {
+  code?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   correctMultipleAnswer?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
   correctSingleAnswer?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
   id?: InputMaybe<IntFieldUpdateOperationsInput>;
   question?: InputMaybe<StringFieldUpdateOperationsInput>;
+  taskAnswers?: InputMaybe<TaskAnswerUncheckedUpdateManyWithoutTaskNestedInput>;
   testId?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
   type?: InputMaybe<EnumTaskTypeFieldUpdateOperationsInput>;
   variants?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 export type TaskUncheckedUpdateManyInput = {
+  code?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   correctMultipleAnswer?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
   correctSingleAnswer?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
@@ -4823,6 +5694,7 @@ export type TaskUncheckedUpdateManyInput = {
 };
 
 export type TaskUncheckedUpdateManyWithoutTestInput = {
+  code?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   correctMultipleAnswer?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
   correctSingleAnswer?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
@@ -4846,27 +5718,44 @@ export type TaskUncheckedUpdateManyWithoutTestNestedInput = {
   upsert?: InputMaybe<Array<InputMaybe<TaskUpsertWithWhereUniqueWithoutTestInput>>>;
 };
 
-export type TaskUncheckedUpdateWithoutTestInput = {
+export type TaskUncheckedUpdateWithoutTaskAnswersInput = {
+  code?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   correctMultipleAnswer?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
   correctSingleAnswer?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
   id?: InputMaybe<IntFieldUpdateOperationsInput>;
   question?: InputMaybe<StringFieldUpdateOperationsInput>;
+  testId?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
+  type?: InputMaybe<EnumTaskTypeFieldUpdateOperationsInput>;
+  variants?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type TaskUncheckedUpdateWithoutTestInput = {
+  code?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  correctMultipleAnswer?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
+  correctSingleAnswer?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
+  createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  id?: InputMaybe<IntFieldUpdateOperationsInput>;
+  question?: InputMaybe<StringFieldUpdateOperationsInput>;
+  taskAnswers?: InputMaybe<TaskAnswerUncheckedUpdateManyWithoutTaskNestedInput>;
   type?: InputMaybe<EnumTaskTypeFieldUpdateOperationsInput>;
   variants?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 export type TaskUpdateInput = {
+  code?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   correctMultipleAnswer?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
   correctSingleAnswer?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
   question?: InputMaybe<StringFieldUpdateOperationsInput>;
+  taskAnswers?: InputMaybe<TaskAnswerUpdateManyWithoutTaskNestedInput>;
   test?: InputMaybe<TestUpdateOneWithoutTasksNestedInput>;
   type?: InputMaybe<EnumTaskTypeFieldUpdateOperationsInput>;
   variants?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 export type TaskUpdateManyMutationInput = {
+  code?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   correctMultipleAnswer?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
   correctSingleAnswer?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
@@ -4894,16 +5783,42 @@ export type TaskUpdateManyWithoutTestNestedInput = {
   upsert?: InputMaybe<Array<InputMaybe<TaskUpsertWithWhereUniqueWithoutTestInput>>>;
 };
 
+export type TaskUpdateOneRequiredWithoutTaskAnswersNestedInput = {
+  connect?: InputMaybe<TaskWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<TaskCreateOrConnectWithoutTaskAnswersInput>;
+  create?: InputMaybe<TaskCreateWithoutTaskAnswersInput>;
+  update?: InputMaybe<TaskUpdateToOneWithWhereWithoutTaskAnswersInput>;
+  upsert?: InputMaybe<TaskUpsertWithoutTaskAnswersInput>;
+};
+
+export type TaskUpdateToOneWithWhereWithoutTaskAnswersInput = {
+  data: TaskUpdateWithoutTaskAnswersInput;
+  where?: InputMaybe<TaskWhereInput>;
+};
+
 export type TaskUpdateWithWhereUniqueWithoutTestInput = {
   data: TaskUpdateWithoutTestInput;
   where: TaskWhereUniqueInput;
 };
 
-export type TaskUpdateWithoutTestInput = {
+export type TaskUpdateWithoutTaskAnswersInput = {
+  code?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   correctMultipleAnswer?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
   correctSingleAnswer?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
   question?: InputMaybe<StringFieldUpdateOperationsInput>;
+  test?: InputMaybe<TestUpdateOneWithoutTasksNestedInput>;
+  type?: InputMaybe<EnumTaskTypeFieldUpdateOperationsInput>;
+  variants?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type TaskUpdateWithoutTestInput = {
+  code?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  correctMultipleAnswer?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
+  correctSingleAnswer?: InputMaybe<NullableIntFieldUpdateOperationsInput>;
+  createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  question?: InputMaybe<StringFieldUpdateOperationsInput>;
+  taskAnswers?: InputMaybe<TaskAnswerUpdateManyWithoutTaskNestedInput>;
   type?: InputMaybe<EnumTaskTypeFieldUpdateOperationsInput>;
   variants?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
@@ -4924,15 +5839,23 @@ export type TaskUpsertWithWhereUniqueWithoutTestInput = {
   where: TaskWhereUniqueInput;
 };
 
+export type TaskUpsertWithoutTaskAnswersInput = {
+  create: TaskCreateWithoutTaskAnswersInput;
+  update: TaskUpdateWithoutTaskAnswersInput;
+  where?: InputMaybe<TaskWhereInput>;
+};
+
 export type TaskWhereInput = {
   AND?: InputMaybe<Array<InputMaybe<TaskWhereInput>>>;
   NOT?: InputMaybe<Array<InputMaybe<TaskWhereInput>>>;
   OR?: InputMaybe<Array<InputMaybe<TaskWhereInput>>>;
+  code?: InputMaybe<StringNullableFilter>;
   correctMultipleAnswer?: InputMaybe<IntNullableListFilter>;
   correctSingleAnswer?: InputMaybe<IntNullableFilter>;
   createdAt?: InputMaybe<DateTimeFilter>;
   id?: InputMaybe<IntFilter>;
   question?: InputMaybe<StringFilter>;
+  taskAnswers?: InputMaybe<TaskAnswerListRelationFilter>;
   test?: InputMaybe<TestNullableRelationFilter>;
   testId?: InputMaybe<IntNullableFilter>;
   type?: InputMaybe<EnumTaskTypeFilter>;
@@ -4943,11 +5866,13 @@ export type TaskWhereUniqueInput = {
   AND?: InputMaybe<Array<InputMaybe<TaskWhereInput>>>;
   NOT?: InputMaybe<Array<InputMaybe<TaskWhereInput>>>;
   OR?: InputMaybe<Array<InputMaybe<TaskWhereInput>>>;
+  code?: InputMaybe<StringNullableFilter>;
   correctMultipleAnswer?: InputMaybe<IntNullableListFilter>;
   correctSingleAnswer?: InputMaybe<IntNullableFilter>;
   createdAt?: InputMaybe<DateTimeFilter>;
   id?: InputMaybe<Scalars['Int']>;
   question?: InputMaybe<StringFilter>;
+  taskAnswers?: InputMaybe<TaskAnswerListRelationFilter>;
   test?: InputMaybe<TestNullableRelationFilter>;
   testId?: InputMaybe<IntNullableFilter>;
   type?: InputMaybe<EnumTaskTypeFilter>;
@@ -4959,6 +5884,7 @@ export type Test = {
   _count: TestCountOutputType;
   answers: Array<Answer>;
   createdAt: Scalars['DateTime'];
+  direction: Array<Direction>;
   id: Scalars['Int'];
   response: Array<Response>;
   tasks: Array<Task>;
@@ -4969,17 +5895,27 @@ export type Test = {
 export type TestAnswersArgs = {
   cursor?: InputMaybe<AnswerWhereUniqueInput>;
   distinct?: InputMaybe<Array<InputMaybe<AnswerScalarFieldEnum>>>;
-  orderBy?: InputMaybe<Array<InputMaybe<AnswerOrderByWithRelationAndSearchRelevanceInput>>>;
+  orderBy?: InputMaybe<Array<InputMaybe<AnswerOrderByWithRelationInput>>>;
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<AnswerWhereInput>;
 };
 
 
+export type TestDirectionArgs = {
+  cursor?: InputMaybe<DirectionWhereUniqueInput>;
+  distinct?: InputMaybe<Array<InputMaybe<DirectionScalarFieldEnum>>>;
+  orderBy?: InputMaybe<Array<InputMaybe<DirectionOrderByWithRelationInput>>>;
+  skip?: InputMaybe<Scalars['Int']>;
+  take?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<DirectionWhereInput>;
+};
+
+
 export type TestResponseArgs = {
   cursor?: InputMaybe<ResponseWhereUniqueInput>;
   distinct?: InputMaybe<Array<InputMaybe<ResponseScalarFieldEnum>>>;
-  orderBy?: InputMaybe<Array<InputMaybe<ResponseOrderByWithRelationAndSearchRelevanceInput>>>;
+  orderBy?: InputMaybe<Array<InputMaybe<ResponseOrderByWithRelationInput>>>;
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<ResponseWhereInput>;
@@ -4989,7 +5925,7 @@ export type TestResponseArgs = {
 export type TestTasksArgs = {
   cursor?: InputMaybe<TaskWhereUniqueInput>;
   distinct?: InputMaybe<Array<InputMaybe<TaskScalarFieldEnum>>>;
-  orderBy?: InputMaybe<Array<InputMaybe<TaskOrderByWithRelationAndSearchRelevanceInput>>>;
+  orderBy?: InputMaybe<Array<InputMaybe<TaskOrderByWithRelationInput>>>;
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<TaskWhereInput>;
@@ -5021,6 +5957,7 @@ export type TestCountOrderByAggregateInput = {
 export type TestCountOutputType = {
   __typename?: 'TestCountOutputType';
   answers: Scalars['Int'];
+  direction: Scalars['Int'];
   response: Scalars['Int'];
   tasks: Scalars['Int'];
 };
@@ -5028,6 +5965,7 @@ export type TestCountOutputType = {
 export type TestCreateInput = {
   answers?: InputMaybe<AnswerCreateNestedManyWithoutTestInput>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
+  direction?: InputMaybe<DirectionCreateNestedManyWithoutTestInput>;
   response?: InputMaybe<ResponseCreateNestedManyWithoutTestsInput>;
   tasks?: InputMaybe<TaskCreateNestedManyWithoutTestInput>;
   title: Scalars['String'];
@@ -5051,6 +5989,12 @@ export type TestCreateNestedOneWithoutAnswersInput = {
   create?: InputMaybe<TestCreateWithoutAnswersInput>;
 };
 
+export type TestCreateNestedOneWithoutDirectionInput = {
+  connect?: InputMaybe<TestWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<TestCreateOrConnectWithoutDirectionInput>;
+  create?: InputMaybe<TestCreateWithoutDirectionInput>;
+};
+
 export type TestCreateNestedOneWithoutTasksInput = {
   connect?: InputMaybe<TestWhereUniqueInput>;
   connectOrCreate?: InputMaybe<TestCreateOrConnectWithoutTasksInput>;
@@ -5059,6 +6003,11 @@ export type TestCreateNestedOneWithoutTasksInput = {
 
 export type TestCreateOrConnectWithoutAnswersInput = {
   create: TestCreateWithoutAnswersInput;
+  where: TestWhereUniqueInput;
+};
+
+export type TestCreateOrConnectWithoutDirectionInput = {
+  create: TestCreateWithoutDirectionInput;
   where: TestWhereUniqueInput;
 };
 
@@ -5074,6 +6023,15 @@ export type TestCreateOrConnectWithoutTasksInput = {
 
 export type TestCreateWithoutAnswersInput = {
   createdAt?: InputMaybe<Scalars['DateTime']>;
+  direction?: InputMaybe<DirectionCreateNestedManyWithoutTestInput>;
+  response?: InputMaybe<ResponseCreateNestedManyWithoutTestsInput>;
+  tasks?: InputMaybe<TaskCreateNestedManyWithoutTestInput>;
+  title: Scalars['String'];
+};
+
+export type TestCreateWithoutDirectionInput = {
+  answers?: InputMaybe<AnswerCreateNestedManyWithoutTestInput>;
+  createdAt?: InputMaybe<Scalars['DateTime']>;
   response?: InputMaybe<ResponseCreateNestedManyWithoutTestsInput>;
   tasks?: InputMaybe<TaskCreateNestedManyWithoutTestInput>;
   title: Scalars['String'];
@@ -5082,6 +6040,7 @@ export type TestCreateWithoutAnswersInput = {
 export type TestCreateWithoutResponseInput = {
   answers?: InputMaybe<AnswerCreateNestedManyWithoutTestInput>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
+  direction?: InputMaybe<DirectionCreateNestedManyWithoutTestInput>;
   tasks?: InputMaybe<TaskCreateNestedManyWithoutTestInput>;
   title: Scalars['String'];
 };
@@ -5089,6 +6048,7 @@ export type TestCreateWithoutResponseInput = {
 export type TestCreateWithoutTasksInput = {
   answers?: InputMaybe<AnswerCreateNestedManyWithoutTestInput>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
+  direction?: InputMaybe<DirectionCreateNestedManyWithoutTestInput>;
   response?: InputMaybe<ResponseCreateNestedManyWithoutTestsInput>;
   title: Scalars['String'];
 };
@@ -5134,16 +6094,6 @@ export type TestOrderByRelationAggregateInput = {
   _count?: InputMaybe<SortOrder>;
 };
 
-export enum TestOrderByRelevanceFieldEnum {
-  Title = 'title'
-}
-
-export type TestOrderByRelevanceInput = {
-  fields: TestOrderByRelevanceFieldEnum;
-  search: Scalars['String'];
-  sort: SortOrder;
-};
-
 export type TestOrderByWithAggregationInput = {
   _avg?: InputMaybe<TestAvgOrderByAggregateInput>;
   _count?: InputMaybe<TestCountOrderByAggregateInput>;
@@ -5155,10 +6105,10 @@ export type TestOrderByWithAggregationInput = {
   title?: InputMaybe<SortOrder>;
 };
 
-export type TestOrderByWithRelationAndSearchRelevanceInput = {
-  _relevance?: InputMaybe<TestOrderByRelevanceInput>;
+export type TestOrderByWithRelationInput = {
   answers?: InputMaybe<AnswerOrderByRelationAggregateInput>;
   createdAt?: InputMaybe<SortOrder>;
+  direction?: InputMaybe<DirectionOrderByRelationAggregateInput>;
   id?: InputMaybe<SortOrder>;
   response?: InputMaybe<ResponseOrderByRelationAggregateInput>;
   tasks?: InputMaybe<TaskOrderByRelationAggregateInput>;
@@ -5206,6 +6156,7 @@ export type TestSumOrderByAggregateInput = {
 export type TestUncheckedCreateInput = {
   answers?: InputMaybe<AnswerUncheckedCreateNestedManyWithoutTestInput>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
+  direction?: InputMaybe<DirectionUncheckedCreateNestedManyWithoutTestInput>;
   id?: InputMaybe<Scalars['Int']>;
   response?: InputMaybe<ResponseUncheckedCreateNestedManyWithoutTestsInput>;
   tasks?: InputMaybe<TaskUncheckedCreateNestedManyWithoutTestInput>;
@@ -5220,6 +6171,16 @@ export type TestUncheckedCreateNestedManyWithoutResponseInput = {
 
 export type TestUncheckedCreateWithoutAnswersInput = {
   createdAt?: InputMaybe<Scalars['DateTime']>;
+  direction?: InputMaybe<DirectionUncheckedCreateNestedManyWithoutTestInput>;
+  id?: InputMaybe<Scalars['Int']>;
+  response?: InputMaybe<ResponseUncheckedCreateNestedManyWithoutTestsInput>;
+  tasks?: InputMaybe<TaskUncheckedCreateNestedManyWithoutTestInput>;
+  title: Scalars['String'];
+};
+
+export type TestUncheckedCreateWithoutDirectionInput = {
+  answers?: InputMaybe<AnswerUncheckedCreateNestedManyWithoutTestInput>;
+  createdAt?: InputMaybe<Scalars['DateTime']>;
   id?: InputMaybe<Scalars['Int']>;
   response?: InputMaybe<ResponseUncheckedCreateNestedManyWithoutTestsInput>;
   tasks?: InputMaybe<TaskUncheckedCreateNestedManyWithoutTestInput>;
@@ -5229,6 +6190,7 @@ export type TestUncheckedCreateWithoutAnswersInput = {
 export type TestUncheckedCreateWithoutResponseInput = {
   answers?: InputMaybe<AnswerUncheckedCreateNestedManyWithoutTestInput>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
+  direction?: InputMaybe<DirectionUncheckedCreateNestedManyWithoutTestInput>;
   id?: InputMaybe<Scalars['Int']>;
   tasks?: InputMaybe<TaskUncheckedCreateNestedManyWithoutTestInput>;
   title: Scalars['String'];
@@ -5237,6 +6199,7 @@ export type TestUncheckedCreateWithoutResponseInput = {
 export type TestUncheckedCreateWithoutTasksInput = {
   answers?: InputMaybe<AnswerUncheckedCreateNestedManyWithoutTestInput>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
+  direction?: InputMaybe<DirectionUncheckedCreateNestedManyWithoutTestInput>;
   id?: InputMaybe<Scalars['Int']>;
   response?: InputMaybe<ResponseUncheckedCreateNestedManyWithoutTestsInput>;
   title: Scalars['String'];
@@ -5245,6 +6208,7 @@ export type TestUncheckedCreateWithoutTasksInput = {
 export type TestUncheckedUpdateInput = {
   answers?: InputMaybe<AnswerUncheckedUpdateManyWithoutTestNestedInput>;
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  direction?: InputMaybe<DirectionUncheckedUpdateManyWithoutTestNestedInput>;
   id?: InputMaybe<IntFieldUpdateOperationsInput>;
   response?: InputMaybe<ResponseUncheckedUpdateManyWithoutTestsNestedInput>;
   tasks?: InputMaybe<TaskUncheckedUpdateManyWithoutTestNestedInput>;
@@ -5278,6 +6242,16 @@ export type TestUncheckedUpdateManyWithoutResponseNestedInput = {
 
 export type TestUncheckedUpdateWithoutAnswersInput = {
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  direction?: InputMaybe<DirectionUncheckedUpdateManyWithoutTestNestedInput>;
+  id?: InputMaybe<IntFieldUpdateOperationsInput>;
+  response?: InputMaybe<ResponseUncheckedUpdateManyWithoutTestsNestedInput>;
+  tasks?: InputMaybe<TaskUncheckedUpdateManyWithoutTestNestedInput>;
+  title?: InputMaybe<StringFieldUpdateOperationsInput>;
+};
+
+export type TestUncheckedUpdateWithoutDirectionInput = {
+  answers?: InputMaybe<AnswerUncheckedUpdateManyWithoutTestNestedInput>;
+  createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
   id?: InputMaybe<IntFieldUpdateOperationsInput>;
   response?: InputMaybe<ResponseUncheckedUpdateManyWithoutTestsNestedInput>;
   tasks?: InputMaybe<TaskUncheckedUpdateManyWithoutTestNestedInput>;
@@ -5287,6 +6261,7 @@ export type TestUncheckedUpdateWithoutAnswersInput = {
 export type TestUncheckedUpdateWithoutResponseInput = {
   answers?: InputMaybe<AnswerUncheckedUpdateManyWithoutTestNestedInput>;
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  direction?: InputMaybe<DirectionUncheckedUpdateManyWithoutTestNestedInput>;
   id?: InputMaybe<IntFieldUpdateOperationsInput>;
   tasks?: InputMaybe<TaskUncheckedUpdateManyWithoutTestNestedInput>;
   title?: InputMaybe<StringFieldUpdateOperationsInput>;
@@ -5295,6 +6270,7 @@ export type TestUncheckedUpdateWithoutResponseInput = {
 export type TestUncheckedUpdateWithoutTasksInput = {
   answers?: InputMaybe<AnswerUncheckedUpdateManyWithoutTestNestedInput>;
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  direction?: InputMaybe<DirectionUncheckedUpdateManyWithoutTestNestedInput>;
   id?: InputMaybe<IntFieldUpdateOperationsInput>;
   response?: InputMaybe<ResponseUncheckedUpdateManyWithoutTestsNestedInput>;
   title?: InputMaybe<StringFieldUpdateOperationsInput>;
@@ -5303,6 +6279,7 @@ export type TestUncheckedUpdateWithoutTasksInput = {
 export type TestUpdateInput = {
   answers?: InputMaybe<AnswerUpdateManyWithoutTestNestedInput>;
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  direction?: InputMaybe<DirectionUpdateManyWithoutTestNestedInput>;
   response?: InputMaybe<ResponseUpdateManyWithoutTestsNestedInput>;
   tasks?: InputMaybe<TaskUpdateManyWithoutTestNestedInput>;
   title?: InputMaybe<StringFieldUpdateOperationsInput>;
@@ -5339,6 +6316,16 @@ export type TestUpdateOneRequiredWithoutAnswersNestedInput = {
   upsert?: InputMaybe<TestUpsertWithoutAnswersInput>;
 };
 
+export type TestUpdateOneWithoutDirectionNestedInput = {
+  connect?: InputMaybe<TestWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<TestCreateOrConnectWithoutDirectionInput>;
+  create?: InputMaybe<TestCreateWithoutDirectionInput>;
+  delete?: InputMaybe<TestWhereInput>;
+  disconnect?: InputMaybe<TestWhereInput>;
+  update?: InputMaybe<TestUpdateToOneWithWhereWithoutDirectionInput>;
+  upsert?: InputMaybe<TestUpsertWithoutDirectionInput>;
+};
+
 export type TestUpdateOneWithoutTasksNestedInput = {
   connect?: InputMaybe<TestWhereUniqueInput>;
   connectOrCreate?: InputMaybe<TestCreateOrConnectWithoutTasksInput>;
@@ -5354,6 +6341,11 @@ export type TestUpdateToOneWithWhereWithoutAnswersInput = {
   where?: InputMaybe<TestWhereInput>;
 };
 
+export type TestUpdateToOneWithWhereWithoutDirectionInput = {
+  data: TestUpdateWithoutDirectionInput;
+  where?: InputMaybe<TestWhereInput>;
+};
+
 export type TestUpdateToOneWithWhereWithoutTasksInput = {
   data: TestUpdateWithoutTasksInput;
   where?: InputMaybe<TestWhereInput>;
@@ -5366,6 +6358,15 @@ export type TestUpdateWithWhereUniqueWithoutResponseInput = {
 
 export type TestUpdateWithoutAnswersInput = {
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  direction?: InputMaybe<DirectionUpdateManyWithoutTestNestedInput>;
+  response?: InputMaybe<ResponseUpdateManyWithoutTestsNestedInput>;
+  tasks?: InputMaybe<TaskUpdateManyWithoutTestNestedInput>;
+  title?: InputMaybe<StringFieldUpdateOperationsInput>;
+};
+
+export type TestUpdateWithoutDirectionInput = {
+  answers?: InputMaybe<AnswerUpdateManyWithoutTestNestedInput>;
+  createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
   response?: InputMaybe<ResponseUpdateManyWithoutTestsNestedInput>;
   tasks?: InputMaybe<TaskUpdateManyWithoutTestNestedInput>;
   title?: InputMaybe<StringFieldUpdateOperationsInput>;
@@ -5374,6 +6375,7 @@ export type TestUpdateWithoutAnswersInput = {
 export type TestUpdateWithoutResponseInput = {
   answers?: InputMaybe<AnswerUpdateManyWithoutTestNestedInput>;
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  direction?: InputMaybe<DirectionUpdateManyWithoutTestNestedInput>;
   tasks?: InputMaybe<TaskUpdateManyWithoutTestNestedInput>;
   title?: InputMaybe<StringFieldUpdateOperationsInput>;
 };
@@ -5381,6 +6383,7 @@ export type TestUpdateWithoutResponseInput = {
 export type TestUpdateWithoutTasksInput = {
   answers?: InputMaybe<AnswerUpdateManyWithoutTestNestedInput>;
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
+  direction?: InputMaybe<DirectionUpdateManyWithoutTestNestedInput>;
   response?: InputMaybe<ResponseUpdateManyWithoutTestsNestedInput>;
   title?: InputMaybe<StringFieldUpdateOperationsInput>;
 };
@@ -5397,6 +6400,12 @@ export type TestUpsertWithoutAnswersInput = {
   where?: InputMaybe<TestWhereInput>;
 };
 
+export type TestUpsertWithoutDirectionInput = {
+  create: TestCreateWithoutDirectionInput;
+  update: TestUpdateWithoutDirectionInput;
+  where?: InputMaybe<TestWhereInput>;
+};
+
 export type TestUpsertWithoutTasksInput = {
   create: TestCreateWithoutTasksInput;
   update: TestUpdateWithoutTasksInput;
@@ -5409,6 +6418,7 @@ export type TestWhereInput = {
   OR?: InputMaybe<Array<InputMaybe<TestWhereInput>>>;
   answers?: InputMaybe<AnswerListRelationFilter>;
   createdAt?: InputMaybe<DateTimeFilter>;
+  direction?: InputMaybe<DirectionListRelationFilter>;
   id?: InputMaybe<IntFilter>;
   response?: InputMaybe<ResponseListRelationFilter>;
   tasks?: InputMaybe<TaskListRelationFilter>;
@@ -5421,6 +6431,7 @@ export type TestWhereUniqueInput = {
   OR?: InputMaybe<Array<InputMaybe<TestWhereInput>>>;
   answers?: InputMaybe<AnswerListRelationFilter>;
   createdAt?: InputMaybe<DateTimeFilter>;
+  direction?: InputMaybe<DirectionListRelationFilter>;
   id?: InputMaybe<Scalars['Int']>;
   response?: InputMaybe<ResponseListRelationFilter>;
   tasks?: InputMaybe<TaskListRelationFilter>;
@@ -5468,7 +6479,7 @@ export type UpdateModelInput = {
 export type User = {
   __typename?: 'User';
   _count: UserCountOutputType;
-  answers: Array<Answer>;
+  answers: Array<TaskAnswer>;
   createdAt: Scalars['DateTime'];
   email: Scalars['String'];
   fullname?: Maybe<Scalars['String']>;
@@ -5486,19 +6497,19 @@ export type User = {
 
 
 export type UserAnswersArgs = {
-  cursor?: InputMaybe<AnswerWhereUniqueInput>;
-  distinct?: InputMaybe<Array<InputMaybe<AnswerScalarFieldEnum>>>;
-  orderBy?: InputMaybe<Array<InputMaybe<AnswerOrderByWithRelationAndSearchRelevanceInput>>>;
+  cursor?: InputMaybe<TaskAnswerWhereUniqueInput>;
+  distinct?: InputMaybe<Array<InputMaybe<TaskAnswerScalarFieldEnum>>>;
+  orderBy?: InputMaybe<Array<InputMaybe<TaskAnswerOrderByWithRelationInput>>>;
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
-  where?: InputMaybe<AnswerWhereInput>;
+  where?: InputMaybe<TaskAnswerWhereInput>;
 };
 
 
 export type UserGroupsArgs = {
   cursor?: InputMaybe<MessagerGroupWhereUniqueInput>;
   distinct?: InputMaybe<Array<InputMaybe<MessagerGroupScalarFieldEnum>>>;
-  orderBy?: InputMaybe<Array<InputMaybe<MessagerGroupOrderByWithRelationAndSearchRelevanceInput>>>;
+  orderBy?: InputMaybe<Array<InputMaybe<MessagerGroupOrderByWithRelationInput>>>;
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<MessagerGroupWhereInput>;
@@ -5508,7 +6519,7 @@ export type UserGroupsArgs = {
 export type UserMessagesArgs = {
   cursor?: InputMaybe<MessageWhereUniqueInput>;
   distinct?: InputMaybe<Array<InputMaybe<MessageScalarFieldEnum>>>;
-  orderBy?: InputMaybe<Array<InputMaybe<MessageOrderByWithRelationAndSearchRelevanceInput>>>;
+  orderBy?: InputMaybe<Array<InputMaybe<MessageOrderByWithRelationInput>>>;
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<MessageWhereInput>;
@@ -5518,7 +6529,7 @@ export type UserMessagesArgs = {
 export type UserResponsesArgs = {
   cursor?: InputMaybe<ResponseWhereUniqueInput>;
   distinct?: InputMaybe<Array<InputMaybe<ResponseScalarFieldEnum>>>;
-  orderBy?: InputMaybe<Array<InputMaybe<ResponseOrderByWithRelationAndSearchRelevanceInput>>>;
+  orderBy?: InputMaybe<Array<InputMaybe<ResponseOrderByWithRelationInput>>>;
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<ResponseWhereInput>;
@@ -5570,7 +6581,7 @@ export type UserCountOutputType = {
 };
 
 export type UserCreateInput = {
-  answers?: InputMaybe<AnswerCreateNestedManyWithoutUserInput>;
+  answers?: InputMaybe<TaskAnswerCreateNestedManyWithoutUserInput>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
   email: Scalars['String'];
   fullname?: InputMaybe<Scalars['String']>;
@@ -5658,7 +6669,7 @@ export type UserCreateWithoutAnswersInput = {
 };
 
 export type UserCreateWithoutGroupsInput = {
-  answers?: InputMaybe<AnswerCreateNestedManyWithoutUserInput>;
+  answers?: InputMaybe<TaskAnswerCreateNestedManyWithoutUserInput>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
   email: Scalars['String'];
   fullname?: InputMaybe<Scalars['String']>;
@@ -5673,7 +6684,7 @@ export type UserCreateWithoutGroupsInput = {
 };
 
 export type UserCreateWithoutMessagesInput = {
-  answers?: InputMaybe<AnswerCreateNestedManyWithoutUserInput>;
+  answers?: InputMaybe<TaskAnswerCreateNestedManyWithoutUserInput>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
   email: Scalars['String'];
   fullname?: InputMaybe<Scalars['String']>;
@@ -5688,7 +6699,7 @@ export type UserCreateWithoutMessagesInput = {
 };
 
 export type UserCreateWithoutResponsesInput = {
-  answers?: InputMaybe<AnswerCreateNestedManyWithoutUserInput>;
+  answers?: InputMaybe<TaskAnswerCreateNestedManyWithoutUserInput>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
   email: Scalars['String'];
   fullname?: InputMaybe<Scalars['String']>;
@@ -5766,22 +6777,6 @@ export type UserOrderByRelationAggregateInput = {
   _count?: InputMaybe<SortOrder>;
 };
 
-export enum UserOrderByRelevanceFieldEnum {
-  Email = 'email',
-  Fullname = 'fullname',
-  Logo = 'logo',
-  PasswordHash = 'passwordHash',
-  Phone = 'phone',
-  TgLink = 'tgLink',
-  VkLink = 'vkLink'
-}
-
-export type UserOrderByRelevanceInput = {
-  fields: UserOrderByRelevanceFieldEnum;
-  search: Scalars['String'];
-  sort: SortOrder;
-};
-
 export type UserOrderByWithAggregationInput = {
   _avg?: InputMaybe<UserAvgOrderByAggregateInput>;
   _count?: InputMaybe<UserCountOrderByAggregateInput>;
@@ -5800,9 +6795,8 @@ export type UserOrderByWithAggregationInput = {
   vkLink?: InputMaybe<SortOrderInput>;
 };
 
-export type UserOrderByWithRelationAndSearchRelevanceInput = {
-  _relevance?: InputMaybe<UserOrderByRelevanceInput>;
-  answers?: InputMaybe<AnswerOrderByRelationAggregateInput>;
+export type UserOrderByWithRelationInput = {
+  answers?: InputMaybe<TaskAnswerOrderByRelationAggregateInput>;
   createdAt?: InputMaybe<SortOrder>;
   email?: InputMaybe<SortOrder>;
   fullname?: InputMaybe<SortOrderInput>;
@@ -5883,7 +6877,7 @@ export type UserSumOrderByAggregateInput = {
 };
 
 export type UserUncheckedCreateInput = {
-  answers?: InputMaybe<AnswerUncheckedCreateNestedManyWithoutUserInput>;
+  answers?: InputMaybe<TaskAnswerUncheckedCreateNestedManyWithoutUserInput>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
   email: Scalars['String'];
   fullname?: InputMaybe<Scalars['String']>;
@@ -5922,7 +6916,7 @@ export type UserUncheckedCreateWithoutAnswersInput = {
 };
 
 export type UserUncheckedCreateWithoutGroupsInput = {
-  answers?: InputMaybe<AnswerUncheckedCreateNestedManyWithoutUserInput>;
+  answers?: InputMaybe<TaskAnswerUncheckedCreateNestedManyWithoutUserInput>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
   email: Scalars['String'];
   fullname?: InputMaybe<Scalars['String']>;
@@ -5938,7 +6932,7 @@ export type UserUncheckedCreateWithoutGroupsInput = {
 };
 
 export type UserUncheckedCreateWithoutMessagesInput = {
-  answers?: InputMaybe<AnswerUncheckedCreateNestedManyWithoutUserInput>;
+  answers?: InputMaybe<TaskAnswerUncheckedCreateNestedManyWithoutUserInput>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
   email: Scalars['String'];
   fullname?: InputMaybe<Scalars['String']>;
@@ -5954,7 +6948,7 @@ export type UserUncheckedCreateWithoutMessagesInput = {
 };
 
 export type UserUncheckedCreateWithoutResponsesInput = {
-  answers?: InputMaybe<AnswerUncheckedCreateNestedManyWithoutUserInput>;
+  answers?: InputMaybe<TaskAnswerUncheckedCreateNestedManyWithoutUserInput>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
   email: Scalars['String'];
   fullname?: InputMaybe<Scalars['String']>;
@@ -5970,7 +6964,7 @@ export type UserUncheckedCreateWithoutResponsesInput = {
 };
 
 export type UserUncheckedUpdateInput = {
-  answers?: InputMaybe<AnswerUncheckedUpdateManyWithoutUserNestedInput>;
+  answers?: InputMaybe<TaskAnswerUncheckedUpdateManyWithoutUserNestedInput>;
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
   email?: InputMaybe<StringFieldUpdateOperationsInput>;
   fullname?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
@@ -6042,7 +7036,7 @@ export type UserUncheckedUpdateWithoutAnswersInput = {
 };
 
 export type UserUncheckedUpdateWithoutGroupsInput = {
-  answers?: InputMaybe<AnswerUncheckedUpdateManyWithoutUserNestedInput>;
+  answers?: InputMaybe<TaskAnswerUncheckedUpdateManyWithoutUserNestedInput>;
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
   email?: InputMaybe<StringFieldUpdateOperationsInput>;
   fullname?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
@@ -6058,7 +7052,7 @@ export type UserUncheckedUpdateWithoutGroupsInput = {
 };
 
 export type UserUncheckedUpdateWithoutMessagesInput = {
-  answers?: InputMaybe<AnswerUncheckedUpdateManyWithoutUserNestedInput>;
+  answers?: InputMaybe<TaskAnswerUncheckedUpdateManyWithoutUserNestedInput>;
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
   email?: InputMaybe<StringFieldUpdateOperationsInput>;
   fullname?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
@@ -6074,7 +7068,7 @@ export type UserUncheckedUpdateWithoutMessagesInput = {
 };
 
 export type UserUncheckedUpdateWithoutResponsesInput = {
-  answers?: InputMaybe<AnswerUncheckedUpdateManyWithoutUserNestedInput>;
+  answers?: InputMaybe<TaskAnswerUncheckedUpdateManyWithoutUserNestedInput>;
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
   email?: InputMaybe<StringFieldUpdateOperationsInput>;
   fullname?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
@@ -6090,7 +7084,7 @@ export type UserUncheckedUpdateWithoutResponsesInput = {
 };
 
 export type UserUpdateInput = {
-  answers?: InputMaybe<AnswerUpdateManyWithoutUserNestedInput>;
+  answers?: InputMaybe<TaskAnswerUpdateManyWithoutUserNestedInput>;
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
   email?: InputMaybe<StringFieldUpdateOperationsInput>;
   fullname?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
@@ -6195,7 +7189,7 @@ export type UserUpdateWithoutAnswersInput = {
 };
 
 export type UserUpdateWithoutGroupsInput = {
-  answers?: InputMaybe<AnswerUpdateManyWithoutUserNestedInput>;
+  answers?: InputMaybe<TaskAnswerUpdateManyWithoutUserNestedInput>;
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
   email?: InputMaybe<StringFieldUpdateOperationsInput>;
   fullname?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
@@ -6210,7 +7204,7 @@ export type UserUpdateWithoutGroupsInput = {
 };
 
 export type UserUpdateWithoutMessagesInput = {
-  answers?: InputMaybe<AnswerUpdateManyWithoutUserNestedInput>;
+  answers?: InputMaybe<TaskAnswerUpdateManyWithoutUserNestedInput>;
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
   email?: InputMaybe<StringFieldUpdateOperationsInput>;
   fullname?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
@@ -6225,7 +7219,7 @@ export type UserUpdateWithoutMessagesInput = {
 };
 
 export type UserUpdateWithoutResponsesInput = {
-  answers?: InputMaybe<AnswerUpdateManyWithoutUserNestedInput>;
+  answers?: InputMaybe<TaskAnswerUpdateManyWithoutUserNestedInput>;
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
   email?: InputMaybe<StringFieldUpdateOperationsInput>;
   fullname?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
@@ -6267,7 +7261,7 @@ export type UserWhereInput = {
   AND?: InputMaybe<Array<InputMaybe<UserWhereInput>>>;
   NOT?: InputMaybe<Array<InputMaybe<UserWhereInput>>>;
   OR?: InputMaybe<Array<InputMaybe<UserWhereInput>>>;
-  answers?: InputMaybe<AnswerListRelationFilter>;
+  answers?: InputMaybe<TaskAnswerListRelationFilter>;
   createdAt?: InputMaybe<DateTimeFilter>;
   email?: InputMaybe<StringFilter>;
   fullname?: InputMaybe<StringNullableFilter>;
@@ -6287,7 +7281,7 @@ export type UserWhereUniqueInput = {
   AND?: InputMaybe<Array<InputMaybe<UserWhereInput>>>;
   NOT?: InputMaybe<Array<InputMaybe<UserWhereInput>>>;
   OR?: InputMaybe<Array<InputMaybe<UserWhereInput>>>;
-  answers?: InputMaybe<AnswerListRelationFilter>;
+  answers?: InputMaybe<TaskAnswerListRelationFilter>;
   createdAt?: InputMaybe<DateTimeFilter>;
   email?: InputMaybe<Scalars['String']>;
   fullname?: InputMaybe<StringNullableFilter>;
@@ -6302,3 +7296,45 @@ export type UserWhereUniqueInput = {
   tgLink?: InputMaybe<StringNullableFilter>;
   vkLink?: InputMaybe<StringNullableFilter>;
 };
+
+export type MeQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: number, email: string } | undefined };
+
+
+export const MeDocument = gql`
+    query me {
+  me {
+    id
+    email
+  }
+}
+    `;
+
+/**
+ * __useMeQuery__
+ *
+ * To run a query within a React component, call `useMeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMeQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMeQuery(baseOptions?: Apollo.QueryHookOptions<MeQuery, MeQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<MeQuery, MeQueryVariables>(MeDocument, options);
+      }
+export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery, MeQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<MeQuery, MeQueryVariables>(MeDocument, options);
+        }
+export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
+export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
+export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;

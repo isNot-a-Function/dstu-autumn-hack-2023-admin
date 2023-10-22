@@ -1,6 +1,5 @@
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["fullTextSearch"]
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -18,11 +17,11 @@ model User {
   vkLink       String?
   phone        String?
   fullname     String?
-  logo         String?         @default("https://image.pngaaa.com/560/2546560-middle.png")
+  logo         String?         @default("https://www.svgrepo.com/show/404636/avatar-people-person-profile-user.svg")
   messages     Message[]
   groups       MessagerGroup[]
   responses    Response[]
-  answers      Answer[]
+  answers      TaskAnswer[]
 }
 
 model Specialization {
@@ -41,12 +40,15 @@ model Direction {
   responses        Response[]
   specialization   Specialization @relation(fields: [specializationId], references: [id])
   specializationId Int
+  test             Test?          @relation(fields: [testId], references: [id])
+  testId           Int?
 }
 
 model Response {
   id          Int       @id @default(autoincrement())
   createdAt   DateTime  @default(now())
   text        String?
+  verdict     String?
   user        User      @relation(fields: [userId], references: [id])
   userId      Int
   direction   Direction @relation(fields: [directionId], references: [id])
@@ -56,35 +58,49 @@ model Response {
 }
 
 model Test {
-  id        Int        @id @default(autoincrement())
-  createdAt DateTime   @default(now())
+  id        Int         @id @default(autoincrement())
+  createdAt DateTime    @default(now())
   title     String
+  direction Direction[]
   tasks     Task[]
   answers   Answer[]
   response  Response[]
 }
 
 model Task {
-  id                    Int      @id @default(autoincrement())
-  createdAt             DateTime @default(now())
-  test                  Test?    @relation(fields: [testId], references: [id])
+  id                    Int          @id @default(autoincrement())
+  createdAt             DateTime     @default(now())
+  test                  Test?        @relation(fields: [testId], references: [id])
   testId                Int?
   type                  TaskType
   question              String
   variants              String[]
   correctSingleAnswer   Int?
   correctMultipleAnswer Int[]
+  code                  String?
+  taskAnswers           TaskAnswer[]
 }
 
 model Answer {
-  id        Int        @id @default(autoincrement())
-  createdAt DateTime   @default(now())
-  answer    String?
-  user      User       @relation(fields: [userId], references: [id])
-  userId    Int
-  test      Test       @relation(fields: [testId], references: [id])
-  testId    Int
-  response  Response[]
+  id          Int          @id @default(autoincrement())
+  createdAt   DateTime     @default(now())
+  answer      String?
+  test        Test         @relation(fields: [testId], references: [id])
+  testId      Int
+  taskAnswers TaskAnswer[]
+  response    Response[]
+}
+
+model TaskAnswer {
+  id            Int    @id @default(autoincrement())
+  answer        String
+  verdict       Int?
+  answerModel   Answer @relation(fields: [answerModelId], references: [id])
+  answerModelId Int
+  task          Task   @relation(fields: [taskId], references: [id])
+  taskId        Int
+  user          User   @relation(fields: [userId], references: [id])
+  userId        Int
 }
 
 model MessagerGroup {

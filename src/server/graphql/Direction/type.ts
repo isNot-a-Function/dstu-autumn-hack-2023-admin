@@ -13,11 +13,12 @@ export const Direction = objectType({
     t.string('title')
     t.string('description')
     t.int('specializationId')
+    t.nullable.int('testId')
     t.list.field('responses', {
       type: 'Response',
       args: {
         where: 'ResponseWhereInput',
-        orderBy: list('ResponseOrderByWithRelationAndSearchRelevanceInput'),
+        orderBy: list('ResponseOrderByWithRelationInput'),
         cursor: 'ResponseWhereUniqueInput',
         take: 'Int',
         skip: 'Int',
@@ -31,6 +32,15 @@ export const Direction = objectType({
       type: 'Specialization',
       resolve(root: any) {
         return root.specialization
+      },
+    })
+    t.nullable.field('test', {
+      type: 'Test',
+      args: {
+        where: 'TestWhereInput',
+      },
+      resolve(root: any) {
+        return root.test
       },
     })
     t.field('_count', {

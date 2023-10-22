@@ -6,7 +6,7 @@ export const SpecializationFindCountQuery = queryField(
     type: nonNull('Int'),
     args: {
       where: 'SpecializationWhereInput',
-      orderBy: list('SpecializationOrderByWithRelationAndSearchRelevanceInput'),
+      orderBy: list('SpecializationOrderByWithRelationInput'),
       cursor: 'SpecializationWhereUniqueInput',
       take: 'Int',
       skip: 'Int',

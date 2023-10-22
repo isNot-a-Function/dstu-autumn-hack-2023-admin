@@ -40,12 +40,13 @@ export const DirectionScalarFieldEnum = enumType({
     'title',
     'description',
     'specializationId',
+    'testId',
   ],
 })
 
 export const ResponseScalarFieldEnum = enumType({
   name: 'ResponseScalarFieldEnum',
-  members: ['id', 'createdAt', 'text', 'userId', 'directionId'],
+  members: ['id', 'createdAt', 'text', 'verdict', 'userId', 'directionId'],
 })
 
 export const TestScalarFieldEnum = enumType({
@@ -64,12 +65,18 @@ export const TaskScalarFieldEnum = enumType({
     'variants',
     'correctSingleAnswer',
     'correctMultipleAnswer',
+    'code',
   ],
 })
 
 export const AnswerScalarFieldEnum = enumType({
   name: 'AnswerScalarFieldEnum',
-  members: ['id', 'createdAt', 'answer', 'userId', 'testId'],
+  members: ['id', 'createdAt', 'answer', 'testId'],
+})
+
+export const TaskAnswerScalarFieldEnum = enumType({
+  name: 'TaskAnswerScalarFieldEnum',
+  members: ['id', 'answer', 'verdict', 'answerModelId', 'taskId', 'userId'],
 })
 
 export const MessagerGroupScalarFieldEnum = enumType({
@@ -95,59 +102,6 @@ export const QueryMode = enumType({
 export const NullsOrder = enumType({
   name: 'NullsOrder',
   members: ['first', 'last'],
-})
-
-export const UserOrderByRelevanceFieldEnum = enumType({
-  name: 'UserOrderByRelevanceFieldEnum',
-  members: [
-    'email',
-    'passwordHash',
-    'tgLink',
-    'vkLink',
-    'phone',
-    'fullname',
-    'logo',
-  ],
-})
-
-export const SpecializationOrderByRelevanceFieldEnum = enumType({
-  name: 'SpecializationOrderByRelevanceFieldEnum',
-  members: ['title'],
-})
-
-export const DirectionOrderByRelevanceFieldEnum = enumType({
-  name: 'DirectionOrderByRelevanceFieldEnum',
-  members: ['title', 'description'],
-})
-
-export const ResponseOrderByRelevanceFieldEnum = enumType({
-  name: 'ResponseOrderByRelevanceFieldEnum',
-  members: ['text'],
-})
-
-export const TestOrderByRelevanceFieldEnum = enumType({
-  name: 'TestOrderByRelevanceFieldEnum',
-  members: ['title'],
-})
-
-export const TaskOrderByRelevanceFieldEnum = enumType({
-  name: 'TaskOrderByRelevanceFieldEnum',
-  members: ['question', 'variants'],
-})
-
-export const AnswerOrderByRelevanceFieldEnum = enumType({
-  name: 'AnswerOrderByRelevanceFieldEnum',
-  members: ['answer'],
-})
-
-export const MessagerGroupOrderByRelevanceFieldEnum = enumType({
-  name: 'MessagerGroupOrderByRelevanceFieldEnum',
-  members: ['title', 'icon'],
-})
-
-export const MessageOrderByRelevanceFieldEnum = enumType({
-  name: 'MessageOrderByRelevanceFieldEnum',
-  members: ['text', 'files'],
 })
 
 export const UserRoleEnum = enumType({
@@ -192,15 +146,15 @@ export const UserWhereInput = inputObjectType({
     t.field('messages', { type: 'MessageListRelationFilter' })
     t.field('groups', { type: 'MessagerGroupListRelationFilter' })
     t.field('responses', { type: 'ResponseListRelationFilter' })
-    t.field('answers', { type: 'AnswerListRelationFilter' })
+    t.field('answers', { type: 'TaskAnswerListRelationFilter' })
   },
 })
 
-export const UserOrderByWithRelationAndSearchRelevanceInput = inputObjectType({
+export const UserOrderByWithRelationInput = inputObjectType({
   nonNullDefaults: {
     input: false,
   },
-  name: 'UserOrderByWithRelationAndSearchRelevanceInput',
+  name: 'UserOrderByWithRelationInput',
   definition(t) {
     t.field('id', { type: 'SortOrder' })
     t.field('createdAt', { type: 'SortOrder' })
@@ -215,8 +169,7 @@ export const UserOrderByWithRelationAndSearchRelevanceInput = inputObjectType({
     t.field('messages', { type: 'MessageOrderByRelationAggregateInput' })
     t.field('groups', { type: 'MessagerGroupOrderByRelationAggregateInput' })
     t.field('responses', { type: 'ResponseOrderByRelationAggregateInput' })
-    t.field('answers', { type: 'AnswerOrderByRelationAggregateInput' })
-    t.field('_relevance', { type: 'UserOrderByRelevanceInput' })
+    t.field('answers', { type: 'TaskAnswerOrderByRelationAggregateInput' })
   },
 })
 
@@ -242,7 +195,7 @@ export const UserWhereUniqueInput = inputObjectType({
     t.field('messages', { type: 'MessageListRelationFilter' })
     t.field('groups', { type: 'MessagerGroupListRelationFilter' })
     t.field('responses', { type: 'ResponseListRelationFilter' })
-    t.field('answers', { type: 'AnswerListRelationFilter' })
+    t.field('answers', { type: 'TaskAnswerListRelationFilter' })
   },
 })
 
@@ -308,20 +261,18 @@ export const SpecializationWhereInput = inputObjectType({
   },
 })
 
-export const SpecializationOrderByWithRelationAndSearchRelevanceInput =
-  inputObjectType({
-    nonNullDefaults: {
-      input: false,
-    },
-    name: 'SpecializationOrderByWithRelationAndSearchRelevanceInput',
-    definition(t) {
-      t.field('id', { type: 'SortOrder' })
-      t.field('createdAt', { type: 'SortOrder' })
-      t.field('title', { type: 'SortOrder' })
-      t.field('directions', { type: 'DirectionOrderByRelationAggregateInput' })
-      t.field('_relevance', { type: 'SpecializationOrderByRelevanceInput' })
-    },
-  })
+export const SpecializationOrderByWithRelationInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'SpecializationOrderByWithRelationInput',
+  definition(t) {
+    t.field('id', { type: 'SortOrder' })
+    t.field('createdAt', { type: 'SortOrder' })
+    t.field('title', { type: 'SortOrder' })
+    t.field('directions', { type: 'DirectionOrderByRelationAggregateInput' })
+  },
+})
 
 export const SpecializationWhereUniqueInput = inputObjectType({
   nonNullDefaults: {
@@ -390,31 +341,33 @@ export const DirectionWhereInput = inputObjectType({
     t.field('title', { type: 'StringFilter' })
     t.field('description', { type: 'StringFilter' })
     t.field('specializationId', { type: 'IntFilter' })
+    t.field('testId', { type: 'IntNullableFilter' })
     t.field('responses', { type: 'ResponseListRelationFilter' })
     t.field('specialization', { type: 'SpecializationRelationFilter' })
+    t.field('test', { type: 'TestNullableRelationFilter' })
   },
 })
 
-export const DirectionOrderByWithRelationAndSearchRelevanceInput =
-  inputObjectType({
-    nonNullDefaults: {
-      input: false,
-    },
-    name: 'DirectionOrderByWithRelationAndSearchRelevanceInput',
-    definition(t) {
-      t.field('id', { type: 'SortOrder' })
-      t.field('createdAt', { type: 'SortOrder' })
-      t.field('type', { type: 'SortOrderInput' })
-      t.field('title', { type: 'SortOrder' })
-      t.field('description', { type: 'SortOrder' })
-      t.field('specializationId', { type: 'SortOrder' })
-      t.field('responses', { type: 'ResponseOrderByRelationAggregateInput' })
-      t.field('specialization', {
-        type: 'SpecializationOrderByWithRelationAndSearchRelevanceInput',
-      })
-      t.field('_relevance', { type: 'DirectionOrderByRelevanceInput' })
-    },
-  })
+export const DirectionOrderByWithRelationInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'DirectionOrderByWithRelationInput',
+  definition(t) {
+    t.field('id', { type: 'SortOrder' })
+    t.field('createdAt', { type: 'SortOrder' })
+    t.field('type', { type: 'SortOrderInput' })
+    t.field('title', { type: 'SortOrder' })
+    t.field('description', { type: 'SortOrder' })
+    t.field('specializationId', { type: 'SortOrder' })
+    t.field('testId', { type: 'SortOrderInput' })
+    t.field('responses', { type: 'ResponseOrderByRelationAggregateInput' })
+    t.field('specialization', {
+      type: 'SpecializationOrderByWithRelationInput',
+    })
+    t.field('test', { type: 'TestOrderByWithRelationInput' })
+  },
+})
 
 export const DirectionWhereUniqueInput = inputObjectType({
   nonNullDefaults: {
@@ -431,8 +384,10 @@ export const DirectionWhereUniqueInput = inputObjectType({
     t.field('title', { type: 'StringFilter' })
     t.field('description', { type: 'StringFilter' })
     t.field('specializationId', { type: 'IntFilter' })
+    t.field('testId', { type: 'IntNullableFilter' })
     t.field('responses', { type: 'ResponseListRelationFilter' })
     t.field('specialization', { type: 'SpecializationRelationFilter' })
+    t.field('test', { type: 'TestNullableRelationFilter' })
   },
 })
 
@@ -448,6 +403,7 @@ export const DirectionOrderByWithAggregationInput = inputObjectType({
     t.field('title', { type: 'SortOrder' })
     t.field('description', { type: 'SortOrder' })
     t.field('specializationId', { type: 'SortOrder' })
+    t.field('testId', { type: 'SortOrderInput' })
     t.field('_count', { type: 'DirectionCountOrderByAggregateInput' })
     t.field('_avg', { type: 'DirectionAvgOrderByAggregateInput' })
     t.field('_max', { type: 'DirectionMaxOrderByAggregateInput' })
@@ -471,6 +427,7 @@ export const DirectionScalarWhereWithAggregatesInput = inputObjectType({
     t.field('title', { type: 'StringWithAggregatesFilter' })
     t.field('description', { type: 'StringWithAggregatesFilter' })
     t.field('specializationId', { type: 'IntWithAggregatesFilter' })
+    t.field('testId', { type: 'IntNullableWithAggregatesFilter' })
   },
 })
 
@@ -486,6 +443,7 @@ export const ResponseWhereInput = inputObjectType({
     t.field('id', { type: 'IntFilter' })
     t.field('createdAt', { type: 'DateTimeFilter' })
     t.field('text', { type: 'StringNullableFilter' })
+    t.field('verdict', { type: 'StringNullableFilter' })
     t.field('userId', { type: 'IntFilter' })
     t.field('directionId', { type: 'IntFilter' })
     t.field('user', { type: 'UserRelationFilter' })
@@ -495,29 +453,24 @@ export const ResponseWhereInput = inputObjectType({
   },
 })
 
-export const ResponseOrderByWithRelationAndSearchRelevanceInput =
-  inputObjectType({
-    nonNullDefaults: {
-      input: false,
-    },
-    name: 'ResponseOrderByWithRelationAndSearchRelevanceInput',
-    definition(t) {
-      t.field('id', { type: 'SortOrder' })
-      t.field('createdAt', { type: 'SortOrder' })
-      t.field('text', { type: 'SortOrderInput' })
-      t.field('userId', { type: 'SortOrder' })
-      t.field('directionId', { type: 'SortOrder' })
-      t.field('user', {
-        type: 'UserOrderByWithRelationAndSearchRelevanceInput',
-      })
-      t.field('direction', {
-        type: 'DirectionOrderByWithRelationAndSearchRelevanceInput',
-      })
-      t.field('tests', { type: 'TestOrderByRelationAggregateInput' })
-      t.field('answers', { type: 'AnswerOrderByRelationAggregateInput' })
-      t.field('_relevance', { type: 'ResponseOrderByRelevanceInput' })
-    },
-  })
+export const ResponseOrderByWithRelationInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'ResponseOrderByWithRelationInput',
+  definition(t) {
+    t.field('id', { type: 'SortOrder' })
+    t.field('createdAt', { type: 'SortOrder' })
+    t.field('text', { type: 'SortOrderInput' })
+    t.field('verdict', { type: 'SortOrderInput' })
+    t.field('userId', { type: 'SortOrder' })
+    t.field('directionId', { type: 'SortOrder' })
+    t.field('user', { type: 'UserOrderByWithRelationInput' })
+    t.field('direction', { type: 'DirectionOrderByWithRelationInput' })
+    t.field('tests', { type: 'TestOrderByRelationAggregateInput' })
+    t.field('answers', { type: 'AnswerOrderByRelationAggregateInput' })
+  },
+})
 
 export const ResponseWhereUniqueInput = inputObjectType({
   nonNullDefaults: {
@@ -531,6 +484,7 @@ export const ResponseWhereUniqueInput = inputObjectType({
     t.list.field('NOT', { type: 'ResponseWhereInput' })
     t.field('createdAt', { type: 'DateTimeFilter' })
     t.field('text', { type: 'StringNullableFilter' })
+    t.field('verdict', { type: 'StringNullableFilter' })
     t.field('userId', { type: 'IntFilter' })
     t.field('directionId', { type: 'IntFilter' })
     t.field('user', { type: 'UserRelationFilter' })
@@ -549,6 +503,7 @@ export const ResponseOrderByWithAggregationInput = inputObjectType({
     t.field('id', { type: 'SortOrder' })
     t.field('createdAt', { type: 'SortOrder' })
     t.field('text', { type: 'SortOrderInput' })
+    t.field('verdict', { type: 'SortOrderInput' })
     t.field('userId', { type: 'SortOrder' })
     t.field('directionId', { type: 'SortOrder' })
     t.field('_count', { type: 'ResponseCountOrderByAggregateInput' })
@@ -571,6 +526,7 @@ export const ResponseScalarWhereWithAggregatesInput = inputObjectType({
     t.field('id', { type: 'IntWithAggregatesFilter' })
     t.field('createdAt', { type: 'DateTimeWithAggregatesFilter' })
     t.field('text', { type: 'StringNullableWithAggregatesFilter' })
+    t.field('verdict', { type: 'StringNullableWithAggregatesFilter' })
     t.field('userId', { type: 'IntWithAggregatesFilter' })
     t.field('directionId', { type: 'IntWithAggregatesFilter' })
   },
@@ -588,25 +544,26 @@ export const TestWhereInput = inputObjectType({
     t.field('id', { type: 'IntFilter' })
     t.field('createdAt', { type: 'DateTimeFilter' })
     t.field('title', { type: 'StringFilter' })
+    t.field('direction', { type: 'DirectionListRelationFilter' })
     t.field('tasks', { type: 'TaskListRelationFilter' })
     t.field('answers', { type: 'AnswerListRelationFilter' })
     t.field('response', { type: 'ResponseListRelationFilter' })
   },
 })
 
-export const TestOrderByWithRelationAndSearchRelevanceInput = inputObjectType({
+export const TestOrderByWithRelationInput = inputObjectType({
   nonNullDefaults: {
     input: false,
   },
-  name: 'TestOrderByWithRelationAndSearchRelevanceInput',
+  name: 'TestOrderByWithRelationInput',
   definition(t) {
     t.field('id', { type: 'SortOrder' })
     t.field('createdAt', { type: 'SortOrder' })
     t.field('title', { type: 'SortOrder' })
+    t.field('direction', { type: 'DirectionOrderByRelationAggregateInput' })
     t.field('tasks', { type: 'TaskOrderByRelationAggregateInput' })
     t.field('answers', { type: 'AnswerOrderByRelationAggregateInput' })
     t.field('response', { type: 'ResponseOrderByRelationAggregateInput' })
-    t.field('_relevance', { type: 'TestOrderByRelevanceInput' })
   },
 })
 
@@ -622,6 +579,7 @@ export const TestWhereUniqueInput = inputObjectType({
     t.list.field('NOT', { type: 'TestWhereInput' })
     t.field('createdAt', { type: 'DateTimeFilter' })
     t.field('title', { type: 'StringFilter' })
+    t.field('direction', { type: 'DirectionListRelationFilter' })
     t.field('tasks', { type: 'TaskListRelationFilter' })
     t.field('answers', { type: 'AnswerListRelationFilter' })
     t.field('response', { type: 'ResponseListRelationFilter' })
@@ -677,15 +635,17 @@ export const TaskWhereInput = inputObjectType({
     t.field('variants', { type: 'StringNullableListFilter' })
     t.field('correctSingleAnswer', { type: 'IntNullableFilter' })
     t.field('correctMultipleAnswer', { type: 'IntNullableListFilter' })
+    t.field('code', { type: 'StringNullableFilter' })
     t.field('test', { type: 'TestNullableRelationFilter' })
+    t.field('taskAnswers', { type: 'TaskAnswerListRelationFilter' })
   },
 })
 
-export const TaskOrderByWithRelationAndSearchRelevanceInput = inputObjectType({
+export const TaskOrderByWithRelationInput = inputObjectType({
   nonNullDefaults: {
     input: false,
   },
-  name: 'TaskOrderByWithRelationAndSearchRelevanceInput',
+  name: 'TaskOrderByWithRelationInput',
   definition(t) {
     t.field('id', { type: 'SortOrder' })
     t.field('createdAt', { type: 'SortOrder' })
@@ -695,8 +655,9 @@ export const TaskOrderByWithRelationAndSearchRelevanceInput = inputObjectType({
     t.field('variants', { type: 'SortOrder' })
     t.field('correctSingleAnswer', { type: 'SortOrderInput' })
     t.field('correctMultipleAnswer', { type: 'SortOrder' })
-    t.field('test', { type: 'TestOrderByWithRelationAndSearchRelevanceInput' })
-    t.field('_relevance', { type: 'TaskOrderByRelevanceInput' })
+    t.field('code', { type: 'SortOrderInput' })
+    t.field('test', { type: 'TestOrderByWithRelationInput' })
+    t.field('taskAnswers', { type: 'TaskAnswerOrderByRelationAggregateInput' })
   },
 })
 
@@ -717,7 +678,9 @@ export const TaskWhereUniqueInput = inputObjectType({
     t.field('variants', { type: 'StringNullableListFilter' })
     t.field('correctSingleAnswer', { type: 'IntNullableFilter' })
     t.field('correctMultipleAnswer', { type: 'IntNullableListFilter' })
+    t.field('code', { type: 'StringNullableFilter' })
     t.field('test', { type: 'TestNullableRelationFilter' })
+    t.field('taskAnswers', { type: 'TaskAnswerListRelationFilter' })
   },
 })
 
@@ -735,6 +698,7 @@ export const TaskOrderByWithAggregationInput = inputObjectType({
     t.field('variants', { type: 'SortOrder' })
     t.field('correctSingleAnswer', { type: 'SortOrderInput' })
     t.field('correctMultipleAnswer', { type: 'SortOrder' })
+    t.field('code', { type: 'SortOrderInput' })
     t.field('_count', { type: 'TaskCountOrderByAggregateInput' })
     t.field('_avg', { type: 'TaskAvgOrderByAggregateInput' })
     t.field('_max', { type: 'TaskMaxOrderByAggregateInput' })
@@ -760,6 +724,7 @@ export const TaskScalarWhereWithAggregatesInput = inputObjectType({
     t.field('variants', { type: 'StringNullableListFilter' })
     t.field('correctSingleAnswer', { type: 'IntNullableWithAggregatesFilter' })
     t.field('correctMultipleAnswer', { type: 'IntNullableListFilter' })
+    t.field('code', { type: 'StringNullableWithAggregatesFilter' })
   },
 })
 
@@ -775,37 +740,28 @@ export const AnswerWhereInput = inputObjectType({
     t.field('id', { type: 'IntFilter' })
     t.field('createdAt', { type: 'DateTimeFilter' })
     t.field('answer', { type: 'StringNullableFilter' })
-    t.field('userId', { type: 'IntFilter' })
     t.field('testId', { type: 'IntFilter' })
-    t.field('user', { type: 'UserRelationFilter' })
     t.field('test', { type: 'TestRelationFilter' })
+    t.field('taskAnswers', { type: 'TaskAnswerListRelationFilter' })
     t.field('response', { type: 'ResponseListRelationFilter' })
   },
 })
 
-export const AnswerOrderByWithRelationAndSearchRelevanceInput = inputObjectType(
-  {
-    nonNullDefaults: {
-      input: false,
-    },
-    name: 'AnswerOrderByWithRelationAndSearchRelevanceInput',
-    definition(t) {
-      t.field('id', { type: 'SortOrder' })
-      t.field('createdAt', { type: 'SortOrder' })
-      t.field('answer', { type: 'SortOrderInput' })
-      t.field('userId', { type: 'SortOrder' })
-      t.field('testId', { type: 'SortOrder' })
-      t.field('user', {
-        type: 'UserOrderByWithRelationAndSearchRelevanceInput',
-      })
-      t.field('test', {
-        type: 'TestOrderByWithRelationAndSearchRelevanceInput',
-      })
-      t.field('response', { type: 'ResponseOrderByRelationAggregateInput' })
-      t.field('_relevance', { type: 'AnswerOrderByRelevanceInput' })
-    },
+export const AnswerOrderByWithRelationInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
   },
-)
+  name: 'AnswerOrderByWithRelationInput',
+  definition(t) {
+    t.field('id', { type: 'SortOrder' })
+    t.field('createdAt', { type: 'SortOrder' })
+    t.field('answer', { type: 'SortOrderInput' })
+    t.field('testId', { type: 'SortOrder' })
+    t.field('test', { type: 'TestOrderByWithRelationInput' })
+    t.field('taskAnswers', { type: 'TaskAnswerOrderByRelationAggregateInput' })
+    t.field('response', { type: 'ResponseOrderByRelationAggregateInput' })
+  },
+})
 
 export const AnswerWhereUniqueInput = inputObjectType({
   nonNullDefaults: {
@@ -819,10 +775,9 @@ export const AnswerWhereUniqueInput = inputObjectType({
     t.list.field('NOT', { type: 'AnswerWhereInput' })
     t.field('createdAt', { type: 'DateTimeFilter' })
     t.field('answer', { type: 'StringNullableFilter' })
-    t.field('userId', { type: 'IntFilter' })
     t.field('testId', { type: 'IntFilter' })
-    t.field('user', { type: 'UserRelationFilter' })
     t.field('test', { type: 'TestRelationFilter' })
+    t.field('taskAnswers', { type: 'TaskAnswerListRelationFilter' })
     t.field('response', { type: 'ResponseListRelationFilter' })
   },
 })
@@ -836,7 +791,6 @@ export const AnswerOrderByWithAggregationInput = inputObjectType({
     t.field('id', { type: 'SortOrder' })
     t.field('createdAt', { type: 'SortOrder' })
     t.field('answer', { type: 'SortOrderInput' })
-    t.field('userId', { type: 'SortOrder' })
     t.field('testId', { type: 'SortOrder' })
     t.field('_count', { type: 'AnswerCountOrderByAggregateInput' })
     t.field('_avg', { type: 'AnswerAvgOrderByAggregateInput' })
@@ -858,8 +812,105 @@ export const AnswerScalarWhereWithAggregatesInput = inputObjectType({
     t.field('id', { type: 'IntWithAggregatesFilter' })
     t.field('createdAt', { type: 'DateTimeWithAggregatesFilter' })
     t.field('answer', { type: 'StringNullableWithAggregatesFilter' })
-    t.field('userId', { type: 'IntWithAggregatesFilter' })
     t.field('testId', { type: 'IntWithAggregatesFilter' })
+  },
+})
+
+export const TaskAnswerWhereInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'TaskAnswerWhereInput',
+  definition(t) {
+    t.list.field('AND', { type: 'TaskAnswerWhereInput' })
+    t.list.field('OR', { type: 'TaskAnswerWhereInput' })
+    t.list.field('NOT', { type: 'TaskAnswerWhereInput' })
+    t.field('id', { type: 'IntFilter' })
+    t.field('answer', { type: 'StringFilter' })
+    t.field('verdict', { type: 'IntNullableFilter' })
+    t.field('answerModelId', { type: 'IntFilter' })
+    t.field('taskId', { type: 'IntFilter' })
+    t.field('userId', { type: 'IntFilter' })
+    t.field('answerModel', { type: 'AnswerRelationFilter' })
+    t.field('task', { type: 'TaskRelationFilter' })
+    t.field('user', { type: 'UserRelationFilter' })
+  },
+})
+
+export const TaskAnswerOrderByWithRelationInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'TaskAnswerOrderByWithRelationInput',
+  definition(t) {
+    t.field('id', { type: 'SortOrder' })
+    t.field('answer', { type: 'SortOrder' })
+    t.field('verdict', { type: 'SortOrderInput' })
+    t.field('answerModelId', { type: 'SortOrder' })
+    t.field('taskId', { type: 'SortOrder' })
+    t.field('userId', { type: 'SortOrder' })
+    t.field('answerModel', { type: 'AnswerOrderByWithRelationInput' })
+    t.field('task', { type: 'TaskOrderByWithRelationInput' })
+    t.field('user', { type: 'UserOrderByWithRelationInput' })
+  },
+})
+
+export const TaskAnswerWhereUniqueInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'TaskAnswerWhereUniqueInput',
+  definition(t) {
+    t.field('id', { type: 'Int' })
+    t.list.field('AND', { type: 'TaskAnswerWhereInput' })
+    t.list.field('OR', { type: 'TaskAnswerWhereInput' })
+    t.list.field('NOT', { type: 'TaskAnswerWhereInput' })
+    t.field('answer', { type: 'StringFilter' })
+    t.field('verdict', { type: 'IntNullableFilter' })
+    t.field('answerModelId', { type: 'IntFilter' })
+    t.field('taskId', { type: 'IntFilter' })
+    t.field('userId', { type: 'IntFilter' })
+    t.field('answerModel', { type: 'AnswerRelationFilter' })
+    t.field('task', { type: 'TaskRelationFilter' })
+    t.field('user', { type: 'UserRelationFilter' })
+  },
+})
+
+export const TaskAnswerOrderByWithAggregationInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'TaskAnswerOrderByWithAggregationInput',
+  definition(t) {
+    t.field('id', { type: 'SortOrder' })
+    t.field('answer', { type: 'SortOrder' })
+    t.field('verdict', { type: 'SortOrderInput' })
+    t.field('answerModelId', { type: 'SortOrder' })
+    t.field('taskId', { type: 'SortOrder' })
+    t.field('userId', { type: 'SortOrder' })
+    t.field('_count', { type: 'TaskAnswerCountOrderByAggregateInput' })
+    t.field('_avg', { type: 'TaskAnswerAvgOrderByAggregateInput' })
+    t.field('_max', { type: 'TaskAnswerMaxOrderByAggregateInput' })
+    t.field('_min', { type: 'TaskAnswerMinOrderByAggregateInput' })
+    t.field('_sum', { type: 'TaskAnswerSumOrderByAggregateInput' })
+  },
+})
+
+export const TaskAnswerScalarWhereWithAggregatesInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'TaskAnswerScalarWhereWithAggregatesInput',
+  definition(t) {
+    t.list.field('AND', { type: 'TaskAnswerScalarWhereWithAggregatesInput' })
+    t.list.field('OR', { type: 'TaskAnswerScalarWhereWithAggregatesInput' })
+    t.list.field('NOT', { type: 'TaskAnswerScalarWhereWithAggregatesInput' })
+    t.field('id', { type: 'IntWithAggregatesFilter' })
+    t.field('answer', { type: 'StringWithAggregatesFilter' })
+    t.field('verdict', { type: 'IntNullableWithAggregatesFilter' })
+    t.field('answerModelId', { type: 'IntWithAggregatesFilter' })
+    t.field('taskId', { type: 'IntWithAggregatesFilter' })
+    t.field('userId', { type: 'IntWithAggregatesFilter' })
   },
 })
 
@@ -883,24 +934,22 @@ export const MessagerGroupWhereInput = inputObjectType({
   },
 })
 
-export const MessagerGroupOrderByWithRelationAndSearchRelevanceInput =
-  inputObjectType({
-    nonNullDefaults: {
-      input: false,
-    },
-    name: 'MessagerGroupOrderByWithRelationAndSearchRelevanceInput',
-    definition(t) {
-      t.field('id', { type: 'SortOrder' })
-      t.field('createdAt', { type: 'SortOrder' })
-      t.field('creatorId', { type: 'SortOrderInput' })
-      t.field('active', { type: 'SortOrder' })
-      t.field('title', { type: 'SortOrder' })
-      t.field('icon', { type: 'SortOrder' })
-      t.field('users', { type: 'UserOrderByRelationAggregateInput' })
-      t.field('messages', { type: 'MessageOrderByRelationAggregateInput' })
-      t.field('_relevance', { type: 'MessagerGroupOrderByRelevanceInput' })
-    },
-  })
+export const MessagerGroupOrderByWithRelationInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'MessagerGroupOrderByWithRelationInput',
+  definition(t) {
+    t.field('id', { type: 'SortOrder' })
+    t.field('createdAt', { type: 'SortOrder' })
+    t.field('creatorId', { type: 'SortOrderInput' })
+    t.field('active', { type: 'SortOrder' })
+    t.field('title', { type: 'SortOrder' })
+    t.field('icon', { type: 'SortOrder' })
+    t.field('users', { type: 'UserOrderByRelationAggregateInput' })
+    t.field('messages', { type: 'MessageOrderByRelationAggregateInput' })
+  },
+})
 
 export const MessagerGroupWhereUniqueInput = inputObjectType({
   nonNullDefaults: {
@@ -980,28 +1029,22 @@ export const MessageWhereInput = inputObjectType({
   },
 })
 
-export const MessageOrderByWithRelationAndSearchRelevanceInput =
-  inputObjectType({
-    nonNullDefaults: {
-      input: false,
-    },
-    name: 'MessageOrderByWithRelationAndSearchRelevanceInput',
-    definition(t) {
-      t.field('id', { type: 'SortOrder' })
-      t.field('createdAt', { type: 'SortOrder' })
-      t.field('text', { type: 'SortOrder' })
-      t.field('files', { type: 'SortOrder' })
-      t.field('senderId', { type: 'SortOrder' })
-      t.field('groupId', { type: 'SortOrder' })
-      t.field('sender', {
-        type: 'UserOrderByWithRelationAndSearchRelevanceInput',
-      })
-      t.field('group', {
-        type: 'MessagerGroupOrderByWithRelationAndSearchRelevanceInput',
-      })
-      t.field('_relevance', { type: 'MessageOrderByRelevanceInput' })
-    },
-  })
+export const MessageOrderByWithRelationInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'MessageOrderByWithRelationInput',
+  definition(t) {
+    t.field('id', { type: 'SortOrder' })
+    t.field('createdAt', { type: 'SortOrder' })
+    t.field('text', { type: 'SortOrder' })
+    t.field('files', { type: 'SortOrder' })
+    t.field('senderId', { type: 'SortOrder' })
+    t.field('groupId', { type: 'SortOrder' })
+    t.field('sender', { type: 'UserOrderByWithRelationInput' })
+    t.field('group', { type: 'MessagerGroupOrderByWithRelationInput' })
+  },
+})
 
 export const MessageWhereUniqueInput = inputObjectType({
   nonNullDefaults: {
@@ -1081,7 +1124,7 @@ export const UserCreateInput = inputObjectType({
       type: 'MessagerGroupCreateNestedManyWithoutUsersInput',
     })
     t.field('responses', { type: 'ResponseCreateNestedManyWithoutUserInput' })
-    t.field('answers', { type: 'AnswerCreateNestedManyWithoutUserInput' })
+    t.field('answers', { type: 'TaskAnswerCreateNestedManyWithoutUserInput' })
   },
 })
 
@@ -1111,7 +1154,7 @@ export const UserUncheckedCreateInput = inputObjectType({
       type: 'ResponseUncheckedCreateNestedManyWithoutUserInput',
     })
     t.field('answers', {
-      type: 'AnswerUncheckedCreateNestedManyWithoutUserInput',
+      type: 'TaskAnswerUncheckedCreateNestedManyWithoutUserInput',
     })
   },
 })
@@ -1136,7 +1179,7 @@ export const UserUpdateInput = inputObjectType({
       type: 'MessagerGroupUpdateManyWithoutUsersNestedInput',
     })
     t.field('responses', { type: 'ResponseUpdateManyWithoutUserNestedInput' })
-    t.field('answers', { type: 'AnswerUpdateManyWithoutUserNestedInput' })
+    t.field('answers', { type: 'TaskAnswerUpdateManyWithoutUserNestedInput' })
   },
 })
 
@@ -1166,7 +1209,7 @@ export const UserUncheckedUpdateInput = inputObjectType({
       type: 'ResponseUncheckedUpdateManyWithoutUserNestedInput',
     })
     t.field('answers', {
-      type: 'AnswerUncheckedUpdateManyWithoutUserNestedInput',
+      type: 'TaskAnswerUncheckedUpdateManyWithoutUserNestedInput',
     })
   },
 })
@@ -1336,6 +1379,7 @@ export const DirectionCreateInput = inputObjectType({
     t.nonNull.field('specialization', {
       type: 'SpecializationCreateNestedOneWithoutDirectionsInput',
     })
+    t.field('test', { type: 'TestCreateNestedOneWithoutDirectionInput' })
   },
 })
 
@@ -1351,6 +1395,7 @@ export const DirectionUncheckedCreateInput = inputObjectType({
     t.nonNull.field('title', { type: 'String' })
     t.nonNull.field('description', { type: 'String' })
     t.nonNull.field('specializationId', { type: 'Int' })
+    t.field('testId', { type: 'Int' })
     t.field('responses', {
       type: 'ResponseUncheckedCreateNestedManyWithoutDirectionInput',
     })
@@ -1375,6 +1420,7 @@ export const DirectionUpdateInput = inputObjectType({
     t.field('specialization', {
       type: 'SpecializationUpdateOneRequiredWithoutDirectionsNestedInput',
     })
+    t.field('test', { type: 'TestUpdateOneWithoutDirectionNestedInput' })
   },
 })
 
@@ -1392,6 +1438,7 @@ export const DirectionUncheckedUpdateInput = inputObjectType({
     t.field('title', { type: 'StringFieldUpdateOperationsInput' })
     t.field('description', { type: 'StringFieldUpdateOperationsInput' })
     t.field('specializationId', { type: 'IntFieldUpdateOperationsInput' })
+    t.field('testId', { type: 'NullableIntFieldUpdateOperationsInput' })
     t.field('responses', {
       type: 'ResponseUncheckedUpdateManyWithoutDirectionNestedInput',
     })
@@ -1410,6 +1457,7 @@ export const DirectionCreateManyInput = inputObjectType({
     t.nonNull.field('title', { type: 'String' })
     t.nonNull.field('description', { type: 'String' })
     t.nonNull.field('specializationId', { type: 'Int' })
+    t.field('testId', { type: 'Int' })
   },
 })
 
@@ -1442,6 +1490,7 @@ export const DirectionUncheckedUpdateManyInput = inputObjectType({
     t.field('title', { type: 'StringFieldUpdateOperationsInput' })
     t.field('description', { type: 'StringFieldUpdateOperationsInput' })
     t.field('specializationId', { type: 'IntFieldUpdateOperationsInput' })
+    t.field('testId', { type: 'NullableIntFieldUpdateOperationsInput' })
   },
 })
 
@@ -1453,6 +1502,7 @@ export const ResponseCreateInput = inputObjectType({
   definition(t) {
     t.field('createdAt', { type: 'DateTime' })
     t.field('text', { type: 'String' })
+    t.field('verdict', { type: 'String' })
     t.nonNull.field('user', {
       type: 'UserCreateNestedOneWithoutResponsesInput',
     })
@@ -1473,6 +1523,7 @@ export const ResponseUncheckedCreateInput = inputObjectType({
     t.field('id', { type: 'Int' })
     t.field('createdAt', { type: 'DateTime' })
     t.field('text', { type: 'String' })
+    t.field('verdict', { type: 'String' })
     t.nonNull.field('userId', { type: 'Int' })
     t.nonNull.field('directionId', { type: 'Int' })
     t.field('tests', {
@@ -1492,6 +1543,7 @@ export const ResponseUpdateInput = inputObjectType({
   definition(t) {
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('text', { type: 'NullableStringFieldUpdateOperationsInput' })
+    t.field('verdict', { type: 'NullableStringFieldUpdateOperationsInput' })
     t.field('user', {
       type: 'UserUpdateOneRequiredWithoutResponsesNestedInput',
     })
@@ -1512,6 +1564,7 @@ export const ResponseUncheckedUpdateInput = inputObjectType({
     t.field('id', { type: 'IntFieldUpdateOperationsInput' })
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('text', { type: 'NullableStringFieldUpdateOperationsInput' })
+    t.field('verdict', { type: 'NullableStringFieldUpdateOperationsInput' })
     t.field('userId', { type: 'IntFieldUpdateOperationsInput' })
     t.field('directionId', { type: 'IntFieldUpdateOperationsInput' })
     t.field('tests', {
@@ -1532,6 +1585,7 @@ export const ResponseCreateManyInput = inputObjectType({
     t.field('id', { type: 'Int' })
     t.field('createdAt', { type: 'DateTime' })
     t.field('text', { type: 'String' })
+    t.field('verdict', { type: 'String' })
     t.nonNull.field('userId', { type: 'Int' })
     t.nonNull.field('directionId', { type: 'Int' })
   },
@@ -1545,6 +1599,7 @@ export const ResponseUpdateManyMutationInput = inputObjectType({
   definition(t) {
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('text', { type: 'NullableStringFieldUpdateOperationsInput' })
+    t.field('verdict', { type: 'NullableStringFieldUpdateOperationsInput' })
   },
 })
 
@@ -1557,6 +1612,7 @@ export const ResponseUncheckedUpdateManyInput = inputObjectType({
     t.field('id', { type: 'IntFieldUpdateOperationsInput' })
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('text', { type: 'NullableStringFieldUpdateOperationsInput' })
+    t.field('verdict', { type: 'NullableStringFieldUpdateOperationsInput' })
     t.field('userId', { type: 'IntFieldUpdateOperationsInput' })
     t.field('directionId', { type: 'IntFieldUpdateOperationsInput' })
   },
@@ -1570,6 +1626,7 @@ export const TestCreateInput = inputObjectType({
   definition(t) {
     t.field('createdAt', { type: 'DateTime' })
     t.nonNull.field('title', { type: 'String' })
+    t.field('direction', { type: 'DirectionCreateNestedManyWithoutTestInput' })
     t.field('tasks', { type: 'TaskCreateNestedManyWithoutTestInput' })
     t.field('answers', { type: 'AnswerCreateNestedManyWithoutTestInput' })
     t.field('response', { type: 'ResponseCreateNestedManyWithoutTestsInput' })
@@ -1585,6 +1642,9 @@ export const TestUncheckedCreateInput = inputObjectType({
     t.field('id', { type: 'Int' })
     t.field('createdAt', { type: 'DateTime' })
     t.nonNull.field('title', { type: 'String' })
+    t.field('direction', {
+      type: 'DirectionUncheckedCreateNestedManyWithoutTestInput',
+    })
     t.field('tasks', { type: 'TaskUncheckedCreateNestedManyWithoutTestInput' })
     t.field('answers', {
       type: 'AnswerUncheckedCreateNestedManyWithoutTestInput',
@@ -1603,6 +1663,7 @@ export const TestUpdateInput = inputObjectType({
   definition(t) {
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('title', { type: 'StringFieldUpdateOperationsInput' })
+    t.field('direction', { type: 'DirectionUpdateManyWithoutTestNestedInput' })
     t.field('tasks', { type: 'TaskUpdateManyWithoutTestNestedInput' })
     t.field('answers', { type: 'AnswerUpdateManyWithoutTestNestedInput' })
     t.field('response', { type: 'ResponseUpdateManyWithoutTestsNestedInput' })
@@ -1618,6 +1679,9 @@ export const TestUncheckedUpdateInput = inputObjectType({
     t.field('id', { type: 'IntFieldUpdateOperationsInput' })
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('title', { type: 'StringFieldUpdateOperationsInput' })
+    t.field('direction', {
+      type: 'DirectionUncheckedUpdateManyWithoutTestNestedInput',
+    })
     t.field('tasks', { type: 'TaskUncheckedUpdateManyWithoutTestNestedInput' })
     t.field('answers', {
       type: 'AnswerUncheckedUpdateManyWithoutTestNestedInput',
@@ -1675,7 +1739,11 @@ export const TaskCreateInput = inputObjectType({
     t.list.field('variants', { type: 'String' })
     t.field('correctSingleAnswer', { type: 'Int' })
     t.list.field('correctMultipleAnswer', { type: 'Int' })
+    t.field('code', { type: 'String' })
     t.field('test', { type: 'TestCreateNestedOneWithoutTasksInput' })
+    t.field('taskAnswers', {
+      type: 'TaskAnswerCreateNestedManyWithoutTaskInput',
+    })
   },
 })
 
@@ -1693,6 +1761,10 @@ export const TaskUncheckedCreateInput = inputObjectType({
     t.list.field('variants', { type: 'String' })
     t.field('correctSingleAnswer', { type: 'Int' })
     t.list.field('correctMultipleAnswer', { type: 'Int' })
+    t.field('code', { type: 'String' })
+    t.field('taskAnswers', {
+      type: 'TaskAnswerUncheckedCreateNestedManyWithoutTaskInput',
+    })
   },
 })
 
@@ -1710,7 +1782,11 @@ export const TaskUpdateInput = inputObjectType({
       type: 'NullableIntFieldUpdateOperationsInput',
     })
     t.list.field('correctMultipleAnswer', { type: 'Int' })
+    t.field('code', { type: 'NullableStringFieldUpdateOperationsInput' })
     t.field('test', { type: 'TestUpdateOneWithoutTasksNestedInput' })
+    t.field('taskAnswers', {
+      type: 'TaskAnswerUpdateManyWithoutTaskNestedInput',
+    })
   },
 })
 
@@ -1730,6 +1806,10 @@ export const TaskUncheckedUpdateInput = inputObjectType({
       type: 'NullableIntFieldUpdateOperationsInput',
     })
     t.list.field('correctMultipleAnswer', { type: 'Int' })
+    t.field('code', { type: 'NullableStringFieldUpdateOperationsInput' })
+    t.field('taskAnswers', {
+      type: 'TaskAnswerUncheckedUpdateManyWithoutTaskNestedInput',
+    })
   },
 })
 
@@ -1747,6 +1827,7 @@ export const TaskCreateManyInput = inputObjectType({
     t.list.field('variants', { type: 'String' })
     t.field('correctSingleAnswer', { type: 'Int' })
     t.list.field('correctMultipleAnswer', { type: 'Int' })
+    t.field('code', { type: 'String' })
   },
 })
 
@@ -1764,6 +1845,7 @@ export const TaskUpdateManyMutationInput = inputObjectType({
       type: 'NullableIntFieldUpdateOperationsInput',
     })
     t.list.field('correctMultipleAnswer', { type: 'Int' })
+    t.field('code', { type: 'NullableStringFieldUpdateOperationsInput' })
   },
 })
 
@@ -1783,6 +1865,7 @@ export const TaskUncheckedUpdateManyInput = inputObjectType({
       type: 'NullableIntFieldUpdateOperationsInput',
     })
     t.list.field('correctMultipleAnswer', { type: 'Int' })
+    t.field('code', { type: 'NullableStringFieldUpdateOperationsInput' })
   },
 })
 
@@ -1794,8 +1877,10 @@ export const AnswerCreateInput = inputObjectType({
   definition(t) {
     t.field('createdAt', { type: 'DateTime' })
     t.field('answer', { type: 'String' })
-    t.nonNull.field('user', { type: 'UserCreateNestedOneWithoutAnswersInput' })
     t.nonNull.field('test', { type: 'TestCreateNestedOneWithoutAnswersInput' })
+    t.field('taskAnswers', {
+      type: 'TaskAnswerCreateNestedManyWithoutAnswerModelInput',
+    })
     t.field('response', { type: 'ResponseCreateNestedManyWithoutAnswersInput' })
   },
 })
@@ -1809,8 +1894,10 @@ export const AnswerUncheckedCreateInput = inputObjectType({
     t.field('id', { type: 'Int' })
     t.field('createdAt', { type: 'DateTime' })
     t.field('answer', { type: 'String' })
-    t.nonNull.field('userId', { type: 'Int' })
     t.nonNull.field('testId', { type: 'Int' })
+    t.field('taskAnswers', {
+      type: 'TaskAnswerUncheckedCreateNestedManyWithoutAnswerModelInput',
+    })
     t.field('response', {
       type: 'ResponseUncheckedCreateNestedManyWithoutAnswersInput',
     })
@@ -1825,8 +1912,10 @@ export const AnswerUpdateInput = inputObjectType({
   definition(t) {
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('answer', { type: 'NullableStringFieldUpdateOperationsInput' })
-    t.field('user', { type: 'UserUpdateOneRequiredWithoutAnswersNestedInput' })
     t.field('test', { type: 'TestUpdateOneRequiredWithoutAnswersNestedInput' })
+    t.field('taskAnswers', {
+      type: 'TaskAnswerUpdateManyWithoutAnswerModelNestedInput',
+    })
     t.field('response', { type: 'ResponseUpdateManyWithoutAnswersNestedInput' })
   },
 })
@@ -1840,8 +1929,10 @@ export const AnswerUncheckedUpdateInput = inputObjectType({
     t.field('id', { type: 'IntFieldUpdateOperationsInput' })
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('answer', { type: 'NullableStringFieldUpdateOperationsInput' })
-    t.field('userId', { type: 'IntFieldUpdateOperationsInput' })
     t.field('testId', { type: 'IntFieldUpdateOperationsInput' })
+    t.field('taskAnswers', {
+      type: 'TaskAnswerUncheckedUpdateManyWithoutAnswerModelNestedInput',
+    })
     t.field('response', {
       type: 'ResponseUncheckedUpdateManyWithoutAnswersNestedInput',
     })
@@ -1857,7 +1948,6 @@ export const AnswerCreateManyInput = inputObjectType({
     t.field('id', { type: 'Int' })
     t.field('createdAt', { type: 'DateTime' })
     t.field('answer', { type: 'String' })
-    t.nonNull.field('userId', { type: 'Int' })
     t.nonNull.field('testId', { type: 'Int' })
   },
 })
@@ -1882,8 +1972,114 @@ export const AnswerUncheckedUpdateManyInput = inputObjectType({
     t.field('id', { type: 'IntFieldUpdateOperationsInput' })
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('answer', { type: 'NullableStringFieldUpdateOperationsInput' })
-    t.field('userId', { type: 'IntFieldUpdateOperationsInput' })
     t.field('testId', { type: 'IntFieldUpdateOperationsInput' })
+  },
+})
+
+export const TaskAnswerCreateInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'TaskAnswerCreateInput',
+  definition(t) {
+    t.nonNull.field('answer', { type: 'String' })
+    t.field('verdict', { type: 'Int' })
+    t.nonNull.field('answerModel', {
+      type: 'AnswerCreateNestedOneWithoutTaskAnswersInput',
+    })
+    t.nonNull.field('task', {
+      type: 'TaskCreateNestedOneWithoutTaskAnswersInput',
+    })
+    t.nonNull.field('user', { type: 'UserCreateNestedOneWithoutAnswersInput' })
+  },
+})
+
+export const TaskAnswerUncheckedCreateInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'TaskAnswerUncheckedCreateInput',
+  definition(t) {
+    t.field('id', { type: 'Int' })
+    t.nonNull.field('answer', { type: 'String' })
+    t.field('verdict', { type: 'Int' })
+    t.nonNull.field('answerModelId', { type: 'Int' })
+    t.nonNull.field('taskId', { type: 'Int' })
+    t.nonNull.field('userId', { type: 'Int' })
+  },
+})
+
+export const TaskAnswerUpdateInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'TaskAnswerUpdateInput',
+  definition(t) {
+    t.field('answer', { type: 'StringFieldUpdateOperationsInput' })
+    t.field('verdict', { type: 'NullableIntFieldUpdateOperationsInput' })
+    t.field('answerModel', {
+      type: 'AnswerUpdateOneRequiredWithoutTaskAnswersNestedInput',
+    })
+    t.field('task', {
+      type: 'TaskUpdateOneRequiredWithoutTaskAnswersNestedInput',
+    })
+    t.field('user', { type: 'UserUpdateOneRequiredWithoutAnswersNestedInput' })
+  },
+})
+
+export const TaskAnswerUncheckedUpdateInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'TaskAnswerUncheckedUpdateInput',
+  definition(t) {
+    t.field('id', { type: 'IntFieldUpdateOperationsInput' })
+    t.field('answer', { type: 'StringFieldUpdateOperationsInput' })
+    t.field('verdict', { type: 'NullableIntFieldUpdateOperationsInput' })
+    t.field('answerModelId', { type: 'IntFieldUpdateOperationsInput' })
+    t.field('taskId', { type: 'IntFieldUpdateOperationsInput' })
+    t.field('userId', { type: 'IntFieldUpdateOperationsInput' })
+  },
+})
+
+export const TaskAnswerCreateManyInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'TaskAnswerCreateManyInput',
+  definition(t) {
+    t.field('id', { type: 'Int' })
+    t.nonNull.field('answer', { type: 'String' })
+    t.field('verdict', { type: 'Int' })
+    t.nonNull.field('answerModelId', { type: 'Int' })
+    t.nonNull.field('taskId', { type: 'Int' })
+    t.nonNull.field('userId', { type: 'Int' })
+  },
+})
+
+export const TaskAnswerUpdateManyMutationInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'TaskAnswerUpdateManyMutationInput',
+  definition(t) {
+    t.field('answer', { type: 'StringFieldUpdateOperationsInput' })
+    t.field('verdict', { type: 'NullableIntFieldUpdateOperationsInput' })
+  },
+})
+
+export const TaskAnswerUncheckedUpdateManyInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'TaskAnswerUncheckedUpdateManyInput',
+  definition(t) {
+    t.field('id', { type: 'IntFieldUpdateOperationsInput' })
+    t.field('answer', { type: 'StringFieldUpdateOperationsInput' })
+    t.field('verdict', { type: 'NullableIntFieldUpdateOperationsInput' })
+    t.field('answerModelId', { type: 'IntFieldUpdateOperationsInput' })
+    t.field('taskId', { type: 'IntFieldUpdateOperationsInput' })
+    t.field('userId', { type: 'IntFieldUpdateOperationsInput' })
   },
 })
 
@@ -2163,7 +2359,6 @@ export const StringFilter = inputObjectType({
     t.field('contains', { type: 'String' })
     t.field('startsWith', { type: 'String' })
     t.field('endsWith', { type: 'String' })
-    t.field('search', { type: 'String' })
     t.field('mode', { type: 'QueryMode' })
     t.field('not', { type: 'NestedStringFilter' })
   },
@@ -2198,7 +2393,6 @@ export const StringNullableFilter = inputObjectType({
     t.field('contains', { type: 'String' })
     t.field('startsWith', { type: 'String' })
     t.field('endsWith', { type: 'String' })
-    t.field('search', { type: 'String' })
     t.field('mode', { type: 'QueryMode' })
     t.field('not', { type: 'NestedStringNullableFilter' })
   },
@@ -2240,15 +2434,15 @@ export const ResponseListRelationFilter = inputObjectType({
   },
 })
 
-export const AnswerListRelationFilter = inputObjectType({
+export const TaskAnswerListRelationFilter = inputObjectType({
   nonNullDefaults: {
     input: false,
   },
-  name: 'AnswerListRelationFilter',
+  name: 'TaskAnswerListRelationFilter',
   definition(t) {
-    t.field('every', { type: 'AnswerWhereInput' })
-    t.field('some', { type: 'AnswerWhereInput' })
-    t.field('none', { type: 'AnswerWhereInput' })
+    t.field('every', { type: 'TaskAnswerWhereInput' })
+    t.field('some', { type: 'TaskAnswerWhereInput' })
+    t.field('none', { type: 'TaskAnswerWhereInput' })
   },
 })
 
@@ -2293,25 +2487,13 @@ export const ResponseOrderByRelationAggregateInput = inputObjectType({
   },
 })
 
-export const AnswerOrderByRelationAggregateInput = inputObjectType({
+export const TaskAnswerOrderByRelationAggregateInput = inputObjectType({
   nonNullDefaults: {
     input: false,
   },
-  name: 'AnswerOrderByRelationAggregateInput',
+  name: 'TaskAnswerOrderByRelationAggregateInput',
   definition(t) {
     t.field('_count', { type: 'SortOrder' })
-  },
-})
-
-export const UserOrderByRelevanceInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'UserOrderByRelevanceInput',
-  definition(t) {
-    t.nonNull.field('fields', { type: 'UserOrderByRelevanceFieldEnum' })
-    t.nonNull.field('sort', { type: 'SortOrder' })
-    t.nonNull.field('search', { type: 'String' })
   },
 })
 
@@ -2450,7 +2632,6 @@ export const StringWithAggregatesFilter = inputObjectType({
     t.field('contains', { type: 'String' })
     t.field('startsWith', { type: 'String' })
     t.field('endsWith', { type: 'String' })
-    t.field('search', { type: 'String' })
     t.field('mode', { type: 'QueryMode' })
     t.field('not', { type: 'NestedStringWithAggregatesFilter' })
     t.field('_count', { type: 'NestedIntFilter' })
@@ -2491,7 +2672,6 @@ export const StringNullableWithAggregatesFilter = inputObjectType({
     t.field('contains', { type: 'String' })
     t.field('startsWith', { type: 'String' })
     t.field('endsWith', { type: 'String' })
-    t.field('search', { type: 'String' })
     t.field('mode', { type: 'QueryMode' })
     t.field('not', { type: 'NestedStringNullableWithAggregatesFilter' })
     t.field('_count', { type: 'NestedIntNullableFilter' })
@@ -2519,20 +2699,6 @@ export const DirectionOrderByRelationAggregateInput = inputObjectType({
   name: 'DirectionOrderByRelationAggregateInput',
   definition(t) {
     t.field('_count', { type: 'SortOrder' })
-  },
-})
-
-export const SpecializationOrderByRelevanceInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'SpecializationOrderByRelevanceInput',
-  definition(t) {
-    t.nonNull.field('fields', {
-      type: 'SpecializationOrderByRelevanceFieldEnum',
-    })
-    t.nonNull.field('sort', { type: 'SortOrder' })
-    t.nonNull.field('search', { type: 'String' })
   },
 })
 
@@ -2605,6 +2771,23 @@ export const EnumDirectionTypeNullableFilter = inputObjectType({
   },
 })
 
+export const IntNullableFilter = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'IntNullableFilter',
+  definition(t) {
+    t.field('equals', { type: 'Int' })
+    t.list.field('in', { type: 'Int' })
+    t.list.field('notIn', { type: 'Int' })
+    t.field('lt', { type: 'Int' })
+    t.field('lte', { type: 'Int' })
+    t.field('gt', { type: 'Int' })
+    t.field('gte', { type: 'Int' })
+    t.field('not', { type: 'NestedIntNullableFilter' })
+  },
+})
+
 export const SpecializationRelationFilter = inputObjectType({
   nonNullDefaults: {
     input: false,
@@ -2616,15 +2799,14 @@ export const SpecializationRelationFilter = inputObjectType({
   },
 })
 
-export const DirectionOrderByRelevanceInput = inputObjectType({
+export const TestNullableRelationFilter = inputObjectType({
   nonNullDefaults: {
     input: false,
   },
-  name: 'DirectionOrderByRelevanceInput',
+  name: 'TestNullableRelationFilter',
   definition(t) {
-    t.nonNull.field('fields', { type: 'DirectionOrderByRelevanceFieldEnum' })
-    t.nonNull.field('sort', { type: 'SortOrder' })
-    t.nonNull.field('search', { type: 'String' })
+    t.field('is', { type: 'TestWhereInput' })
+    t.field('isNot', { type: 'TestWhereInput' })
   },
 })
 
@@ -2640,6 +2822,7 @@ export const DirectionCountOrderByAggregateInput = inputObjectType({
     t.field('title', { type: 'SortOrder' })
     t.field('description', { type: 'SortOrder' })
     t.field('specializationId', { type: 'SortOrder' })
+    t.field('testId', { type: 'SortOrder' })
   },
 })
 
@@ -2651,6 +2834,7 @@ export const DirectionAvgOrderByAggregateInput = inputObjectType({
   definition(t) {
     t.field('id', { type: 'SortOrder' })
     t.field('specializationId', { type: 'SortOrder' })
+    t.field('testId', { type: 'SortOrder' })
   },
 })
 
@@ -2666,6 +2850,7 @@ export const DirectionMaxOrderByAggregateInput = inputObjectType({
     t.field('title', { type: 'SortOrder' })
     t.field('description', { type: 'SortOrder' })
     t.field('specializationId', { type: 'SortOrder' })
+    t.field('testId', { type: 'SortOrder' })
   },
 })
 
@@ -2681,6 +2866,7 @@ export const DirectionMinOrderByAggregateInput = inputObjectType({
     t.field('title', { type: 'SortOrder' })
     t.field('description', { type: 'SortOrder' })
     t.field('specializationId', { type: 'SortOrder' })
+    t.field('testId', { type: 'SortOrder' })
   },
 })
 
@@ -2692,6 +2878,7 @@ export const DirectionSumOrderByAggregateInput = inputObjectType({
   definition(t) {
     t.field('id', { type: 'SortOrder' })
     t.field('specializationId', { type: 'SortOrder' })
+    t.field('testId', { type: 'SortOrder' })
   },
 })
 
@@ -2710,6 +2897,28 @@ export const EnumDirectionTypeNullableWithAggregatesFilter = inputObjectType({
     t.field('_count', { type: 'NestedIntNullableFilter' })
     t.field('_min', { type: 'NestedEnumDirectionTypeNullableFilter' })
     t.field('_max', { type: 'NestedEnumDirectionTypeNullableFilter' })
+  },
+})
+
+export const IntNullableWithAggregatesFilter = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'IntNullableWithAggregatesFilter',
+  definition(t) {
+    t.field('equals', { type: 'Int' })
+    t.list.field('in', { type: 'Int' })
+    t.list.field('notIn', { type: 'Int' })
+    t.field('lt', { type: 'Int' })
+    t.field('lte', { type: 'Int' })
+    t.field('gt', { type: 'Int' })
+    t.field('gte', { type: 'Int' })
+    t.field('not', { type: 'NestedIntNullableWithAggregatesFilter' })
+    t.field('_count', { type: 'NestedIntNullableFilter' })
+    t.field('_avg', { type: 'NestedFloatNullableFilter' })
+    t.field('_sum', { type: 'NestedIntNullableFilter' })
+    t.field('_min', { type: 'NestedIntNullableFilter' })
+    t.field('_max', { type: 'NestedIntNullableFilter' })
   },
 })
 
@@ -2747,6 +2956,18 @@ export const TestListRelationFilter = inputObjectType({
   },
 })
 
+export const AnswerListRelationFilter = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'AnswerListRelationFilter',
+  definition(t) {
+    t.field('every', { type: 'AnswerWhereInput' })
+    t.field('some', { type: 'AnswerWhereInput' })
+    t.field('none', { type: 'AnswerWhereInput' })
+  },
+})
+
 export const TestOrderByRelationAggregateInput = inputObjectType({
   nonNullDefaults: {
     input: false,
@@ -2757,15 +2978,13 @@ export const TestOrderByRelationAggregateInput = inputObjectType({
   },
 })
 
-export const ResponseOrderByRelevanceInput = inputObjectType({
+export const AnswerOrderByRelationAggregateInput = inputObjectType({
   nonNullDefaults: {
     input: false,
   },
-  name: 'ResponseOrderByRelevanceInput',
+  name: 'AnswerOrderByRelationAggregateInput',
   definition(t) {
-    t.nonNull.field('fields', { type: 'ResponseOrderByRelevanceFieldEnum' })
-    t.nonNull.field('sort', { type: 'SortOrder' })
-    t.nonNull.field('search', { type: 'String' })
+    t.field('_count', { type: 'SortOrder' })
   },
 })
 
@@ -2778,6 +2997,7 @@ export const ResponseCountOrderByAggregateInput = inputObjectType({
     t.field('id', { type: 'SortOrder' })
     t.field('createdAt', { type: 'SortOrder' })
     t.field('text', { type: 'SortOrder' })
+    t.field('verdict', { type: 'SortOrder' })
     t.field('userId', { type: 'SortOrder' })
     t.field('directionId', { type: 'SortOrder' })
   },
@@ -2804,6 +3024,7 @@ export const ResponseMaxOrderByAggregateInput = inputObjectType({
     t.field('id', { type: 'SortOrder' })
     t.field('createdAt', { type: 'SortOrder' })
     t.field('text', { type: 'SortOrder' })
+    t.field('verdict', { type: 'SortOrder' })
     t.field('userId', { type: 'SortOrder' })
     t.field('directionId', { type: 'SortOrder' })
   },
@@ -2818,6 +3039,7 @@ export const ResponseMinOrderByAggregateInput = inputObjectType({
     t.field('id', { type: 'SortOrder' })
     t.field('createdAt', { type: 'SortOrder' })
     t.field('text', { type: 'SortOrder' })
+    t.field('verdict', { type: 'SortOrder' })
     t.field('userId', { type: 'SortOrder' })
     t.field('directionId', { type: 'SortOrder' })
   },
@@ -2854,18 +3076,6 @@ export const TaskOrderByRelationAggregateInput = inputObjectType({
   name: 'TaskOrderByRelationAggregateInput',
   definition(t) {
     t.field('_count', { type: 'SortOrder' })
-  },
-})
-
-export const TestOrderByRelevanceInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'TestOrderByRelevanceInput',
-  definition(t) {
-    t.nonNull.field('fields', { type: 'TestOrderByRelevanceFieldEnum' })
-    t.nonNull.field('sort', { type: 'SortOrder' })
-    t.nonNull.field('search', { type: 'String' })
   },
 })
 
@@ -2925,23 +3135,6 @@ export const TestSumOrderByAggregateInput = inputObjectType({
   },
 })
 
-export const IntNullableFilter = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'IntNullableFilter',
-  definition(t) {
-    t.field('equals', { type: 'Int' })
-    t.list.field('in', { type: 'Int' })
-    t.list.field('notIn', { type: 'Int' })
-    t.field('lt', { type: 'Int' })
-    t.field('lte', { type: 'Int' })
-    t.field('gt', { type: 'Int' })
-    t.field('gte', { type: 'Int' })
-    t.field('not', { type: 'NestedIntNullableFilter' })
-  },
-})
-
 export const EnumTaskTypeFilter = inputObjectType({
   nonNullDefaults: {
     input: false,
@@ -2983,29 +3176,6 @@ export const IntNullableListFilter = inputObjectType({
   },
 })
 
-export const TestNullableRelationFilter = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'TestNullableRelationFilter',
-  definition(t) {
-    t.field('is', { type: 'TestWhereInput' })
-    t.field('isNot', { type: 'TestWhereInput' })
-  },
-})
-
-export const TaskOrderByRelevanceInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'TaskOrderByRelevanceInput',
-  definition(t) {
-    t.nonNull.field('fields', { type: 'TaskOrderByRelevanceFieldEnum' })
-    t.nonNull.field('sort', { type: 'SortOrder' })
-    t.nonNull.field('search', { type: 'String' })
-  },
-})
-
 export const TaskCountOrderByAggregateInput = inputObjectType({
   nonNullDefaults: {
     input: false,
@@ -3020,6 +3190,7 @@ export const TaskCountOrderByAggregateInput = inputObjectType({
     t.field('variants', { type: 'SortOrder' })
     t.field('correctSingleAnswer', { type: 'SortOrder' })
     t.field('correctMultipleAnswer', { type: 'SortOrder' })
+    t.field('code', { type: 'SortOrder' })
   },
 })
 
@@ -3048,6 +3219,7 @@ export const TaskMaxOrderByAggregateInput = inputObjectType({
     t.field('type', { type: 'SortOrder' })
     t.field('question', { type: 'SortOrder' })
     t.field('correctSingleAnswer', { type: 'SortOrder' })
+    t.field('code', { type: 'SortOrder' })
   },
 })
 
@@ -3063,6 +3235,7 @@ export const TaskMinOrderByAggregateInput = inputObjectType({
     t.field('type', { type: 'SortOrder' })
     t.field('question', { type: 'SortOrder' })
     t.field('correctSingleAnswer', { type: 'SortOrder' })
+    t.field('code', { type: 'SortOrder' })
   },
 })
 
@@ -3076,28 +3249,6 @@ export const TaskSumOrderByAggregateInput = inputObjectType({
     t.field('testId', { type: 'SortOrder' })
     t.field('correctSingleAnswer', { type: 'SortOrder' })
     t.field('correctMultipleAnswer', { type: 'SortOrder' })
-  },
-})
-
-export const IntNullableWithAggregatesFilter = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'IntNullableWithAggregatesFilter',
-  definition(t) {
-    t.field('equals', { type: 'Int' })
-    t.list.field('in', { type: 'Int' })
-    t.list.field('notIn', { type: 'Int' })
-    t.field('lt', { type: 'Int' })
-    t.field('lte', { type: 'Int' })
-    t.field('gt', { type: 'Int' })
-    t.field('gte', { type: 'Int' })
-    t.field('not', { type: 'NestedIntNullableWithAggregatesFilter' })
-    t.field('_count', { type: 'NestedIntNullableFilter' })
-    t.field('_avg', { type: 'NestedFloatNullableFilter' })
-    t.field('_sum', { type: 'NestedIntNullableFilter' })
-    t.field('_min', { type: 'NestedIntNullableFilter' })
-    t.field('_max', { type: 'NestedIntNullableFilter' })
   },
 })
 
@@ -3128,18 +3279,6 @@ export const TestRelationFilter = inputObjectType({
   },
 })
 
-export const AnswerOrderByRelevanceInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'AnswerOrderByRelevanceInput',
-  definition(t) {
-    t.nonNull.field('fields', { type: 'AnswerOrderByRelevanceFieldEnum' })
-    t.nonNull.field('sort', { type: 'SortOrder' })
-    t.nonNull.field('search', { type: 'String' })
-  },
-})
-
 export const AnswerCountOrderByAggregateInput = inputObjectType({
   nonNullDefaults: {
     input: false,
@@ -3149,7 +3288,6 @@ export const AnswerCountOrderByAggregateInput = inputObjectType({
     t.field('id', { type: 'SortOrder' })
     t.field('createdAt', { type: 'SortOrder' })
     t.field('answer', { type: 'SortOrder' })
-    t.field('userId', { type: 'SortOrder' })
     t.field('testId', { type: 'SortOrder' })
   },
 })
@@ -3161,7 +3299,6 @@ export const AnswerAvgOrderByAggregateInput = inputObjectType({
   name: 'AnswerAvgOrderByAggregateInput',
   definition(t) {
     t.field('id', { type: 'SortOrder' })
-    t.field('userId', { type: 'SortOrder' })
     t.field('testId', { type: 'SortOrder' })
   },
 })
@@ -3175,7 +3312,6 @@ export const AnswerMaxOrderByAggregateInput = inputObjectType({
     t.field('id', { type: 'SortOrder' })
     t.field('createdAt', { type: 'SortOrder' })
     t.field('answer', { type: 'SortOrder' })
-    t.field('userId', { type: 'SortOrder' })
     t.field('testId', { type: 'SortOrder' })
   },
 })
@@ -3189,7 +3325,6 @@ export const AnswerMinOrderByAggregateInput = inputObjectType({
     t.field('id', { type: 'SortOrder' })
     t.field('createdAt', { type: 'SortOrder' })
     t.field('answer', { type: 'SortOrder' })
-    t.field('userId', { type: 'SortOrder' })
     t.field('testId', { type: 'SortOrder' })
   },
 })
@@ -3201,8 +3336,102 @@ export const AnswerSumOrderByAggregateInput = inputObjectType({
   name: 'AnswerSumOrderByAggregateInput',
   definition(t) {
     t.field('id', { type: 'SortOrder' })
-    t.field('userId', { type: 'SortOrder' })
     t.field('testId', { type: 'SortOrder' })
+  },
+})
+
+export const AnswerRelationFilter = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'AnswerRelationFilter',
+  definition(t) {
+    t.field('is', { type: 'AnswerWhereInput' })
+    t.field('isNot', { type: 'AnswerWhereInput' })
+  },
+})
+
+export const TaskRelationFilter = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'TaskRelationFilter',
+  definition(t) {
+    t.field('is', { type: 'TaskWhereInput' })
+    t.field('isNot', { type: 'TaskWhereInput' })
+  },
+})
+
+export const TaskAnswerCountOrderByAggregateInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'TaskAnswerCountOrderByAggregateInput',
+  definition(t) {
+    t.field('id', { type: 'SortOrder' })
+    t.field('answer', { type: 'SortOrder' })
+    t.field('verdict', { type: 'SortOrder' })
+    t.field('answerModelId', { type: 'SortOrder' })
+    t.field('taskId', { type: 'SortOrder' })
+    t.field('userId', { type: 'SortOrder' })
+  },
+})
+
+export const TaskAnswerAvgOrderByAggregateInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'TaskAnswerAvgOrderByAggregateInput',
+  definition(t) {
+    t.field('id', { type: 'SortOrder' })
+    t.field('verdict', { type: 'SortOrder' })
+    t.field('answerModelId', { type: 'SortOrder' })
+    t.field('taskId', { type: 'SortOrder' })
+    t.field('userId', { type: 'SortOrder' })
+  },
+})
+
+export const TaskAnswerMaxOrderByAggregateInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'TaskAnswerMaxOrderByAggregateInput',
+  definition(t) {
+    t.field('id', { type: 'SortOrder' })
+    t.field('answer', { type: 'SortOrder' })
+    t.field('verdict', { type: 'SortOrder' })
+    t.field('answerModelId', { type: 'SortOrder' })
+    t.field('taskId', { type: 'SortOrder' })
+    t.field('userId', { type: 'SortOrder' })
+  },
+})
+
+export const TaskAnswerMinOrderByAggregateInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'TaskAnswerMinOrderByAggregateInput',
+  definition(t) {
+    t.field('id', { type: 'SortOrder' })
+    t.field('answer', { type: 'SortOrder' })
+    t.field('verdict', { type: 'SortOrder' })
+    t.field('answerModelId', { type: 'SortOrder' })
+    t.field('taskId', { type: 'SortOrder' })
+    t.field('userId', { type: 'SortOrder' })
+  },
+})
+
+export const TaskAnswerSumOrderByAggregateInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'TaskAnswerSumOrderByAggregateInput',
+  definition(t) {
+    t.field('id', { type: 'SortOrder' })
+    t.field('verdict', { type: 'SortOrder' })
+    t.field('answerModelId', { type: 'SortOrder' })
+    t.field('taskId', { type: 'SortOrder' })
+    t.field('userId', { type: 'SortOrder' })
   },
 })
 
@@ -3236,20 +3465,6 @@ export const UserOrderByRelationAggregateInput = inputObjectType({
   name: 'UserOrderByRelationAggregateInput',
   definition(t) {
     t.field('_count', { type: 'SortOrder' })
-  },
-})
-
-export const MessagerGroupOrderByRelevanceInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'MessagerGroupOrderByRelevanceInput',
-  definition(t) {
-    t.nonNull.field('fields', {
-      type: 'MessagerGroupOrderByRelevanceFieldEnum',
-    })
-    t.nonNull.field('sort', { type: 'SortOrder' })
-    t.nonNull.field('search', { type: 'String' })
   },
 })
 
@@ -3342,18 +3557,6 @@ export const MessagerGroupRelationFilter = inputObjectType({
   definition(t) {
     t.field('is', { type: 'MessagerGroupWhereInput' })
     t.field('isNot', { type: 'MessagerGroupWhereInput' })
-  },
-})
-
-export const MessageOrderByRelevanceInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'MessageOrderByRelevanceInput',
-  definition(t) {
-    t.nonNull.field('fields', { type: 'MessageOrderByRelevanceFieldEnum' })
-    t.nonNull.field('sort', { type: 'SortOrder' })
-    t.nonNull.field('search', { type: 'String' })
   },
 })
 
@@ -3468,18 +3671,18 @@ export const ResponseCreateNestedManyWithoutUserInput = inputObjectType({
   },
 })
 
-export const AnswerCreateNestedManyWithoutUserInput = inputObjectType({
+export const TaskAnswerCreateNestedManyWithoutUserInput = inputObjectType({
   nonNullDefaults: {
     input: false,
   },
-  name: 'AnswerCreateNestedManyWithoutUserInput',
+  name: 'TaskAnswerCreateNestedManyWithoutUserInput',
   definition(t) {
-    t.list.field('create', { type: 'AnswerCreateWithoutUserInput' })
+    t.list.field('create', { type: 'TaskAnswerCreateWithoutUserInput' })
     t.list.field('connectOrCreate', {
-      type: 'AnswerCreateOrConnectWithoutUserInput',
+      type: 'TaskAnswerCreateOrConnectWithoutUserInput',
     })
-    t.field('createMany', { type: 'AnswerCreateManyUserInputEnvelope' })
-    t.list.field('connect', { type: 'AnswerWhereUniqueInput' })
+    t.field('createMany', { type: 'TaskAnswerCreateManyUserInputEnvelope' })
+    t.list.field('connect', { type: 'TaskAnswerWhereUniqueInput' })
   },
 })
 
@@ -3530,20 +3733,21 @@ export const ResponseUncheckedCreateNestedManyWithoutUserInput =
     },
   })
 
-export const AnswerUncheckedCreateNestedManyWithoutUserInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'AnswerUncheckedCreateNestedManyWithoutUserInput',
-  definition(t) {
-    t.list.field('create', { type: 'AnswerCreateWithoutUserInput' })
-    t.list.field('connectOrCreate', {
-      type: 'AnswerCreateOrConnectWithoutUserInput',
-    })
-    t.field('createMany', { type: 'AnswerCreateManyUserInputEnvelope' })
-    t.list.field('connect', { type: 'AnswerWhereUniqueInput' })
-  },
-})
+export const TaskAnswerUncheckedCreateNestedManyWithoutUserInput =
+  inputObjectType({
+    nonNullDefaults: {
+      input: false,
+    },
+    name: 'TaskAnswerUncheckedCreateNestedManyWithoutUserInput',
+    definition(t) {
+      t.list.field('create', { type: 'TaskAnswerCreateWithoutUserInput' })
+      t.list.field('connectOrCreate', {
+        type: 'TaskAnswerCreateOrConnectWithoutUserInput',
+      })
+      t.field('createMany', { type: 'TaskAnswerCreateManyUserInputEnvelope' })
+      t.list.field('connect', { type: 'TaskAnswerWhereUniqueInput' })
+    },
+  })
 
 export const DateTimeFieldUpdateOperationsInput = inputObjectType({
   nonNullDefaults: {
@@ -3668,31 +3872,31 @@ export const ResponseUpdateManyWithoutUserNestedInput = inputObjectType({
   },
 })
 
-export const AnswerUpdateManyWithoutUserNestedInput = inputObjectType({
+export const TaskAnswerUpdateManyWithoutUserNestedInput = inputObjectType({
   nonNullDefaults: {
     input: false,
   },
-  name: 'AnswerUpdateManyWithoutUserNestedInput',
+  name: 'TaskAnswerUpdateManyWithoutUserNestedInput',
   definition(t) {
-    t.list.field('create', { type: 'AnswerCreateWithoutUserInput' })
+    t.list.field('create', { type: 'TaskAnswerCreateWithoutUserInput' })
     t.list.field('connectOrCreate', {
-      type: 'AnswerCreateOrConnectWithoutUserInput',
+      type: 'TaskAnswerCreateOrConnectWithoutUserInput',
     })
     t.list.field('upsert', {
-      type: 'AnswerUpsertWithWhereUniqueWithoutUserInput',
+      type: 'TaskAnswerUpsertWithWhereUniqueWithoutUserInput',
     })
-    t.field('createMany', { type: 'AnswerCreateManyUserInputEnvelope' })
-    t.list.field('set', { type: 'AnswerWhereUniqueInput' })
-    t.list.field('disconnect', { type: 'AnswerWhereUniqueInput' })
-    t.list.field('delete', { type: 'AnswerWhereUniqueInput' })
-    t.list.field('connect', { type: 'AnswerWhereUniqueInput' })
+    t.field('createMany', { type: 'TaskAnswerCreateManyUserInputEnvelope' })
+    t.list.field('set', { type: 'TaskAnswerWhereUniqueInput' })
+    t.list.field('disconnect', { type: 'TaskAnswerWhereUniqueInput' })
+    t.list.field('delete', { type: 'TaskAnswerWhereUniqueInput' })
+    t.list.field('connect', { type: 'TaskAnswerWhereUniqueInput' })
     t.list.field('update', {
-      type: 'AnswerUpdateWithWhereUniqueWithoutUserInput',
+      type: 'TaskAnswerUpdateWithWhereUniqueWithoutUserInput',
     })
     t.list.field('updateMany', {
-      type: 'AnswerUpdateManyWithWhereWithoutUserInput',
+      type: 'TaskAnswerUpdateManyWithWhereWithoutUserInput',
     })
-    t.list.field('deleteMany', { type: 'AnswerScalarWhereInput' })
+    t.list.field('deleteMany', { type: 'TaskAnswerScalarWhereInput' })
   },
 })
 
@@ -3796,33 +4000,34 @@ export const ResponseUncheckedUpdateManyWithoutUserNestedInput =
     },
   })
 
-export const AnswerUncheckedUpdateManyWithoutUserNestedInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'AnswerUncheckedUpdateManyWithoutUserNestedInput',
-  definition(t) {
-    t.list.field('create', { type: 'AnswerCreateWithoutUserInput' })
-    t.list.field('connectOrCreate', {
-      type: 'AnswerCreateOrConnectWithoutUserInput',
-    })
-    t.list.field('upsert', {
-      type: 'AnswerUpsertWithWhereUniqueWithoutUserInput',
-    })
-    t.field('createMany', { type: 'AnswerCreateManyUserInputEnvelope' })
-    t.list.field('set', { type: 'AnswerWhereUniqueInput' })
-    t.list.field('disconnect', { type: 'AnswerWhereUniqueInput' })
-    t.list.field('delete', { type: 'AnswerWhereUniqueInput' })
-    t.list.field('connect', { type: 'AnswerWhereUniqueInput' })
-    t.list.field('update', {
-      type: 'AnswerUpdateWithWhereUniqueWithoutUserInput',
-    })
-    t.list.field('updateMany', {
-      type: 'AnswerUpdateManyWithWhereWithoutUserInput',
-    })
-    t.list.field('deleteMany', { type: 'AnswerScalarWhereInput' })
-  },
-})
+export const TaskAnswerUncheckedUpdateManyWithoutUserNestedInput =
+  inputObjectType({
+    nonNullDefaults: {
+      input: false,
+    },
+    name: 'TaskAnswerUncheckedUpdateManyWithoutUserNestedInput',
+    definition(t) {
+      t.list.field('create', { type: 'TaskAnswerCreateWithoutUserInput' })
+      t.list.field('connectOrCreate', {
+        type: 'TaskAnswerCreateOrConnectWithoutUserInput',
+      })
+      t.list.field('upsert', {
+        type: 'TaskAnswerUpsertWithWhereUniqueWithoutUserInput',
+      })
+      t.field('createMany', { type: 'TaskAnswerCreateManyUserInputEnvelope' })
+      t.list.field('set', { type: 'TaskAnswerWhereUniqueInput' })
+      t.list.field('disconnect', { type: 'TaskAnswerWhereUniqueInput' })
+      t.list.field('delete', { type: 'TaskAnswerWhereUniqueInput' })
+      t.list.field('connect', { type: 'TaskAnswerWhereUniqueInput' })
+      t.list.field('update', {
+        type: 'TaskAnswerUpdateWithWhereUniqueWithoutUserInput',
+      })
+      t.list.field('updateMany', {
+        type: 'TaskAnswerUpdateManyWithWhereWithoutUserInput',
+      })
+      t.list.field('deleteMany', { type: 'TaskAnswerScalarWhereInput' })
+    },
+  })
 
 export const DirectionCreateNestedManyWithoutSpecializationInput =
   inputObjectType({
@@ -3960,6 +4165,20 @@ export const SpecializationCreateNestedOneWithoutDirectionsInput =
     },
   })
 
+export const TestCreateNestedOneWithoutDirectionInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'TestCreateNestedOneWithoutDirectionInput',
+  definition(t) {
+    t.field('create', { type: 'TestCreateWithoutDirectionInput' })
+    t.field('connectOrCreate', {
+      type: 'TestCreateOrConnectWithoutDirectionInput',
+    })
+    t.field('connect', { type: 'TestWhereUniqueInput' })
+  },
+})
+
 export const ResponseUncheckedCreateNestedManyWithoutDirectionInput =
   inputObjectType({
     nonNullDefaults: {
@@ -4035,6 +4254,38 @@ export const SpecializationUpdateOneRequiredWithoutDirectionsNestedInput =
       })
     },
   })
+
+export const TestUpdateOneWithoutDirectionNestedInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'TestUpdateOneWithoutDirectionNestedInput',
+  definition(t) {
+    t.field('create', { type: 'TestCreateWithoutDirectionInput' })
+    t.field('connectOrCreate', {
+      type: 'TestCreateOrConnectWithoutDirectionInput',
+    })
+    t.field('upsert', { type: 'TestUpsertWithoutDirectionInput' })
+    t.field('disconnect', { type: 'TestWhereInput' })
+    t.field('delete', { type: 'TestWhereInput' })
+    t.field('connect', { type: 'TestWhereUniqueInput' })
+    t.field('update', { type: 'TestUpdateToOneWithWhereWithoutDirectionInput' })
+  },
+})
+
+export const NullableIntFieldUpdateOperationsInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'NullableIntFieldUpdateOperationsInput',
+  definition(t) {
+    t.field('set', { type: 'Int' })
+    t.field('increment', { type: 'Int' })
+    t.field('decrement', { type: 'Int' })
+    t.field('multiply', { type: 'Int' })
+    t.field('divide', { type: 'Int' })
+  },
+})
 
 export const ResponseUncheckedUpdateManyWithoutDirectionNestedInput =
   inputObjectType({
@@ -4302,6 +4553,21 @@ export const AnswerUncheckedUpdateManyWithoutResponseNestedInput =
     },
   })
 
+export const DirectionCreateNestedManyWithoutTestInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'DirectionCreateNestedManyWithoutTestInput',
+  definition(t) {
+    t.list.field('create', { type: 'DirectionCreateWithoutTestInput' })
+    t.list.field('connectOrCreate', {
+      type: 'DirectionCreateOrConnectWithoutTestInput',
+    })
+    t.field('createMany', { type: 'DirectionCreateManyTestInputEnvelope' })
+    t.list.field('connect', { type: 'DirectionWhereUniqueInput' })
+  },
+})
+
 export const TaskCreateNestedManyWithoutTestInput = inputObjectType({
   nonNullDefaults: {
     input: false,
@@ -4345,6 +4611,22 @@ export const ResponseCreateNestedManyWithoutTestsInput = inputObjectType({
     t.list.field('connect', { type: 'ResponseWhereUniqueInput' })
   },
 })
+
+export const DirectionUncheckedCreateNestedManyWithoutTestInput =
+  inputObjectType({
+    nonNullDefaults: {
+      input: false,
+    },
+    name: 'DirectionUncheckedCreateNestedManyWithoutTestInput',
+    definition(t) {
+      t.list.field('create', { type: 'DirectionCreateWithoutTestInput' })
+      t.list.field('connectOrCreate', {
+        type: 'DirectionCreateOrConnectWithoutTestInput',
+      })
+      t.field('createMany', { type: 'DirectionCreateManyTestInputEnvelope' })
+      t.list.field('connect', { type: 'DirectionWhereUniqueInput' })
+    },
+  })
 
 export const TaskUncheckedCreateNestedManyWithoutTestInput = inputObjectType({
   nonNullDefaults: {
@@ -4390,6 +4672,34 @@ export const ResponseUncheckedCreateNestedManyWithoutTestsInput =
       t.list.field('connect', { type: 'ResponseWhereUniqueInput' })
     },
   })
+
+export const DirectionUpdateManyWithoutTestNestedInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'DirectionUpdateManyWithoutTestNestedInput',
+  definition(t) {
+    t.list.field('create', { type: 'DirectionCreateWithoutTestInput' })
+    t.list.field('connectOrCreate', {
+      type: 'DirectionCreateOrConnectWithoutTestInput',
+    })
+    t.list.field('upsert', {
+      type: 'DirectionUpsertWithWhereUniqueWithoutTestInput',
+    })
+    t.field('createMany', { type: 'DirectionCreateManyTestInputEnvelope' })
+    t.list.field('set', { type: 'DirectionWhereUniqueInput' })
+    t.list.field('disconnect', { type: 'DirectionWhereUniqueInput' })
+    t.list.field('delete', { type: 'DirectionWhereUniqueInput' })
+    t.list.field('connect', { type: 'DirectionWhereUniqueInput' })
+    t.list.field('update', {
+      type: 'DirectionUpdateWithWhereUniqueWithoutTestInput',
+    })
+    t.list.field('updateMany', {
+      type: 'DirectionUpdateManyWithWhereWithoutTestInput',
+    })
+    t.list.field('deleteMany', { type: 'DirectionScalarWhereInput' })
+  },
+})
 
 export const TaskUpdateManyWithoutTestNestedInput = inputObjectType({
   nonNullDefaults: {
@@ -4473,6 +4783,35 @@ export const ResponseUpdateManyWithoutTestsNestedInput = inputObjectType({
     t.list.field('deleteMany', { type: 'ResponseScalarWhereInput' })
   },
 })
+
+export const DirectionUncheckedUpdateManyWithoutTestNestedInput =
+  inputObjectType({
+    nonNullDefaults: {
+      input: false,
+    },
+    name: 'DirectionUncheckedUpdateManyWithoutTestNestedInput',
+    definition(t) {
+      t.list.field('create', { type: 'DirectionCreateWithoutTestInput' })
+      t.list.field('connectOrCreate', {
+        type: 'DirectionCreateOrConnectWithoutTestInput',
+      })
+      t.list.field('upsert', {
+        type: 'DirectionUpsertWithWhereUniqueWithoutTestInput',
+      })
+      t.field('createMany', { type: 'DirectionCreateManyTestInputEnvelope' })
+      t.list.field('set', { type: 'DirectionWhereUniqueInput' })
+      t.list.field('disconnect', { type: 'DirectionWhereUniqueInput' })
+      t.list.field('delete', { type: 'DirectionWhereUniqueInput' })
+      t.list.field('connect', { type: 'DirectionWhereUniqueInput' })
+      t.list.field('update', {
+        type: 'DirectionUpdateWithWhereUniqueWithoutTestInput',
+      })
+      t.list.field('updateMany', {
+        type: 'DirectionUpdateManyWithWhereWithoutTestInput',
+      })
+      t.list.field('deleteMany', { type: 'DirectionScalarWhereInput' })
+    },
+  })
 
 export const TaskUncheckedUpdateManyWithoutTestNestedInput = inputObjectType({
   nonNullDefaults: {
@@ -4590,6 +4929,37 @@ export const TestCreateNestedOneWithoutTasksInput = inputObjectType({
   },
 })
 
+export const TaskAnswerCreateNestedManyWithoutTaskInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'TaskAnswerCreateNestedManyWithoutTaskInput',
+  definition(t) {
+    t.list.field('create', { type: 'TaskAnswerCreateWithoutTaskInput' })
+    t.list.field('connectOrCreate', {
+      type: 'TaskAnswerCreateOrConnectWithoutTaskInput',
+    })
+    t.field('createMany', { type: 'TaskAnswerCreateManyTaskInputEnvelope' })
+    t.list.field('connect', { type: 'TaskAnswerWhereUniqueInput' })
+  },
+})
+
+export const TaskAnswerUncheckedCreateNestedManyWithoutTaskInput =
+  inputObjectType({
+    nonNullDefaults: {
+      input: false,
+    },
+    name: 'TaskAnswerUncheckedCreateNestedManyWithoutTaskInput',
+    definition(t) {
+      t.list.field('create', { type: 'TaskAnswerCreateWithoutTaskInput' })
+      t.list.field('connectOrCreate', {
+        type: 'TaskAnswerCreateOrConnectWithoutTaskInput',
+      })
+      t.field('createMany', { type: 'TaskAnswerCreateManyTaskInputEnvelope' })
+      t.list.field('connect', { type: 'TaskAnswerWhereUniqueInput' })
+    },
+  })
+
 export const EnumTaskTypeFieldUpdateOperationsInput = inputObjectType({
   nonNullDefaults: {
     input: false,
@@ -4608,20 +4978,6 @@ export const TaskUpdatevariantsInput = inputObjectType({
   definition(t) {
     t.list.field('set', { type: 'String' })
     t.list.field('push', { type: 'String' })
-  },
-})
-
-export const NullableIntFieldUpdateOperationsInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'NullableIntFieldUpdateOperationsInput',
-  definition(t) {
-    t.field('set', { type: 'Int' })
-    t.field('increment', { type: 'Int' })
-    t.field('decrement', { type: 'Int' })
-    t.field('multiply', { type: 'Int' })
-    t.field('divide', { type: 'Int' })
   },
 })
 
@@ -4652,19 +5008,62 @@ export const TestUpdateOneWithoutTasksNestedInput = inputObjectType({
   },
 })
 
-export const UserCreateNestedOneWithoutAnswersInput = inputObjectType({
+export const TaskAnswerUpdateManyWithoutTaskNestedInput = inputObjectType({
   nonNullDefaults: {
     input: false,
   },
-  name: 'UserCreateNestedOneWithoutAnswersInput',
+  name: 'TaskAnswerUpdateManyWithoutTaskNestedInput',
   definition(t) {
-    t.field('create', { type: 'UserCreateWithoutAnswersInput' })
-    t.field('connectOrCreate', {
-      type: 'UserCreateOrConnectWithoutAnswersInput',
+    t.list.field('create', { type: 'TaskAnswerCreateWithoutTaskInput' })
+    t.list.field('connectOrCreate', {
+      type: 'TaskAnswerCreateOrConnectWithoutTaskInput',
     })
-    t.field('connect', { type: 'UserWhereUniqueInput' })
+    t.list.field('upsert', {
+      type: 'TaskAnswerUpsertWithWhereUniqueWithoutTaskInput',
+    })
+    t.field('createMany', { type: 'TaskAnswerCreateManyTaskInputEnvelope' })
+    t.list.field('set', { type: 'TaskAnswerWhereUniqueInput' })
+    t.list.field('disconnect', { type: 'TaskAnswerWhereUniqueInput' })
+    t.list.field('delete', { type: 'TaskAnswerWhereUniqueInput' })
+    t.list.field('connect', { type: 'TaskAnswerWhereUniqueInput' })
+    t.list.field('update', {
+      type: 'TaskAnswerUpdateWithWhereUniqueWithoutTaskInput',
+    })
+    t.list.field('updateMany', {
+      type: 'TaskAnswerUpdateManyWithWhereWithoutTaskInput',
+    })
+    t.list.field('deleteMany', { type: 'TaskAnswerScalarWhereInput' })
   },
 })
+
+export const TaskAnswerUncheckedUpdateManyWithoutTaskNestedInput =
+  inputObjectType({
+    nonNullDefaults: {
+      input: false,
+    },
+    name: 'TaskAnswerUncheckedUpdateManyWithoutTaskNestedInput',
+    definition(t) {
+      t.list.field('create', { type: 'TaskAnswerCreateWithoutTaskInput' })
+      t.list.field('connectOrCreate', {
+        type: 'TaskAnswerCreateOrConnectWithoutTaskInput',
+      })
+      t.list.field('upsert', {
+        type: 'TaskAnswerUpsertWithWhereUniqueWithoutTaskInput',
+      })
+      t.field('createMany', { type: 'TaskAnswerCreateManyTaskInputEnvelope' })
+      t.list.field('set', { type: 'TaskAnswerWhereUniqueInput' })
+      t.list.field('disconnect', { type: 'TaskAnswerWhereUniqueInput' })
+      t.list.field('delete', { type: 'TaskAnswerWhereUniqueInput' })
+      t.list.field('connect', { type: 'TaskAnswerWhereUniqueInput' })
+      t.list.field('update', {
+        type: 'TaskAnswerUpdateWithWhereUniqueWithoutTaskInput',
+      })
+      t.list.field('updateMany', {
+        type: 'TaskAnswerUpdateManyWithWhereWithoutTaskInput',
+      })
+      t.list.field('deleteMany', { type: 'TaskAnswerScalarWhereInput' })
+    },
+  })
 
 export const TestCreateNestedOneWithoutAnswersInput = inputObjectType({
   nonNullDefaults: {
@@ -4680,6 +5079,26 @@ export const TestCreateNestedOneWithoutAnswersInput = inputObjectType({
   },
 })
 
+export const TaskAnswerCreateNestedManyWithoutAnswerModelInput =
+  inputObjectType({
+    nonNullDefaults: {
+      input: false,
+    },
+    name: 'TaskAnswerCreateNestedManyWithoutAnswerModelInput',
+    definition(t) {
+      t.list.field('create', {
+        type: 'TaskAnswerCreateWithoutAnswerModelInput',
+      })
+      t.list.field('connectOrCreate', {
+        type: 'TaskAnswerCreateOrConnectWithoutAnswerModelInput',
+      })
+      t.field('createMany', {
+        type: 'TaskAnswerCreateManyAnswerModelInputEnvelope',
+      })
+      t.list.field('connect', { type: 'TaskAnswerWhereUniqueInput' })
+    },
+  })
+
 export const ResponseCreateNestedManyWithoutAnswersInput = inputObjectType({
   nonNullDefaults: {
     input: false,
@@ -4693,6 +5112,26 @@ export const ResponseCreateNestedManyWithoutAnswersInput = inputObjectType({
     t.list.field('connect', { type: 'ResponseWhereUniqueInput' })
   },
 })
+
+export const TaskAnswerUncheckedCreateNestedManyWithoutAnswerModelInput =
+  inputObjectType({
+    nonNullDefaults: {
+      input: false,
+    },
+    name: 'TaskAnswerUncheckedCreateNestedManyWithoutAnswerModelInput',
+    definition(t) {
+      t.list.field('create', {
+        type: 'TaskAnswerCreateWithoutAnswerModelInput',
+      })
+      t.list.field('connectOrCreate', {
+        type: 'TaskAnswerCreateOrConnectWithoutAnswerModelInput',
+      })
+      t.field('createMany', {
+        type: 'TaskAnswerCreateManyAnswerModelInputEnvelope',
+      })
+      t.list.field('connect', { type: 'TaskAnswerWhereUniqueInput' })
+    },
+  })
 
 export const ResponseUncheckedCreateNestedManyWithoutAnswersInput =
   inputObjectType({
@@ -4709,22 +5148,6 @@ export const ResponseUncheckedCreateNestedManyWithoutAnswersInput =
     },
   })
 
-export const UserUpdateOneRequiredWithoutAnswersNestedInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'UserUpdateOneRequiredWithoutAnswersNestedInput',
-  definition(t) {
-    t.field('create', { type: 'UserCreateWithoutAnswersInput' })
-    t.field('connectOrCreate', {
-      type: 'UserCreateOrConnectWithoutAnswersInput',
-    })
-    t.field('upsert', { type: 'UserUpsertWithoutAnswersInput' })
-    t.field('connect', { type: 'UserWhereUniqueInput' })
-    t.field('update', { type: 'UserUpdateToOneWithWhereWithoutAnswersInput' })
-  },
-})
-
 export const TestUpdateOneRequiredWithoutAnswersNestedInput = inputObjectType({
   nonNullDefaults: {
     input: false,
@@ -4740,6 +5163,39 @@ export const TestUpdateOneRequiredWithoutAnswersNestedInput = inputObjectType({
     t.field('update', { type: 'TestUpdateToOneWithWhereWithoutAnswersInput' })
   },
 })
+
+export const TaskAnswerUpdateManyWithoutAnswerModelNestedInput =
+  inputObjectType({
+    nonNullDefaults: {
+      input: false,
+    },
+    name: 'TaskAnswerUpdateManyWithoutAnswerModelNestedInput',
+    definition(t) {
+      t.list.field('create', {
+        type: 'TaskAnswerCreateWithoutAnswerModelInput',
+      })
+      t.list.field('connectOrCreate', {
+        type: 'TaskAnswerCreateOrConnectWithoutAnswerModelInput',
+      })
+      t.list.field('upsert', {
+        type: 'TaskAnswerUpsertWithWhereUniqueWithoutAnswerModelInput',
+      })
+      t.field('createMany', {
+        type: 'TaskAnswerCreateManyAnswerModelInputEnvelope',
+      })
+      t.list.field('set', { type: 'TaskAnswerWhereUniqueInput' })
+      t.list.field('disconnect', { type: 'TaskAnswerWhereUniqueInput' })
+      t.list.field('delete', { type: 'TaskAnswerWhereUniqueInput' })
+      t.list.field('connect', { type: 'TaskAnswerWhereUniqueInput' })
+      t.list.field('update', {
+        type: 'TaskAnswerUpdateWithWhereUniqueWithoutAnswerModelInput',
+      })
+      t.list.field('updateMany', {
+        type: 'TaskAnswerUpdateManyWithWhereWithoutAnswerModelInput',
+      })
+      t.list.field('deleteMany', { type: 'TaskAnswerScalarWhereInput' })
+    },
+  })
 
 export const ResponseUpdateManyWithoutAnswersNestedInput = inputObjectType({
   nonNullDefaults: {
@@ -4768,6 +5224,39 @@ export const ResponseUpdateManyWithoutAnswersNestedInput = inputObjectType({
   },
 })
 
+export const TaskAnswerUncheckedUpdateManyWithoutAnswerModelNestedInput =
+  inputObjectType({
+    nonNullDefaults: {
+      input: false,
+    },
+    name: 'TaskAnswerUncheckedUpdateManyWithoutAnswerModelNestedInput',
+    definition(t) {
+      t.list.field('create', {
+        type: 'TaskAnswerCreateWithoutAnswerModelInput',
+      })
+      t.list.field('connectOrCreate', {
+        type: 'TaskAnswerCreateOrConnectWithoutAnswerModelInput',
+      })
+      t.list.field('upsert', {
+        type: 'TaskAnswerUpsertWithWhereUniqueWithoutAnswerModelInput',
+      })
+      t.field('createMany', {
+        type: 'TaskAnswerCreateManyAnswerModelInputEnvelope',
+      })
+      t.list.field('set', { type: 'TaskAnswerWhereUniqueInput' })
+      t.list.field('disconnect', { type: 'TaskAnswerWhereUniqueInput' })
+      t.list.field('delete', { type: 'TaskAnswerWhereUniqueInput' })
+      t.list.field('connect', { type: 'TaskAnswerWhereUniqueInput' })
+      t.list.field('update', {
+        type: 'TaskAnswerUpdateWithWhereUniqueWithoutAnswerModelInput',
+      })
+      t.list.field('updateMany', {
+        type: 'TaskAnswerUpdateManyWithWhereWithoutAnswerModelInput',
+      })
+      t.list.field('deleteMany', { type: 'TaskAnswerScalarWhereInput' })
+    },
+  })
+
 export const ResponseUncheckedUpdateManyWithoutAnswersNestedInput =
   inputObjectType({
     nonNullDefaults: {
@@ -4795,6 +5284,102 @@ export const ResponseUncheckedUpdateManyWithoutAnswersNestedInput =
       t.list.field('deleteMany', { type: 'ResponseScalarWhereInput' })
     },
   })
+
+export const AnswerCreateNestedOneWithoutTaskAnswersInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'AnswerCreateNestedOneWithoutTaskAnswersInput',
+  definition(t) {
+    t.field('create', { type: 'AnswerCreateWithoutTaskAnswersInput' })
+    t.field('connectOrCreate', {
+      type: 'AnswerCreateOrConnectWithoutTaskAnswersInput',
+    })
+    t.field('connect', { type: 'AnswerWhereUniqueInput' })
+  },
+})
+
+export const TaskCreateNestedOneWithoutTaskAnswersInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'TaskCreateNestedOneWithoutTaskAnswersInput',
+  definition(t) {
+    t.field('create', { type: 'TaskCreateWithoutTaskAnswersInput' })
+    t.field('connectOrCreate', {
+      type: 'TaskCreateOrConnectWithoutTaskAnswersInput',
+    })
+    t.field('connect', { type: 'TaskWhereUniqueInput' })
+  },
+})
+
+export const UserCreateNestedOneWithoutAnswersInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'UserCreateNestedOneWithoutAnswersInput',
+  definition(t) {
+    t.field('create', { type: 'UserCreateWithoutAnswersInput' })
+    t.field('connectOrCreate', {
+      type: 'UserCreateOrConnectWithoutAnswersInput',
+    })
+    t.field('connect', { type: 'UserWhereUniqueInput' })
+  },
+})
+
+export const AnswerUpdateOneRequiredWithoutTaskAnswersNestedInput =
+  inputObjectType({
+    nonNullDefaults: {
+      input: false,
+    },
+    name: 'AnswerUpdateOneRequiredWithoutTaskAnswersNestedInput',
+    definition(t) {
+      t.field('create', { type: 'AnswerCreateWithoutTaskAnswersInput' })
+      t.field('connectOrCreate', {
+        type: 'AnswerCreateOrConnectWithoutTaskAnswersInput',
+      })
+      t.field('upsert', { type: 'AnswerUpsertWithoutTaskAnswersInput' })
+      t.field('connect', { type: 'AnswerWhereUniqueInput' })
+      t.field('update', {
+        type: 'AnswerUpdateToOneWithWhereWithoutTaskAnswersInput',
+      })
+    },
+  })
+
+export const TaskUpdateOneRequiredWithoutTaskAnswersNestedInput =
+  inputObjectType({
+    nonNullDefaults: {
+      input: false,
+    },
+    name: 'TaskUpdateOneRequiredWithoutTaskAnswersNestedInput',
+    definition(t) {
+      t.field('create', { type: 'TaskCreateWithoutTaskAnswersInput' })
+      t.field('connectOrCreate', {
+        type: 'TaskCreateOrConnectWithoutTaskAnswersInput',
+      })
+      t.field('upsert', { type: 'TaskUpsertWithoutTaskAnswersInput' })
+      t.field('connect', { type: 'TaskWhereUniqueInput' })
+      t.field('update', {
+        type: 'TaskUpdateToOneWithWhereWithoutTaskAnswersInput',
+      })
+    },
+  })
+
+export const UserUpdateOneRequiredWithoutAnswersNestedInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'UserUpdateOneRequiredWithoutAnswersNestedInput',
+  definition(t) {
+    t.field('create', { type: 'UserCreateWithoutAnswersInput' })
+    t.field('connectOrCreate', {
+      type: 'UserCreateOrConnectWithoutAnswersInput',
+    })
+    t.field('upsert', { type: 'UserUpsertWithoutAnswersInput' })
+    t.field('connect', { type: 'UserWhereUniqueInput' })
+    t.field('update', { type: 'UserUpdateToOneWithWhereWithoutAnswersInput' })
+  },
+})
 
 export const UserCreateNestedManyWithoutGroupsInput = inputObjectType({
   nonNullDefaults: {
@@ -5112,7 +5697,6 @@ export const NestedStringFilter = inputObjectType({
     t.field('contains', { type: 'String' })
     t.field('startsWith', { type: 'String' })
     t.field('endsWith', { type: 'String' })
-    t.field('search', { type: 'String' })
     t.field('not', { type: 'NestedStringFilter' })
   },
 })
@@ -5146,7 +5730,6 @@ export const NestedStringNullableFilter = inputObjectType({
     t.field('contains', { type: 'String' })
     t.field('startsWith', { type: 'String' })
     t.field('endsWith', { type: 'String' })
-    t.field('search', { type: 'String' })
     t.field('not', { type: 'NestedStringNullableFilter' })
   },
 })
@@ -5226,7 +5809,6 @@ export const NestedStringWithAggregatesFilter = inputObjectType({
     t.field('contains', { type: 'String' })
     t.field('startsWith', { type: 'String' })
     t.field('endsWith', { type: 'String' })
-    t.field('search', { type: 'String' })
     t.field('not', { type: 'NestedStringWithAggregatesFilter' })
     t.field('_count', { type: 'NestedIntFilter' })
     t.field('_min', { type: 'NestedStringFilter' })
@@ -5266,7 +5848,6 @@ export const NestedStringNullableWithAggregatesFilter = inputObjectType({
     t.field('contains', { type: 'String' })
     t.field('startsWith', { type: 'String' })
     t.field('endsWith', { type: 'String' })
-    t.field('search', { type: 'String' })
     t.field('not', { type: 'NestedStringNullableWithAggregatesFilter' })
     t.field('_count', { type: 'NestedIntNullableFilter' })
     t.field('_min', { type: 'NestedStringNullableFilter' })
@@ -5323,19 +5904,6 @@ export const NestedEnumDirectionTypeNullableWithAggregatesFilter =
     },
   })
 
-export const NestedEnumTaskTypeFilter = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'NestedEnumTaskTypeFilter',
-  definition(t) {
-    t.field('equals', { type: 'TaskType' })
-    t.list.field('in', { type: 'TaskType' })
-    t.list.field('notIn', { type: 'TaskType' })
-    t.field('not', { type: 'NestedEnumTaskTypeFilter' })
-  },
-})
-
 export const NestedIntNullableWithAggregatesFilter = inputObjectType({
   nonNullDefaults: {
     input: false,
@@ -5372,6 +5940,19 @@ export const NestedFloatNullableFilter = inputObjectType({
     t.field('gt', { type: 'Float' })
     t.field('gte', { type: 'Float' })
     t.field('not', { type: 'NestedFloatNullableFilter' })
+  },
+})
+
+export const NestedEnumTaskTypeFilter = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'NestedEnumTaskTypeFilter',
+  definition(t) {
+    t.field('equals', { type: 'TaskType' })
+    t.list.field('in', { type: 'TaskType' })
+    t.list.field('notIn', { type: 'TaskType' })
+    t.field('not', { type: 'NestedEnumTaskTypeFilter' })
   },
 })
 
@@ -5519,6 +6100,7 @@ export const ResponseCreateWithoutUserInput = inputObjectType({
   definition(t) {
     t.field('createdAt', { type: 'DateTime' })
     t.field('text', { type: 'String' })
+    t.field('verdict', { type: 'String' })
     t.nonNull.field('direction', {
       type: 'DirectionCreateNestedOneWithoutResponsesInput',
     })
@@ -5536,6 +6118,7 @@ export const ResponseUncheckedCreateWithoutUserInput = inputObjectType({
     t.field('id', { type: 'Int' })
     t.field('createdAt', { type: 'DateTime' })
     t.field('text', { type: 'String' })
+    t.field('verdict', { type: 'String' })
     t.nonNull.field('directionId', { type: 'Int' })
     t.field('tests', {
       type: 'TestUncheckedCreateNestedManyWithoutResponseInput',
@@ -5568,53 +6151,55 @@ export const ResponseCreateManyUserInputEnvelope = inputObjectType({
   },
 })
 
-export const AnswerCreateWithoutUserInput = inputObjectType({
+export const TaskAnswerCreateWithoutUserInput = inputObjectType({
   nonNullDefaults: {
     input: false,
   },
-  name: 'AnswerCreateWithoutUserInput',
+  name: 'TaskAnswerCreateWithoutUserInput',
   definition(t) {
-    t.field('createdAt', { type: 'DateTime' })
-    t.field('answer', { type: 'String' })
-    t.nonNull.field('test', { type: 'TestCreateNestedOneWithoutAnswersInput' })
-    t.field('response', { type: 'ResponseCreateNestedManyWithoutAnswersInput' })
-  },
-})
-
-export const AnswerUncheckedCreateWithoutUserInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'AnswerUncheckedCreateWithoutUserInput',
-  definition(t) {
-    t.field('id', { type: 'Int' })
-    t.field('createdAt', { type: 'DateTime' })
-    t.field('answer', { type: 'String' })
-    t.nonNull.field('testId', { type: 'Int' })
-    t.field('response', {
-      type: 'ResponseUncheckedCreateNestedManyWithoutAnswersInput',
+    t.nonNull.field('answer', { type: 'String' })
+    t.field('verdict', { type: 'Int' })
+    t.nonNull.field('answerModel', {
+      type: 'AnswerCreateNestedOneWithoutTaskAnswersInput',
+    })
+    t.nonNull.field('task', {
+      type: 'TaskCreateNestedOneWithoutTaskAnswersInput',
     })
   },
 })
 
-export const AnswerCreateOrConnectWithoutUserInput = inputObjectType({
+export const TaskAnswerUncheckedCreateWithoutUserInput = inputObjectType({
   nonNullDefaults: {
     input: false,
   },
-  name: 'AnswerCreateOrConnectWithoutUserInput',
+  name: 'TaskAnswerUncheckedCreateWithoutUserInput',
   definition(t) {
-    t.nonNull.field('where', { type: 'AnswerWhereUniqueInput' })
-    t.nonNull.field('create', { type: 'AnswerCreateWithoutUserInput' })
+    t.field('id', { type: 'Int' })
+    t.nonNull.field('answer', { type: 'String' })
+    t.field('verdict', { type: 'Int' })
+    t.nonNull.field('answerModelId', { type: 'Int' })
+    t.nonNull.field('taskId', { type: 'Int' })
   },
 })
 
-export const AnswerCreateManyUserInputEnvelope = inputObjectType({
+export const TaskAnswerCreateOrConnectWithoutUserInput = inputObjectType({
   nonNullDefaults: {
     input: false,
   },
-  name: 'AnswerCreateManyUserInputEnvelope',
+  name: 'TaskAnswerCreateOrConnectWithoutUserInput',
   definition(t) {
-    t.nonNull.field('data', { type: 'AnswerCreateManyUserInput' })
+    t.nonNull.field('where', { type: 'TaskAnswerWhereUniqueInput' })
+    t.nonNull.field('create', { type: 'TaskAnswerCreateWithoutUserInput' })
+  },
+})
+
+export const TaskAnswerCreateManyUserInputEnvelope = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'TaskAnswerCreateManyUserInputEnvelope',
+  definition(t) {
+    t.nonNull.field('data', { type: 'TaskAnswerCreateManyUserInput' })
     t.field('skipDuplicates', { type: 'Boolean' })
   },
 })
@@ -5776,59 +6361,61 @@ export const ResponseScalarWhereInput = inputObjectType({
     t.field('id', { type: 'IntFilter' })
     t.field('createdAt', { type: 'DateTimeFilter' })
     t.field('text', { type: 'StringNullableFilter' })
+    t.field('verdict', { type: 'StringNullableFilter' })
     t.field('userId', { type: 'IntFilter' })
     t.field('directionId', { type: 'IntFilter' })
   },
 })
 
-export const AnswerUpsertWithWhereUniqueWithoutUserInput = inputObjectType({
+export const TaskAnswerUpsertWithWhereUniqueWithoutUserInput = inputObjectType({
   nonNullDefaults: {
     input: false,
   },
-  name: 'AnswerUpsertWithWhereUniqueWithoutUserInput',
+  name: 'TaskAnswerUpsertWithWhereUniqueWithoutUserInput',
   definition(t) {
-    t.nonNull.field('where', { type: 'AnswerWhereUniqueInput' })
-    t.nonNull.field('update', { type: 'AnswerUpdateWithoutUserInput' })
-    t.nonNull.field('create', { type: 'AnswerCreateWithoutUserInput' })
+    t.nonNull.field('where', { type: 'TaskAnswerWhereUniqueInput' })
+    t.nonNull.field('update', { type: 'TaskAnswerUpdateWithoutUserInput' })
+    t.nonNull.field('create', { type: 'TaskAnswerCreateWithoutUserInput' })
   },
 })
 
-export const AnswerUpdateWithWhereUniqueWithoutUserInput = inputObjectType({
+export const TaskAnswerUpdateWithWhereUniqueWithoutUserInput = inputObjectType({
   nonNullDefaults: {
     input: false,
   },
-  name: 'AnswerUpdateWithWhereUniqueWithoutUserInput',
+  name: 'TaskAnswerUpdateWithWhereUniqueWithoutUserInput',
   definition(t) {
-    t.nonNull.field('where', { type: 'AnswerWhereUniqueInput' })
-    t.nonNull.field('data', { type: 'AnswerUpdateWithoutUserInput' })
+    t.nonNull.field('where', { type: 'TaskAnswerWhereUniqueInput' })
+    t.nonNull.field('data', { type: 'TaskAnswerUpdateWithoutUserInput' })
   },
 })
 
-export const AnswerUpdateManyWithWhereWithoutUserInput = inputObjectType({
+export const TaskAnswerUpdateManyWithWhereWithoutUserInput = inputObjectType({
   nonNullDefaults: {
     input: false,
   },
-  name: 'AnswerUpdateManyWithWhereWithoutUserInput',
+  name: 'TaskAnswerUpdateManyWithWhereWithoutUserInput',
   definition(t) {
-    t.nonNull.field('where', { type: 'AnswerScalarWhereInput' })
-    t.nonNull.field('data', { type: 'AnswerUpdateManyMutationInput' })
+    t.nonNull.field('where', { type: 'TaskAnswerScalarWhereInput' })
+    t.nonNull.field('data', { type: 'TaskAnswerUpdateManyMutationInput' })
   },
 })
 
-export const AnswerScalarWhereInput = inputObjectType({
+export const TaskAnswerScalarWhereInput = inputObjectType({
   nonNullDefaults: {
     input: false,
   },
-  name: 'AnswerScalarWhereInput',
+  name: 'TaskAnswerScalarWhereInput',
   definition(t) {
-    t.list.field('AND', { type: 'AnswerScalarWhereInput' })
-    t.list.field('OR', { type: 'AnswerScalarWhereInput' })
-    t.list.field('NOT', { type: 'AnswerScalarWhereInput' })
+    t.list.field('AND', { type: 'TaskAnswerScalarWhereInput' })
+    t.list.field('OR', { type: 'TaskAnswerScalarWhereInput' })
+    t.list.field('NOT', { type: 'TaskAnswerScalarWhereInput' })
     t.field('id', { type: 'IntFilter' })
-    t.field('createdAt', { type: 'DateTimeFilter' })
-    t.field('answer', { type: 'StringNullableFilter' })
+    t.field('answer', { type: 'StringFilter' })
+    t.field('verdict', { type: 'IntNullableFilter' })
+    t.field('answerModelId', { type: 'IntFilter' })
+    t.field('taskId', { type: 'IntFilter' })
     t.field('userId', { type: 'IntFilter' })
-    t.field('testId', { type: 'IntFilter' })
   },
 })
 
@@ -5845,6 +6432,7 @@ export const DirectionCreateWithoutSpecializationInput = inputObjectType({
     t.field('responses', {
       type: 'ResponseCreateNestedManyWithoutDirectionInput',
     })
+    t.field('test', { type: 'TestCreateNestedOneWithoutDirectionInput' })
   },
 })
 
@@ -5860,6 +6448,7 @@ export const DirectionUncheckedCreateWithoutSpecializationInput =
       t.field('type', { type: 'DirectionType' })
       t.nonNull.field('title', { type: 'String' })
       t.nonNull.field('description', { type: 'String' })
+      t.field('testId', { type: 'Int' })
       t.field('responses', {
         type: 'ResponseUncheckedCreateNestedManyWithoutDirectionInput',
       })
@@ -5949,6 +6538,7 @@ export const DirectionScalarWhereInput = inputObjectType({
     t.field('title', { type: 'StringFilter' })
     t.field('description', { type: 'StringFilter' })
     t.field('specializationId', { type: 'IntFilter' })
+    t.field('testId', { type: 'IntNullableFilter' })
   },
 })
 
@@ -5960,6 +6550,7 @@ export const ResponseCreateWithoutDirectionInput = inputObjectType({
   definition(t) {
     t.field('createdAt', { type: 'DateTime' })
     t.field('text', { type: 'String' })
+    t.field('verdict', { type: 'String' })
     t.nonNull.field('user', {
       type: 'UserCreateNestedOneWithoutResponsesInput',
     })
@@ -5977,6 +6568,7 @@ export const ResponseUncheckedCreateWithoutDirectionInput = inputObjectType({
     t.field('id', { type: 'Int' })
     t.field('createdAt', { type: 'DateTime' })
     t.field('text', { type: 'String' })
+    t.field('verdict', { type: 'String' })
     t.nonNull.field('userId', { type: 'Int' })
     t.field('tests', {
       type: 'TestUncheckedCreateNestedManyWithoutResponseInput',
@@ -6046,6 +6638,50 @@ export const SpecializationCreateOrConnectWithoutDirectionsInput =
       })
     },
   })
+
+export const TestCreateWithoutDirectionInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'TestCreateWithoutDirectionInput',
+  definition(t) {
+    t.field('createdAt', { type: 'DateTime' })
+    t.nonNull.field('title', { type: 'String' })
+    t.field('tasks', { type: 'TaskCreateNestedManyWithoutTestInput' })
+    t.field('answers', { type: 'AnswerCreateNestedManyWithoutTestInput' })
+    t.field('response', { type: 'ResponseCreateNestedManyWithoutTestsInput' })
+  },
+})
+
+export const TestUncheckedCreateWithoutDirectionInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'TestUncheckedCreateWithoutDirectionInput',
+  definition(t) {
+    t.field('id', { type: 'Int' })
+    t.field('createdAt', { type: 'DateTime' })
+    t.nonNull.field('title', { type: 'String' })
+    t.field('tasks', { type: 'TaskUncheckedCreateNestedManyWithoutTestInput' })
+    t.field('answers', {
+      type: 'AnswerUncheckedCreateNestedManyWithoutTestInput',
+    })
+    t.field('response', {
+      type: 'ResponseUncheckedCreateNestedManyWithoutTestsInput',
+    })
+  },
+})
+
+export const TestCreateOrConnectWithoutDirectionInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'TestCreateOrConnectWithoutDirectionInput',
+  definition(t) {
+    t.nonNull.field('where', { type: 'TestWhereUniqueInput' })
+    t.nonNull.field('create', { type: 'TestCreateWithoutDirectionInput' })
+  },
+})
 
 export const ResponseUpsertWithWhereUniqueWithoutDirectionInput =
   inputObjectType({
@@ -6139,6 +6775,62 @@ export const SpecializationUncheckedUpdateWithoutDirectionsInput =
     },
   })
 
+export const TestUpsertWithoutDirectionInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'TestUpsertWithoutDirectionInput',
+  definition(t) {
+    t.nonNull.field('update', { type: 'TestUpdateWithoutDirectionInput' })
+    t.nonNull.field('create', { type: 'TestCreateWithoutDirectionInput' })
+    t.field('where', { type: 'TestWhereInput' })
+  },
+})
+
+export const TestUpdateToOneWithWhereWithoutDirectionInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'TestUpdateToOneWithWhereWithoutDirectionInput',
+  definition(t) {
+    t.field('where', { type: 'TestWhereInput' })
+    t.nonNull.field('data', { type: 'TestUpdateWithoutDirectionInput' })
+  },
+})
+
+export const TestUpdateWithoutDirectionInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'TestUpdateWithoutDirectionInput',
+  definition(t) {
+    t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
+    t.field('title', { type: 'StringFieldUpdateOperationsInput' })
+    t.field('tasks', { type: 'TaskUpdateManyWithoutTestNestedInput' })
+    t.field('answers', { type: 'AnswerUpdateManyWithoutTestNestedInput' })
+    t.field('response', { type: 'ResponseUpdateManyWithoutTestsNestedInput' })
+  },
+})
+
+export const TestUncheckedUpdateWithoutDirectionInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'TestUncheckedUpdateWithoutDirectionInput',
+  definition(t) {
+    t.field('id', { type: 'IntFieldUpdateOperationsInput' })
+    t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
+    t.field('title', { type: 'StringFieldUpdateOperationsInput' })
+    t.field('tasks', { type: 'TaskUncheckedUpdateManyWithoutTestNestedInput' })
+    t.field('answers', {
+      type: 'AnswerUncheckedUpdateManyWithoutTestNestedInput',
+    })
+    t.field('response', {
+      type: 'ResponseUncheckedUpdateManyWithoutTestsNestedInput',
+    })
+  },
+})
+
 export const UserCreateWithoutResponsesInput = inputObjectType({
   nonNullDefaults: {
     input: false,
@@ -6158,7 +6850,7 @@ export const UserCreateWithoutResponsesInput = inputObjectType({
     t.field('groups', {
       type: 'MessagerGroupCreateNestedManyWithoutUsersInput',
     })
-    t.field('answers', { type: 'AnswerCreateNestedManyWithoutUserInput' })
+    t.field('answers', { type: 'TaskAnswerCreateNestedManyWithoutUserInput' })
   },
 })
 
@@ -6185,7 +6877,7 @@ export const UserUncheckedCreateWithoutResponsesInput = inputObjectType({
       type: 'MessagerGroupUncheckedCreateNestedManyWithoutUsersInput',
     })
     t.field('answers', {
-      type: 'AnswerUncheckedCreateNestedManyWithoutUserInput',
+      type: 'TaskAnswerUncheckedCreateNestedManyWithoutUserInput',
     })
   },
 })
@@ -6214,6 +6906,7 @@ export const DirectionCreateWithoutResponsesInput = inputObjectType({
     t.nonNull.field('specialization', {
       type: 'SpecializationCreateNestedOneWithoutDirectionsInput',
     })
+    t.field('test', { type: 'TestCreateNestedOneWithoutDirectionInput' })
   },
 })
 
@@ -6229,6 +6922,7 @@ export const DirectionUncheckedCreateWithoutResponsesInput = inputObjectType({
     t.nonNull.field('title', { type: 'String' })
     t.nonNull.field('description', { type: 'String' })
     t.nonNull.field('specializationId', { type: 'Int' })
+    t.field('testId', { type: 'Int' })
   },
 })
 
@@ -6251,6 +6945,7 @@ export const TestCreateWithoutResponseInput = inputObjectType({
   definition(t) {
     t.field('createdAt', { type: 'DateTime' })
     t.nonNull.field('title', { type: 'String' })
+    t.field('direction', { type: 'DirectionCreateNestedManyWithoutTestInput' })
     t.field('tasks', { type: 'TaskCreateNestedManyWithoutTestInput' })
     t.field('answers', { type: 'AnswerCreateNestedManyWithoutTestInput' })
   },
@@ -6265,6 +6960,9 @@ export const TestUncheckedCreateWithoutResponseInput = inputObjectType({
     t.field('id', { type: 'Int' })
     t.field('createdAt', { type: 'DateTime' })
     t.nonNull.field('title', { type: 'String' })
+    t.field('direction', {
+      type: 'DirectionUncheckedCreateNestedManyWithoutTestInput',
+    })
     t.field('tasks', { type: 'TaskUncheckedCreateNestedManyWithoutTestInput' })
     t.field('answers', {
       type: 'AnswerUncheckedCreateNestedManyWithoutTestInput',
@@ -6291,8 +6989,10 @@ export const AnswerCreateWithoutResponseInput = inputObjectType({
   definition(t) {
     t.field('createdAt', { type: 'DateTime' })
     t.field('answer', { type: 'String' })
-    t.nonNull.field('user', { type: 'UserCreateNestedOneWithoutAnswersInput' })
     t.nonNull.field('test', { type: 'TestCreateNestedOneWithoutAnswersInput' })
+    t.field('taskAnswers', {
+      type: 'TaskAnswerCreateNestedManyWithoutAnswerModelInput',
+    })
   },
 })
 
@@ -6305,8 +7005,10 @@ export const AnswerUncheckedCreateWithoutResponseInput = inputObjectType({
     t.field('id', { type: 'Int' })
     t.field('createdAt', { type: 'DateTime' })
     t.field('answer', { type: 'String' })
-    t.nonNull.field('userId', { type: 'Int' })
     t.nonNull.field('testId', { type: 'Int' })
+    t.field('taskAnswers', {
+      type: 'TaskAnswerUncheckedCreateNestedManyWithoutAnswerModelInput',
+    })
   },
 })
 
@@ -6363,7 +7065,7 @@ export const UserUpdateWithoutResponsesInput = inputObjectType({
     t.field('groups', {
       type: 'MessagerGroupUpdateManyWithoutUsersNestedInput',
     })
-    t.field('answers', { type: 'AnswerUpdateManyWithoutUserNestedInput' })
+    t.field('answers', { type: 'TaskAnswerUpdateManyWithoutUserNestedInput' })
   },
 })
 
@@ -6390,7 +7092,7 @@ export const UserUncheckedUpdateWithoutResponsesInput = inputObjectType({
       type: 'MessagerGroupUncheckedUpdateManyWithoutUsersNestedInput',
     })
     t.field('answers', {
-      type: 'AnswerUncheckedUpdateManyWithoutUserNestedInput',
+      type: 'TaskAnswerUncheckedUpdateManyWithoutUserNestedInput',
     })
   },
 })
@@ -6434,6 +7136,7 @@ export const DirectionUpdateWithoutResponsesInput = inputObjectType({
     t.field('specialization', {
       type: 'SpecializationUpdateOneRequiredWithoutDirectionsNestedInput',
     })
+    t.field('test', { type: 'TestUpdateOneWithoutDirectionNestedInput' })
   },
 })
 
@@ -6451,6 +7154,7 @@ export const DirectionUncheckedUpdateWithoutResponsesInput = inputObjectType({
     t.field('title', { type: 'StringFieldUpdateOperationsInput' })
     t.field('description', { type: 'StringFieldUpdateOperationsInput' })
     t.field('specializationId', { type: 'IntFieldUpdateOperationsInput' })
+    t.field('testId', { type: 'NullableIntFieldUpdateOperationsInput' })
   },
 })
 
@@ -6537,6 +7241,81 @@ export const AnswerUpdateManyWithWhereWithoutResponseInput = inputObjectType({
   },
 })
 
+export const AnswerScalarWhereInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'AnswerScalarWhereInput',
+  definition(t) {
+    t.list.field('AND', { type: 'AnswerScalarWhereInput' })
+    t.list.field('OR', { type: 'AnswerScalarWhereInput' })
+    t.list.field('NOT', { type: 'AnswerScalarWhereInput' })
+    t.field('id', { type: 'IntFilter' })
+    t.field('createdAt', { type: 'DateTimeFilter' })
+    t.field('answer', { type: 'StringNullableFilter' })
+    t.field('testId', { type: 'IntFilter' })
+  },
+})
+
+export const DirectionCreateWithoutTestInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'DirectionCreateWithoutTestInput',
+  definition(t) {
+    t.field('createdAt', { type: 'DateTime' })
+    t.field('type', { type: 'DirectionType' })
+    t.nonNull.field('title', { type: 'String' })
+    t.nonNull.field('description', { type: 'String' })
+    t.field('responses', {
+      type: 'ResponseCreateNestedManyWithoutDirectionInput',
+    })
+    t.nonNull.field('specialization', {
+      type: 'SpecializationCreateNestedOneWithoutDirectionsInput',
+    })
+  },
+})
+
+export const DirectionUncheckedCreateWithoutTestInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'DirectionUncheckedCreateWithoutTestInput',
+  definition(t) {
+    t.field('id', { type: 'Int' })
+    t.field('createdAt', { type: 'DateTime' })
+    t.field('type', { type: 'DirectionType' })
+    t.nonNull.field('title', { type: 'String' })
+    t.nonNull.field('description', { type: 'String' })
+    t.nonNull.field('specializationId', { type: 'Int' })
+    t.field('responses', {
+      type: 'ResponseUncheckedCreateNestedManyWithoutDirectionInput',
+    })
+  },
+})
+
+export const DirectionCreateOrConnectWithoutTestInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'DirectionCreateOrConnectWithoutTestInput',
+  definition(t) {
+    t.nonNull.field('where', { type: 'DirectionWhereUniqueInput' })
+    t.nonNull.field('create', { type: 'DirectionCreateWithoutTestInput' })
+  },
+})
+
+export const DirectionCreateManyTestInputEnvelope = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'DirectionCreateManyTestInputEnvelope',
+  definition(t) {
+    t.nonNull.field('data', { type: 'DirectionCreateManyTestInput' })
+    t.field('skipDuplicates', { type: 'Boolean' })
+  },
+})
+
 export const TaskCreateWithoutTestInput = inputObjectType({
   nonNullDefaults: {
     input: false,
@@ -6549,6 +7328,10 @@ export const TaskCreateWithoutTestInput = inputObjectType({
     t.list.field('variants', { type: 'String' })
     t.field('correctSingleAnswer', { type: 'Int' })
     t.list.field('correctMultipleAnswer', { type: 'Int' })
+    t.field('code', { type: 'String' })
+    t.field('taskAnswers', {
+      type: 'TaskAnswerCreateNestedManyWithoutTaskInput',
+    })
   },
 })
 
@@ -6565,6 +7348,10 @@ export const TaskUncheckedCreateWithoutTestInput = inputObjectType({
     t.list.field('variants', { type: 'String' })
     t.field('correctSingleAnswer', { type: 'Int' })
     t.list.field('correctMultipleAnswer', { type: 'Int' })
+    t.field('code', { type: 'String' })
+    t.field('taskAnswers', {
+      type: 'TaskAnswerUncheckedCreateNestedManyWithoutTaskInput',
+    })
   },
 })
 
@@ -6598,7 +7385,9 @@ export const AnswerCreateWithoutTestInput = inputObjectType({
   definition(t) {
     t.field('createdAt', { type: 'DateTime' })
     t.field('answer', { type: 'String' })
-    t.nonNull.field('user', { type: 'UserCreateNestedOneWithoutAnswersInput' })
+    t.field('taskAnswers', {
+      type: 'TaskAnswerCreateNestedManyWithoutAnswerModelInput',
+    })
     t.field('response', { type: 'ResponseCreateNestedManyWithoutAnswersInput' })
   },
 })
@@ -6612,7 +7401,9 @@ export const AnswerUncheckedCreateWithoutTestInput = inputObjectType({
     t.field('id', { type: 'Int' })
     t.field('createdAt', { type: 'DateTime' })
     t.field('answer', { type: 'String' })
-    t.nonNull.field('userId', { type: 'Int' })
+    t.field('taskAnswers', {
+      type: 'TaskAnswerUncheckedCreateNestedManyWithoutAnswerModelInput',
+    })
     t.field('response', {
       type: 'ResponseUncheckedCreateNestedManyWithoutAnswersInput',
     })
@@ -6649,6 +7440,7 @@ export const ResponseCreateWithoutTestsInput = inputObjectType({
   definition(t) {
     t.field('createdAt', { type: 'DateTime' })
     t.field('text', { type: 'String' })
+    t.field('verdict', { type: 'String' })
     t.nonNull.field('user', {
       type: 'UserCreateNestedOneWithoutResponsesInput',
     })
@@ -6668,6 +7460,7 @@ export const ResponseUncheckedCreateWithoutTestsInput = inputObjectType({
     t.field('id', { type: 'Int' })
     t.field('createdAt', { type: 'DateTime' })
     t.field('text', { type: 'String' })
+    t.field('verdict', { type: 'String' })
     t.nonNull.field('userId', { type: 'Int' })
     t.nonNull.field('directionId', { type: 'Int' })
     t.field('answers', {
@@ -6684,6 +7477,40 @@ export const ResponseCreateOrConnectWithoutTestsInput = inputObjectType({
   definition(t) {
     t.nonNull.field('where', { type: 'ResponseWhereUniqueInput' })
     t.nonNull.field('create', { type: 'ResponseCreateWithoutTestsInput' })
+  },
+})
+
+export const DirectionUpsertWithWhereUniqueWithoutTestInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'DirectionUpsertWithWhereUniqueWithoutTestInput',
+  definition(t) {
+    t.nonNull.field('where', { type: 'DirectionWhereUniqueInput' })
+    t.nonNull.field('update', { type: 'DirectionUpdateWithoutTestInput' })
+    t.nonNull.field('create', { type: 'DirectionCreateWithoutTestInput' })
+  },
+})
+
+export const DirectionUpdateWithWhereUniqueWithoutTestInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'DirectionUpdateWithWhereUniqueWithoutTestInput',
+  definition(t) {
+    t.nonNull.field('where', { type: 'DirectionWhereUniqueInput' })
+    t.nonNull.field('data', { type: 'DirectionUpdateWithoutTestInput' })
+  },
+})
+
+export const DirectionUpdateManyWithWhereWithoutTestInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'DirectionUpdateManyWithWhereWithoutTestInput',
+  definition(t) {
+    t.nonNull.field('where', { type: 'DirectionScalarWhereInput' })
+    t.nonNull.field('data', { type: 'DirectionUpdateManyMutationInput' })
   },
 })
 
@@ -6738,6 +7565,7 @@ export const TaskScalarWhereInput = inputObjectType({
     t.field('variants', { type: 'StringNullableListFilter' })
     t.field('correctSingleAnswer', { type: 'IntNullableFilter' })
     t.field('correctMultipleAnswer', { type: 'IntNullableListFilter' })
+    t.field('code', { type: 'StringNullableFilter' })
   },
 })
 
@@ -6817,6 +7645,7 @@ export const TestCreateWithoutTasksInput = inputObjectType({
   definition(t) {
     t.field('createdAt', { type: 'DateTime' })
     t.nonNull.field('title', { type: 'String' })
+    t.field('direction', { type: 'DirectionCreateNestedManyWithoutTestInput' })
     t.field('answers', { type: 'AnswerCreateNestedManyWithoutTestInput' })
     t.field('response', { type: 'ResponseCreateNestedManyWithoutTestsInput' })
   },
@@ -6831,6 +7660,9 @@ export const TestUncheckedCreateWithoutTasksInput = inputObjectType({
     t.field('id', { type: 'Int' })
     t.field('createdAt', { type: 'DateTime' })
     t.nonNull.field('title', { type: 'String' })
+    t.field('direction', {
+      type: 'DirectionUncheckedCreateNestedManyWithoutTestInput',
+    })
     t.field('answers', {
       type: 'AnswerUncheckedCreateNestedManyWithoutTestInput',
     })
@@ -6848,6 +7680,57 @@ export const TestCreateOrConnectWithoutTasksInput = inputObjectType({
   definition(t) {
     t.nonNull.field('where', { type: 'TestWhereUniqueInput' })
     t.nonNull.field('create', { type: 'TestCreateWithoutTasksInput' })
+  },
+})
+
+export const TaskAnswerCreateWithoutTaskInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'TaskAnswerCreateWithoutTaskInput',
+  definition(t) {
+    t.nonNull.field('answer', { type: 'String' })
+    t.field('verdict', { type: 'Int' })
+    t.nonNull.field('answerModel', {
+      type: 'AnswerCreateNestedOneWithoutTaskAnswersInput',
+    })
+    t.nonNull.field('user', { type: 'UserCreateNestedOneWithoutAnswersInput' })
+  },
+})
+
+export const TaskAnswerUncheckedCreateWithoutTaskInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'TaskAnswerUncheckedCreateWithoutTaskInput',
+  definition(t) {
+    t.field('id', { type: 'Int' })
+    t.nonNull.field('answer', { type: 'String' })
+    t.field('verdict', { type: 'Int' })
+    t.nonNull.field('answerModelId', { type: 'Int' })
+    t.nonNull.field('userId', { type: 'Int' })
+  },
+})
+
+export const TaskAnswerCreateOrConnectWithoutTaskInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'TaskAnswerCreateOrConnectWithoutTaskInput',
+  definition(t) {
+    t.nonNull.field('where', { type: 'TaskAnswerWhereUniqueInput' })
+    t.nonNull.field('create', { type: 'TaskAnswerCreateWithoutTaskInput' })
+  },
+})
+
+export const TaskAnswerCreateManyTaskInputEnvelope = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'TaskAnswerCreateManyTaskInputEnvelope',
+  definition(t) {
+    t.nonNull.field('data', { type: 'TaskAnswerCreateManyTaskInput' })
+    t.field('skipDuplicates', { type: 'Boolean' })
   },
 })
 
@@ -6882,6 +7765,7 @@ export const TestUpdateWithoutTasksInput = inputObjectType({
   definition(t) {
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('title', { type: 'StringFieldUpdateOperationsInput' })
+    t.field('direction', { type: 'DirectionUpdateManyWithoutTestNestedInput' })
     t.field('answers', { type: 'AnswerUpdateManyWithoutTestNestedInput' })
     t.field('response', { type: 'ResponseUpdateManyWithoutTestsNestedInput' })
   },
@@ -6896,12 +7780,421 @@ export const TestUncheckedUpdateWithoutTasksInput = inputObjectType({
     t.field('id', { type: 'IntFieldUpdateOperationsInput' })
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('title', { type: 'StringFieldUpdateOperationsInput' })
+    t.field('direction', {
+      type: 'DirectionUncheckedUpdateManyWithoutTestNestedInput',
+    })
     t.field('answers', {
       type: 'AnswerUncheckedUpdateManyWithoutTestNestedInput',
     })
     t.field('response', {
       type: 'ResponseUncheckedUpdateManyWithoutTestsNestedInput',
     })
+  },
+})
+
+export const TaskAnswerUpsertWithWhereUniqueWithoutTaskInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'TaskAnswerUpsertWithWhereUniqueWithoutTaskInput',
+  definition(t) {
+    t.nonNull.field('where', { type: 'TaskAnswerWhereUniqueInput' })
+    t.nonNull.field('update', { type: 'TaskAnswerUpdateWithoutTaskInput' })
+    t.nonNull.field('create', { type: 'TaskAnswerCreateWithoutTaskInput' })
+  },
+})
+
+export const TaskAnswerUpdateWithWhereUniqueWithoutTaskInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'TaskAnswerUpdateWithWhereUniqueWithoutTaskInput',
+  definition(t) {
+    t.nonNull.field('where', { type: 'TaskAnswerWhereUniqueInput' })
+    t.nonNull.field('data', { type: 'TaskAnswerUpdateWithoutTaskInput' })
+  },
+})
+
+export const TaskAnswerUpdateManyWithWhereWithoutTaskInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'TaskAnswerUpdateManyWithWhereWithoutTaskInput',
+  definition(t) {
+    t.nonNull.field('where', { type: 'TaskAnswerScalarWhereInput' })
+    t.nonNull.field('data', { type: 'TaskAnswerUpdateManyMutationInput' })
+  },
+})
+
+export const TestCreateWithoutAnswersInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'TestCreateWithoutAnswersInput',
+  definition(t) {
+    t.field('createdAt', { type: 'DateTime' })
+    t.nonNull.field('title', { type: 'String' })
+    t.field('direction', { type: 'DirectionCreateNestedManyWithoutTestInput' })
+    t.field('tasks', { type: 'TaskCreateNestedManyWithoutTestInput' })
+    t.field('response', { type: 'ResponseCreateNestedManyWithoutTestsInput' })
+  },
+})
+
+export const TestUncheckedCreateWithoutAnswersInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'TestUncheckedCreateWithoutAnswersInput',
+  definition(t) {
+    t.field('id', { type: 'Int' })
+    t.field('createdAt', { type: 'DateTime' })
+    t.nonNull.field('title', { type: 'String' })
+    t.field('direction', {
+      type: 'DirectionUncheckedCreateNestedManyWithoutTestInput',
+    })
+    t.field('tasks', { type: 'TaskUncheckedCreateNestedManyWithoutTestInput' })
+    t.field('response', {
+      type: 'ResponseUncheckedCreateNestedManyWithoutTestsInput',
+    })
+  },
+})
+
+export const TestCreateOrConnectWithoutAnswersInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'TestCreateOrConnectWithoutAnswersInput',
+  definition(t) {
+    t.nonNull.field('where', { type: 'TestWhereUniqueInput' })
+    t.nonNull.field('create', { type: 'TestCreateWithoutAnswersInput' })
+  },
+})
+
+export const TaskAnswerCreateWithoutAnswerModelInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'TaskAnswerCreateWithoutAnswerModelInput',
+  definition(t) {
+    t.nonNull.field('answer', { type: 'String' })
+    t.field('verdict', { type: 'Int' })
+    t.nonNull.field('task', {
+      type: 'TaskCreateNestedOneWithoutTaskAnswersInput',
+    })
+    t.nonNull.field('user', { type: 'UserCreateNestedOneWithoutAnswersInput' })
+  },
+})
+
+export const TaskAnswerUncheckedCreateWithoutAnswerModelInput = inputObjectType(
+  {
+    nonNullDefaults: {
+      input: false,
+    },
+    name: 'TaskAnswerUncheckedCreateWithoutAnswerModelInput',
+    definition(t) {
+      t.field('id', { type: 'Int' })
+      t.nonNull.field('answer', { type: 'String' })
+      t.field('verdict', { type: 'Int' })
+      t.nonNull.field('taskId', { type: 'Int' })
+      t.nonNull.field('userId', { type: 'Int' })
+    },
+  },
+)
+
+export const TaskAnswerCreateOrConnectWithoutAnswerModelInput = inputObjectType(
+  {
+    nonNullDefaults: {
+      input: false,
+    },
+    name: 'TaskAnswerCreateOrConnectWithoutAnswerModelInput',
+    definition(t) {
+      t.nonNull.field('where', { type: 'TaskAnswerWhereUniqueInput' })
+      t.nonNull.field('create', {
+        type: 'TaskAnswerCreateWithoutAnswerModelInput',
+      })
+    },
+  },
+)
+
+export const TaskAnswerCreateManyAnswerModelInputEnvelope = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'TaskAnswerCreateManyAnswerModelInputEnvelope',
+  definition(t) {
+    t.nonNull.field('data', { type: 'TaskAnswerCreateManyAnswerModelInput' })
+    t.field('skipDuplicates', { type: 'Boolean' })
+  },
+})
+
+export const ResponseCreateWithoutAnswersInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'ResponseCreateWithoutAnswersInput',
+  definition(t) {
+    t.field('createdAt', { type: 'DateTime' })
+    t.field('text', { type: 'String' })
+    t.field('verdict', { type: 'String' })
+    t.nonNull.field('user', {
+      type: 'UserCreateNestedOneWithoutResponsesInput',
+    })
+    t.nonNull.field('direction', {
+      type: 'DirectionCreateNestedOneWithoutResponsesInput',
+    })
+    t.field('tests', { type: 'TestCreateNestedManyWithoutResponseInput' })
+  },
+})
+
+export const ResponseUncheckedCreateWithoutAnswersInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'ResponseUncheckedCreateWithoutAnswersInput',
+  definition(t) {
+    t.field('id', { type: 'Int' })
+    t.field('createdAt', { type: 'DateTime' })
+    t.field('text', { type: 'String' })
+    t.field('verdict', { type: 'String' })
+    t.nonNull.field('userId', { type: 'Int' })
+    t.nonNull.field('directionId', { type: 'Int' })
+    t.field('tests', {
+      type: 'TestUncheckedCreateNestedManyWithoutResponseInput',
+    })
+  },
+})
+
+export const ResponseCreateOrConnectWithoutAnswersInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'ResponseCreateOrConnectWithoutAnswersInput',
+  definition(t) {
+    t.nonNull.field('where', { type: 'ResponseWhereUniqueInput' })
+    t.nonNull.field('create', { type: 'ResponseCreateWithoutAnswersInput' })
+  },
+})
+
+export const TestUpsertWithoutAnswersInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'TestUpsertWithoutAnswersInput',
+  definition(t) {
+    t.nonNull.field('update', { type: 'TestUpdateWithoutAnswersInput' })
+    t.nonNull.field('create', { type: 'TestCreateWithoutAnswersInput' })
+    t.field('where', { type: 'TestWhereInput' })
+  },
+})
+
+export const TestUpdateToOneWithWhereWithoutAnswersInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'TestUpdateToOneWithWhereWithoutAnswersInput',
+  definition(t) {
+    t.field('where', { type: 'TestWhereInput' })
+    t.nonNull.field('data', { type: 'TestUpdateWithoutAnswersInput' })
+  },
+})
+
+export const TestUpdateWithoutAnswersInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'TestUpdateWithoutAnswersInput',
+  definition(t) {
+    t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
+    t.field('title', { type: 'StringFieldUpdateOperationsInput' })
+    t.field('direction', { type: 'DirectionUpdateManyWithoutTestNestedInput' })
+    t.field('tasks', { type: 'TaskUpdateManyWithoutTestNestedInput' })
+    t.field('response', { type: 'ResponseUpdateManyWithoutTestsNestedInput' })
+  },
+})
+
+export const TestUncheckedUpdateWithoutAnswersInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'TestUncheckedUpdateWithoutAnswersInput',
+  definition(t) {
+    t.field('id', { type: 'IntFieldUpdateOperationsInput' })
+    t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
+    t.field('title', { type: 'StringFieldUpdateOperationsInput' })
+    t.field('direction', {
+      type: 'DirectionUncheckedUpdateManyWithoutTestNestedInput',
+    })
+    t.field('tasks', { type: 'TaskUncheckedUpdateManyWithoutTestNestedInput' })
+    t.field('response', {
+      type: 'ResponseUncheckedUpdateManyWithoutTestsNestedInput',
+    })
+  },
+})
+
+export const TaskAnswerUpsertWithWhereUniqueWithoutAnswerModelInput =
+  inputObjectType({
+    nonNullDefaults: {
+      input: false,
+    },
+    name: 'TaskAnswerUpsertWithWhereUniqueWithoutAnswerModelInput',
+    definition(t) {
+      t.nonNull.field('where', { type: 'TaskAnswerWhereUniqueInput' })
+      t.nonNull.field('update', {
+        type: 'TaskAnswerUpdateWithoutAnswerModelInput',
+      })
+      t.nonNull.field('create', {
+        type: 'TaskAnswerCreateWithoutAnswerModelInput',
+      })
+    },
+  })
+
+export const TaskAnswerUpdateWithWhereUniqueWithoutAnswerModelInput =
+  inputObjectType({
+    nonNullDefaults: {
+      input: false,
+    },
+    name: 'TaskAnswerUpdateWithWhereUniqueWithoutAnswerModelInput',
+    definition(t) {
+      t.nonNull.field('where', { type: 'TaskAnswerWhereUniqueInput' })
+      t.nonNull.field('data', {
+        type: 'TaskAnswerUpdateWithoutAnswerModelInput',
+      })
+    },
+  })
+
+export const TaskAnswerUpdateManyWithWhereWithoutAnswerModelInput =
+  inputObjectType({
+    nonNullDefaults: {
+      input: false,
+    },
+    name: 'TaskAnswerUpdateManyWithWhereWithoutAnswerModelInput',
+    definition(t) {
+      t.nonNull.field('where', { type: 'TaskAnswerScalarWhereInput' })
+      t.nonNull.field('data', { type: 'TaskAnswerUpdateManyMutationInput' })
+    },
+  })
+
+export const ResponseUpsertWithWhereUniqueWithoutAnswersInput = inputObjectType(
+  {
+    nonNullDefaults: {
+      input: false,
+    },
+    name: 'ResponseUpsertWithWhereUniqueWithoutAnswersInput',
+    definition(t) {
+      t.nonNull.field('where', { type: 'ResponseWhereUniqueInput' })
+      t.nonNull.field('update', { type: 'ResponseUpdateWithoutAnswersInput' })
+      t.nonNull.field('create', { type: 'ResponseCreateWithoutAnswersInput' })
+    },
+  },
+)
+
+export const ResponseUpdateWithWhereUniqueWithoutAnswersInput = inputObjectType(
+  {
+    nonNullDefaults: {
+      input: false,
+    },
+    name: 'ResponseUpdateWithWhereUniqueWithoutAnswersInput',
+    definition(t) {
+      t.nonNull.field('where', { type: 'ResponseWhereUniqueInput' })
+      t.nonNull.field('data', { type: 'ResponseUpdateWithoutAnswersInput' })
+    },
+  },
+)
+
+export const ResponseUpdateManyWithWhereWithoutAnswersInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'ResponseUpdateManyWithWhereWithoutAnswersInput',
+  definition(t) {
+    t.nonNull.field('where', { type: 'ResponseScalarWhereInput' })
+    t.nonNull.field('data', { type: 'ResponseUpdateManyMutationInput' })
+  },
+})
+
+export const AnswerCreateWithoutTaskAnswersInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'AnswerCreateWithoutTaskAnswersInput',
+  definition(t) {
+    t.field('createdAt', { type: 'DateTime' })
+    t.field('answer', { type: 'String' })
+    t.nonNull.field('test', { type: 'TestCreateNestedOneWithoutAnswersInput' })
+    t.field('response', { type: 'ResponseCreateNestedManyWithoutAnswersInput' })
+  },
+})
+
+export const AnswerUncheckedCreateWithoutTaskAnswersInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'AnswerUncheckedCreateWithoutTaskAnswersInput',
+  definition(t) {
+    t.field('id', { type: 'Int' })
+    t.field('createdAt', { type: 'DateTime' })
+    t.field('answer', { type: 'String' })
+    t.nonNull.field('testId', { type: 'Int' })
+    t.field('response', {
+      type: 'ResponseUncheckedCreateNestedManyWithoutAnswersInput',
+    })
+  },
+})
+
+export const AnswerCreateOrConnectWithoutTaskAnswersInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'AnswerCreateOrConnectWithoutTaskAnswersInput',
+  definition(t) {
+    t.nonNull.field('where', { type: 'AnswerWhereUniqueInput' })
+    t.nonNull.field('create', { type: 'AnswerCreateWithoutTaskAnswersInput' })
+  },
+})
+
+export const TaskCreateWithoutTaskAnswersInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'TaskCreateWithoutTaskAnswersInput',
+  definition(t) {
+    t.field('createdAt', { type: 'DateTime' })
+    t.nonNull.field('type', { type: 'TaskType' })
+    t.nonNull.field('question', { type: 'String' })
+    t.list.field('variants', { type: 'String' })
+    t.field('correctSingleAnswer', { type: 'Int' })
+    t.list.field('correctMultipleAnswer', { type: 'Int' })
+    t.field('code', { type: 'String' })
+    t.field('test', { type: 'TestCreateNestedOneWithoutTasksInput' })
+  },
+})
+
+export const TaskUncheckedCreateWithoutTaskAnswersInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'TaskUncheckedCreateWithoutTaskAnswersInput',
+  definition(t) {
+    t.field('id', { type: 'Int' })
+    t.field('createdAt', { type: 'DateTime' })
+    t.field('testId', { type: 'Int' })
+    t.nonNull.field('type', { type: 'TaskType' })
+    t.nonNull.field('question', { type: 'String' })
+    t.list.field('variants', { type: 'String' })
+    t.field('correctSingleAnswer', { type: 'Int' })
+    t.list.field('correctMultipleAnswer', { type: 'Int' })
+    t.field('code', { type: 'String' })
+  },
+})
+
+export const TaskCreateOrConnectWithoutTaskAnswersInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'TaskCreateOrConnectWithoutTaskAnswersInput',
+  definition(t) {
+    t.nonNull.field('where', { type: 'TaskWhereUniqueInput' })
+    t.nonNull.field('create', { type: 'TaskCreateWithoutTaskAnswersInput' })
   },
 })
 
@@ -6967,89 +8260,118 @@ export const UserCreateOrConnectWithoutAnswersInput = inputObjectType({
   },
 })
 
-export const TestCreateWithoutAnswersInput = inputObjectType({
+export const AnswerUpsertWithoutTaskAnswersInput = inputObjectType({
   nonNullDefaults: {
     input: false,
   },
-  name: 'TestCreateWithoutAnswersInput',
+  name: 'AnswerUpsertWithoutTaskAnswersInput',
   definition(t) {
-    t.field('createdAt', { type: 'DateTime' })
-    t.nonNull.field('title', { type: 'String' })
-    t.field('tasks', { type: 'TaskCreateNestedManyWithoutTestInput' })
-    t.field('response', { type: 'ResponseCreateNestedManyWithoutTestsInput' })
+    t.nonNull.field('update', { type: 'AnswerUpdateWithoutTaskAnswersInput' })
+    t.nonNull.field('create', { type: 'AnswerCreateWithoutTaskAnswersInput' })
+    t.field('where', { type: 'AnswerWhereInput' })
   },
 })
 
-export const TestUncheckedCreateWithoutAnswersInput = inputObjectType({
+export const AnswerUpdateToOneWithWhereWithoutTaskAnswersInput =
+  inputObjectType({
+    nonNullDefaults: {
+      input: false,
+    },
+    name: 'AnswerUpdateToOneWithWhereWithoutTaskAnswersInput',
+    definition(t) {
+      t.field('where', { type: 'AnswerWhereInput' })
+      t.nonNull.field('data', { type: 'AnswerUpdateWithoutTaskAnswersInput' })
+    },
+  })
+
+export const AnswerUpdateWithoutTaskAnswersInput = inputObjectType({
   nonNullDefaults: {
     input: false,
   },
-  name: 'TestUncheckedCreateWithoutAnswersInput',
+  name: 'AnswerUpdateWithoutTaskAnswersInput',
   definition(t) {
-    t.field('id', { type: 'Int' })
-    t.field('createdAt', { type: 'DateTime' })
-    t.nonNull.field('title', { type: 'String' })
-    t.field('tasks', { type: 'TaskUncheckedCreateNestedManyWithoutTestInput' })
+    t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
+    t.field('answer', { type: 'NullableStringFieldUpdateOperationsInput' })
+    t.field('test', { type: 'TestUpdateOneRequiredWithoutAnswersNestedInput' })
+    t.field('response', { type: 'ResponseUpdateManyWithoutAnswersNestedInput' })
+  },
+})
+
+export const AnswerUncheckedUpdateWithoutTaskAnswersInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'AnswerUncheckedUpdateWithoutTaskAnswersInput',
+  definition(t) {
+    t.field('id', { type: 'IntFieldUpdateOperationsInput' })
+    t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
+    t.field('answer', { type: 'NullableStringFieldUpdateOperationsInput' })
+    t.field('testId', { type: 'IntFieldUpdateOperationsInput' })
     t.field('response', {
-      type: 'ResponseUncheckedCreateNestedManyWithoutTestsInput',
+      type: 'ResponseUncheckedUpdateManyWithoutAnswersNestedInput',
     })
   },
 })
 
-export const TestCreateOrConnectWithoutAnswersInput = inputObjectType({
+export const TaskUpsertWithoutTaskAnswersInput = inputObjectType({
   nonNullDefaults: {
     input: false,
   },
-  name: 'TestCreateOrConnectWithoutAnswersInput',
+  name: 'TaskUpsertWithoutTaskAnswersInput',
   definition(t) {
-    t.nonNull.field('where', { type: 'TestWhereUniqueInput' })
-    t.nonNull.field('create', { type: 'TestCreateWithoutAnswersInput' })
+    t.nonNull.field('update', { type: 'TaskUpdateWithoutTaskAnswersInput' })
+    t.nonNull.field('create', { type: 'TaskCreateWithoutTaskAnswersInput' })
+    t.field('where', { type: 'TaskWhereInput' })
   },
 })
 
-export const ResponseCreateWithoutAnswersInput = inputObjectType({
+export const TaskUpdateToOneWithWhereWithoutTaskAnswersInput = inputObjectType({
   nonNullDefaults: {
     input: false,
   },
-  name: 'ResponseCreateWithoutAnswersInput',
+  name: 'TaskUpdateToOneWithWhereWithoutTaskAnswersInput',
   definition(t) {
-    t.field('createdAt', { type: 'DateTime' })
-    t.field('text', { type: 'String' })
-    t.nonNull.field('user', {
-      type: 'UserCreateNestedOneWithoutResponsesInput',
-    })
-    t.nonNull.field('direction', {
-      type: 'DirectionCreateNestedOneWithoutResponsesInput',
-    })
-    t.field('tests', { type: 'TestCreateNestedManyWithoutResponseInput' })
+    t.field('where', { type: 'TaskWhereInput' })
+    t.nonNull.field('data', { type: 'TaskUpdateWithoutTaskAnswersInput' })
   },
 })
 
-export const ResponseUncheckedCreateWithoutAnswersInput = inputObjectType({
+export const TaskUpdateWithoutTaskAnswersInput = inputObjectType({
   nonNullDefaults: {
     input: false,
   },
-  name: 'ResponseUncheckedCreateWithoutAnswersInput',
+  name: 'TaskUpdateWithoutTaskAnswersInput',
   definition(t) {
-    t.field('id', { type: 'Int' })
-    t.field('createdAt', { type: 'DateTime' })
-    t.field('text', { type: 'String' })
-    t.nonNull.field('userId', { type: 'Int' })
-    t.nonNull.field('directionId', { type: 'Int' })
-    t.field('tests', {
-      type: 'TestUncheckedCreateNestedManyWithoutResponseInput',
+    t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
+    t.field('type', { type: 'EnumTaskTypeFieldUpdateOperationsInput' })
+    t.field('question', { type: 'StringFieldUpdateOperationsInput' })
+    t.list.field('variants', { type: 'String' })
+    t.field('correctSingleAnswer', {
+      type: 'NullableIntFieldUpdateOperationsInput',
     })
+    t.list.field('correctMultipleAnswer', { type: 'Int' })
+    t.field('code', { type: 'NullableStringFieldUpdateOperationsInput' })
+    t.field('test', { type: 'TestUpdateOneWithoutTasksNestedInput' })
   },
 })
 
-export const ResponseCreateOrConnectWithoutAnswersInput = inputObjectType({
+export const TaskUncheckedUpdateWithoutTaskAnswersInput = inputObjectType({
   nonNullDefaults: {
     input: false,
   },
-  name: 'ResponseCreateOrConnectWithoutAnswersInput',
+  name: 'TaskUncheckedUpdateWithoutTaskAnswersInput',
   definition(t) {
-    t.nonNull.field('where', { type: 'ResponseWhereUniqueInput' })
-    t.nonNull.field('create', { type: 'ResponseCreateWithoutAnswersInput' })
+    t.field('id', { type: 'IntFieldUpdateOperationsInput' })
+    t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
+    t.field('testId', { type: 'NullableIntFieldUpdateOperationsInput' })
+    t.field('type', { type: 'EnumTaskTypeFieldUpdateOperationsInput' })
+    t.field('question', { type: 'StringFieldUpdateOperationsInput' })
+    t.list.field('variants', { type: 'String' })
+    t.field('correctSingleAnswer', {
+      type: 'NullableIntFieldUpdateOperationsInput',
+    })
+    t.list.field('correctMultipleAnswer', { type: 'Int' })
+    t.field('code', { type: 'NullableStringFieldUpdateOperationsInput' })
   },
 })
 
@@ -7127,96 +8449,6 @@ export const UserUncheckedUpdateWithoutAnswersInput = inputObjectType({
   },
 })
 
-export const TestUpsertWithoutAnswersInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'TestUpsertWithoutAnswersInput',
-  definition(t) {
-    t.nonNull.field('update', { type: 'TestUpdateWithoutAnswersInput' })
-    t.nonNull.field('create', { type: 'TestCreateWithoutAnswersInput' })
-    t.field('where', { type: 'TestWhereInput' })
-  },
-})
-
-export const TestUpdateToOneWithWhereWithoutAnswersInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'TestUpdateToOneWithWhereWithoutAnswersInput',
-  definition(t) {
-    t.field('where', { type: 'TestWhereInput' })
-    t.nonNull.field('data', { type: 'TestUpdateWithoutAnswersInput' })
-  },
-})
-
-export const TestUpdateWithoutAnswersInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'TestUpdateWithoutAnswersInput',
-  definition(t) {
-    t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-    t.field('title', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('tasks', { type: 'TaskUpdateManyWithoutTestNestedInput' })
-    t.field('response', { type: 'ResponseUpdateManyWithoutTestsNestedInput' })
-  },
-})
-
-export const TestUncheckedUpdateWithoutAnswersInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'TestUncheckedUpdateWithoutAnswersInput',
-  definition(t) {
-    t.field('id', { type: 'IntFieldUpdateOperationsInput' })
-    t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-    t.field('title', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('tasks', { type: 'TaskUncheckedUpdateManyWithoutTestNestedInput' })
-    t.field('response', {
-      type: 'ResponseUncheckedUpdateManyWithoutTestsNestedInput',
-    })
-  },
-})
-
-export const ResponseUpsertWithWhereUniqueWithoutAnswersInput = inputObjectType(
-  {
-    nonNullDefaults: {
-      input: false,
-    },
-    name: 'ResponseUpsertWithWhereUniqueWithoutAnswersInput',
-    definition(t) {
-      t.nonNull.field('where', { type: 'ResponseWhereUniqueInput' })
-      t.nonNull.field('update', { type: 'ResponseUpdateWithoutAnswersInput' })
-      t.nonNull.field('create', { type: 'ResponseCreateWithoutAnswersInput' })
-    },
-  },
-)
-
-export const ResponseUpdateWithWhereUniqueWithoutAnswersInput = inputObjectType(
-  {
-    nonNullDefaults: {
-      input: false,
-    },
-    name: 'ResponseUpdateWithWhereUniqueWithoutAnswersInput',
-    definition(t) {
-      t.nonNull.field('where', { type: 'ResponseWhereUniqueInput' })
-      t.nonNull.field('data', { type: 'ResponseUpdateWithoutAnswersInput' })
-    },
-  },
-)
-
-export const ResponseUpdateManyWithWhereWithoutAnswersInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'ResponseUpdateManyWithWhereWithoutAnswersInput',
-  definition(t) {
-    t.nonNull.field('where', { type: 'ResponseScalarWhereInput' })
-    t.nonNull.field('data', { type: 'ResponseUpdateManyMutationInput' })
-  },
-})
-
 export const UserCreateWithoutGroupsInput = inputObjectType({
   nonNullDefaults: {
     input: false,
@@ -7234,7 +8466,7 @@ export const UserCreateWithoutGroupsInput = inputObjectType({
     t.field('logo', { type: 'String' })
     t.field('messages', { type: 'MessageCreateNestedManyWithoutSenderInput' })
     t.field('responses', { type: 'ResponseCreateNestedManyWithoutUserInput' })
-    t.field('answers', { type: 'AnswerCreateNestedManyWithoutUserInput' })
+    t.field('answers', { type: 'TaskAnswerCreateNestedManyWithoutUserInput' })
   },
 })
 
@@ -7261,7 +8493,7 @@ export const UserUncheckedCreateWithoutGroupsInput = inputObjectType({
       type: 'ResponseUncheckedCreateNestedManyWithoutUserInput',
     })
     t.field('answers', {
-      type: 'AnswerUncheckedCreateNestedManyWithoutUserInput',
+      type: 'TaskAnswerUncheckedCreateNestedManyWithoutUserInput',
     })
   },
 })
@@ -7437,7 +8669,7 @@ export const UserCreateWithoutMessagesInput = inputObjectType({
       type: 'MessagerGroupCreateNestedManyWithoutUsersInput',
     })
     t.field('responses', { type: 'ResponseCreateNestedManyWithoutUserInput' })
-    t.field('answers', { type: 'AnswerCreateNestedManyWithoutUserInput' })
+    t.field('answers', { type: 'TaskAnswerCreateNestedManyWithoutUserInput' })
   },
 })
 
@@ -7464,7 +8696,7 @@ export const UserUncheckedCreateWithoutMessagesInput = inputObjectType({
       type: 'ResponseUncheckedCreateNestedManyWithoutUserInput',
     })
     t.field('answers', {
-      type: 'AnswerUncheckedCreateNestedManyWithoutUserInput',
+      type: 'TaskAnswerUncheckedCreateNestedManyWithoutUserInput',
     })
   },
 })
@@ -7572,7 +8804,7 @@ export const UserUpdateWithoutMessagesInput = inputObjectType({
       type: 'MessagerGroupUpdateManyWithoutUsersNestedInput',
     })
     t.field('responses', { type: 'ResponseUpdateManyWithoutUserNestedInput' })
-    t.field('answers', { type: 'AnswerUpdateManyWithoutUserNestedInput' })
+    t.field('answers', { type: 'TaskAnswerUpdateManyWithoutUserNestedInput' })
   },
 })
 
@@ -7599,7 +8831,7 @@ export const UserUncheckedUpdateWithoutMessagesInput = inputObjectType({
       type: 'ResponseUncheckedUpdateManyWithoutUserNestedInput',
     })
     t.field('answers', {
-      type: 'AnswerUncheckedUpdateManyWithoutUserNestedInput',
+      type: 'TaskAnswerUncheckedUpdateManyWithoutUserNestedInput',
     })
   },
 })
@@ -7692,20 +8924,22 @@ export const ResponseCreateManyUserInput = inputObjectType({
     t.field('id', { type: 'Int' })
     t.field('createdAt', { type: 'DateTime' })
     t.field('text', { type: 'String' })
+    t.field('verdict', { type: 'String' })
     t.nonNull.field('directionId', { type: 'Int' })
   },
 })
 
-export const AnswerCreateManyUserInput = inputObjectType({
+export const TaskAnswerCreateManyUserInput = inputObjectType({
   nonNullDefaults: {
     input: false,
   },
-  name: 'AnswerCreateManyUserInput',
+  name: 'TaskAnswerCreateManyUserInput',
   definition(t) {
     t.field('id', { type: 'Int' })
-    t.field('createdAt', { type: 'DateTime' })
-    t.field('answer', { type: 'String' })
-    t.nonNull.field('testId', { type: 'Int' })
+    t.nonNull.field('answer', { type: 'String' })
+    t.field('verdict', { type: 'Int' })
+    t.nonNull.field('answerModelId', { type: 'Int' })
+    t.nonNull.field('taskId', { type: 'Int' })
   },
 })
 
@@ -7809,6 +9043,7 @@ export const ResponseUpdateWithoutUserInput = inputObjectType({
   definition(t) {
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('text', { type: 'NullableStringFieldUpdateOperationsInput' })
+    t.field('verdict', { type: 'NullableStringFieldUpdateOperationsInput' })
     t.field('direction', {
       type: 'DirectionUpdateOneRequiredWithoutResponsesNestedInput',
     })
@@ -7826,6 +9061,7 @@ export const ResponseUncheckedUpdateWithoutUserInput = inputObjectType({
     t.field('id', { type: 'IntFieldUpdateOperationsInput' })
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('text', { type: 'NullableStringFieldUpdateOperationsInput' })
+    t.field('verdict', { type: 'NullableStringFieldUpdateOperationsInput' })
     t.field('directionId', { type: 'IntFieldUpdateOperationsInput' })
     t.field('tests', {
       type: 'TestUncheckedUpdateManyWithoutResponseNestedInput',
@@ -7845,49 +9081,53 @@ export const ResponseUncheckedUpdateManyWithoutUserInput = inputObjectType({
     t.field('id', { type: 'IntFieldUpdateOperationsInput' })
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('text', { type: 'NullableStringFieldUpdateOperationsInput' })
+    t.field('verdict', { type: 'NullableStringFieldUpdateOperationsInput' })
     t.field('directionId', { type: 'IntFieldUpdateOperationsInput' })
   },
 })
 
-export const AnswerUpdateWithoutUserInput = inputObjectType({
+export const TaskAnswerUpdateWithoutUserInput = inputObjectType({
   nonNullDefaults: {
     input: false,
   },
-  name: 'AnswerUpdateWithoutUserInput',
+  name: 'TaskAnswerUpdateWithoutUserInput',
   definition(t) {
-    t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-    t.field('answer', { type: 'NullableStringFieldUpdateOperationsInput' })
-    t.field('test', { type: 'TestUpdateOneRequiredWithoutAnswersNestedInput' })
-    t.field('response', { type: 'ResponseUpdateManyWithoutAnswersNestedInput' })
-  },
-})
-
-export const AnswerUncheckedUpdateWithoutUserInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'AnswerUncheckedUpdateWithoutUserInput',
-  definition(t) {
-    t.field('id', { type: 'IntFieldUpdateOperationsInput' })
-    t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-    t.field('answer', { type: 'NullableStringFieldUpdateOperationsInput' })
-    t.field('testId', { type: 'IntFieldUpdateOperationsInput' })
-    t.field('response', {
-      type: 'ResponseUncheckedUpdateManyWithoutAnswersNestedInput',
+    t.field('answer', { type: 'StringFieldUpdateOperationsInput' })
+    t.field('verdict', { type: 'NullableIntFieldUpdateOperationsInput' })
+    t.field('answerModel', {
+      type: 'AnswerUpdateOneRequiredWithoutTaskAnswersNestedInput',
+    })
+    t.field('task', {
+      type: 'TaskUpdateOneRequiredWithoutTaskAnswersNestedInput',
     })
   },
 })
 
-export const AnswerUncheckedUpdateManyWithoutUserInput = inputObjectType({
+export const TaskAnswerUncheckedUpdateWithoutUserInput = inputObjectType({
   nonNullDefaults: {
     input: false,
   },
-  name: 'AnswerUncheckedUpdateManyWithoutUserInput',
+  name: 'TaskAnswerUncheckedUpdateWithoutUserInput',
   definition(t) {
     t.field('id', { type: 'IntFieldUpdateOperationsInput' })
-    t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-    t.field('answer', { type: 'NullableStringFieldUpdateOperationsInput' })
-    t.field('testId', { type: 'IntFieldUpdateOperationsInput' })
+    t.field('answer', { type: 'StringFieldUpdateOperationsInput' })
+    t.field('verdict', { type: 'NullableIntFieldUpdateOperationsInput' })
+    t.field('answerModelId', { type: 'IntFieldUpdateOperationsInput' })
+    t.field('taskId', { type: 'IntFieldUpdateOperationsInput' })
+  },
+})
+
+export const TaskAnswerUncheckedUpdateManyWithoutUserInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'TaskAnswerUncheckedUpdateManyWithoutUserInput',
+  definition(t) {
+    t.field('id', { type: 'IntFieldUpdateOperationsInput' })
+    t.field('answer', { type: 'StringFieldUpdateOperationsInput' })
+    t.field('verdict', { type: 'NullableIntFieldUpdateOperationsInput' })
+    t.field('answerModelId', { type: 'IntFieldUpdateOperationsInput' })
+    t.field('taskId', { type: 'IntFieldUpdateOperationsInput' })
   },
 })
 
@@ -7902,6 +9142,7 @@ export const DirectionCreateManySpecializationInput = inputObjectType({
     t.field('type', { type: 'DirectionType' })
     t.nonNull.field('title', { type: 'String' })
     t.nonNull.field('description', { type: 'String' })
+    t.field('testId', { type: 'Int' })
   },
 })
 
@@ -7920,6 +9161,7 @@ export const DirectionUpdateWithoutSpecializationInput = inputObjectType({
     t.field('responses', {
       type: 'ResponseUpdateManyWithoutDirectionNestedInput',
     })
+    t.field('test', { type: 'TestUpdateOneWithoutDirectionNestedInput' })
   },
 })
 
@@ -7937,6 +9179,7 @@ export const DirectionUncheckedUpdateWithoutSpecializationInput =
       })
       t.field('title', { type: 'StringFieldUpdateOperationsInput' })
       t.field('description', { type: 'StringFieldUpdateOperationsInput' })
+      t.field('testId', { type: 'NullableIntFieldUpdateOperationsInput' })
       t.field('responses', {
         type: 'ResponseUncheckedUpdateManyWithoutDirectionNestedInput',
       })
@@ -7957,6 +9200,7 @@ export const DirectionUncheckedUpdateManyWithoutSpecializationInput =
       })
       t.field('title', { type: 'StringFieldUpdateOperationsInput' })
       t.field('description', { type: 'StringFieldUpdateOperationsInput' })
+      t.field('testId', { type: 'NullableIntFieldUpdateOperationsInput' })
     },
   })
 
@@ -7969,6 +9213,7 @@ export const ResponseCreateManyDirectionInput = inputObjectType({
     t.field('id', { type: 'Int' })
     t.field('createdAt', { type: 'DateTime' })
     t.field('text', { type: 'String' })
+    t.field('verdict', { type: 'String' })
     t.nonNull.field('userId', { type: 'Int' })
   },
 })
@@ -7981,6 +9226,7 @@ export const ResponseUpdateWithoutDirectionInput = inputObjectType({
   definition(t) {
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('text', { type: 'NullableStringFieldUpdateOperationsInput' })
+    t.field('verdict', { type: 'NullableStringFieldUpdateOperationsInput' })
     t.field('user', {
       type: 'UserUpdateOneRequiredWithoutResponsesNestedInput',
     })
@@ -7998,6 +9244,7 @@ export const ResponseUncheckedUpdateWithoutDirectionInput = inputObjectType({
     t.field('id', { type: 'IntFieldUpdateOperationsInput' })
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('text', { type: 'NullableStringFieldUpdateOperationsInput' })
+    t.field('verdict', { type: 'NullableStringFieldUpdateOperationsInput' })
     t.field('userId', { type: 'IntFieldUpdateOperationsInput' })
     t.field('tests', {
       type: 'TestUncheckedUpdateManyWithoutResponseNestedInput',
@@ -8018,6 +9265,7 @@ export const ResponseUncheckedUpdateManyWithoutDirectionInput = inputObjectType(
       t.field('id', { type: 'IntFieldUpdateOperationsInput' })
       t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
       t.field('text', { type: 'NullableStringFieldUpdateOperationsInput' })
+      t.field('verdict', { type: 'NullableStringFieldUpdateOperationsInput' })
       t.field('userId', { type: 'IntFieldUpdateOperationsInput' })
     },
   },
@@ -8031,6 +9279,7 @@ export const TestUpdateWithoutResponseInput = inputObjectType({
   definition(t) {
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('title', { type: 'StringFieldUpdateOperationsInput' })
+    t.field('direction', { type: 'DirectionUpdateManyWithoutTestNestedInput' })
     t.field('tasks', { type: 'TaskUpdateManyWithoutTestNestedInput' })
     t.field('answers', { type: 'AnswerUpdateManyWithoutTestNestedInput' })
   },
@@ -8045,6 +9294,9 @@ export const TestUncheckedUpdateWithoutResponseInput = inputObjectType({
     t.field('id', { type: 'IntFieldUpdateOperationsInput' })
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('title', { type: 'StringFieldUpdateOperationsInput' })
+    t.field('direction', {
+      type: 'DirectionUncheckedUpdateManyWithoutTestNestedInput',
+    })
     t.field('tasks', { type: 'TaskUncheckedUpdateManyWithoutTestNestedInput' })
     t.field('answers', {
       type: 'AnswerUncheckedUpdateManyWithoutTestNestedInput',
@@ -8072,8 +9324,10 @@ export const AnswerUpdateWithoutResponseInput = inputObjectType({
   definition(t) {
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('answer', { type: 'NullableStringFieldUpdateOperationsInput' })
-    t.field('user', { type: 'UserUpdateOneRequiredWithoutAnswersNestedInput' })
     t.field('test', { type: 'TestUpdateOneRequiredWithoutAnswersNestedInput' })
+    t.field('taskAnswers', {
+      type: 'TaskAnswerUpdateManyWithoutAnswerModelNestedInput',
+    })
   },
 })
 
@@ -8086,8 +9340,10 @@ export const AnswerUncheckedUpdateWithoutResponseInput = inputObjectType({
     t.field('id', { type: 'IntFieldUpdateOperationsInput' })
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('answer', { type: 'NullableStringFieldUpdateOperationsInput' })
-    t.field('userId', { type: 'IntFieldUpdateOperationsInput' })
     t.field('testId', { type: 'IntFieldUpdateOperationsInput' })
+    t.field('taskAnswers', {
+      type: 'TaskAnswerUncheckedUpdateManyWithoutAnswerModelNestedInput',
+    })
   },
 })
 
@@ -8100,8 +9356,22 @@ export const AnswerUncheckedUpdateManyWithoutResponseInput = inputObjectType({
     t.field('id', { type: 'IntFieldUpdateOperationsInput' })
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('answer', { type: 'NullableStringFieldUpdateOperationsInput' })
-    t.field('userId', { type: 'IntFieldUpdateOperationsInput' })
     t.field('testId', { type: 'IntFieldUpdateOperationsInput' })
+  },
+})
+
+export const DirectionCreateManyTestInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'DirectionCreateManyTestInput',
+  definition(t) {
+    t.field('id', { type: 'Int' })
+    t.field('createdAt', { type: 'DateTime' })
+    t.field('type', { type: 'DirectionType' })
+    t.nonNull.field('title', { type: 'String' })
+    t.nonNull.field('description', { type: 'String' })
+    t.nonNull.field('specializationId', { type: 'Int' })
   },
 })
 
@@ -8118,6 +9388,7 @@ export const TaskCreateManyTestInput = inputObjectType({
     t.list.field('variants', { type: 'String' })
     t.field('correctSingleAnswer', { type: 'Int' })
     t.list.field('correctMultipleAnswer', { type: 'Int' })
+    t.field('code', { type: 'String' })
   },
 })
 
@@ -8130,7 +9401,64 @@ export const AnswerCreateManyTestInput = inputObjectType({
     t.field('id', { type: 'Int' })
     t.field('createdAt', { type: 'DateTime' })
     t.field('answer', { type: 'String' })
-    t.nonNull.field('userId', { type: 'Int' })
+  },
+})
+
+export const DirectionUpdateWithoutTestInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'DirectionUpdateWithoutTestInput',
+  definition(t) {
+    t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
+    t.field('type', {
+      type: 'NullableEnumDirectionTypeFieldUpdateOperationsInput',
+    })
+    t.field('title', { type: 'StringFieldUpdateOperationsInput' })
+    t.field('description', { type: 'StringFieldUpdateOperationsInput' })
+    t.field('responses', {
+      type: 'ResponseUpdateManyWithoutDirectionNestedInput',
+    })
+    t.field('specialization', {
+      type: 'SpecializationUpdateOneRequiredWithoutDirectionsNestedInput',
+    })
+  },
+})
+
+export const DirectionUncheckedUpdateWithoutTestInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'DirectionUncheckedUpdateWithoutTestInput',
+  definition(t) {
+    t.field('id', { type: 'IntFieldUpdateOperationsInput' })
+    t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
+    t.field('type', {
+      type: 'NullableEnumDirectionTypeFieldUpdateOperationsInput',
+    })
+    t.field('title', { type: 'StringFieldUpdateOperationsInput' })
+    t.field('description', { type: 'StringFieldUpdateOperationsInput' })
+    t.field('specializationId', { type: 'IntFieldUpdateOperationsInput' })
+    t.field('responses', {
+      type: 'ResponseUncheckedUpdateManyWithoutDirectionNestedInput',
+    })
+  },
+})
+
+export const DirectionUncheckedUpdateManyWithoutTestInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'DirectionUncheckedUpdateManyWithoutTestInput',
+  definition(t) {
+    t.field('id', { type: 'IntFieldUpdateOperationsInput' })
+    t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
+    t.field('type', {
+      type: 'NullableEnumDirectionTypeFieldUpdateOperationsInput',
+    })
+    t.field('title', { type: 'StringFieldUpdateOperationsInput' })
+    t.field('description', { type: 'StringFieldUpdateOperationsInput' })
+    t.field('specializationId', { type: 'IntFieldUpdateOperationsInput' })
   },
 })
 
@@ -8148,6 +9476,10 @@ export const TaskUpdateWithoutTestInput = inputObjectType({
       type: 'NullableIntFieldUpdateOperationsInput',
     })
     t.list.field('correctMultipleAnswer', { type: 'Int' })
+    t.field('code', { type: 'NullableStringFieldUpdateOperationsInput' })
+    t.field('taskAnswers', {
+      type: 'TaskAnswerUpdateManyWithoutTaskNestedInput',
+    })
   },
 })
 
@@ -8166,6 +9498,10 @@ export const TaskUncheckedUpdateWithoutTestInput = inputObjectType({
       type: 'NullableIntFieldUpdateOperationsInput',
     })
     t.list.field('correctMultipleAnswer', { type: 'Int' })
+    t.field('code', { type: 'NullableStringFieldUpdateOperationsInput' })
+    t.field('taskAnswers', {
+      type: 'TaskAnswerUncheckedUpdateManyWithoutTaskNestedInput',
+    })
   },
 })
 
@@ -8184,6 +9520,7 @@ export const TaskUncheckedUpdateManyWithoutTestInput = inputObjectType({
       type: 'NullableIntFieldUpdateOperationsInput',
     })
     t.list.field('correctMultipleAnswer', { type: 'Int' })
+    t.field('code', { type: 'NullableStringFieldUpdateOperationsInput' })
   },
 })
 
@@ -8195,7 +9532,9 @@ export const AnswerUpdateWithoutTestInput = inputObjectType({
   definition(t) {
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('answer', { type: 'NullableStringFieldUpdateOperationsInput' })
-    t.field('user', { type: 'UserUpdateOneRequiredWithoutAnswersNestedInput' })
+    t.field('taskAnswers', {
+      type: 'TaskAnswerUpdateManyWithoutAnswerModelNestedInput',
+    })
     t.field('response', { type: 'ResponseUpdateManyWithoutAnswersNestedInput' })
   },
 })
@@ -8209,7 +9548,9 @@ export const AnswerUncheckedUpdateWithoutTestInput = inputObjectType({
     t.field('id', { type: 'IntFieldUpdateOperationsInput' })
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('answer', { type: 'NullableStringFieldUpdateOperationsInput' })
-    t.field('userId', { type: 'IntFieldUpdateOperationsInput' })
+    t.field('taskAnswers', {
+      type: 'TaskAnswerUncheckedUpdateManyWithoutAnswerModelNestedInput',
+    })
     t.field('response', {
       type: 'ResponseUncheckedUpdateManyWithoutAnswersNestedInput',
     })
@@ -8225,7 +9566,6 @@ export const AnswerUncheckedUpdateManyWithoutTestInput = inputObjectType({
     t.field('id', { type: 'IntFieldUpdateOperationsInput' })
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('answer', { type: 'NullableStringFieldUpdateOperationsInput' })
-    t.field('userId', { type: 'IntFieldUpdateOperationsInput' })
   },
 })
 
@@ -8237,6 +9577,7 @@ export const ResponseUpdateWithoutTestsInput = inputObjectType({
   definition(t) {
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('text', { type: 'NullableStringFieldUpdateOperationsInput' })
+    t.field('verdict', { type: 'NullableStringFieldUpdateOperationsInput' })
     t.field('user', {
       type: 'UserUpdateOneRequiredWithoutResponsesNestedInput',
     })
@@ -8256,6 +9597,7 @@ export const ResponseUncheckedUpdateWithoutTestsInput = inputObjectType({
     t.field('id', { type: 'IntFieldUpdateOperationsInput' })
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('text', { type: 'NullableStringFieldUpdateOperationsInput' })
+    t.field('verdict', { type: 'NullableStringFieldUpdateOperationsInput' })
     t.field('userId', { type: 'IntFieldUpdateOperationsInput' })
     t.field('directionId', { type: 'IntFieldUpdateOperationsInput' })
     t.field('answers', {
@@ -8273,10 +9615,128 @@ export const ResponseUncheckedUpdateManyWithoutTestsInput = inputObjectType({
     t.field('id', { type: 'IntFieldUpdateOperationsInput' })
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('text', { type: 'NullableStringFieldUpdateOperationsInput' })
+    t.field('verdict', { type: 'NullableStringFieldUpdateOperationsInput' })
     t.field('userId', { type: 'IntFieldUpdateOperationsInput' })
     t.field('directionId', { type: 'IntFieldUpdateOperationsInput' })
   },
 })
+
+export const TaskAnswerCreateManyTaskInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'TaskAnswerCreateManyTaskInput',
+  definition(t) {
+    t.field('id', { type: 'Int' })
+    t.nonNull.field('answer', { type: 'String' })
+    t.field('verdict', { type: 'Int' })
+    t.nonNull.field('answerModelId', { type: 'Int' })
+    t.nonNull.field('userId', { type: 'Int' })
+  },
+})
+
+export const TaskAnswerUpdateWithoutTaskInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'TaskAnswerUpdateWithoutTaskInput',
+  definition(t) {
+    t.field('answer', { type: 'StringFieldUpdateOperationsInput' })
+    t.field('verdict', { type: 'NullableIntFieldUpdateOperationsInput' })
+    t.field('answerModel', {
+      type: 'AnswerUpdateOneRequiredWithoutTaskAnswersNestedInput',
+    })
+    t.field('user', { type: 'UserUpdateOneRequiredWithoutAnswersNestedInput' })
+  },
+})
+
+export const TaskAnswerUncheckedUpdateWithoutTaskInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'TaskAnswerUncheckedUpdateWithoutTaskInput',
+  definition(t) {
+    t.field('id', { type: 'IntFieldUpdateOperationsInput' })
+    t.field('answer', { type: 'StringFieldUpdateOperationsInput' })
+    t.field('verdict', { type: 'NullableIntFieldUpdateOperationsInput' })
+    t.field('answerModelId', { type: 'IntFieldUpdateOperationsInput' })
+    t.field('userId', { type: 'IntFieldUpdateOperationsInput' })
+  },
+})
+
+export const TaskAnswerUncheckedUpdateManyWithoutTaskInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'TaskAnswerUncheckedUpdateManyWithoutTaskInput',
+  definition(t) {
+    t.field('id', { type: 'IntFieldUpdateOperationsInput' })
+    t.field('answer', { type: 'StringFieldUpdateOperationsInput' })
+    t.field('verdict', { type: 'NullableIntFieldUpdateOperationsInput' })
+    t.field('answerModelId', { type: 'IntFieldUpdateOperationsInput' })
+    t.field('userId', { type: 'IntFieldUpdateOperationsInput' })
+  },
+})
+
+export const TaskAnswerCreateManyAnswerModelInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'TaskAnswerCreateManyAnswerModelInput',
+  definition(t) {
+    t.field('id', { type: 'Int' })
+    t.nonNull.field('answer', { type: 'String' })
+    t.field('verdict', { type: 'Int' })
+    t.nonNull.field('taskId', { type: 'Int' })
+    t.nonNull.field('userId', { type: 'Int' })
+  },
+})
+
+export const TaskAnswerUpdateWithoutAnswerModelInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'TaskAnswerUpdateWithoutAnswerModelInput',
+  definition(t) {
+    t.field('answer', { type: 'StringFieldUpdateOperationsInput' })
+    t.field('verdict', { type: 'NullableIntFieldUpdateOperationsInput' })
+    t.field('task', {
+      type: 'TaskUpdateOneRequiredWithoutTaskAnswersNestedInput',
+    })
+    t.field('user', { type: 'UserUpdateOneRequiredWithoutAnswersNestedInput' })
+  },
+})
+
+export const TaskAnswerUncheckedUpdateWithoutAnswerModelInput = inputObjectType(
+  {
+    nonNullDefaults: {
+      input: false,
+    },
+    name: 'TaskAnswerUncheckedUpdateWithoutAnswerModelInput',
+    definition(t) {
+      t.field('id', { type: 'IntFieldUpdateOperationsInput' })
+      t.field('answer', { type: 'StringFieldUpdateOperationsInput' })
+      t.field('verdict', { type: 'NullableIntFieldUpdateOperationsInput' })
+      t.field('taskId', { type: 'IntFieldUpdateOperationsInput' })
+      t.field('userId', { type: 'IntFieldUpdateOperationsInput' })
+    },
+  },
+)
+
+export const TaskAnswerUncheckedUpdateManyWithoutAnswerModelInput =
+  inputObjectType({
+    nonNullDefaults: {
+      input: false,
+    },
+    name: 'TaskAnswerUncheckedUpdateManyWithoutAnswerModelInput',
+    definition(t) {
+      t.field('id', { type: 'IntFieldUpdateOperationsInput' })
+      t.field('answer', { type: 'StringFieldUpdateOperationsInput' })
+      t.field('verdict', { type: 'NullableIntFieldUpdateOperationsInput' })
+      t.field('taskId', { type: 'IntFieldUpdateOperationsInput' })
+      t.field('userId', { type: 'IntFieldUpdateOperationsInput' })
+    },
+  })
 
 export const ResponseUpdateWithoutAnswersInput = inputObjectType({
   nonNullDefaults: {
@@ -8286,6 +9746,7 @@ export const ResponseUpdateWithoutAnswersInput = inputObjectType({
   definition(t) {
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('text', { type: 'NullableStringFieldUpdateOperationsInput' })
+    t.field('verdict', { type: 'NullableStringFieldUpdateOperationsInput' })
     t.field('user', {
       type: 'UserUpdateOneRequiredWithoutResponsesNestedInput',
     })
@@ -8305,6 +9766,7 @@ export const ResponseUncheckedUpdateWithoutAnswersInput = inputObjectType({
     t.field('id', { type: 'IntFieldUpdateOperationsInput' })
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('text', { type: 'NullableStringFieldUpdateOperationsInput' })
+    t.field('verdict', { type: 'NullableStringFieldUpdateOperationsInput' })
     t.field('userId', { type: 'IntFieldUpdateOperationsInput' })
     t.field('directionId', { type: 'IntFieldUpdateOperationsInput' })
     t.field('tests', {
@@ -8322,6 +9784,7 @@ export const ResponseUncheckedUpdateManyWithoutAnswersInput = inputObjectType({
     t.field('id', { type: 'IntFieldUpdateOperationsInput' })
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('text', { type: 'NullableStringFieldUpdateOperationsInput' })
+    t.field('verdict', { type: 'NullableStringFieldUpdateOperationsInput' })
     t.field('userId', { type: 'IntFieldUpdateOperationsInput' })
     t.field('directionId', { type: 'IntFieldUpdateOperationsInput' })
   },
@@ -8358,7 +9821,7 @@ export const UserUpdateWithoutGroupsInput = inputObjectType({
     t.field('logo', { type: 'NullableStringFieldUpdateOperationsInput' })
     t.field('messages', { type: 'MessageUpdateManyWithoutSenderNestedInput' })
     t.field('responses', { type: 'ResponseUpdateManyWithoutUserNestedInput' })
-    t.field('answers', { type: 'AnswerUpdateManyWithoutUserNestedInput' })
+    t.field('answers', { type: 'TaskAnswerUpdateManyWithoutUserNestedInput' })
   },
 })
 
@@ -8385,7 +9848,7 @@ export const UserUncheckedUpdateWithoutGroupsInput = inputObjectType({
       type: 'ResponseUncheckedUpdateManyWithoutUserNestedInput',
     })
     t.field('answers', {
-      type: 'AnswerUncheckedUpdateManyWithoutUserNestedInput',
+      type: 'TaskAnswerUncheckedUpdateManyWithoutUserNestedInput',
     })
   },
 })
@@ -8549,6 +10012,20 @@ export const AggregateAnswer = objectType({
     t.nullable.field('_sum', { type: 'AnswerSumAggregateOutputType' })
     t.nullable.field('_min', { type: 'AnswerMinAggregateOutputType' })
     t.nullable.field('_max', { type: 'AnswerMaxAggregateOutputType' })
+  },
+})
+
+export const AggregateTaskAnswer = objectType({
+  nonNullDefaults: {
+    output: true,
+  },
+  name: 'AggregateTaskAnswer',
+  definition(t) {
+    t.nullable.field('_count', { type: 'TaskAnswerCountAggregateOutputType' })
+    t.nullable.field('_avg', { type: 'TaskAnswerAvgAggregateOutputType' })
+    t.nullable.field('_sum', { type: 'TaskAnswerSumAggregateOutputType' })
+    t.nullable.field('_min', { type: 'TaskAnswerMinAggregateOutputType' })
+    t.nullable.field('_max', { type: 'TaskAnswerMaxAggregateOutputType' })
   },
 })
 
@@ -8762,6 +10239,7 @@ export const DirectionCountAggregateOutputType = objectType({
     t.field('title', { type: 'Int' })
     t.field('description', { type: 'Int' })
     t.field('specializationId', { type: 'Int' })
+    t.field('testId', { type: 'Int' })
     t.field('_all', { type: 'Int' })
   },
 })
@@ -8774,6 +10252,7 @@ export const DirectionAvgAggregateOutputType = objectType({
   definition(t) {
     t.nullable.field('id', { type: 'Float' })
     t.nullable.field('specializationId', { type: 'Float' })
+    t.nullable.field('testId', { type: 'Float' })
   },
 })
 
@@ -8785,6 +10264,7 @@ export const DirectionSumAggregateOutputType = objectType({
   definition(t) {
     t.nullable.field('id', { type: 'Int' })
     t.nullable.field('specializationId', { type: 'Int' })
+    t.nullable.field('testId', { type: 'Int' })
   },
 })
 
@@ -8800,6 +10280,7 @@ export const DirectionMinAggregateOutputType = objectType({
     t.nullable.field('title', { type: 'String' })
     t.nullable.field('description', { type: 'String' })
     t.nullable.field('specializationId', { type: 'Int' })
+    t.nullable.field('testId', { type: 'Int' })
   },
 })
 
@@ -8815,6 +10296,7 @@ export const DirectionMaxAggregateOutputType = objectType({
     t.nullable.field('title', { type: 'String' })
     t.nullable.field('description', { type: 'String' })
     t.nullable.field('specializationId', { type: 'Int' })
+    t.nullable.field('testId', { type: 'Int' })
   },
 })
 
@@ -8838,6 +10320,7 @@ export const ResponseCountAggregateOutputType = objectType({
     t.field('id', { type: 'Int' })
     t.field('createdAt', { type: 'Int' })
     t.field('text', { type: 'Int' })
+    t.field('verdict', { type: 'Int' })
     t.field('userId', { type: 'Int' })
     t.field('directionId', { type: 'Int' })
     t.field('_all', { type: 'Int' })
@@ -8877,6 +10360,7 @@ export const ResponseMinAggregateOutputType = objectType({
     t.nullable.field('id', { type: 'Int' })
     t.nullable.field('createdAt', { type: 'DateTime' })
     t.nullable.field('text', { type: 'String' })
+    t.nullable.field('verdict', { type: 'String' })
     t.nullable.field('userId', { type: 'Int' })
     t.nullable.field('directionId', { type: 'Int' })
   },
@@ -8891,6 +10375,7 @@ export const ResponseMaxAggregateOutputType = objectType({
     t.nullable.field('id', { type: 'Int' })
     t.nullable.field('createdAt', { type: 'DateTime' })
     t.nullable.field('text', { type: 'String' })
+    t.nullable.field('verdict', { type: 'String' })
     t.nullable.field('userId', { type: 'Int' })
     t.nullable.field('directionId', { type: 'Int' })
   },
@@ -8902,6 +10387,7 @@ export const TestCountOutputType = objectType({
   },
   name: 'TestCountOutputType',
   definition(t) {
+    t.field('direction', { type: 'Int' })
     t.field('tasks', { type: 'Int' })
     t.field('answers', { type: 'Int' })
     t.field('response', { type: 'Int' })
@@ -8965,6 +10451,16 @@ export const TestMaxAggregateOutputType = objectType({
   },
 })
 
+export const TaskCountOutputType = objectType({
+  nonNullDefaults: {
+    output: true,
+  },
+  name: 'TaskCountOutputType',
+  definition(t) {
+    t.field('taskAnswers', { type: 'Int' })
+  },
+})
+
 export const TaskCountAggregateOutputType = objectType({
   nonNullDefaults: {
     output: true,
@@ -8979,6 +10475,7 @@ export const TaskCountAggregateOutputType = objectType({
     t.field('variants', { type: 'Int' })
     t.field('correctSingleAnswer', { type: 'Int' })
     t.field('correctMultipleAnswer', { type: 'Int' })
+    t.field('code', { type: 'Int' })
     t.field('_all', { type: 'Int' })
   },
 })
@@ -9021,6 +10518,7 @@ export const TaskMinAggregateOutputType = objectType({
     t.nullable.field('type', { type: 'TaskType' })
     t.nullable.field('question', { type: 'String' })
     t.nullable.field('correctSingleAnswer', { type: 'Int' })
+    t.nullable.field('code', { type: 'String' })
   },
 })
 
@@ -9036,6 +10534,7 @@ export const TaskMaxAggregateOutputType = objectType({
     t.nullable.field('type', { type: 'TaskType' })
     t.nullable.field('question', { type: 'String' })
     t.nullable.field('correctSingleAnswer', { type: 'Int' })
+    t.nullable.field('code', { type: 'String' })
   },
 })
 
@@ -9045,6 +10544,7 @@ export const AnswerCountOutputType = objectType({
   },
   name: 'AnswerCountOutputType',
   definition(t) {
+    t.field('taskAnswers', { type: 'Int' })
     t.field('response', { type: 'Int' })
   },
 })
@@ -9058,7 +10558,6 @@ export const AnswerCountAggregateOutputType = objectType({
     t.field('id', { type: 'Int' })
     t.field('createdAt', { type: 'Int' })
     t.field('answer', { type: 'Int' })
-    t.field('userId', { type: 'Int' })
     t.field('testId', { type: 'Int' })
     t.field('_all', { type: 'Int' })
   },
@@ -9071,7 +10570,6 @@ export const AnswerAvgAggregateOutputType = objectType({
   name: 'AnswerAvgAggregateOutputType',
   definition(t) {
     t.nullable.field('id', { type: 'Float' })
-    t.nullable.field('userId', { type: 'Float' })
     t.nullable.field('testId', { type: 'Float' })
   },
 })
@@ -9083,7 +10581,6 @@ export const AnswerSumAggregateOutputType = objectType({
   name: 'AnswerSumAggregateOutputType',
   definition(t) {
     t.nullable.field('id', { type: 'Int' })
-    t.nullable.field('userId', { type: 'Int' })
     t.nullable.field('testId', { type: 'Int' })
   },
 })
@@ -9097,7 +10594,6 @@ export const AnswerMinAggregateOutputType = objectType({
     t.nullable.field('id', { type: 'Int' })
     t.nullable.field('createdAt', { type: 'DateTime' })
     t.nullable.field('answer', { type: 'String' })
-    t.nullable.field('userId', { type: 'Int' })
     t.nullable.field('testId', { type: 'Int' })
   },
 })
@@ -9111,8 +10607,81 @@ export const AnswerMaxAggregateOutputType = objectType({
     t.nullable.field('id', { type: 'Int' })
     t.nullable.field('createdAt', { type: 'DateTime' })
     t.nullable.field('answer', { type: 'String' })
-    t.nullable.field('userId', { type: 'Int' })
     t.nullable.field('testId', { type: 'Int' })
+  },
+})
+
+export const TaskAnswerCountAggregateOutputType = objectType({
+  nonNullDefaults: {
+    output: true,
+  },
+  name: 'TaskAnswerCountAggregateOutputType',
+  definition(t) {
+    t.field('id', { type: 'Int' })
+    t.field('answer', { type: 'Int' })
+    t.field('verdict', { type: 'Int' })
+    t.field('answerModelId', { type: 'Int' })
+    t.field('taskId', { type: 'Int' })
+    t.field('userId', { type: 'Int' })
+    t.field('_all', { type: 'Int' })
+  },
+})
+
+export const TaskAnswerAvgAggregateOutputType = objectType({
+  nonNullDefaults: {
+    output: true,
+  },
+  name: 'TaskAnswerAvgAggregateOutputType',
+  definition(t) {
+    t.nullable.field('id', { type: 'Float' })
+    t.nullable.field('verdict', { type: 'Float' })
+    t.nullable.field('answerModelId', { type: 'Float' })
+    t.nullable.field('taskId', { type: 'Float' })
+    t.nullable.field('userId', { type: 'Float' })
+  },
+})
+
+export const TaskAnswerSumAggregateOutputType = objectType({
+  nonNullDefaults: {
+    output: true,
+  },
+  name: 'TaskAnswerSumAggregateOutputType',
+  definition(t) {
+    t.nullable.field('id', { type: 'Int' })
+    t.nullable.field('verdict', { type: 'Int' })
+    t.nullable.field('answerModelId', { type: 'Int' })
+    t.nullable.field('taskId', { type: 'Int' })
+    t.nullable.field('userId', { type: 'Int' })
+  },
+})
+
+export const TaskAnswerMinAggregateOutputType = objectType({
+  nonNullDefaults: {
+    output: true,
+  },
+  name: 'TaskAnswerMinAggregateOutputType',
+  definition(t) {
+    t.nullable.field('id', { type: 'Int' })
+    t.nullable.field('answer', { type: 'String' })
+    t.nullable.field('verdict', { type: 'Int' })
+    t.nullable.field('answerModelId', { type: 'Int' })
+    t.nullable.field('taskId', { type: 'Int' })
+    t.nullable.field('userId', { type: 'Int' })
+  },
+})
+
+export const TaskAnswerMaxAggregateOutputType = objectType({
+  nonNullDefaults: {
+    output: true,
+  },
+  name: 'TaskAnswerMaxAggregateOutputType',
+  definition(t) {
+    t.nullable.field('id', { type: 'Int' })
+    t.nullable.field('answer', { type: 'String' })
+    t.nullable.field('verdict', { type: 'Int' })
+    t.nullable.field('answerModelId', { type: 'Int' })
+    t.nullable.field('taskId', { type: 'Int' })
+    t.nullable.field('userId', { type: 'Int' })
   },
 })
 

@@ -10,6 +10,7 @@ export const Response = objectType({
     t.int('id')
     t.field('createdAt', { type: 'DateTime' })
     t.nullable.string('text')
+    t.nullable.string('verdict')
     t.int('userId')
     t.int('directionId')
     t.field('user', {
@@ -28,7 +29,7 @@ export const Response = objectType({
       type: 'Test',
       args: {
         where: 'TestWhereInput',
-        orderBy: list('TestOrderByWithRelationAndSearchRelevanceInput'),
+        orderBy: list('TestOrderByWithRelationInput'),
         cursor: 'TestWhereUniqueInput',
         take: 'Int',
         skip: 'Int',
@@ -42,7 +43,7 @@ export const Response = objectType({
       type: 'Answer',
       args: {
         where: 'AnswerWhereInput',
-        orderBy: list('AnswerOrderByWithRelationAndSearchRelevanceInput'),
+        orderBy: list('AnswerOrderByWithRelationInput'),
         cursor: 'AnswerWhereUniqueInput',
         take: 'Int',
         skip: 'Int',

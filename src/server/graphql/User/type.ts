@@ -21,7 +21,7 @@ export const User = objectType({
       type: 'Message',
       args: {
         where: 'MessageWhereInput',
-        orderBy: list('MessageOrderByWithRelationAndSearchRelevanceInput'),
+        orderBy: list('MessageOrderByWithRelationInput'),
         cursor: 'MessageWhereUniqueInput',
         take: 'Int',
         skip: 'Int',
@@ -35,9 +35,7 @@ export const User = objectType({
       type: 'MessagerGroup',
       args: {
         where: 'MessagerGroupWhereInput',
-        orderBy: list(
-          'MessagerGroupOrderByWithRelationAndSearchRelevanceInput',
-        ),
+        orderBy: list('MessagerGroupOrderByWithRelationInput'),
         cursor: 'MessagerGroupWhereUniqueInput',
         take: 'Int',
         skip: 'Int',
@@ -51,7 +49,7 @@ export const User = objectType({
       type: 'Response',
       args: {
         where: 'ResponseWhereInput',
-        orderBy: list('ResponseOrderByWithRelationAndSearchRelevanceInput'),
+        orderBy: list('ResponseOrderByWithRelationInput'),
         cursor: 'ResponseWhereUniqueInput',
         take: 'Int',
         skip: 'Int',
@@ -62,14 +60,14 @@ export const User = objectType({
       },
     })
     t.list.field('answers', {
-      type: 'Answer',
+      type: 'TaskAnswer',
       args: {
-        where: 'AnswerWhereInput',
-        orderBy: list('AnswerOrderByWithRelationAndSearchRelevanceInput'),
-        cursor: 'AnswerWhereUniqueInput',
+        where: 'TaskAnswerWhereInput',
+        orderBy: list('TaskAnswerOrderByWithRelationInput'),
+        cursor: 'TaskAnswerWhereUniqueInput',
         take: 'Int',
         skip: 'Int',
-        distinct: list('AnswerScalarFieldEnum'),
+        distinct: list('TaskAnswerScalarFieldEnum'),
       },
       resolve(root: any) {
         return root.answers

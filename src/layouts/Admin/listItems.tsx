@@ -2,11 +2,19 @@ import React from 'react';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import CommentIcon from '@material-ui/icons/Comment';
-import SettingsIcon from '@material-ui/icons/Settings';
-import ForumIcon from '@material-ui/icons/Forum';
-import PersonIcon from '@material-ui/icons/Person';
-import GroupIcon from '@material-ui/icons/Group';
+import {
+  Group,
+  Settings,
+  Person,
+  Directions,
+  Message,
+  SpeakerGroup,
+  Tab,
+  RestorePage,
+  QuestionAnswer,
+  AlarmOnSharp,
+  TableChart,
+} from '@material-ui/icons';
 import { useRouter } from 'next/router';
 
 export const MainListItems: React.FC = () => {
@@ -15,61 +23,67 @@ export const MainListItems: React.FC = () => {
     <div>
       <ListItem button onClick={() => router.push('/admin')}>
         <ListItemIcon>
-          <SettingsIcon />
+          <Settings />
         </ListItemIcon>
         <ListItemText primary="Settings" />
       </ListItem>
       <ListItem button onClick={() => router.push('/admin/models/User')}>
         <ListItemIcon>
-          <PersonIcon />
+          <Person />
         </ListItemIcon>
         <ListItemText primary="Users" />
       </ListItem>
       <ListItem button onClick={() => router.push('/admin/models/Specialization')}>
         <ListItemIcon>
-          <ForumIcon />
+          <SpeakerGroup />
         </ListItemIcon>
         <ListItemText primary="Specializations" />
       </ListItem>
       <ListItem button onClick={() => router.push('/admin/models/Direction')}>
         <ListItemIcon>
-          <CommentIcon />
+          <Directions />
         </ListItemIcon>
         <ListItemText primary="Directions" />
       </ListItem>
       <ListItem button onClick={() => router.push('/admin/models/Response')}>
         <ListItemIcon>
-          <GroupIcon />
+          <RestorePage />
         </ListItemIcon>
         <ListItemText primary="Responses" />
       </ListItem>
       <ListItem button onClick={() => router.push('/admin/models/Test')}>
         <ListItemIcon>
-          <GroupIcon />
+          <QuestionAnswer />
         </ListItemIcon>
         <ListItemText primary="Tests" />
       </ListItem>
       <ListItem button onClick={() => router.push('/admin/models/Task')}>
         <ListItemIcon>
-          <GroupIcon />
+          <Tab />
         </ListItemIcon>
         <ListItemText primary="Tasks" />
       </ListItem>
       <ListItem button onClick={() => router.push('/admin/models/Answer')}>
         <ListItemIcon>
-          <GroupIcon />
+          <AlarmOnSharp />
         </ListItemIcon>
         <ListItemText primary="Answers" />
       </ListItem>
+      <ListItem button onClick={() => router.push('/admin/models/TaskAnswer')}>
+        <ListItemIcon>
+          <TableChart />
+        </ListItemIcon>
+        <ListItemText primary="TaskAnswers" />
+      </ListItem>
       <ListItem button onClick={() => router.push('/admin/models/MessagerGroup')}>
         <ListItemIcon>
-          <GroupIcon />
+          <Group />
         </ListItemIcon>
         <ListItemText primary="MessagerGroups" />
       </ListItem>
       <ListItem button onClick={() => router.push('/admin/models/Message')}>
         <ListItemIcon>
-          <GroupIcon />
+          <Message />
         </ListItemIcon>
         <ListItemText primary="Messages" />
       </ListItem>

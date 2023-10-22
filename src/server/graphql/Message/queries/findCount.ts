@@ -4,7 +4,7 @@ export const MessageFindCountQuery = queryField('findManyMessageCount', {
   type: nonNull('Int'),
   args: {
     where: 'MessageWhereInput',
-    orderBy: list('MessageOrderByWithRelationAndSearchRelevanceInput'),
+    orderBy: list('MessageOrderByWithRelationInput'),
     cursor: 'MessageWhereUniqueInput',
     take: 'Int',
     skip: 'Int',

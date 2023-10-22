@@ -4,7 +4,7 @@ export const MessageFindFirstQuery = queryField('findFirstMessage', {
   type: 'Message',
   args: {
     where: 'MessageWhereInput',
-    orderBy: list('MessageOrderByWithRelationAndSearchRelevanceInput'),
+    orderBy: list('MessageOrderByWithRelationInput'),
     cursor: 'MessageWhereUniqueInput',
     take: 'Int',
     skip: 'Int',

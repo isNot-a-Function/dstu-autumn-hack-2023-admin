@@ -4,7 +4,7 @@ export const MessageFindManyQuery = queryField('findManyMessage', {
   type: nonNull(list(nonNull('Message'))),
   args: {
     where: 'MessageWhereInput',
-    orderBy: list('MessageOrderByWithRelationAndSearchRelevanceInput'),
+    orderBy: list('MessageOrderByWithRelationInput'),
     cursor: 'MessageWhereUniqueInput',
     take: 'Int',
     skip: 'Int',

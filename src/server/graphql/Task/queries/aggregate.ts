@@ -4,7 +4,7 @@ export const TaskAggregateQuery = queryField('aggregateTask', {
   type: 'AggregateTask',
   args: {
     where: 'TaskWhereInput',
-    orderBy: list('TaskOrderByWithRelationAndSearchRelevanceInput'),
+    orderBy: list('TaskOrderByWithRelationInput'),
     cursor: 'TaskWhereUniqueInput',
     take: 'Int',
     skip: 'Int',

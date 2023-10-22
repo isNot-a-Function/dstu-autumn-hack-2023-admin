@@ -4,7 +4,7 @@ export const MessagerGroupFindManyQuery = queryField('findManyMessagerGroup', {
   type: nonNull(list(nonNull('MessagerGroup'))),
   args: {
     where: 'MessagerGroupWhereInput',
-    orderBy: list('MessagerGroupOrderByWithRelationAndSearchRelevanceInput'),
+    orderBy: list('MessagerGroupOrderByWithRelationInput'),
     cursor: 'MessagerGroupWhereUniqueInput',
     take: 'Int',
     skip: 'Int',

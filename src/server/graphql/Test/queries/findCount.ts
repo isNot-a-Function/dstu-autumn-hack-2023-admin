@@ -4,7 +4,7 @@ export const TestFindCountQuery = queryField('findManyTestCount', {
   type: nonNull('Int'),
   args: {
     where: 'TestWhereInput',
-    orderBy: list('TestOrderByWithRelationAndSearchRelevanceInput'),
+    orderBy: list('TestOrderByWithRelationInput'),
     cursor: 'TestWhereUniqueInput',
     take: 'Int',
     skip: 'Int',

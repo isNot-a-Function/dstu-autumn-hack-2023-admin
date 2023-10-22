@@ -4,7 +4,7 @@ export const AnswerAggregateQuery = queryField('aggregateAnswer', {
   type: 'AggregateAnswer',
   args: {
     where: 'AnswerWhereInput',
-    orderBy: list('AnswerOrderByWithRelationAndSearchRelevanceInput'),
+    orderBy: list('AnswerOrderByWithRelationInput'),
     cursor: 'AnswerWhereUniqueInput',
     take: 'Int',
     skip: 'Int',

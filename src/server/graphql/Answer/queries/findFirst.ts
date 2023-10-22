@@ -4,7 +4,7 @@ export const AnswerFindFirstQuery = queryField('findFirstAnswer', {
   type: 'Answer',
   args: {
     where: 'AnswerWhereInput',
-    orderBy: list('AnswerOrderByWithRelationAndSearchRelevanceInput'),
+    orderBy: list('AnswerOrderByWithRelationInput'),
     cursor: 'AnswerWhereUniqueInput',
     take: 'Int',
     skip: 'Int',

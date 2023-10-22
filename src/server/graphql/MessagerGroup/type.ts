@@ -17,7 +17,7 @@ export const MessagerGroup = objectType({
       type: 'User',
       args: {
         where: 'UserWhereInput',
-        orderBy: list('UserOrderByWithRelationAndSearchRelevanceInput'),
+        orderBy: list('UserOrderByWithRelationInput'),
         cursor: 'UserWhereUniqueInput',
         take: 'Int',
         skip: 'Int',
@@ -31,7 +31,7 @@ export const MessagerGroup = objectType({
       type: 'Message',
       args: {
         where: 'MessageWhereInput',
-        orderBy: list('MessageOrderByWithRelationAndSearchRelevanceInput'),
+        orderBy: list('MessageOrderByWithRelationInput'),
         cursor: 'MessageWhereUniqueInput',
         take: 'Int',
         skip: 'Int',

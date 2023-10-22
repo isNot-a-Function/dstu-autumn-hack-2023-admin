@@ -15,6 +15,7 @@ export const Task = objectType({
     t.list.string('variants')
     t.nullable.int('correctSingleAnswer')
     t.list.int('correctMultipleAnswer')
+    t.nullable.string('code')
     t.nullable.field('test', {
       type: 'Test',
       args: {
@@ -22,6 +23,26 @@ export const Task = objectType({
       },
       resolve(root: any) {
         return root.test
+      },
+    })
+    t.list.field('taskAnswers', {
+      type: 'TaskAnswer',
+      args: {
+        where: 'TaskAnswerWhereInput',
+        orderBy: list('TaskAnswerOrderByWithRelationInput'),
+        cursor: 'TaskAnswerWhereUniqueInput',
+        take: 'Int',
+        skip: 'Int',
+        distinct: list('TaskAnswerScalarFieldEnum'),
+      },
+      resolve(root: any) {
+        return root.taskAnswers
+      },
+    })
+    t.field('_count', {
+      type: 'TaskCountOutputType',
+      resolve(root: any) {
+        return root._count
       },
     })
   },

@@ -4,7 +4,7 @@ export const UserFindManyQuery = queryField('findManyUser', {
   type: nonNull(list(nonNull('User'))),
   args: {
     where: 'UserWhereInput',
-    orderBy: list('UserOrderByWithRelationAndSearchRelevanceInput'),
+    orderBy: list('UserOrderByWithRelationInput'),
     cursor: 'UserWhereUniqueInput',
     take: 'Int',
     skip: 'Int',

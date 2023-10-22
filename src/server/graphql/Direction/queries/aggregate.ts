@@ -4,7 +4,7 @@ export const DirectionAggregateQuery = queryField('aggregateDirection', {
   type: 'AggregateDirection',
   args: {
     where: 'DirectionWhereInput',
-    orderBy: list('DirectionOrderByWithRelationAndSearchRelevanceInput'),
+    orderBy: list('DirectionOrderByWithRelationInput'),
     cursor: 'DirectionWhereUniqueInput',
     take: 'Int',
     skip: 'Int',

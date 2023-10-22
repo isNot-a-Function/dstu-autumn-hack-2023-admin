@@ -66,47 +66,33 @@ export interface NexusGenInputs {
   AnswerAvgOrderByAggregateInput: { // input type
     id?: NexusGenEnums['SortOrder'] | null; // SortOrder
     testId?: NexusGenEnums['SortOrder'] | null; // SortOrder
-    userId?: NexusGenEnums['SortOrder'] | null; // SortOrder
   }
   AnswerCountOrderByAggregateInput: { // input type
     answer?: NexusGenEnums['SortOrder'] | null; // SortOrder
     createdAt?: NexusGenEnums['SortOrder'] | null; // SortOrder
     id?: NexusGenEnums['SortOrder'] | null; // SortOrder
     testId?: NexusGenEnums['SortOrder'] | null; // SortOrder
-    userId?: NexusGenEnums['SortOrder'] | null; // SortOrder
   }
   AnswerCreateInput: { // input type
     answer?: string | null; // String
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     response?: NexusGenInputs['ResponseCreateNestedManyWithoutAnswersInput'] | null; // ResponseCreateNestedManyWithoutAnswersInput
+    taskAnswers?: NexusGenInputs['TaskAnswerCreateNestedManyWithoutAnswerModelInput'] | null; // TaskAnswerCreateNestedManyWithoutAnswerModelInput
     test: NexusGenInputs['TestCreateNestedOneWithoutAnswersInput']; // TestCreateNestedOneWithoutAnswersInput!
-    user: NexusGenInputs['UserCreateNestedOneWithoutAnswersInput']; // UserCreateNestedOneWithoutAnswersInput!
   }
   AnswerCreateManyInput: { // input type
     answer?: string | null; // String
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     id?: number | null; // Int
     testId: number; // Int!
-    userId: number; // Int!
   }
   AnswerCreateManyTestInput: { // input type
     answer?: string | null; // String
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     id?: number | null; // Int
-    userId: number; // Int!
   }
   AnswerCreateManyTestInputEnvelope: { // input type
     data: NexusGenInputs['AnswerCreateManyTestInput']; // AnswerCreateManyTestInput!
-    skipDuplicates?: boolean | null; // Boolean
-  }
-  AnswerCreateManyUserInput: { // input type
-    answer?: string | null; // String
-    createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
-    id?: number | null; // Int
-    testId: number; // Int!
-  }
-  AnswerCreateManyUserInputEnvelope: { // input type
-    data: NexusGenInputs['AnswerCreateManyUserInput']; // AnswerCreateManyUserInput!
     skipDuplicates?: boolean | null; // Boolean
   }
   AnswerCreateNestedManyWithoutResponseInput: { // input type
@@ -120,41 +106,40 @@ export interface NexusGenInputs {
     create?: Array<NexusGenInputs['AnswerCreateWithoutTestInput'] | null> | null; // [AnswerCreateWithoutTestInput]
     createMany?: NexusGenInputs['AnswerCreateManyTestInputEnvelope'] | null; // AnswerCreateManyTestInputEnvelope
   }
-  AnswerCreateNestedManyWithoutUserInput: { // input type
-    connect?: Array<NexusGenInputs['AnswerWhereUniqueInput'] | null> | null; // [AnswerWhereUniqueInput]
-    connectOrCreate?: Array<NexusGenInputs['AnswerCreateOrConnectWithoutUserInput'] | null> | null; // [AnswerCreateOrConnectWithoutUserInput]
-    create?: Array<NexusGenInputs['AnswerCreateWithoutUserInput'] | null> | null; // [AnswerCreateWithoutUserInput]
-    createMany?: NexusGenInputs['AnswerCreateManyUserInputEnvelope'] | null; // AnswerCreateManyUserInputEnvelope
+  AnswerCreateNestedOneWithoutTaskAnswersInput: { // input type
+    connect?: NexusGenInputs['AnswerWhereUniqueInput'] | null; // AnswerWhereUniqueInput
+    connectOrCreate?: NexusGenInputs['AnswerCreateOrConnectWithoutTaskAnswersInput'] | null; // AnswerCreateOrConnectWithoutTaskAnswersInput
+    create?: NexusGenInputs['AnswerCreateWithoutTaskAnswersInput'] | null; // AnswerCreateWithoutTaskAnswersInput
   }
   AnswerCreateOrConnectWithoutResponseInput: { // input type
     create: NexusGenInputs['AnswerCreateWithoutResponseInput']; // AnswerCreateWithoutResponseInput!
+    where: NexusGenInputs['AnswerWhereUniqueInput']; // AnswerWhereUniqueInput!
+  }
+  AnswerCreateOrConnectWithoutTaskAnswersInput: { // input type
+    create: NexusGenInputs['AnswerCreateWithoutTaskAnswersInput']; // AnswerCreateWithoutTaskAnswersInput!
     where: NexusGenInputs['AnswerWhereUniqueInput']; // AnswerWhereUniqueInput!
   }
   AnswerCreateOrConnectWithoutTestInput: { // input type
     create: NexusGenInputs['AnswerCreateWithoutTestInput']; // AnswerCreateWithoutTestInput!
     where: NexusGenInputs['AnswerWhereUniqueInput']; // AnswerWhereUniqueInput!
   }
-  AnswerCreateOrConnectWithoutUserInput: { // input type
-    create: NexusGenInputs['AnswerCreateWithoutUserInput']; // AnswerCreateWithoutUserInput!
-    where: NexusGenInputs['AnswerWhereUniqueInput']; // AnswerWhereUniqueInput!
-  }
   AnswerCreateWithoutResponseInput: { // input type
     answer?: string | null; // String
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
+    taskAnswers?: NexusGenInputs['TaskAnswerCreateNestedManyWithoutAnswerModelInput'] | null; // TaskAnswerCreateNestedManyWithoutAnswerModelInput
     test: NexusGenInputs['TestCreateNestedOneWithoutAnswersInput']; // TestCreateNestedOneWithoutAnswersInput!
-    user: NexusGenInputs['UserCreateNestedOneWithoutAnswersInput']; // UserCreateNestedOneWithoutAnswersInput!
+  }
+  AnswerCreateWithoutTaskAnswersInput: { // input type
+    answer?: string | null; // String
+    createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
+    response?: NexusGenInputs['ResponseCreateNestedManyWithoutAnswersInput'] | null; // ResponseCreateNestedManyWithoutAnswersInput
+    test: NexusGenInputs['TestCreateNestedOneWithoutAnswersInput']; // TestCreateNestedOneWithoutAnswersInput!
   }
   AnswerCreateWithoutTestInput: { // input type
     answer?: string | null; // String
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     response?: NexusGenInputs['ResponseCreateNestedManyWithoutAnswersInput'] | null; // ResponseCreateNestedManyWithoutAnswersInput
-    user: NexusGenInputs['UserCreateNestedOneWithoutAnswersInput']; // UserCreateNestedOneWithoutAnswersInput!
-  }
-  AnswerCreateWithoutUserInput: { // input type
-    answer?: string | null; // String
-    createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
-    response?: NexusGenInputs['ResponseCreateNestedManyWithoutAnswersInput'] | null; // ResponseCreateNestedManyWithoutAnswersInput
-    test: NexusGenInputs['TestCreateNestedOneWithoutAnswersInput']; // TestCreateNestedOneWithoutAnswersInput!
+    taskAnswers?: NexusGenInputs['TaskAnswerCreateNestedManyWithoutAnswerModelInput'] | null; // TaskAnswerCreateNestedManyWithoutAnswerModelInput
   }
   AnswerListRelationFilter: { // input type
     every?: NexusGenInputs['AnswerWhereInput'] | null; // AnswerWhereInput
@@ -166,22 +151,15 @@ export interface NexusGenInputs {
     createdAt?: NexusGenEnums['SortOrder'] | null; // SortOrder
     id?: NexusGenEnums['SortOrder'] | null; // SortOrder
     testId?: NexusGenEnums['SortOrder'] | null; // SortOrder
-    userId?: NexusGenEnums['SortOrder'] | null; // SortOrder
   }
   AnswerMinOrderByAggregateInput: { // input type
     answer?: NexusGenEnums['SortOrder'] | null; // SortOrder
     createdAt?: NexusGenEnums['SortOrder'] | null; // SortOrder
     id?: NexusGenEnums['SortOrder'] | null; // SortOrder
     testId?: NexusGenEnums['SortOrder'] | null; // SortOrder
-    userId?: NexusGenEnums['SortOrder'] | null; // SortOrder
   }
   AnswerOrderByRelationAggregateInput: { // input type
     _count?: NexusGenEnums['SortOrder'] | null; // SortOrder
-  }
-  AnswerOrderByRelevanceInput: { // input type
-    fields: NexusGenEnums['AnswerOrderByRelevanceFieldEnum']; // AnswerOrderByRelevanceFieldEnum!
-    search: string; // String!
-    sort: NexusGenEnums['SortOrder']; // SortOrder!
   }
   AnswerOrderByWithAggregationInput: { // input type
     _avg?: NexusGenInputs['AnswerAvgOrderByAggregateInput'] | null; // AnswerAvgOrderByAggregateInput
@@ -193,18 +171,19 @@ export interface NexusGenInputs {
     createdAt?: NexusGenEnums['SortOrder'] | null; // SortOrder
     id?: NexusGenEnums['SortOrder'] | null; // SortOrder
     testId?: NexusGenEnums['SortOrder'] | null; // SortOrder
-    userId?: NexusGenEnums['SortOrder'] | null; // SortOrder
   }
-  AnswerOrderByWithRelationAndSearchRelevanceInput: { // input type
-    _relevance?: NexusGenInputs['AnswerOrderByRelevanceInput'] | null; // AnswerOrderByRelevanceInput
+  AnswerOrderByWithRelationInput: { // input type
     answer?: NexusGenInputs['SortOrderInput'] | null; // SortOrderInput
     createdAt?: NexusGenEnums['SortOrder'] | null; // SortOrder
     id?: NexusGenEnums['SortOrder'] | null; // SortOrder
     response?: NexusGenInputs['ResponseOrderByRelationAggregateInput'] | null; // ResponseOrderByRelationAggregateInput
-    test?: NexusGenInputs['TestOrderByWithRelationAndSearchRelevanceInput'] | null; // TestOrderByWithRelationAndSearchRelevanceInput
+    taskAnswers?: NexusGenInputs['TaskAnswerOrderByRelationAggregateInput'] | null; // TaskAnswerOrderByRelationAggregateInput
+    test?: NexusGenInputs['TestOrderByWithRelationInput'] | null; // TestOrderByWithRelationInput
     testId?: NexusGenEnums['SortOrder'] | null; // SortOrder
-    user?: NexusGenInputs['UserOrderByWithRelationAndSearchRelevanceInput'] | null; // UserOrderByWithRelationAndSearchRelevanceInput
-    userId?: NexusGenEnums['SortOrder'] | null; // SortOrder
+  }
+  AnswerRelationFilter: { // input type
+    is?: NexusGenInputs['AnswerWhereInput'] | null; // AnswerWhereInput
+    isNot?: NexusGenInputs['AnswerWhereInput'] | null; // AnswerWhereInput
   }
   AnswerScalarWhereInput: { // input type
     AND?: Array<NexusGenInputs['AnswerScalarWhereInput'] | null> | null; // [AnswerScalarWhereInput]
@@ -214,7 +193,6 @@ export interface NexusGenInputs {
     createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
     id?: NexusGenInputs['IntFilter'] | null; // IntFilter
     testId?: NexusGenInputs['IntFilter'] | null; // IntFilter
-    userId?: NexusGenInputs['IntFilter'] | null; // IntFilter
   }
   AnswerScalarWhereWithAggregatesInput: { // input type
     AND?: Array<NexusGenInputs['AnswerScalarWhereWithAggregatesInput'] | null> | null; // [AnswerScalarWhereWithAggregatesInput]
@@ -224,20 +202,18 @@ export interface NexusGenInputs {
     createdAt?: NexusGenInputs['DateTimeWithAggregatesFilter'] | null; // DateTimeWithAggregatesFilter
     id?: NexusGenInputs['IntWithAggregatesFilter'] | null; // IntWithAggregatesFilter
     testId?: NexusGenInputs['IntWithAggregatesFilter'] | null; // IntWithAggregatesFilter
-    userId?: NexusGenInputs['IntWithAggregatesFilter'] | null; // IntWithAggregatesFilter
   }
   AnswerSumOrderByAggregateInput: { // input type
     id?: NexusGenEnums['SortOrder'] | null; // SortOrder
     testId?: NexusGenEnums['SortOrder'] | null; // SortOrder
-    userId?: NexusGenEnums['SortOrder'] | null; // SortOrder
   }
   AnswerUncheckedCreateInput: { // input type
     answer?: string | null; // String
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     id?: number | null; // Int
     response?: NexusGenInputs['ResponseUncheckedCreateNestedManyWithoutAnswersInput'] | null; // ResponseUncheckedCreateNestedManyWithoutAnswersInput
+    taskAnswers?: NexusGenInputs['TaskAnswerUncheckedCreateNestedManyWithoutAnswerModelInput'] | null; // TaskAnswerUncheckedCreateNestedManyWithoutAnswerModelInput
     testId: number; // Int!
-    userId: number; // Int!
   }
   AnswerUncheckedCreateNestedManyWithoutResponseInput: { // input type
     connect?: Array<NexusGenInputs['AnswerWhereUniqueInput'] | null> | null; // [AnswerWhereUniqueInput]
@@ -250,54 +226,46 @@ export interface NexusGenInputs {
     create?: Array<NexusGenInputs['AnswerCreateWithoutTestInput'] | null> | null; // [AnswerCreateWithoutTestInput]
     createMany?: NexusGenInputs['AnswerCreateManyTestInputEnvelope'] | null; // AnswerCreateManyTestInputEnvelope
   }
-  AnswerUncheckedCreateNestedManyWithoutUserInput: { // input type
-    connect?: Array<NexusGenInputs['AnswerWhereUniqueInput'] | null> | null; // [AnswerWhereUniqueInput]
-    connectOrCreate?: Array<NexusGenInputs['AnswerCreateOrConnectWithoutUserInput'] | null> | null; // [AnswerCreateOrConnectWithoutUserInput]
-    create?: Array<NexusGenInputs['AnswerCreateWithoutUserInput'] | null> | null; // [AnswerCreateWithoutUserInput]
-    createMany?: NexusGenInputs['AnswerCreateManyUserInputEnvelope'] | null; // AnswerCreateManyUserInputEnvelope
-  }
   AnswerUncheckedCreateWithoutResponseInput: { // input type
     answer?: string | null; // String
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     id?: number | null; // Int
+    taskAnswers?: NexusGenInputs['TaskAnswerUncheckedCreateNestedManyWithoutAnswerModelInput'] | null; // TaskAnswerUncheckedCreateNestedManyWithoutAnswerModelInput
     testId: number; // Int!
-    userId: number; // Int!
+  }
+  AnswerUncheckedCreateWithoutTaskAnswersInput: { // input type
+    answer?: string | null; // String
+    createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
+    id?: number | null; // Int
+    response?: NexusGenInputs['ResponseUncheckedCreateNestedManyWithoutAnswersInput'] | null; // ResponseUncheckedCreateNestedManyWithoutAnswersInput
+    testId: number; // Int!
   }
   AnswerUncheckedCreateWithoutTestInput: { // input type
     answer?: string | null; // String
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     id?: number | null; // Int
     response?: NexusGenInputs['ResponseUncheckedCreateNestedManyWithoutAnswersInput'] | null; // ResponseUncheckedCreateNestedManyWithoutAnswersInput
-    userId: number; // Int!
-  }
-  AnswerUncheckedCreateWithoutUserInput: { // input type
-    answer?: string | null; // String
-    createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
-    id?: number | null; // Int
-    response?: NexusGenInputs['ResponseUncheckedCreateNestedManyWithoutAnswersInput'] | null; // ResponseUncheckedCreateNestedManyWithoutAnswersInput
-    testId: number; // Int!
+    taskAnswers?: NexusGenInputs['TaskAnswerUncheckedCreateNestedManyWithoutAnswerModelInput'] | null; // TaskAnswerUncheckedCreateNestedManyWithoutAnswerModelInput
   }
   AnswerUncheckedUpdateInput: { // input type
     answer?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
     createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
     id?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
     response?: NexusGenInputs['ResponseUncheckedUpdateManyWithoutAnswersNestedInput'] | null; // ResponseUncheckedUpdateManyWithoutAnswersNestedInput
+    taskAnswers?: NexusGenInputs['TaskAnswerUncheckedUpdateManyWithoutAnswerModelNestedInput'] | null; // TaskAnswerUncheckedUpdateManyWithoutAnswerModelNestedInput
     testId?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
-    userId?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
   }
   AnswerUncheckedUpdateManyInput: { // input type
     answer?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
     createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
     id?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
     testId?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
-    userId?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
   }
   AnswerUncheckedUpdateManyWithoutResponseInput: { // input type
     answer?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
     createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
     id?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
     testId?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
-    userId?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
   }
   AnswerUncheckedUpdateManyWithoutResponseNestedInput: { // input type
     connect?: Array<NexusGenInputs['AnswerWhereUniqueInput'] | null> | null; // [AnswerWhereUniqueInput]
@@ -315,7 +283,6 @@ export interface NexusGenInputs {
     answer?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
     createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
     id?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
-    userId?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
   }
   AnswerUncheckedUpdateManyWithoutTestNestedInput: { // input type
     connect?: Array<NexusGenInputs['AnswerWhereUniqueInput'] | null> | null; // [AnswerWhereUniqueInput]
@@ -330,52 +297,33 @@ export interface NexusGenInputs {
     updateMany?: Array<NexusGenInputs['AnswerUpdateManyWithWhereWithoutTestInput'] | null> | null; // [AnswerUpdateManyWithWhereWithoutTestInput]
     upsert?: Array<NexusGenInputs['AnswerUpsertWithWhereUniqueWithoutTestInput'] | null> | null; // [AnswerUpsertWithWhereUniqueWithoutTestInput]
   }
-  AnswerUncheckedUpdateManyWithoutUserInput: { // input type
-    answer?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
-    createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
-    id?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
-    testId?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
-  }
-  AnswerUncheckedUpdateManyWithoutUserNestedInput: { // input type
-    connect?: Array<NexusGenInputs['AnswerWhereUniqueInput'] | null> | null; // [AnswerWhereUniqueInput]
-    connectOrCreate?: Array<NexusGenInputs['AnswerCreateOrConnectWithoutUserInput'] | null> | null; // [AnswerCreateOrConnectWithoutUserInput]
-    create?: Array<NexusGenInputs['AnswerCreateWithoutUserInput'] | null> | null; // [AnswerCreateWithoutUserInput]
-    createMany?: NexusGenInputs['AnswerCreateManyUserInputEnvelope'] | null; // AnswerCreateManyUserInputEnvelope
-    delete?: Array<NexusGenInputs['AnswerWhereUniqueInput'] | null> | null; // [AnswerWhereUniqueInput]
-    deleteMany?: Array<NexusGenInputs['AnswerScalarWhereInput'] | null> | null; // [AnswerScalarWhereInput]
-    disconnect?: Array<NexusGenInputs['AnswerWhereUniqueInput'] | null> | null; // [AnswerWhereUniqueInput]
-    set?: Array<NexusGenInputs['AnswerWhereUniqueInput'] | null> | null; // [AnswerWhereUniqueInput]
-    update?: Array<NexusGenInputs['AnswerUpdateWithWhereUniqueWithoutUserInput'] | null> | null; // [AnswerUpdateWithWhereUniqueWithoutUserInput]
-    updateMany?: Array<NexusGenInputs['AnswerUpdateManyWithWhereWithoutUserInput'] | null> | null; // [AnswerUpdateManyWithWhereWithoutUserInput]
-    upsert?: Array<NexusGenInputs['AnswerUpsertWithWhereUniqueWithoutUserInput'] | null> | null; // [AnswerUpsertWithWhereUniqueWithoutUserInput]
-  }
   AnswerUncheckedUpdateWithoutResponseInput: { // input type
     answer?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
     createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
     id?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
+    taskAnswers?: NexusGenInputs['TaskAnswerUncheckedUpdateManyWithoutAnswerModelNestedInput'] | null; // TaskAnswerUncheckedUpdateManyWithoutAnswerModelNestedInput
     testId?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
-    userId?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
+  }
+  AnswerUncheckedUpdateWithoutTaskAnswersInput: { // input type
+    answer?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
+    createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
+    id?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
+    response?: NexusGenInputs['ResponseUncheckedUpdateManyWithoutAnswersNestedInput'] | null; // ResponseUncheckedUpdateManyWithoutAnswersNestedInput
+    testId?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
   }
   AnswerUncheckedUpdateWithoutTestInput: { // input type
     answer?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
     createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
     id?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
     response?: NexusGenInputs['ResponseUncheckedUpdateManyWithoutAnswersNestedInput'] | null; // ResponseUncheckedUpdateManyWithoutAnswersNestedInput
-    userId?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
-  }
-  AnswerUncheckedUpdateWithoutUserInput: { // input type
-    answer?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
-    createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
-    id?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
-    response?: NexusGenInputs['ResponseUncheckedUpdateManyWithoutAnswersNestedInput'] | null; // ResponseUncheckedUpdateManyWithoutAnswersNestedInput
-    testId?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
+    taskAnswers?: NexusGenInputs['TaskAnswerUncheckedUpdateManyWithoutAnswerModelNestedInput'] | null; // TaskAnswerUncheckedUpdateManyWithoutAnswerModelNestedInput
   }
   AnswerUpdateInput: { // input type
     answer?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
     createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
     response?: NexusGenInputs['ResponseUpdateManyWithoutAnswersNestedInput'] | null; // ResponseUpdateManyWithoutAnswersNestedInput
+    taskAnswers?: NexusGenInputs['TaskAnswerUpdateManyWithoutAnswerModelNestedInput'] | null; // TaskAnswerUpdateManyWithoutAnswerModelNestedInput
     test?: NexusGenInputs['TestUpdateOneRequiredWithoutAnswersNestedInput'] | null; // TestUpdateOneRequiredWithoutAnswersNestedInput
-    user?: NexusGenInputs['UserUpdateOneRequiredWithoutAnswersNestedInput'] | null; // UserUpdateOneRequiredWithoutAnswersNestedInput
   }
   AnswerUpdateManyMutationInput: { // input type
     answer?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
@@ -386,10 +334,6 @@ export interface NexusGenInputs {
     where: NexusGenInputs['AnswerScalarWhereInput']; // AnswerScalarWhereInput!
   }
   AnswerUpdateManyWithWhereWithoutTestInput: { // input type
-    data: NexusGenInputs['AnswerUpdateManyMutationInput']; // AnswerUpdateManyMutationInput!
-    where: NexusGenInputs['AnswerScalarWhereInput']; // AnswerScalarWhereInput!
-  }
-  AnswerUpdateManyWithWhereWithoutUserInput: { // input type
     data: NexusGenInputs['AnswerUpdateManyMutationInput']; // AnswerUpdateManyMutationInput!
     where: NexusGenInputs['AnswerScalarWhereInput']; // AnswerScalarWhereInput!
   }
@@ -418,18 +362,16 @@ export interface NexusGenInputs {
     updateMany?: Array<NexusGenInputs['AnswerUpdateManyWithWhereWithoutTestInput'] | null> | null; // [AnswerUpdateManyWithWhereWithoutTestInput]
     upsert?: Array<NexusGenInputs['AnswerUpsertWithWhereUniqueWithoutTestInput'] | null> | null; // [AnswerUpsertWithWhereUniqueWithoutTestInput]
   }
-  AnswerUpdateManyWithoutUserNestedInput: { // input type
-    connect?: Array<NexusGenInputs['AnswerWhereUniqueInput'] | null> | null; // [AnswerWhereUniqueInput]
-    connectOrCreate?: Array<NexusGenInputs['AnswerCreateOrConnectWithoutUserInput'] | null> | null; // [AnswerCreateOrConnectWithoutUserInput]
-    create?: Array<NexusGenInputs['AnswerCreateWithoutUserInput'] | null> | null; // [AnswerCreateWithoutUserInput]
-    createMany?: NexusGenInputs['AnswerCreateManyUserInputEnvelope'] | null; // AnswerCreateManyUserInputEnvelope
-    delete?: Array<NexusGenInputs['AnswerWhereUniqueInput'] | null> | null; // [AnswerWhereUniqueInput]
-    deleteMany?: Array<NexusGenInputs['AnswerScalarWhereInput'] | null> | null; // [AnswerScalarWhereInput]
-    disconnect?: Array<NexusGenInputs['AnswerWhereUniqueInput'] | null> | null; // [AnswerWhereUniqueInput]
-    set?: Array<NexusGenInputs['AnswerWhereUniqueInput'] | null> | null; // [AnswerWhereUniqueInput]
-    update?: Array<NexusGenInputs['AnswerUpdateWithWhereUniqueWithoutUserInput'] | null> | null; // [AnswerUpdateWithWhereUniqueWithoutUserInput]
-    updateMany?: Array<NexusGenInputs['AnswerUpdateManyWithWhereWithoutUserInput'] | null> | null; // [AnswerUpdateManyWithWhereWithoutUserInput]
-    upsert?: Array<NexusGenInputs['AnswerUpsertWithWhereUniqueWithoutUserInput'] | null> | null; // [AnswerUpsertWithWhereUniqueWithoutUserInput]
+  AnswerUpdateOneRequiredWithoutTaskAnswersNestedInput: { // input type
+    connect?: NexusGenInputs['AnswerWhereUniqueInput'] | null; // AnswerWhereUniqueInput
+    connectOrCreate?: NexusGenInputs['AnswerCreateOrConnectWithoutTaskAnswersInput'] | null; // AnswerCreateOrConnectWithoutTaskAnswersInput
+    create?: NexusGenInputs['AnswerCreateWithoutTaskAnswersInput'] | null; // AnswerCreateWithoutTaskAnswersInput
+    update?: NexusGenInputs['AnswerUpdateToOneWithWhereWithoutTaskAnswersInput'] | null; // AnswerUpdateToOneWithWhereWithoutTaskAnswersInput
+    upsert?: NexusGenInputs['AnswerUpsertWithoutTaskAnswersInput'] | null; // AnswerUpsertWithoutTaskAnswersInput
+  }
+  AnswerUpdateToOneWithWhereWithoutTaskAnswersInput: { // input type
+    data: NexusGenInputs['AnswerUpdateWithoutTaskAnswersInput']; // AnswerUpdateWithoutTaskAnswersInput!
+    where?: NexusGenInputs['AnswerWhereInput'] | null; // AnswerWhereInput
   }
   AnswerUpdateWithWhereUniqueWithoutResponseInput: { // input type
     data: NexusGenInputs['AnswerUpdateWithoutResponseInput']; // AnswerUpdateWithoutResponseInput!
@@ -439,27 +381,23 @@ export interface NexusGenInputs {
     data: NexusGenInputs['AnswerUpdateWithoutTestInput']; // AnswerUpdateWithoutTestInput!
     where: NexusGenInputs['AnswerWhereUniqueInput']; // AnswerWhereUniqueInput!
   }
-  AnswerUpdateWithWhereUniqueWithoutUserInput: { // input type
-    data: NexusGenInputs['AnswerUpdateWithoutUserInput']; // AnswerUpdateWithoutUserInput!
-    where: NexusGenInputs['AnswerWhereUniqueInput']; // AnswerWhereUniqueInput!
-  }
   AnswerUpdateWithoutResponseInput: { // input type
     answer?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
     createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
+    taskAnswers?: NexusGenInputs['TaskAnswerUpdateManyWithoutAnswerModelNestedInput'] | null; // TaskAnswerUpdateManyWithoutAnswerModelNestedInput
     test?: NexusGenInputs['TestUpdateOneRequiredWithoutAnswersNestedInput'] | null; // TestUpdateOneRequiredWithoutAnswersNestedInput
-    user?: NexusGenInputs['UserUpdateOneRequiredWithoutAnswersNestedInput'] | null; // UserUpdateOneRequiredWithoutAnswersNestedInput
+  }
+  AnswerUpdateWithoutTaskAnswersInput: { // input type
+    answer?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
+    createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
+    response?: NexusGenInputs['ResponseUpdateManyWithoutAnswersNestedInput'] | null; // ResponseUpdateManyWithoutAnswersNestedInput
+    test?: NexusGenInputs['TestUpdateOneRequiredWithoutAnswersNestedInput'] | null; // TestUpdateOneRequiredWithoutAnswersNestedInput
   }
   AnswerUpdateWithoutTestInput: { // input type
     answer?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
     createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
     response?: NexusGenInputs['ResponseUpdateManyWithoutAnswersNestedInput'] | null; // ResponseUpdateManyWithoutAnswersNestedInput
-    user?: NexusGenInputs['UserUpdateOneRequiredWithoutAnswersNestedInput'] | null; // UserUpdateOneRequiredWithoutAnswersNestedInput
-  }
-  AnswerUpdateWithoutUserInput: { // input type
-    answer?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
-    createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
-    response?: NexusGenInputs['ResponseUpdateManyWithoutAnswersNestedInput'] | null; // ResponseUpdateManyWithoutAnswersNestedInput
-    test?: NexusGenInputs['TestUpdateOneRequiredWithoutAnswersNestedInput'] | null; // TestUpdateOneRequiredWithoutAnswersNestedInput
+    taskAnswers?: NexusGenInputs['TaskAnswerUpdateManyWithoutAnswerModelNestedInput'] | null; // TaskAnswerUpdateManyWithoutAnswerModelNestedInput
   }
   AnswerUpsertWithWhereUniqueWithoutResponseInput: { // input type
     create: NexusGenInputs['AnswerCreateWithoutResponseInput']; // AnswerCreateWithoutResponseInput!
@@ -471,10 +409,10 @@ export interface NexusGenInputs {
     update: NexusGenInputs['AnswerUpdateWithoutTestInput']; // AnswerUpdateWithoutTestInput!
     where: NexusGenInputs['AnswerWhereUniqueInput']; // AnswerWhereUniqueInput!
   }
-  AnswerUpsertWithWhereUniqueWithoutUserInput: { // input type
-    create: NexusGenInputs['AnswerCreateWithoutUserInput']; // AnswerCreateWithoutUserInput!
-    update: NexusGenInputs['AnswerUpdateWithoutUserInput']; // AnswerUpdateWithoutUserInput!
-    where: NexusGenInputs['AnswerWhereUniqueInput']; // AnswerWhereUniqueInput!
+  AnswerUpsertWithoutTaskAnswersInput: { // input type
+    create: NexusGenInputs['AnswerCreateWithoutTaskAnswersInput']; // AnswerCreateWithoutTaskAnswersInput!
+    update: NexusGenInputs['AnswerUpdateWithoutTaskAnswersInput']; // AnswerUpdateWithoutTaskAnswersInput!
+    where?: NexusGenInputs['AnswerWhereInput'] | null; // AnswerWhereInput
   }
   AnswerWhereInput: { // input type
     AND?: Array<NexusGenInputs['AnswerWhereInput'] | null> | null; // [AnswerWhereInput]
@@ -484,10 +422,9 @@ export interface NexusGenInputs {
     createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
     id?: NexusGenInputs['IntFilter'] | null; // IntFilter
     response?: NexusGenInputs['ResponseListRelationFilter'] | null; // ResponseListRelationFilter
+    taskAnswers?: NexusGenInputs['TaskAnswerListRelationFilter'] | null; // TaskAnswerListRelationFilter
     test?: NexusGenInputs['TestRelationFilter'] | null; // TestRelationFilter
     testId?: NexusGenInputs['IntFilter'] | null; // IntFilter
-    user?: NexusGenInputs['UserRelationFilter'] | null; // UserRelationFilter
-    userId?: NexusGenInputs['IntFilter'] | null; // IntFilter
   }
   AnswerWhereUniqueInput: { // input type
     AND?: Array<NexusGenInputs['AnswerWhereInput'] | null> | null; // [AnswerWhereInput]
@@ -497,10 +434,9 @@ export interface NexusGenInputs {
     createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
     id?: number | null; // Int
     response?: NexusGenInputs['ResponseListRelationFilter'] | null; // ResponseListRelationFilter
+    taskAnswers?: NexusGenInputs['TaskAnswerListRelationFilter'] | null; // TaskAnswerListRelationFilter
     test?: NexusGenInputs['TestRelationFilter'] | null; // TestRelationFilter
     testId?: NexusGenInputs['IntFilter'] | null; // IntFilter
-    user?: NexusGenInputs['UserRelationFilter'] | null; // UserRelationFilter
-    userId?: NexusGenInputs['IntFilter'] | null; // IntFilter
   }
   BoolFieldUpdateOperationsInput: { // input type
     set?: boolean | null; // Boolean
@@ -545,12 +481,14 @@ export interface NexusGenInputs {
   DirectionAvgOrderByAggregateInput: { // input type
     id?: NexusGenEnums['SortOrder'] | null; // SortOrder
     specializationId?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    testId?: NexusGenEnums['SortOrder'] | null; // SortOrder
   }
   DirectionCountOrderByAggregateInput: { // input type
     createdAt?: NexusGenEnums['SortOrder'] | null; // SortOrder
     description?: NexusGenEnums['SortOrder'] | null; // SortOrder
     id?: NexusGenEnums['SortOrder'] | null; // SortOrder
     specializationId?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    testId?: NexusGenEnums['SortOrder'] | null; // SortOrder
     title?: NexusGenEnums['SortOrder'] | null; // SortOrder
     type?: NexusGenEnums['SortOrder'] | null; // SortOrder
   }
@@ -559,6 +497,7 @@ export interface NexusGenInputs {
     description: string; // String!
     responses?: NexusGenInputs['ResponseCreateNestedManyWithoutDirectionInput'] | null; // ResponseCreateNestedManyWithoutDirectionInput
     specialization: NexusGenInputs['SpecializationCreateNestedOneWithoutDirectionsInput']; // SpecializationCreateNestedOneWithoutDirectionsInput!
+    test?: NexusGenInputs['TestCreateNestedOneWithoutDirectionInput'] | null; // TestCreateNestedOneWithoutDirectionInput
     title: string; // String!
     type?: NexusGenEnums['DirectionType'] | null; // DirectionType
   }
@@ -567,6 +506,7 @@ export interface NexusGenInputs {
     description: string; // String!
     id?: number | null; // Int
     specializationId: number; // Int!
+    testId?: number | null; // Int
     title: string; // String!
     type?: NexusGenEnums['DirectionType'] | null; // DirectionType
   }
@@ -574,6 +514,7 @@ export interface NexusGenInputs {
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     description: string; // String!
     id?: number | null; // Int
+    testId?: number | null; // Int
     title: string; // String!
     type?: NexusGenEnums['DirectionType'] | null; // DirectionType
   }
@@ -581,11 +522,29 @@ export interface NexusGenInputs {
     data: NexusGenInputs['DirectionCreateManySpecializationInput']; // DirectionCreateManySpecializationInput!
     skipDuplicates?: boolean | null; // Boolean
   }
+  DirectionCreateManyTestInput: { // input type
+    createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
+    description: string; // String!
+    id?: number | null; // Int
+    specializationId: number; // Int!
+    title: string; // String!
+    type?: NexusGenEnums['DirectionType'] | null; // DirectionType
+  }
+  DirectionCreateManyTestInputEnvelope: { // input type
+    data: NexusGenInputs['DirectionCreateManyTestInput']; // DirectionCreateManyTestInput!
+    skipDuplicates?: boolean | null; // Boolean
+  }
   DirectionCreateNestedManyWithoutSpecializationInput: { // input type
     connect?: Array<NexusGenInputs['DirectionWhereUniqueInput'] | null> | null; // [DirectionWhereUniqueInput]
     connectOrCreate?: Array<NexusGenInputs['DirectionCreateOrConnectWithoutSpecializationInput'] | null> | null; // [DirectionCreateOrConnectWithoutSpecializationInput]
     create?: Array<NexusGenInputs['DirectionCreateWithoutSpecializationInput'] | null> | null; // [DirectionCreateWithoutSpecializationInput]
     createMany?: NexusGenInputs['DirectionCreateManySpecializationInputEnvelope'] | null; // DirectionCreateManySpecializationInputEnvelope
+  }
+  DirectionCreateNestedManyWithoutTestInput: { // input type
+    connect?: Array<NexusGenInputs['DirectionWhereUniqueInput'] | null> | null; // [DirectionWhereUniqueInput]
+    connectOrCreate?: Array<NexusGenInputs['DirectionCreateOrConnectWithoutTestInput'] | null> | null; // [DirectionCreateOrConnectWithoutTestInput]
+    create?: Array<NexusGenInputs['DirectionCreateWithoutTestInput'] | null> | null; // [DirectionCreateWithoutTestInput]
+    createMany?: NexusGenInputs['DirectionCreateManyTestInputEnvelope'] | null; // DirectionCreateManyTestInputEnvelope
   }
   DirectionCreateNestedOneWithoutResponsesInput: { // input type
     connect?: NexusGenInputs['DirectionWhereUniqueInput'] | null; // DirectionWhereUniqueInput
@@ -600,10 +559,15 @@ export interface NexusGenInputs {
     create: NexusGenInputs['DirectionCreateWithoutSpecializationInput']; // DirectionCreateWithoutSpecializationInput!
     where: NexusGenInputs['DirectionWhereUniqueInput']; // DirectionWhereUniqueInput!
   }
+  DirectionCreateOrConnectWithoutTestInput: { // input type
+    create: NexusGenInputs['DirectionCreateWithoutTestInput']; // DirectionCreateWithoutTestInput!
+    where: NexusGenInputs['DirectionWhereUniqueInput']; // DirectionWhereUniqueInput!
+  }
   DirectionCreateWithoutResponsesInput: { // input type
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     description: string; // String!
     specialization: NexusGenInputs['SpecializationCreateNestedOneWithoutDirectionsInput']; // SpecializationCreateNestedOneWithoutDirectionsInput!
+    test?: NexusGenInputs['TestCreateNestedOneWithoutDirectionInput'] | null; // TestCreateNestedOneWithoutDirectionInput
     title: string; // String!
     type?: NexusGenEnums['DirectionType'] | null; // DirectionType
   }
@@ -611,6 +575,15 @@ export interface NexusGenInputs {
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     description: string; // String!
     responses?: NexusGenInputs['ResponseCreateNestedManyWithoutDirectionInput'] | null; // ResponseCreateNestedManyWithoutDirectionInput
+    test?: NexusGenInputs['TestCreateNestedOneWithoutDirectionInput'] | null; // TestCreateNestedOneWithoutDirectionInput
+    title: string; // String!
+    type?: NexusGenEnums['DirectionType'] | null; // DirectionType
+  }
+  DirectionCreateWithoutTestInput: { // input type
+    createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
+    description: string; // String!
+    responses?: NexusGenInputs['ResponseCreateNestedManyWithoutDirectionInput'] | null; // ResponseCreateNestedManyWithoutDirectionInput
+    specialization: NexusGenInputs['SpecializationCreateNestedOneWithoutDirectionsInput']; // SpecializationCreateNestedOneWithoutDirectionsInput!
     title: string; // String!
     type?: NexusGenEnums['DirectionType'] | null; // DirectionType
   }
@@ -624,6 +597,7 @@ export interface NexusGenInputs {
     description?: NexusGenEnums['SortOrder'] | null; // SortOrder
     id?: NexusGenEnums['SortOrder'] | null; // SortOrder
     specializationId?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    testId?: NexusGenEnums['SortOrder'] | null; // SortOrder
     title?: NexusGenEnums['SortOrder'] | null; // SortOrder
     type?: NexusGenEnums['SortOrder'] | null; // SortOrder
   }
@@ -632,16 +606,12 @@ export interface NexusGenInputs {
     description?: NexusGenEnums['SortOrder'] | null; // SortOrder
     id?: NexusGenEnums['SortOrder'] | null; // SortOrder
     specializationId?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    testId?: NexusGenEnums['SortOrder'] | null; // SortOrder
     title?: NexusGenEnums['SortOrder'] | null; // SortOrder
     type?: NexusGenEnums['SortOrder'] | null; // SortOrder
   }
   DirectionOrderByRelationAggregateInput: { // input type
     _count?: NexusGenEnums['SortOrder'] | null; // SortOrder
-  }
-  DirectionOrderByRelevanceInput: { // input type
-    fields: NexusGenEnums['DirectionOrderByRelevanceFieldEnum']; // DirectionOrderByRelevanceFieldEnum!
-    search: string; // String!
-    sort: NexusGenEnums['SortOrder']; // SortOrder!
   }
   DirectionOrderByWithAggregationInput: { // input type
     _avg?: NexusGenInputs['DirectionAvgOrderByAggregateInput'] | null; // DirectionAvgOrderByAggregateInput
@@ -653,17 +623,19 @@ export interface NexusGenInputs {
     description?: NexusGenEnums['SortOrder'] | null; // SortOrder
     id?: NexusGenEnums['SortOrder'] | null; // SortOrder
     specializationId?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    testId?: NexusGenInputs['SortOrderInput'] | null; // SortOrderInput
     title?: NexusGenEnums['SortOrder'] | null; // SortOrder
     type?: NexusGenInputs['SortOrderInput'] | null; // SortOrderInput
   }
-  DirectionOrderByWithRelationAndSearchRelevanceInput: { // input type
-    _relevance?: NexusGenInputs['DirectionOrderByRelevanceInput'] | null; // DirectionOrderByRelevanceInput
+  DirectionOrderByWithRelationInput: { // input type
     createdAt?: NexusGenEnums['SortOrder'] | null; // SortOrder
     description?: NexusGenEnums['SortOrder'] | null; // SortOrder
     id?: NexusGenEnums['SortOrder'] | null; // SortOrder
     responses?: NexusGenInputs['ResponseOrderByRelationAggregateInput'] | null; // ResponseOrderByRelationAggregateInput
-    specialization?: NexusGenInputs['SpecializationOrderByWithRelationAndSearchRelevanceInput'] | null; // SpecializationOrderByWithRelationAndSearchRelevanceInput
+    specialization?: NexusGenInputs['SpecializationOrderByWithRelationInput'] | null; // SpecializationOrderByWithRelationInput
     specializationId?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    test?: NexusGenInputs['TestOrderByWithRelationInput'] | null; // TestOrderByWithRelationInput
+    testId?: NexusGenInputs['SortOrderInput'] | null; // SortOrderInput
     title?: NexusGenEnums['SortOrder'] | null; // SortOrder
     type?: NexusGenInputs['SortOrderInput'] | null; // SortOrderInput
   }
@@ -679,6 +651,7 @@ export interface NexusGenInputs {
     description?: NexusGenInputs['StringFilter'] | null; // StringFilter
     id?: NexusGenInputs['IntFilter'] | null; // IntFilter
     specializationId?: NexusGenInputs['IntFilter'] | null; // IntFilter
+    testId?: NexusGenInputs['IntNullableFilter'] | null; // IntNullableFilter
     title?: NexusGenInputs['StringFilter'] | null; // StringFilter
     type?: NexusGenInputs['EnumDirectionTypeNullableFilter'] | null; // EnumDirectionTypeNullableFilter
   }
@@ -690,12 +663,14 @@ export interface NexusGenInputs {
     description?: NexusGenInputs['StringWithAggregatesFilter'] | null; // StringWithAggregatesFilter
     id?: NexusGenInputs['IntWithAggregatesFilter'] | null; // IntWithAggregatesFilter
     specializationId?: NexusGenInputs['IntWithAggregatesFilter'] | null; // IntWithAggregatesFilter
+    testId?: NexusGenInputs['IntNullableWithAggregatesFilter'] | null; // IntNullableWithAggregatesFilter
     title?: NexusGenInputs['StringWithAggregatesFilter'] | null; // StringWithAggregatesFilter
     type?: NexusGenInputs['EnumDirectionTypeNullableWithAggregatesFilter'] | null; // EnumDirectionTypeNullableWithAggregatesFilter
   }
   DirectionSumOrderByAggregateInput: { // input type
     id?: NexusGenEnums['SortOrder'] | null; // SortOrder
     specializationId?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    testId?: NexusGenEnums['SortOrder'] | null; // SortOrder
   }
   DirectionUncheckedCreateInput: { // input type
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
@@ -703,6 +678,7 @@ export interface NexusGenInputs {
     id?: number | null; // Int
     responses?: NexusGenInputs['ResponseUncheckedCreateNestedManyWithoutDirectionInput'] | null; // ResponseUncheckedCreateNestedManyWithoutDirectionInput
     specializationId: number; // Int!
+    testId?: number | null; // Int
     title: string; // String!
     type?: NexusGenEnums['DirectionType'] | null; // DirectionType
   }
@@ -712,11 +688,18 @@ export interface NexusGenInputs {
     create?: Array<NexusGenInputs['DirectionCreateWithoutSpecializationInput'] | null> | null; // [DirectionCreateWithoutSpecializationInput]
     createMany?: NexusGenInputs['DirectionCreateManySpecializationInputEnvelope'] | null; // DirectionCreateManySpecializationInputEnvelope
   }
+  DirectionUncheckedCreateNestedManyWithoutTestInput: { // input type
+    connect?: Array<NexusGenInputs['DirectionWhereUniqueInput'] | null> | null; // [DirectionWhereUniqueInput]
+    connectOrCreate?: Array<NexusGenInputs['DirectionCreateOrConnectWithoutTestInput'] | null> | null; // [DirectionCreateOrConnectWithoutTestInput]
+    create?: Array<NexusGenInputs['DirectionCreateWithoutTestInput'] | null> | null; // [DirectionCreateWithoutTestInput]
+    createMany?: NexusGenInputs['DirectionCreateManyTestInputEnvelope'] | null; // DirectionCreateManyTestInputEnvelope
+  }
   DirectionUncheckedCreateWithoutResponsesInput: { // input type
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     description: string; // String!
     id?: number | null; // Int
     specializationId: number; // Int!
+    testId?: number | null; // Int
     title: string; // String!
     type?: NexusGenEnums['DirectionType'] | null; // DirectionType
   }
@@ -725,6 +708,16 @@ export interface NexusGenInputs {
     description: string; // String!
     id?: number | null; // Int
     responses?: NexusGenInputs['ResponseUncheckedCreateNestedManyWithoutDirectionInput'] | null; // ResponseUncheckedCreateNestedManyWithoutDirectionInput
+    testId?: number | null; // Int
+    title: string; // String!
+    type?: NexusGenEnums['DirectionType'] | null; // DirectionType
+  }
+  DirectionUncheckedCreateWithoutTestInput: { // input type
+    createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
+    description: string; // String!
+    id?: number | null; // Int
+    responses?: NexusGenInputs['ResponseUncheckedCreateNestedManyWithoutDirectionInput'] | null; // ResponseUncheckedCreateNestedManyWithoutDirectionInput
+    specializationId: number; // Int!
     title: string; // String!
     type?: NexusGenEnums['DirectionType'] | null; // DirectionType
   }
@@ -734,6 +727,7 @@ export interface NexusGenInputs {
     id?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
     responses?: NexusGenInputs['ResponseUncheckedUpdateManyWithoutDirectionNestedInput'] | null; // ResponseUncheckedUpdateManyWithoutDirectionNestedInput
     specializationId?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
+    testId?: NexusGenInputs['NullableIntFieldUpdateOperationsInput'] | null; // NullableIntFieldUpdateOperationsInput
     title?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     type?: NexusGenInputs['NullableEnumDirectionTypeFieldUpdateOperationsInput'] | null; // NullableEnumDirectionTypeFieldUpdateOperationsInput
   }
@@ -742,6 +736,7 @@ export interface NexusGenInputs {
     description?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     id?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
     specializationId?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
+    testId?: NexusGenInputs['NullableIntFieldUpdateOperationsInput'] | null; // NullableIntFieldUpdateOperationsInput
     title?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     type?: NexusGenInputs['NullableEnumDirectionTypeFieldUpdateOperationsInput'] | null; // NullableEnumDirectionTypeFieldUpdateOperationsInput
   }
@@ -749,6 +744,7 @@ export interface NexusGenInputs {
     createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
     description?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     id?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
+    testId?: NexusGenInputs['NullableIntFieldUpdateOperationsInput'] | null; // NullableIntFieldUpdateOperationsInput
     title?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     type?: NexusGenInputs['NullableEnumDirectionTypeFieldUpdateOperationsInput'] | null; // NullableEnumDirectionTypeFieldUpdateOperationsInput
   }
@@ -765,11 +761,33 @@ export interface NexusGenInputs {
     updateMany?: Array<NexusGenInputs['DirectionUpdateManyWithWhereWithoutSpecializationInput'] | null> | null; // [DirectionUpdateManyWithWhereWithoutSpecializationInput]
     upsert?: Array<NexusGenInputs['DirectionUpsertWithWhereUniqueWithoutSpecializationInput'] | null> | null; // [DirectionUpsertWithWhereUniqueWithoutSpecializationInput]
   }
+  DirectionUncheckedUpdateManyWithoutTestInput: { // input type
+    createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
+    description?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+    id?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
+    specializationId?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
+    title?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+    type?: NexusGenInputs['NullableEnumDirectionTypeFieldUpdateOperationsInput'] | null; // NullableEnumDirectionTypeFieldUpdateOperationsInput
+  }
+  DirectionUncheckedUpdateManyWithoutTestNestedInput: { // input type
+    connect?: Array<NexusGenInputs['DirectionWhereUniqueInput'] | null> | null; // [DirectionWhereUniqueInput]
+    connectOrCreate?: Array<NexusGenInputs['DirectionCreateOrConnectWithoutTestInput'] | null> | null; // [DirectionCreateOrConnectWithoutTestInput]
+    create?: Array<NexusGenInputs['DirectionCreateWithoutTestInput'] | null> | null; // [DirectionCreateWithoutTestInput]
+    createMany?: NexusGenInputs['DirectionCreateManyTestInputEnvelope'] | null; // DirectionCreateManyTestInputEnvelope
+    delete?: Array<NexusGenInputs['DirectionWhereUniqueInput'] | null> | null; // [DirectionWhereUniqueInput]
+    deleteMany?: Array<NexusGenInputs['DirectionScalarWhereInput'] | null> | null; // [DirectionScalarWhereInput]
+    disconnect?: Array<NexusGenInputs['DirectionWhereUniqueInput'] | null> | null; // [DirectionWhereUniqueInput]
+    set?: Array<NexusGenInputs['DirectionWhereUniqueInput'] | null> | null; // [DirectionWhereUniqueInput]
+    update?: Array<NexusGenInputs['DirectionUpdateWithWhereUniqueWithoutTestInput'] | null> | null; // [DirectionUpdateWithWhereUniqueWithoutTestInput]
+    updateMany?: Array<NexusGenInputs['DirectionUpdateManyWithWhereWithoutTestInput'] | null> | null; // [DirectionUpdateManyWithWhereWithoutTestInput]
+    upsert?: Array<NexusGenInputs['DirectionUpsertWithWhereUniqueWithoutTestInput'] | null> | null; // [DirectionUpsertWithWhereUniqueWithoutTestInput]
+  }
   DirectionUncheckedUpdateWithoutResponsesInput: { // input type
     createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
     description?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     id?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
     specializationId?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
+    testId?: NexusGenInputs['NullableIntFieldUpdateOperationsInput'] | null; // NullableIntFieldUpdateOperationsInput
     title?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     type?: NexusGenInputs['NullableEnumDirectionTypeFieldUpdateOperationsInput'] | null; // NullableEnumDirectionTypeFieldUpdateOperationsInput
   }
@@ -778,6 +796,16 @@ export interface NexusGenInputs {
     description?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     id?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
     responses?: NexusGenInputs['ResponseUncheckedUpdateManyWithoutDirectionNestedInput'] | null; // ResponseUncheckedUpdateManyWithoutDirectionNestedInput
+    testId?: NexusGenInputs['NullableIntFieldUpdateOperationsInput'] | null; // NullableIntFieldUpdateOperationsInput
+    title?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+    type?: NexusGenInputs['NullableEnumDirectionTypeFieldUpdateOperationsInput'] | null; // NullableEnumDirectionTypeFieldUpdateOperationsInput
+  }
+  DirectionUncheckedUpdateWithoutTestInput: { // input type
+    createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
+    description?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+    id?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
+    responses?: NexusGenInputs['ResponseUncheckedUpdateManyWithoutDirectionNestedInput'] | null; // ResponseUncheckedUpdateManyWithoutDirectionNestedInput
+    specializationId?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
     title?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     type?: NexusGenInputs['NullableEnumDirectionTypeFieldUpdateOperationsInput'] | null; // NullableEnumDirectionTypeFieldUpdateOperationsInput
   }
@@ -786,6 +814,7 @@ export interface NexusGenInputs {
     description?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     responses?: NexusGenInputs['ResponseUpdateManyWithoutDirectionNestedInput'] | null; // ResponseUpdateManyWithoutDirectionNestedInput
     specialization?: NexusGenInputs['SpecializationUpdateOneRequiredWithoutDirectionsNestedInput'] | null; // SpecializationUpdateOneRequiredWithoutDirectionsNestedInput
+    test?: NexusGenInputs['TestUpdateOneWithoutDirectionNestedInput'] | null; // TestUpdateOneWithoutDirectionNestedInput
     title?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     type?: NexusGenInputs['NullableEnumDirectionTypeFieldUpdateOperationsInput'] | null; // NullableEnumDirectionTypeFieldUpdateOperationsInput
   }
@@ -796,6 +825,10 @@ export interface NexusGenInputs {
     type?: NexusGenInputs['NullableEnumDirectionTypeFieldUpdateOperationsInput'] | null; // NullableEnumDirectionTypeFieldUpdateOperationsInput
   }
   DirectionUpdateManyWithWhereWithoutSpecializationInput: { // input type
+    data: NexusGenInputs['DirectionUpdateManyMutationInput']; // DirectionUpdateManyMutationInput!
+    where: NexusGenInputs['DirectionScalarWhereInput']; // DirectionScalarWhereInput!
+  }
+  DirectionUpdateManyWithWhereWithoutTestInput: { // input type
     data: NexusGenInputs['DirectionUpdateManyMutationInput']; // DirectionUpdateManyMutationInput!
     where: NexusGenInputs['DirectionScalarWhereInput']; // DirectionScalarWhereInput!
   }
@@ -812,6 +845,19 @@ export interface NexusGenInputs {
     updateMany?: Array<NexusGenInputs['DirectionUpdateManyWithWhereWithoutSpecializationInput'] | null> | null; // [DirectionUpdateManyWithWhereWithoutSpecializationInput]
     upsert?: Array<NexusGenInputs['DirectionUpsertWithWhereUniqueWithoutSpecializationInput'] | null> | null; // [DirectionUpsertWithWhereUniqueWithoutSpecializationInput]
   }
+  DirectionUpdateManyWithoutTestNestedInput: { // input type
+    connect?: Array<NexusGenInputs['DirectionWhereUniqueInput'] | null> | null; // [DirectionWhereUniqueInput]
+    connectOrCreate?: Array<NexusGenInputs['DirectionCreateOrConnectWithoutTestInput'] | null> | null; // [DirectionCreateOrConnectWithoutTestInput]
+    create?: Array<NexusGenInputs['DirectionCreateWithoutTestInput'] | null> | null; // [DirectionCreateWithoutTestInput]
+    createMany?: NexusGenInputs['DirectionCreateManyTestInputEnvelope'] | null; // DirectionCreateManyTestInputEnvelope
+    delete?: Array<NexusGenInputs['DirectionWhereUniqueInput'] | null> | null; // [DirectionWhereUniqueInput]
+    deleteMany?: Array<NexusGenInputs['DirectionScalarWhereInput'] | null> | null; // [DirectionScalarWhereInput]
+    disconnect?: Array<NexusGenInputs['DirectionWhereUniqueInput'] | null> | null; // [DirectionWhereUniqueInput]
+    set?: Array<NexusGenInputs['DirectionWhereUniqueInput'] | null> | null; // [DirectionWhereUniqueInput]
+    update?: Array<NexusGenInputs['DirectionUpdateWithWhereUniqueWithoutTestInput'] | null> | null; // [DirectionUpdateWithWhereUniqueWithoutTestInput]
+    updateMany?: Array<NexusGenInputs['DirectionUpdateManyWithWhereWithoutTestInput'] | null> | null; // [DirectionUpdateManyWithWhereWithoutTestInput]
+    upsert?: Array<NexusGenInputs['DirectionUpsertWithWhereUniqueWithoutTestInput'] | null> | null; // [DirectionUpsertWithWhereUniqueWithoutTestInput]
+  }
   DirectionUpdateOneRequiredWithoutResponsesNestedInput: { // input type
     connect?: NexusGenInputs['DirectionWhereUniqueInput'] | null; // DirectionWhereUniqueInput
     connectOrCreate?: NexusGenInputs['DirectionCreateOrConnectWithoutResponsesInput'] | null; // DirectionCreateOrConnectWithoutResponsesInput
@@ -827,10 +873,15 @@ export interface NexusGenInputs {
     data: NexusGenInputs['DirectionUpdateWithoutSpecializationInput']; // DirectionUpdateWithoutSpecializationInput!
     where: NexusGenInputs['DirectionWhereUniqueInput']; // DirectionWhereUniqueInput!
   }
+  DirectionUpdateWithWhereUniqueWithoutTestInput: { // input type
+    data: NexusGenInputs['DirectionUpdateWithoutTestInput']; // DirectionUpdateWithoutTestInput!
+    where: NexusGenInputs['DirectionWhereUniqueInput']; // DirectionWhereUniqueInput!
+  }
   DirectionUpdateWithoutResponsesInput: { // input type
     createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
     description?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     specialization?: NexusGenInputs['SpecializationUpdateOneRequiredWithoutDirectionsNestedInput'] | null; // SpecializationUpdateOneRequiredWithoutDirectionsNestedInput
+    test?: NexusGenInputs['TestUpdateOneWithoutDirectionNestedInput'] | null; // TestUpdateOneWithoutDirectionNestedInput
     title?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     type?: NexusGenInputs['NullableEnumDirectionTypeFieldUpdateOperationsInput'] | null; // NullableEnumDirectionTypeFieldUpdateOperationsInput
   }
@@ -838,12 +889,26 @@ export interface NexusGenInputs {
     createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
     description?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     responses?: NexusGenInputs['ResponseUpdateManyWithoutDirectionNestedInput'] | null; // ResponseUpdateManyWithoutDirectionNestedInput
+    test?: NexusGenInputs['TestUpdateOneWithoutDirectionNestedInput'] | null; // TestUpdateOneWithoutDirectionNestedInput
+    title?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+    type?: NexusGenInputs['NullableEnumDirectionTypeFieldUpdateOperationsInput'] | null; // NullableEnumDirectionTypeFieldUpdateOperationsInput
+  }
+  DirectionUpdateWithoutTestInput: { // input type
+    createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
+    description?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+    responses?: NexusGenInputs['ResponseUpdateManyWithoutDirectionNestedInput'] | null; // ResponseUpdateManyWithoutDirectionNestedInput
+    specialization?: NexusGenInputs['SpecializationUpdateOneRequiredWithoutDirectionsNestedInput'] | null; // SpecializationUpdateOneRequiredWithoutDirectionsNestedInput
     title?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     type?: NexusGenInputs['NullableEnumDirectionTypeFieldUpdateOperationsInput'] | null; // NullableEnumDirectionTypeFieldUpdateOperationsInput
   }
   DirectionUpsertWithWhereUniqueWithoutSpecializationInput: { // input type
     create: NexusGenInputs['DirectionCreateWithoutSpecializationInput']; // DirectionCreateWithoutSpecializationInput!
     update: NexusGenInputs['DirectionUpdateWithoutSpecializationInput']; // DirectionUpdateWithoutSpecializationInput!
+    where: NexusGenInputs['DirectionWhereUniqueInput']; // DirectionWhereUniqueInput!
+  }
+  DirectionUpsertWithWhereUniqueWithoutTestInput: { // input type
+    create: NexusGenInputs['DirectionCreateWithoutTestInput']; // DirectionCreateWithoutTestInput!
+    update: NexusGenInputs['DirectionUpdateWithoutTestInput']; // DirectionUpdateWithoutTestInput!
     where: NexusGenInputs['DirectionWhereUniqueInput']; // DirectionWhereUniqueInput!
   }
   DirectionUpsertWithoutResponsesInput: { // input type
@@ -861,6 +926,8 @@ export interface NexusGenInputs {
     responses?: NexusGenInputs['ResponseListRelationFilter'] | null; // ResponseListRelationFilter
     specialization?: NexusGenInputs['SpecializationRelationFilter'] | null; // SpecializationRelationFilter
     specializationId?: NexusGenInputs['IntFilter'] | null; // IntFilter
+    test?: NexusGenInputs['TestNullableRelationFilter'] | null; // TestNullableRelationFilter
+    testId?: NexusGenInputs['IntNullableFilter'] | null; // IntNullableFilter
     title?: NexusGenInputs['StringFilter'] | null; // StringFilter
     type?: NexusGenInputs['EnumDirectionTypeNullableFilter'] | null; // EnumDirectionTypeNullableFilter
   }
@@ -874,6 +941,8 @@ export interface NexusGenInputs {
     responses?: NexusGenInputs['ResponseListRelationFilter'] | null; // ResponseListRelationFilter
     specialization?: NexusGenInputs['SpecializationRelationFilter'] | null; // SpecializationRelationFilter
     specializationId?: NexusGenInputs['IntFilter'] | null; // IntFilter
+    test?: NexusGenInputs['TestNullableRelationFilter'] | null; // TestNullableRelationFilter
+    testId?: NexusGenInputs['IntNullableFilter'] | null; // IntNullableFilter
     title?: NexusGenInputs['StringFilter'] | null; // StringFilter
     type?: NexusGenInputs['EnumDirectionTypeNullableFilter'] | null; // EnumDirectionTypeNullableFilter
   }
@@ -1099,11 +1168,6 @@ export interface NexusGenInputs {
   MessageOrderByRelationAggregateInput: { // input type
     _count?: NexusGenEnums['SortOrder'] | null; // SortOrder
   }
-  MessageOrderByRelevanceInput: { // input type
-    fields: NexusGenEnums['MessageOrderByRelevanceFieldEnum']; // MessageOrderByRelevanceFieldEnum!
-    search: string; // String!
-    sort: NexusGenEnums['SortOrder']; // SortOrder!
-  }
   MessageOrderByWithAggregationInput: { // input type
     _avg?: NexusGenInputs['MessageAvgOrderByAggregateInput'] | null; // MessageAvgOrderByAggregateInput
     _count?: NexusGenInputs['MessageCountOrderByAggregateInput'] | null; // MessageCountOrderByAggregateInput
@@ -1117,14 +1181,13 @@ export interface NexusGenInputs {
     senderId?: NexusGenEnums['SortOrder'] | null; // SortOrder
     text?: NexusGenEnums['SortOrder'] | null; // SortOrder
   }
-  MessageOrderByWithRelationAndSearchRelevanceInput: { // input type
-    _relevance?: NexusGenInputs['MessageOrderByRelevanceInput'] | null; // MessageOrderByRelevanceInput
+  MessageOrderByWithRelationInput: { // input type
     createdAt?: NexusGenEnums['SortOrder'] | null; // SortOrder
     files?: NexusGenEnums['SortOrder'] | null; // SortOrder
-    group?: NexusGenInputs['MessagerGroupOrderByWithRelationAndSearchRelevanceInput'] | null; // MessagerGroupOrderByWithRelationAndSearchRelevanceInput
+    group?: NexusGenInputs['MessagerGroupOrderByWithRelationInput'] | null; // MessagerGroupOrderByWithRelationInput
     groupId?: NexusGenEnums['SortOrder'] | null; // SortOrder
     id?: NexusGenEnums['SortOrder'] | null; // SortOrder
-    sender?: NexusGenInputs['UserOrderByWithRelationAndSearchRelevanceInput'] | null; // UserOrderByWithRelationAndSearchRelevanceInput
+    sender?: NexusGenInputs['UserOrderByWithRelationInput'] | null; // UserOrderByWithRelationInput
     senderId?: NexusGenEnums['SortOrder'] | null; // SortOrder
     text?: NexusGenEnums['SortOrder'] | null; // SortOrder
   }
@@ -1452,11 +1515,6 @@ export interface NexusGenInputs {
   MessagerGroupOrderByRelationAggregateInput: { // input type
     _count?: NexusGenEnums['SortOrder'] | null; // SortOrder
   }
-  MessagerGroupOrderByRelevanceInput: { // input type
-    fields: NexusGenEnums['MessagerGroupOrderByRelevanceFieldEnum']; // MessagerGroupOrderByRelevanceFieldEnum!
-    search: string; // String!
-    sort: NexusGenEnums['SortOrder']; // SortOrder!
-  }
   MessagerGroupOrderByWithAggregationInput: { // input type
     _avg?: NexusGenInputs['MessagerGroupAvgOrderByAggregateInput'] | null; // MessagerGroupAvgOrderByAggregateInput
     _count?: NexusGenInputs['MessagerGroupCountOrderByAggregateInput'] | null; // MessagerGroupCountOrderByAggregateInput
@@ -1470,8 +1528,7 @@ export interface NexusGenInputs {
     id?: NexusGenEnums['SortOrder'] | null; // SortOrder
     title?: NexusGenEnums['SortOrder'] | null; // SortOrder
   }
-  MessagerGroupOrderByWithRelationAndSearchRelevanceInput: { // input type
-    _relevance?: NexusGenInputs['MessagerGroupOrderByRelevanceInput'] | null; // MessagerGroupOrderByRelevanceInput
+  MessagerGroupOrderByWithRelationInput: { // input type
     active?: NexusGenEnums['SortOrder'] | null; // SortOrder
     createdAt?: NexusGenEnums['SortOrder'] | null; // SortOrder
     creatorId?: NexusGenInputs['SortOrderInput'] | null; // SortOrderInput
@@ -1859,7 +1916,6 @@ export interface NexusGenInputs {
     lte?: string | null; // String
     not?: NexusGenInputs['NestedStringFilter'] | null; // NestedStringFilter
     notIn?: Array<string | null> | null; // [String]
-    search?: string | null; // String
     startsWith?: string | null; // String
   }
   NestedStringNullableFilter: { // input type
@@ -1873,7 +1929,6 @@ export interface NexusGenInputs {
     lte?: string | null; // String
     not?: NexusGenInputs['NestedStringNullableFilter'] | null; // NestedStringNullableFilter
     notIn?: Array<string | null> | null; // [String]
-    search?: string | null; // String
     startsWith?: string | null; // String
   }
   NestedStringNullableWithAggregatesFilter: { // input type
@@ -1890,7 +1945,6 @@ export interface NexusGenInputs {
     lte?: string | null; // String
     not?: NexusGenInputs['NestedStringNullableWithAggregatesFilter'] | null; // NestedStringNullableWithAggregatesFilter
     notIn?: Array<string | null> | null; // [String]
-    search?: string | null; // String
     startsWith?: string | null; // String
   }
   NestedStringWithAggregatesFilter: { // input type
@@ -1907,7 +1961,6 @@ export interface NexusGenInputs {
     lte?: string | null; // String
     not?: NexusGenInputs['NestedStringWithAggregatesFilter'] | null; // NestedStringWithAggregatesFilter
     notIn?: Array<string | null> | null; // [String]
-    search?: string | null; // String
     startsWith?: string | null; // String
   }
   NullableEnumDirectionTypeFieldUpdateOperationsInput: { // input type
@@ -1934,6 +1987,7 @@ export interface NexusGenInputs {
     id?: NexusGenEnums['SortOrder'] | null; // SortOrder
     text?: NexusGenEnums['SortOrder'] | null; // SortOrder
     userId?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    verdict?: NexusGenEnums['SortOrder'] | null; // SortOrder
   }
   ResponseCreateInput: { // input type
     answers?: NexusGenInputs['AnswerCreateNestedManyWithoutResponseInput'] | null; // AnswerCreateNestedManyWithoutResponseInput
@@ -1942,12 +1996,14 @@ export interface NexusGenInputs {
     tests?: NexusGenInputs['TestCreateNestedManyWithoutResponseInput'] | null; // TestCreateNestedManyWithoutResponseInput
     text?: string | null; // String
     user: NexusGenInputs['UserCreateNestedOneWithoutResponsesInput']; // UserCreateNestedOneWithoutResponsesInput!
+    verdict?: string | null; // String
   }
   ResponseCreateManyDirectionInput: { // input type
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     id?: number | null; // Int
     text?: string | null; // String
     userId: number; // Int!
+    verdict?: string | null; // String
   }
   ResponseCreateManyDirectionInputEnvelope: { // input type
     data: NexusGenInputs['ResponseCreateManyDirectionInput']; // ResponseCreateManyDirectionInput!
@@ -1959,12 +2015,14 @@ export interface NexusGenInputs {
     id?: number | null; // Int
     text?: string | null; // String
     userId: number; // Int!
+    verdict?: string | null; // String
   }
   ResponseCreateManyUserInput: { // input type
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     directionId: number; // Int!
     id?: number | null; // Int
     text?: string | null; // String
+    verdict?: string | null; // String
   }
   ResponseCreateManyUserInputEnvelope: { // input type
     data: NexusGenInputs['ResponseCreateManyUserInput']; // ResponseCreateManyUserInput!
@@ -2014,6 +2072,7 @@ export interface NexusGenInputs {
     tests?: NexusGenInputs['TestCreateNestedManyWithoutResponseInput'] | null; // TestCreateNestedManyWithoutResponseInput
     text?: string | null; // String
     user: NexusGenInputs['UserCreateNestedOneWithoutResponsesInput']; // UserCreateNestedOneWithoutResponsesInput!
+    verdict?: string | null; // String
   }
   ResponseCreateWithoutDirectionInput: { // input type
     answers?: NexusGenInputs['AnswerCreateNestedManyWithoutResponseInput'] | null; // AnswerCreateNestedManyWithoutResponseInput
@@ -2021,6 +2080,7 @@ export interface NexusGenInputs {
     tests?: NexusGenInputs['TestCreateNestedManyWithoutResponseInput'] | null; // TestCreateNestedManyWithoutResponseInput
     text?: string | null; // String
     user: NexusGenInputs['UserCreateNestedOneWithoutResponsesInput']; // UserCreateNestedOneWithoutResponsesInput!
+    verdict?: string | null; // String
   }
   ResponseCreateWithoutTestsInput: { // input type
     answers?: NexusGenInputs['AnswerCreateNestedManyWithoutResponseInput'] | null; // AnswerCreateNestedManyWithoutResponseInput
@@ -2028,6 +2088,7 @@ export interface NexusGenInputs {
     direction: NexusGenInputs['DirectionCreateNestedOneWithoutResponsesInput']; // DirectionCreateNestedOneWithoutResponsesInput!
     text?: string | null; // String
     user: NexusGenInputs['UserCreateNestedOneWithoutResponsesInput']; // UserCreateNestedOneWithoutResponsesInput!
+    verdict?: string | null; // String
   }
   ResponseCreateWithoutUserInput: { // input type
     answers?: NexusGenInputs['AnswerCreateNestedManyWithoutResponseInput'] | null; // AnswerCreateNestedManyWithoutResponseInput
@@ -2035,6 +2096,7 @@ export interface NexusGenInputs {
     direction: NexusGenInputs['DirectionCreateNestedOneWithoutResponsesInput']; // DirectionCreateNestedOneWithoutResponsesInput!
     tests?: NexusGenInputs['TestCreateNestedManyWithoutResponseInput'] | null; // TestCreateNestedManyWithoutResponseInput
     text?: string | null; // String
+    verdict?: string | null; // String
   }
   ResponseListRelationFilter: { // input type
     every?: NexusGenInputs['ResponseWhereInput'] | null; // ResponseWhereInput
@@ -2047,6 +2109,7 @@ export interface NexusGenInputs {
     id?: NexusGenEnums['SortOrder'] | null; // SortOrder
     text?: NexusGenEnums['SortOrder'] | null; // SortOrder
     userId?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    verdict?: NexusGenEnums['SortOrder'] | null; // SortOrder
   }
   ResponseMinOrderByAggregateInput: { // input type
     createdAt?: NexusGenEnums['SortOrder'] | null; // SortOrder
@@ -2054,14 +2117,10 @@ export interface NexusGenInputs {
     id?: NexusGenEnums['SortOrder'] | null; // SortOrder
     text?: NexusGenEnums['SortOrder'] | null; // SortOrder
     userId?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    verdict?: NexusGenEnums['SortOrder'] | null; // SortOrder
   }
   ResponseOrderByRelationAggregateInput: { // input type
     _count?: NexusGenEnums['SortOrder'] | null; // SortOrder
-  }
-  ResponseOrderByRelevanceInput: { // input type
-    fields: NexusGenEnums['ResponseOrderByRelevanceFieldEnum']; // ResponseOrderByRelevanceFieldEnum!
-    search: string; // String!
-    sort: NexusGenEnums['SortOrder']; // SortOrder!
   }
   ResponseOrderByWithAggregationInput: { // input type
     _avg?: NexusGenInputs['ResponseAvgOrderByAggregateInput'] | null; // ResponseAvgOrderByAggregateInput
@@ -2074,18 +2133,19 @@ export interface NexusGenInputs {
     id?: NexusGenEnums['SortOrder'] | null; // SortOrder
     text?: NexusGenInputs['SortOrderInput'] | null; // SortOrderInput
     userId?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    verdict?: NexusGenInputs['SortOrderInput'] | null; // SortOrderInput
   }
-  ResponseOrderByWithRelationAndSearchRelevanceInput: { // input type
-    _relevance?: NexusGenInputs['ResponseOrderByRelevanceInput'] | null; // ResponseOrderByRelevanceInput
+  ResponseOrderByWithRelationInput: { // input type
     answers?: NexusGenInputs['AnswerOrderByRelationAggregateInput'] | null; // AnswerOrderByRelationAggregateInput
     createdAt?: NexusGenEnums['SortOrder'] | null; // SortOrder
-    direction?: NexusGenInputs['DirectionOrderByWithRelationAndSearchRelevanceInput'] | null; // DirectionOrderByWithRelationAndSearchRelevanceInput
+    direction?: NexusGenInputs['DirectionOrderByWithRelationInput'] | null; // DirectionOrderByWithRelationInput
     directionId?: NexusGenEnums['SortOrder'] | null; // SortOrder
     id?: NexusGenEnums['SortOrder'] | null; // SortOrder
     tests?: NexusGenInputs['TestOrderByRelationAggregateInput'] | null; // TestOrderByRelationAggregateInput
     text?: NexusGenInputs['SortOrderInput'] | null; // SortOrderInput
-    user?: NexusGenInputs['UserOrderByWithRelationAndSearchRelevanceInput'] | null; // UserOrderByWithRelationAndSearchRelevanceInput
+    user?: NexusGenInputs['UserOrderByWithRelationInput'] | null; // UserOrderByWithRelationInput
     userId?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    verdict?: NexusGenInputs['SortOrderInput'] | null; // SortOrderInput
   }
   ResponseScalarWhereInput: { // input type
     AND?: Array<NexusGenInputs['ResponseScalarWhereInput'] | null> | null; // [ResponseScalarWhereInput]
@@ -2096,6 +2156,7 @@ export interface NexusGenInputs {
     id?: NexusGenInputs['IntFilter'] | null; // IntFilter
     text?: NexusGenInputs['StringNullableFilter'] | null; // StringNullableFilter
     userId?: NexusGenInputs['IntFilter'] | null; // IntFilter
+    verdict?: NexusGenInputs['StringNullableFilter'] | null; // StringNullableFilter
   }
   ResponseScalarWhereWithAggregatesInput: { // input type
     AND?: Array<NexusGenInputs['ResponseScalarWhereWithAggregatesInput'] | null> | null; // [ResponseScalarWhereWithAggregatesInput]
@@ -2106,6 +2167,7 @@ export interface NexusGenInputs {
     id?: NexusGenInputs['IntWithAggregatesFilter'] | null; // IntWithAggregatesFilter
     text?: NexusGenInputs['StringNullableWithAggregatesFilter'] | null; // StringNullableWithAggregatesFilter
     userId?: NexusGenInputs['IntWithAggregatesFilter'] | null; // IntWithAggregatesFilter
+    verdict?: NexusGenInputs['StringNullableWithAggregatesFilter'] | null; // StringNullableWithAggregatesFilter
   }
   ResponseSumOrderByAggregateInput: { // input type
     directionId?: NexusGenEnums['SortOrder'] | null; // SortOrder
@@ -2120,6 +2182,7 @@ export interface NexusGenInputs {
     tests?: NexusGenInputs['TestUncheckedCreateNestedManyWithoutResponseInput'] | null; // TestUncheckedCreateNestedManyWithoutResponseInput
     text?: string | null; // String
     userId: number; // Int!
+    verdict?: string | null; // String
   }
   ResponseUncheckedCreateNestedManyWithoutAnswersInput: { // input type
     connect?: Array<NexusGenInputs['ResponseWhereUniqueInput'] | null> | null; // [ResponseWhereUniqueInput]
@@ -2150,6 +2213,7 @@ export interface NexusGenInputs {
     tests?: NexusGenInputs['TestUncheckedCreateNestedManyWithoutResponseInput'] | null; // TestUncheckedCreateNestedManyWithoutResponseInput
     text?: string | null; // String
     userId: number; // Int!
+    verdict?: string | null; // String
   }
   ResponseUncheckedCreateWithoutDirectionInput: { // input type
     answers?: NexusGenInputs['AnswerUncheckedCreateNestedManyWithoutResponseInput'] | null; // AnswerUncheckedCreateNestedManyWithoutResponseInput
@@ -2158,6 +2222,7 @@ export interface NexusGenInputs {
     tests?: NexusGenInputs['TestUncheckedCreateNestedManyWithoutResponseInput'] | null; // TestUncheckedCreateNestedManyWithoutResponseInput
     text?: string | null; // String
     userId: number; // Int!
+    verdict?: string | null; // String
   }
   ResponseUncheckedCreateWithoutTestsInput: { // input type
     answers?: NexusGenInputs['AnswerUncheckedCreateNestedManyWithoutResponseInput'] | null; // AnswerUncheckedCreateNestedManyWithoutResponseInput
@@ -2166,6 +2231,7 @@ export interface NexusGenInputs {
     id?: number | null; // Int
     text?: string | null; // String
     userId: number; // Int!
+    verdict?: string | null; // String
   }
   ResponseUncheckedCreateWithoutUserInput: { // input type
     answers?: NexusGenInputs['AnswerUncheckedCreateNestedManyWithoutResponseInput'] | null; // AnswerUncheckedCreateNestedManyWithoutResponseInput
@@ -2174,6 +2240,7 @@ export interface NexusGenInputs {
     id?: number | null; // Int
     tests?: NexusGenInputs['TestUncheckedCreateNestedManyWithoutResponseInput'] | null; // TestUncheckedCreateNestedManyWithoutResponseInput
     text?: string | null; // String
+    verdict?: string | null; // String
   }
   ResponseUncheckedUpdateInput: { // input type
     answers?: NexusGenInputs['AnswerUncheckedUpdateManyWithoutResponseNestedInput'] | null; // AnswerUncheckedUpdateManyWithoutResponseNestedInput
@@ -2183,6 +2250,7 @@ export interface NexusGenInputs {
     tests?: NexusGenInputs['TestUncheckedUpdateManyWithoutResponseNestedInput'] | null; // TestUncheckedUpdateManyWithoutResponseNestedInput
     text?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
     userId?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
+    verdict?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
   }
   ResponseUncheckedUpdateManyInput: { // input type
     createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
@@ -2190,6 +2258,7 @@ export interface NexusGenInputs {
     id?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
     text?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
     userId?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
+    verdict?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
   }
   ResponseUncheckedUpdateManyWithoutAnswersInput: { // input type
     createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
@@ -2197,6 +2266,7 @@ export interface NexusGenInputs {
     id?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
     text?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
     userId?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
+    verdict?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
   }
   ResponseUncheckedUpdateManyWithoutAnswersNestedInput: { // input type
     connect?: Array<NexusGenInputs['ResponseWhereUniqueInput'] | null> | null; // [ResponseWhereUniqueInput]
@@ -2215,6 +2285,7 @@ export interface NexusGenInputs {
     id?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
     text?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
     userId?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
+    verdict?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
   }
   ResponseUncheckedUpdateManyWithoutDirectionNestedInput: { // input type
     connect?: Array<NexusGenInputs['ResponseWhereUniqueInput'] | null> | null; // [ResponseWhereUniqueInput]
@@ -2235,6 +2306,7 @@ export interface NexusGenInputs {
     id?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
     text?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
     userId?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
+    verdict?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
   }
   ResponseUncheckedUpdateManyWithoutTestsNestedInput: { // input type
     connect?: Array<NexusGenInputs['ResponseWhereUniqueInput'] | null> | null; // [ResponseWhereUniqueInput]
@@ -2253,6 +2325,7 @@ export interface NexusGenInputs {
     directionId?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
     id?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
     text?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
+    verdict?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
   }
   ResponseUncheckedUpdateManyWithoutUserNestedInput: { // input type
     connect?: Array<NexusGenInputs['ResponseWhereUniqueInput'] | null> | null; // [ResponseWhereUniqueInput]
@@ -2274,6 +2347,7 @@ export interface NexusGenInputs {
     tests?: NexusGenInputs['TestUncheckedUpdateManyWithoutResponseNestedInput'] | null; // TestUncheckedUpdateManyWithoutResponseNestedInput
     text?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
     userId?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
+    verdict?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
   }
   ResponseUncheckedUpdateWithoutDirectionInput: { // input type
     answers?: NexusGenInputs['AnswerUncheckedUpdateManyWithoutResponseNestedInput'] | null; // AnswerUncheckedUpdateManyWithoutResponseNestedInput
@@ -2282,6 +2356,7 @@ export interface NexusGenInputs {
     tests?: NexusGenInputs['TestUncheckedUpdateManyWithoutResponseNestedInput'] | null; // TestUncheckedUpdateManyWithoutResponseNestedInput
     text?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
     userId?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
+    verdict?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
   }
   ResponseUncheckedUpdateWithoutTestsInput: { // input type
     answers?: NexusGenInputs['AnswerUncheckedUpdateManyWithoutResponseNestedInput'] | null; // AnswerUncheckedUpdateManyWithoutResponseNestedInput
@@ -2290,6 +2365,7 @@ export interface NexusGenInputs {
     id?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
     text?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
     userId?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
+    verdict?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
   }
   ResponseUncheckedUpdateWithoutUserInput: { // input type
     answers?: NexusGenInputs['AnswerUncheckedUpdateManyWithoutResponseNestedInput'] | null; // AnswerUncheckedUpdateManyWithoutResponseNestedInput
@@ -2298,6 +2374,7 @@ export interface NexusGenInputs {
     id?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
     tests?: NexusGenInputs['TestUncheckedUpdateManyWithoutResponseNestedInput'] | null; // TestUncheckedUpdateManyWithoutResponseNestedInput
     text?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
+    verdict?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
   }
   ResponseUpdateInput: { // input type
     answers?: NexusGenInputs['AnswerUpdateManyWithoutResponseNestedInput'] | null; // AnswerUpdateManyWithoutResponseNestedInput
@@ -2306,10 +2383,12 @@ export interface NexusGenInputs {
     tests?: NexusGenInputs['TestUpdateManyWithoutResponseNestedInput'] | null; // TestUpdateManyWithoutResponseNestedInput
     text?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
     user?: NexusGenInputs['UserUpdateOneRequiredWithoutResponsesNestedInput'] | null; // UserUpdateOneRequiredWithoutResponsesNestedInput
+    verdict?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
   }
   ResponseUpdateManyMutationInput: { // input type
     createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
     text?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
+    verdict?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
   }
   ResponseUpdateManyWithWhereWithoutAnswersInput: { // input type
     data: NexusGenInputs['ResponseUpdateManyMutationInput']; // ResponseUpdateManyMutationInput!
@@ -2399,6 +2478,7 @@ export interface NexusGenInputs {
     tests?: NexusGenInputs['TestUpdateManyWithoutResponseNestedInput'] | null; // TestUpdateManyWithoutResponseNestedInput
     text?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
     user?: NexusGenInputs['UserUpdateOneRequiredWithoutResponsesNestedInput'] | null; // UserUpdateOneRequiredWithoutResponsesNestedInput
+    verdict?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
   }
   ResponseUpdateWithoutDirectionInput: { // input type
     answers?: NexusGenInputs['AnswerUpdateManyWithoutResponseNestedInput'] | null; // AnswerUpdateManyWithoutResponseNestedInput
@@ -2406,6 +2486,7 @@ export interface NexusGenInputs {
     tests?: NexusGenInputs['TestUpdateManyWithoutResponseNestedInput'] | null; // TestUpdateManyWithoutResponseNestedInput
     text?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
     user?: NexusGenInputs['UserUpdateOneRequiredWithoutResponsesNestedInput'] | null; // UserUpdateOneRequiredWithoutResponsesNestedInput
+    verdict?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
   }
   ResponseUpdateWithoutTestsInput: { // input type
     answers?: NexusGenInputs['AnswerUpdateManyWithoutResponseNestedInput'] | null; // AnswerUpdateManyWithoutResponseNestedInput
@@ -2413,6 +2494,7 @@ export interface NexusGenInputs {
     direction?: NexusGenInputs['DirectionUpdateOneRequiredWithoutResponsesNestedInput'] | null; // DirectionUpdateOneRequiredWithoutResponsesNestedInput
     text?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
     user?: NexusGenInputs['UserUpdateOneRequiredWithoutResponsesNestedInput'] | null; // UserUpdateOneRequiredWithoutResponsesNestedInput
+    verdict?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
   }
   ResponseUpdateWithoutUserInput: { // input type
     answers?: NexusGenInputs['AnswerUpdateManyWithoutResponseNestedInput'] | null; // AnswerUpdateManyWithoutResponseNestedInput
@@ -2420,6 +2502,7 @@ export interface NexusGenInputs {
     direction?: NexusGenInputs['DirectionUpdateOneRequiredWithoutResponsesNestedInput'] | null; // DirectionUpdateOneRequiredWithoutResponsesNestedInput
     tests?: NexusGenInputs['TestUpdateManyWithoutResponseNestedInput'] | null; // TestUpdateManyWithoutResponseNestedInput
     text?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
+    verdict?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
   }
   ResponseUpsertWithWhereUniqueWithoutAnswersInput: { // input type
     create: NexusGenInputs['ResponseCreateWithoutAnswersInput']; // ResponseCreateWithoutAnswersInput!
@@ -2454,6 +2537,7 @@ export interface NexusGenInputs {
     text?: NexusGenInputs['StringNullableFilter'] | null; // StringNullableFilter
     user?: NexusGenInputs['UserRelationFilter'] | null; // UserRelationFilter
     userId?: NexusGenInputs['IntFilter'] | null; // IntFilter
+    verdict?: NexusGenInputs['StringNullableFilter'] | null; // StringNullableFilter
   }
   ResponseWhereUniqueInput: { // input type
     AND?: Array<NexusGenInputs['ResponseWhereInput'] | null> | null; // [ResponseWhereInput]
@@ -2468,6 +2552,7 @@ export interface NexusGenInputs {
     text?: NexusGenInputs['StringNullableFilter'] | null; // StringNullableFilter
     user?: NexusGenInputs['UserRelationFilter'] | null; // UserRelationFilter
     userId?: NexusGenInputs['IntFilter'] | null; // IntFilter
+    verdict?: NexusGenInputs['StringNullableFilter'] | null; // StringNullableFilter
   }
   SortOrderInput: { // input type
     nulls?: NexusGenEnums['NullsOrder'] | null; // NullsOrder
@@ -2514,11 +2599,6 @@ export interface NexusGenInputs {
     id?: NexusGenEnums['SortOrder'] | null; // SortOrder
     title?: NexusGenEnums['SortOrder'] | null; // SortOrder
   }
-  SpecializationOrderByRelevanceInput: { // input type
-    fields: NexusGenEnums['SpecializationOrderByRelevanceFieldEnum']; // SpecializationOrderByRelevanceFieldEnum!
-    search: string; // String!
-    sort: NexusGenEnums['SortOrder']; // SortOrder!
-  }
   SpecializationOrderByWithAggregationInput: { // input type
     _avg?: NexusGenInputs['SpecializationAvgOrderByAggregateInput'] | null; // SpecializationAvgOrderByAggregateInput
     _count?: NexusGenInputs['SpecializationCountOrderByAggregateInput'] | null; // SpecializationCountOrderByAggregateInput
@@ -2529,8 +2609,7 @@ export interface NexusGenInputs {
     id?: NexusGenEnums['SortOrder'] | null; // SortOrder
     title?: NexusGenEnums['SortOrder'] | null; // SortOrder
   }
-  SpecializationOrderByWithRelationAndSearchRelevanceInput: { // input type
-    _relevance?: NexusGenInputs['SpecializationOrderByRelevanceInput'] | null; // SpecializationOrderByRelevanceInput
+  SpecializationOrderByWithRelationInput: { // input type
     createdAt?: NexusGenEnums['SortOrder'] | null; // SortOrder
     directions?: NexusGenInputs['DirectionOrderByRelationAggregateInput'] | null; // DirectionOrderByRelationAggregateInput
     id?: NexusGenEnums['SortOrder'] | null; // SortOrder
@@ -2640,7 +2719,6 @@ export interface NexusGenInputs {
     mode?: NexusGenEnums['QueryMode'] | null; // QueryMode
     not?: NexusGenInputs['NestedStringFilter'] | null; // NestedStringFilter
     notIn?: Array<string | null> | null; // [String]
-    search?: string | null; // String
     startsWith?: string | null; // String
   }
   StringNullableFilter: { // input type
@@ -2655,7 +2733,6 @@ export interface NexusGenInputs {
     mode?: NexusGenEnums['QueryMode'] | null; // QueryMode
     not?: NexusGenInputs['NestedStringNullableFilter'] | null; // NestedStringNullableFilter
     notIn?: Array<string | null> | null; // [String]
-    search?: string | null; // String
     startsWith?: string | null; // String
   }
   StringNullableListFilter: { // input type
@@ -2680,7 +2757,6 @@ export interface NexusGenInputs {
     mode?: NexusGenEnums['QueryMode'] | null; // QueryMode
     not?: NexusGenInputs['NestedStringNullableWithAggregatesFilter'] | null; // NestedStringNullableWithAggregatesFilter
     notIn?: Array<string | null> | null; // [String]
-    search?: string | null; // String
     startsWith?: string | null; // String
   }
   StringWithAggregatesFilter: { // input type
@@ -2698,8 +2774,474 @@ export interface NexusGenInputs {
     mode?: NexusGenEnums['QueryMode'] | null; // QueryMode
     not?: NexusGenInputs['NestedStringWithAggregatesFilter'] | null; // NestedStringWithAggregatesFilter
     notIn?: Array<string | null> | null; // [String]
-    search?: string | null; // String
     startsWith?: string | null; // String
+  }
+  TaskAnswerAvgOrderByAggregateInput: { // input type
+    answerModelId?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    id?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    taskId?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    userId?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    verdict?: NexusGenEnums['SortOrder'] | null; // SortOrder
+  }
+  TaskAnswerCountOrderByAggregateInput: { // input type
+    answer?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    answerModelId?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    id?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    taskId?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    userId?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    verdict?: NexusGenEnums['SortOrder'] | null; // SortOrder
+  }
+  TaskAnswerCreateInput: { // input type
+    answer: string; // String!
+    answerModel: NexusGenInputs['AnswerCreateNestedOneWithoutTaskAnswersInput']; // AnswerCreateNestedOneWithoutTaskAnswersInput!
+    task: NexusGenInputs['TaskCreateNestedOneWithoutTaskAnswersInput']; // TaskCreateNestedOneWithoutTaskAnswersInput!
+    user: NexusGenInputs['UserCreateNestedOneWithoutAnswersInput']; // UserCreateNestedOneWithoutAnswersInput!
+    verdict?: number | null; // Int
+  }
+  TaskAnswerCreateManyAnswerModelInput: { // input type
+    answer: string; // String!
+    id?: number | null; // Int
+    taskId: number; // Int!
+    userId: number; // Int!
+    verdict?: number | null; // Int
+  }
+  TaskAnswerCreateManyAnswerModelInputEnvelope: { // input type
+    data: NexusGenInputs['TaskAnswerCreateManyAnswerModelInput']; // TaskAnswerCreateManyAnswerModelInput!
+    skipDuplicates?: boolean | null; // Boolean
+  }
+  TaskAnswerCreateManyInput: { // input type
+    answer: string; // String!
+    answerModelId: number; // Int!
+    id?: number | null; // Int
+    taskId: number; // Int!
+    userId: number; // Int!
+    verdict?: number | null; // Int
+  }
+  TaskAnswerCreateManyTaskInput: { // input type
+    answer: string; // String!
+    answerModelId: number; // Int!
+    id?: number | null; // Int
+    userId: number; // Int!
+    verdict?: number | null; // Int
+  }
+  TaskAnswerCreateManyTaskInputEnvelope: { // input type
+    data: NexusGenInputs['TaskAnswerCreateManyTaskInput']; // TaskAnswerCreateManyTaskInput!
+    skipDuplicates?: boolean | null; // Boolean
+  }
+  TaskAnswerCreateManyUserInput: { // input type
+    answer: string; // String!
+    answerModelId: number; // Int!
+    id?: number | null; // Int
+    taskId: number; // Int!
+    verdict?: number | null; // Int
+  }
+  TaskAnswerCreateManyUserInputEnvelope: { // input type
+    data: NexusGenInputs['TaskAnswerCreateManyUserInput']; // TaskAnswerCreateManyUserInput!
+    skipDuplicates?: boolean | null; // Boolean
+  }
+  TaskAnswerCreateNestedManyWithoutAnswerModelInput: { // input type
+    connect?: Array<NexusGenInputs['TaskAnswerWhereUniqueInput'] | null> | null; // [TaskAnswerWhereUniqueInput]
+    connectOrCreate?: Array<NexusGenInputs['TaskAnswerCreateOrConnectWithoutAnswerModelInput'] | null> | null; // [TaskAnswerCreateOrConnectWithoutAnswerModelInput]
+    create?: Array<NexusGenInputs['TaskAnswerCreateWithoutAnswerModelInput'] | null> | null; // [TaskAnswerCreateWithoutAnswerModelInput]
+    createMany?: NexusGenInputs['TaskAnswerCreateManyAnswerModelInputEnvelope'] | null; // TaskAnswerCreateManyAnswerModelInputEnvelope
+  }
+  TaskAnswerCreateNestedManyWithoutTaskInput: { // input type
+    connect?: Array<NexusGenInputs['TaskAnswerWhereUniqueInput'] | null> | null; // [TaskAnswerWhereUniqueInput]
+    connectOrCreate?: Array<NexusGenInputs['TaskAnswerCreateOrConnectWithoutTaskInput'] | null> | null; // [TaskAnswerCreateOrConnectWithoutTaskInput]
+    create?: Array<NexusGenInputs['TaskAnswerCreateWithoutTaskInput'] | null> | null; // [TaskAnswerCreateWithoutTaskInput]
+    createMany?: NexusGenInputs['TaskAnswerCreateManyTaskInputEnvelope'] | null; // TaskAnswerCreateManyTaskInputEnvelope
+  }
+  TaskAnswerCreateNestedManyWithoutUserInput: { // input type
+    connect?: Array<NexusGenInputs['TaskAnswerWhereUniqueInput'] | null> | null; // [TaskAnswerWhereUniqueInput]
+    connectOrCreate?: Array<NexusGenInputs['TaskAnswerCreateOrConnectWithoutUserInput'] | null> | null; // [TaskAnswerCreateOrConnectWithoutUserInput]
+    create?: Array<NexusGenInputs['TaskAnswerCreateWithoutUserInput'] | null> | null; // [TaskAnswerCreateWithoutUserInput]
+    createMany?: NexusGenInputs['TaskAnswerCreateManyUserInputEnvelope'] | null; // TaskAnswerCreateManyUserInputEnvelope
+  }
+  TaskAnswerCreateOrConnectWithoutAnswerModelInput: { // input type
+    create: NexusGenInputs['TaskAnswerCreateWithoutAnswerModelInput']; // TaskAnswerCreateWithoutAnswerModelInput!
+    where: NexusGenInputs['TaskAnswerWhereUniqueInput']; // TaskAnswerWhereUniqueInput!
+  }
+  TaskAnswerCreateOrConnectWithoutTaskInput: { // input type
+    create: NexusGenInputs['TaskAnswerCreateWithoutTaskInput']; // TaskAnswerCreateWithoutTaskInput!
+    where: NexusGenInputs['TaskAnswerWhereUniqueInput']; // TaskAnswerWhereUniqueInput!
+  }
+  TaskAnswerCreateOrConnectWithoutUserInput: { // input type
+    create: NexusGenInputs['TaskAnswerCreateWithoutUserInput']; // TaskAnswerCreateWithoutUserInput!
+    where: NexusGenInputs['TaskAnswerWhereUniqueInput']; // TaskAnswerWhereUniqueInput!
+  }
+  TaskAnswerCreateWithoutAnswerModelInput: { // input type
+    answer: string; // String!
+    task: NexusGenInputs['TaskCreateNestedOneWithoutTaskAnswersInput']; // TaskCreateNestedOneWithoutTaskAnswersInput!
+    user: NexusGenInputs['UserCreateNestedOneWithoutAnswersInput']; // UserCreateNestedOneWithoutAnswersInput!
+    verdict?: number | null; // Int
+  }
+  TaskAnswerCreateWithoutTaskInput: { // input type
+    answer: string; // String!
+    answerModel: NexusGenInputs['AnswerCreateNestedOneWithoutTaskAnswersInput']; // AnswerCreateNestedOneWithoutTaskAnswersInput!
+    user: NexusGenInputs['UserCreateNestedOneWithoutAnswersInput']; // UserCreateNestedOneWithoutAnswersInput!
+    verdict?: number | null; // Int
+  }
+  TaskAnswerCreateWithoutUserInput: { // input type
+    answer: string; // String!
+    answerModel: NexusGenInputs['AnswerCreateNestedOneWithoutTaskAnswersInput']; // AnswerCreateNestedOneWithoutTaskAnswersInput!
+    task: NexusGenInputs['TaskCreateNestedOneWithoutTaskAnswersInput']; // TaskCreateNestedOneWithoutTaskAnswersInput!
+    verdict?: number | null; // Int
+  }
+  TaskAnswerListRelationFilter: { // input type
+    every?: NexusGenInputs['TaskAnswerWhereInput'] | null; // TaskAnswerWhereInput
+    none?: NexusGenInputs['TaskAnswerWhereInput'] | null; // TaskAnswerWhereInput
+    some?: NexusGenInputs['TaskAnswerWhereInput'] | null; // TaskAnswerWhereInput
+  }
+  TaskAnswerMaxOrderByAggregateInput: { // input type
+    answer?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    answerModelId?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    id?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    taskId?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    userId?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    verdict?: NexusGenEnums['SortOrder'] | null; // SortOrder
+  }
+  TaskAnswerMinOrderByAggregateInput: { // input type
+    answer?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    answerModelId?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    id?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    taskId?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    userId?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    verdict?: NexusGenEnums['SortOrder'] | null; // SortOrder
+  }
+  TaskAnswerOrderByRelationAggregateInput: { // input type
+    _count?: NexusGenEnums['SortOrder'] | null; // SortOrder
+  }
+  TaskAnswerOrderByWithAggregationInput: { // input type
+    _avg?: NexusGenInputs['TaskAnswerAvgOrderByAggregateInput'] | null; // TaskAnswerAvgOrderByAggregateInput
+    _count?: NexusGenInputs['TaskAnswerCountOrderByAggregateInput'] | null; // TaskAnswerCountOrderByAggregateInput
+    _max?: NexusGenInputs['TaskAnswerMaxOrderByAggregateInput'] | null; // TaskAnswerMaxOrderByAggregateInput
+    _min?: NexusGenInputs['TaskAnswerMinOrderByAggregateInput'] | null; // TaskAnswerMinOrderByAggregateInput
+    _sum?: NexusGenInputs['TaskAnswerSumOrderByAggregateInput'] | null; // TaskAnswerSumOrderByAggregateInput
+    answer?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    answerModelId?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    id?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    taskId?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    userId?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    verdict?: NexusGenInputs['SortOrderInput'] | null; // SortOrderInput
+  }
+  TaskAnswerOrderByWithRelationInput: { // input type
+    answer?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    answerModel?: NexusGenInputs['AnswerOrderByWithRelationInput'] | null; // AnswerOrderByWithRelationInput
+    answerModelId?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    id?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    task?: NexusGenInputs['TaskOrderByWithRelationInput'] | null; // TaskOrderByWithRelationInput
+    taskId?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    user?: NexusGenInputs['UserOrderByWithRelationInput'] | null; // UserOrderByWithRelationInput
+    userId?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    verdict?: NexusGenInputs['SortOrderInput'] | null; // SortOrderInput
+  }
+  TaskAnswerScalarWhereInput: { // input type
+    AND?: Array<NexusGenInputs['TaskAnswerScalarWhereInput'] | null> | null; // [TaskAnswerScalarWhereInput]
+    NOT?: Array<NexusGenInputs['TaskAnswerScalarWhereInput'] | null> | null; // [TaskAnswerScalarWhereInput]
+    OR?: Array<NexusGenInputs['TaskAnswerScalarWhereInput'] | null> | null; // [TaskAnswerScalarWhereInput]
+    answer?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    answerModelId?: NexusGenInputs['IntFilter'] | null; // IntFilter
+    id?: NexusGenInputs['IntFilter'] | null; // IntFilter
+    taskId?: NexusGenInputs['IntFilter'] | null; // IntFilter
+    userId?: NexusGenInputs['IntFilter'] | null; // IntFilter
+    verdict?: NexusGenInputs['IntNullableFilter'] | null; // IntNullableFilter
+  }
+  TaskAnswerScalarWhereWithAggregatesInput: { // input type
+    AND?: Array<NexusGenInputs['TaskAnswerScalarWhereWithAggregatesInput'] | null> | null; // [TaskAnswerScalarWhereWithAggregatesInput]
+    NOT?: Array<NexusGenInputs['TaskAnswerScalarWhereWithAggregatesInput'] | null> | null; // [TaskAnswerScalarWhereWithAggregatesInput]
+    OR?: Array<NexusGenInputs['TaskAnswerScalarWhereWithAggregatesInput'] | null> | null; // [TaskAnswerScalarWhereWithAggregatesInput]
+    answer?: NexusGenInputs['StringWithAggregatesFilter'] | null; // StringWithAggregatesFilter
+    answerModelId?: NexusGenInputs['IntWithAggregatesFilter'] | null; // IntWithAggregatesFilter
+    id?: NexusGenInputs['IntWithAggregatesFilter'] | null; // IntWithAggregatesFilter
+    taskId?: NexusGenInputs['IntWithAggregatesFilter'] | null; // IntWithAggregatesFilter
+    userId?: NexusGenInputs['IntWithAggregatesFilter'] | null; // IntWithAggregatesFilter
+    verdict?: NexusGenInputs['IntNullableWithAggregatesFilter'] | null; // IntNullableWithAggregatesFilter
+  }
+  TaskAnswerSumOrderByAggregateInput: { // input type
+    answerModelId?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    id?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    taskId?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    userId?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    verdict?: NexusGenEnums['SortOrder'] | null; // SortOrder
+  }
+  TaskAnswerUncheckedCreateInput: { // input type
+    answer: string; // String!
+    answerModelId: number; // Int!
+    id?: number | null; // Int
+    taskId: number; // Int!
+    userId: number; // Int!
+    verdict?: number | null; // Int
+  }
+  TaskAnswerUncheckedCreateNestedManyWithoutAnswerModelInput: { // input type
+    connect?: Array<NexusGenInputs['TaskAnswerWhereUniqueInput'] | null> | null; // [TaskAnswerWhereUniqueInput]
+    connectOrCreate?: Array<NexusGenInputs['TaskAnswerCreateOrConnectWithoutAnswerModelInput'] | null> | null; // [TaskAnswerCreateOrConnectWithoutAnswerModelInput]
+    create?: Array<NexusGenInputs['TaskAnswerCreateWithoutAnswerModelInput'] | null> | null; // [TaskAnswerCreateWithoutAnswerModelInput]
+    createMany?: NexusGenInputs['TaskAnswerCreateManyAnswerModelInputEnvelope'] | null; // TaskAnswerCreateManyAnswerModelInputEnvelope
+  }
+  TaskAnswerUncheckedCreateNestedManyWithoutTaskInput: { // input type
+    connect?: Array<NexusGenInputs['TaskAnswerWhereUniqueInput'] | null> | null; // [TaskAnswerWhereUniqueInput]
+    connectOrCreate?: Array<NexusGenInputs['TaskAnswerCreateOrConnectWithoutTaskInput'] | null> | null; // [TaskAnswerCreateOrConnectWithoutTaskInput]
+    create?: Array<NexusGenInputs['TaskAnswerCreateWithoutTaskInput'] | null> | null; // [TaskAnswerCreateWithoutTaskInput]
+    createMany?: NexusGenInputs['TaskAnswerCreateManyTaskInputEnvelope'] | null; // TaskAnswerCreateManyTaskInputEnvelope
+  }
+  TaskAnswerUncheckedCreateNestedManyWithoutUserInput: { // input type
+    connect?: Array<NexusGenInputs['TaskAnswerWhereUniqueInput'] | null> | null; // [TaskAnswerWhereUniqueInput]
+    connectOrCreate?: Array<NexusGenInputs['TaskAnswerCreateOrConnectWithoutUserInput'] | null> | null; // [TaskAnswerCreateOrConnectWithoutUserInput]
+    create?: Array<NexusGenInputs['TaskAnswerCreateWithoutUserInput'] | null> | null; // [TaskAnswerCreateWithoutUserInput]
+    createMany?: NexusGenInputs['TaskAnswerCreateManyUserInputEnvelope'] | null; // TaskAnswerCreateManyUserInputEnvelope
+  }
+  TaskAnswerUncheckedCreateWithoutAnswerModelInput: { // input type
+    answer: string; // String!
+    id?: number | null; // Int
+    taskId: number; // Int!
+    userId: number; // Int!
+    verdict?: number | null; // Int
+  }
+  TaskAnswerUncheckedCreateWithoutTaskInput: { // input type
+    answer: string; // String!
+    answerModelId: number; // Int!
+    id?: number | null; // Int
+    userId: number; // Int!
+    verdict?: number | null; // Int
+  }
+  TaskAnswerUncheckedCreateWithoutUserInput: { // input type
+    answer: string; // String!
+    answerModelId: number; // Int!
+    id?: number | null; // Int
+    taskId: number; // Int!
+    verdict?: number | null; // Int
+  }
+  TaskAnswerUncheckedUpdateInput: { // input type
+    answer?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+    answerModelId?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
+    id?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
+    taskId?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
+    userId?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
+    verdict?: NexusGenInputs['NullableIntFieldUpdateOperationsInput'] | null; // NullableIntFieldUpdateOperationsInput
+  }
+  TaskAnswerUncheckedUpdateManyInput: { // input type
+    answer?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+    answerModelId?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
+    id?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
+    taskId?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
+    userId?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
+    verdict?: NexusGenInputs['NullableIntFieldUpdateOperationsInput'] | null; // NullableIntFieldUpdateOperationsInput
+  }
+  TaskAnswerUncheckedUpdateManyWithoutAnswerModelInput: { // input type
+    answer?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+    id?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
+    taskId?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
+    userId?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
+    verdict?: NexusGenInputs['NullableIntFieldUpdateOperationsInput'] | null; // NullableIntFieldUpdateOperationsInput
+  }
+  TaskAnswerUncheckedUpdateManyWithoutAnswerModelNestedInput: { // input type
+    connect?: Array<NexusGenInputs['TaskAnswerWhereUniqueInput'] | null> | null; // [TaskAnswerWhereUniqueInput]
+    connectOrCreate?: Array<NexusGenInputs['TaskAnswerCreateOrConnectWithoutAnswerModelInput'] | null> | null; // [TaskAnswerCreateOrConnectWithoutAnswerModelInput]
+    create?: Array<NexusGenInputs['TaskAnswerCreateWithoutAnswerModelInput'] | null> | null; // [TaskAnswerCreateWithoutAnswerModelInput]
+    createMany?: NexusGenInputs['TaskAnswerCreateManyAnswerModelInputEnvelope'] | null; // TaskAnswerCreateManyAnswerModelInputEnvelope
+    delete?: Array<NexusGenInputs['TaskAnswerWhereUniqueInput'] | null> | null; // [TaskAnswerWhereUniqueInput]
+    deleteMany?: Array<NexusGenInputs['TaskAnswerScalarWhereInput'] | null> | null; // [TaskAnswerScalarWhereInput]
+    disconnect?: Array<NexusGenInputs['TaskAnswerWhereUniqueInput'] | null> | null; // [TaskAnswerWhereUniqueInput]
+    set?: Array<NexusGenInputs['TaskAnswerWhereUniqueInput'] | null> | null; // [TaskAnswerWhereUniqueInput]
+    update?: Array<NexusGenInputs['TaskAnswerUpdateWithWhereUniqueWithoutAnswerModelInput'] | null> | null; // [TaskAnswerUpdateWithWhereUniqueWithoutAnswerModelInput]
+    updateMany?: Array<NexusGenInputs['TaskAnswerUpdateManyWithWhereWithoutAnswerModelInput'] | null> | null; // [TaskAnswerUpdateManyWithWhereWithoutAnswerModelInput]
+    upsert?: Array<NexusGenInputs['TaskAnswerUpsertWithWhereUniqueWithoutAnswerModelInput'] | null> | null; // [TaskAnswerUpsertWithWhereUniqueWithoutAnswerModelInput]
+  }
+  TaskAnswerUncheckedUpdateManyWithoutTaskInput: { // input type
+    answer?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+    answerModelId?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
+    id?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
+    userId?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
+    verdict?: NexusGenInputs['NullableIntFieldUpdateOperationsInput'] | null; // NullableIntFieldUpdateOperationsInput
+  }
+  TaskAnswerUncheckedUpdateManyWithoutTaskNestedInput: { // input type
+    connect?: Array<NexusGenInputs['TaskAnswerWhereUniqueInput'] | null> | null; // [TaskAnswerWhereUniqueInput]
+    connectOrCreate?: Array<NexusGenInputs['TaskAnswerCreateOrConnectWithoutTaskInput'] | null> | null; // [TaskAnswerCreateOrConnectWithoutTaskInput]
+    create?: Array<NexusGenInputs['TaskAnswerCreateWithoutTaskInput'] | null> | null; // [TaskAnswerCreateWithoutTaskInput]
+    createMany?: NexusGenInputs['TaskAnswerCreateManyTaskInputEnvelope'] | null; // TaskAnswerCreateManyTaskInputEnvelope
+    delete?: Array<NexusGenInputs['TaskAnswerWhereUniqueInput'] | null> | null; // [TaskAnswerWhereUniqueInput]
+    deleteMany?: Array<NexusGenInputs['TaskAnswerScalarWhereInput'] | null> | null; // [TaskAnswerScalarWhereInput]
+    disconnect?: Array<NexusGenInputs['TaskAnswerWhereUniqueInput'] | null> | null; // [TaskAnswerWhereUniqueInput]
+    set?: Array<NexusGenInputs['TaskAnswerWhereUniqueInput'] | null> | null; // [TaskAnswerWhereUniqueInput]
+    update?: Array<NexusGenInputs['TaskAnswerUpdateWithWhereUniqueWithoutTaskInput'] | null> | null; // [TaskAnswerUpdateWithWhereUniqueWithoutTaskInput]
+    updateMany?: Array<NexusGenInputs['TaskAnswerUpdateManyWithWhereWithoutTaskInput'] | null> | null; // [TaskAnswerUpdateManyWithWhereWithoutTaskInput]
+    upsert?: Array<NexusGenInputs['TaskAnswerUpsertWithWhereUniqueWithoutTaskInput'] | null> | null; // [TaskAnswerUpsertWithWhereUniqueWithoutTaskInput]
+  }
+  TaskAnswerUncheckedUpdateManyWithoutUserInput: { // input type
+    answer?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+    answerModelId?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
+    id?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
+    taskId?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
+    verdict?: NexusGenInputs['NullableIntFieldUpdateOperationsInput'] | null; // NullableIntFieldUpdateOperationsInput
+  }
+  TaskAnswerUncheckedUpdateManyWithoutUserNestedInput: { // input type
+    connect?: Array<NexusGenInputs['TaskAnswerWhereUniqueInput'] | null> | null; // [TaskAnswerWhereUniqueInput]
+    connectOrCreate?: Array<NexusGenInputs['TaskAnswerCreateOrConnectWithoutUserInput'] | null> | null; // [TaskAnswerCreateOrConnectWithoutUserInput]
+    create?: Array<NexusGenInputs['TaskAnswerCreateWithoutUserInput'] | null> | null; // [TaskAnswerCreateWithoutUserInput]
+    createMany?: NexusGenInputs['TaskAnswerCreateManyUserInputEnvelope'] | null; // TaskAnswerCreateManyUserInputEnvelope
+    delete?: Array<NexusGenInputs['TaskAnswerWhereUniqueInput'] | null> | null; // [TaskAnswerWhereUniqueInput]
+    deleteMany?: Array<NexusGenInputs['TaskAnswerScalarWhereInput'] | null> | null; // [TaskAnswerScalarWhereInput]
+    disconnect?: Array<NexusGenInputs['TaskAnswerWhereUniqueInput'] | null> | null; // [TaskAnswerWhereUniqueInput]
+    set?: Array<NexusGenInputs['TaskAnswerWhereUniqueInput'] | null> | null; // [TaskAnswerWhereUniqueInput]
+    update?: Array<NexusGenInputs['TaskAnswerUpdateWithWhereUniqueWithoutUserInput'] | null> | null; // [TaskAnswerUpdateWithWhereUniqueWithoutUserInput]
+    updateMany?: Array<NexusGenInputs['TaskAnswerUpdateManyWithWhereWithoutUserInput'] | null> | null; // [TaskAnswerUpdateManyWithWhereWithoutUserInput]
+    upsert?: Array<NexusGenInputs['TaskAnswerUpsertWithWhereUniqueWithoutUserInput'] | null> | null; // [TaskAnswerUpsertWithWhereUniqueWithoutUserInput]
+  }
+  TaskAnswerUncheckedUpdateWithoutAnswerModelInput: { // input type
+    answer?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+    id?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
+    taskId?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
+    userId?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
+    verdict?: NexusGenInputs['NullableIntFieldUpdateOperationsInput'] | null; // NullableIntFieldUpdateOperationsInput
+  }
+  TaskAnswerUncheckedUpdateWithoutTaskInput: { // input type
+    answer?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+    answerModelId?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
+    id?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
+    userId?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
+    verdict?: NexusGenInputs['NullableIntFieldUpdateOperationsInput'] | null; // NullableIntFieldUpdateOperationsInput
+  }
+  TaskAnswerUncheckedUpdateWithoutUserInput: { // input type
+    answer?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+    answerModelId?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
+    id?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
+    taskId?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
+    verdict?: NexusGenInputs['NullableIntFieldUpdateOperationsInput'] | null; // NullableIntFieldUpdateOperationsInput
+  }
+  TaskAnswerUpdateInput: { // input type
+    answer?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+    answerModel?: NexusGenInputs['AnswerUpdateOneRequiredWithoutTaskAnswersNestedInput'] | null; // AnswerUpdateOneRequiredWithoutTaskAnswersNestedInput
+    task?: NexusGenInputs['TaskUpdateOneRequiredWithoutTaskAnswersNestedInput'] | null; // TaskUpdateOneRequiredWithoutTaskAnswersNestedInput
+    user?: NexusGenInputs['UserUpdateOneRequiredWithoutAnswersNestedInput'] | null; // UserUpdateOneRequiredWithoutAnswersNestedInput
+    verdict?: NexusGenInputs['NullableIntFieldUpdateOperationsInput'] | null; // NullableIntFieldUpdateOperationsInput
+  }
+  TaskAnswerUpdateManyMutationInput: { // input type
+    answer?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+    verdict?: NexusGenInputs['NullableIntFieldUpdateOperationsInput'] | null; // NullableIntFieldUpdateOperationsInput
+  }
+  TaskAnswerUpdateManyWithWhereWithoutAnswerModelInput: { // input type
+    data: NexusGenInputs['TaskAnswerUpdateManyMutationInput']; // TaskAnswerUpdateManyMutationInput!
+    where: NexusGenInputs['TaskAnswerScalarWhereInput']; // TaskAnswerScalarWhereInput!
+  }
+  TaskAnswerUpdateManyWithWhereWithoutTaskInput: { // input type
+    data: NexusGenInputs['TaskAnswerUpdateManyMutationInput']; // TaskAnswerUpdateManyMutationInput!
+    where: NexusGenInputs['TaskAnswerScalarWhereInput']; // TaskAnswerScalarWhereInput!
+  }
+  TaskAnswerUpdateManyWithWhereWithoutUserInput: { // input type
+    data: NexusGenInputs['TaskAnswerUpdateManyMutationInput']; // TaskAnswerUpdateManyMutationInput!
+    where: NexusGenInputs['TaskAnswerScalarWhereInput']; // TaskAnswerScalarWhereInput!
+  }
+  TaskAnswerUpdateManyWithoutAnswerModelNestedInput: { // input type
+    connect?: Array<NexusGenInputs['TaskAnswerWhereUniqueInput'] | null> | null; // [TaskAnswerWhereUniqueInput]
+    connectOrCreate?: Array<NexusGenInputs['TaskAnswerCreateOrConnectWithoutAnswerModelInput'] | null> | null; // [TaskAnswerCreateOrConnectWithoutAnswerModelInput]
+    create?: Array<NexusGenInputs['TaskAnswerCreateWithoutAnswerModelInput'] | null> | null; // [TaskAnswerCreateWithoutAnswerModelInput]
+    createMany?: NexusGenInputs['TaskAnswerCreateManyAnswerModelInputEnvelope'] | null; // TaskAnswerCreateManyAnswerModelInputEnvelope
+    delete?: Array<NexusGenInputs['TaskAnswerWhereUniqueInput'] | null> | null; // [TaskAnswerWhereUniqueInput]
+    deleteMany?: Array<NexusGenInputs['TaskAnswerScalarWhereInput'] | null> | null; // [TaskAnswerScalarWhereInput]
+    disconnect?: Array<NexusGenInputs['TaskAnswerWhereUniqueInput'] | null> | null; // [TaskAnswerWhereUniqueInput]
+    set?: Array<NexusGenInputs['TaskAnswerWhereUniqueInput'] | null> | null; // [TaskAnswerWhereUniqueInput]
+    update?: Array<NexusGenInputs['TaskAnswerUpdateWithWhereUniqueWithoutAnswerModelInput'] | null> | null; // [TaskAnswerUpdateWithWhereUniqueWithoutAnswerModelInput]
+    updateMany?: Array<NexusGenInputs['TaskAnswerUpdateManyWithWhereWithoutAnswerModelInput'] | null> | null; // [TaskAnswerUpdateManyWithWhereWithoutAnswerModelInput]
+    upsert?: Array<NexusGenInputs['TaskAnswerUpsertWithWhereUniqueWithoutAnswerModelInput'] | null> | null; // [TaskAnswerUpsertWithWhereUniqueWithoutAnswerModelInput]
+  }
+  TaskAnswerUpdateManyWithoutTaskNestedInput: { // input type
+    connect?: Array<NexusGenInputs['TaskAnswerWhereUniqueInput'] | null> | null; // [TaskAnswerWhereUniqueInput]
+    connectOrCreate?: Array<NexusGenInputs['TaskAnswerCreateOrConnectWithoutTaskInput'] | null> | null; // [TaskAnswerCreateOrConnectWithoutTaskInput]
+    create?: Array<NexusGenInputs['TaskAnswerCreateWithoutTaskInput'] | null> | null; // [TaskAnswerCreateWithoutTaskInput]
+    createMany?: NexusGenInputs['TaskAnswerCreateManyTaskInputEnvelope'] | null; // TaskAnswerCreateManyTaskInputEnvelope
+    delete?: Array<NexusGenInputs['TaskAnswerWhereUniqueInput'] | null> | null; // [TaskAnswerWhereUniqueInput]
+    deleteMany?: Array<NexusGenInputs['TaskAnswerScalarWhereInput'] | null> | null; // [TaskAnswerScalarWhereInput]
+    disconnect?: Array<NexusGenInputs['TaskAnswerWhereUniqueInput'] | null> | null; // [TaskAnswerWhereUniqueInput]
+    set?: Array<NexusGenInputs['TaskAnswerWhereUniqueInput'] | null> | null; // [TaskAnswerWhereUniqueInput]
+    update?: Array<NexusGenInputs['TaskAnswerUpdateWithWhereUniqueWithoutTaskInput'] | null> | null; // [TaskAnswerUpdateWithWhereUniqueWithoutTaskInput]
+    updateMany?: Array<NexusGenInputs['TaskAnswerUpdateManyWithWhereWithoutTaskInput'] | null> | null; // [TaskAnswerUpdateManyWithWhereWithoutTaskInput]
+    upsert?: Array<NexusGenInputs['TaskAnswerUpsertWithWhereUniqueWithoutTaskInput'] | null> | null; // [TaskAnswerUpsertWithWhereUniqueWithoutTaskInput]
+  }
+  TaskAnswerUpdateManyWithoutUserNestedInput: { // input type
+    connect?: Array<NexusGenInputs['TaskAnswerWhereUniqueInput'] | null> | null; // [TaskAnswerWhereUniqueInput]
+    connectOrCreate?: Array<NexusGenInputs['TaskAnswerCreateOrConnectWithoutUserInput'] | null> | null; // [TaskAnswerCreateOrConnectWithoutUserInput]
+    create?: Array<NexusGenInputs['TaskAnswerCreateWithoutUserInput'] | null> | null; // [TaskAnswerCreateWithoutUserInput]
+    createMany?: NexusGenInputs['TaskAnswerCreateManyUserInputEnvelope'] | null; // TaskAnswerCreateManyUserInputEnvelope
+    delete?: Array<NexusGenInputs['TaskAnswerWhereUniqueInput'] | null> | null; // [TaskAnswerWhereUniqueInput]
+    deleteMany?: Array<NexusGenInputs['TaskAnswerScalarWhereInput'] | null> | null; // [TaskAnswerScalarWhereInput]
+    disconnect?: Array<NexusGenInputs['TaskAnswerWhereUniqueInput'] | null> | null; // [TaskAnswerWhereUniqueInput]
+    set?: Array<NexusGenInputs['TaskAnswerWhereUniqueInput'] | null> | null; // [TaskAnswerWhereUniqueInput]
+    update?: Array<NexusGenInputs['TaskAnswerUpdateWithWhereUniqueWithoutUserInput'] | null> | null; // [TaskAnswerUpdateWithWhereUniqueWithoutUserInput]
+    updateMany?: Array<NexusGenInputs['TaskAnswerUpdateManyWithWhereWithoutUserInput'] | null> | null; // [TaskAnswerUpdateManyWithWhereWithoutUserInput]
+    upsert?: Array<NexusGenInputs['TaskAnswerUpsertWithWhereUniqueWithoutUserInput'] | null> | null; // [TaskAnswerUpsertWithWhereUniqueWithoutUserInput]
+  }
+  TaskAnswerUpdateWithWhereUniqueWithoutAnswerModelInput: { // input type
+    data: NexusGenInputs['TaskAnswerUpdateWithoutAnswerModelInput']; // TaskAnswerUpdateWithoutAnswerModelInput!
+    where: NexusGenInputs['TaskAnswerWhereUniqueInput']; // TaskAnswerWhereUniqueInput!
+  }
+  TaskAnswerUpdateWithWhereUniqueWithoutTaskInput: { // input type
+    data: NexusGenInputs['TaskAnswerUpdateWithoutTaskInput']; // TaskAnswerUpdateWithoutTaskInput!
+    where: NexusGenInputs['TaskAnswerWhereUniqueInput']; // TaskAnswerWhereUniqueInput!
+  }
+  TaskAnswerUpdateWithWhereUniqueWithoutUserInput: { // input type
+    data: NexusGenInputs['TaskAnswerUpdateWithoutUserInput']; // TaskAnswerUpdateWithoutUserInput!
+    where: NexusGenInputs['TaskAnswerWhereUniqueInput']; // TaskAnswerWhereUniqueInput!
+  }
+  TaskAnswerUpdateWithoutAnswerModelInput: { // input type
+    answer?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+    task?: NexusGenInputs['TaskUpdateOneRequiredWithoutTaskAnswersNestedInput'] | null; // TaskUpdateOneRequiredWithoutTaskAnswersNestedInput
+    user?: NexusGenInputs['UserUpdateOneRequiredWithoutAnswersNestedInput'] | null; // UserUpdateOneRequiredWithoutAnswersNestedInput
+    verdict?: NexusGenInputs['NullableIntFieldUpdateOperationsInput'] | null; // NullableIntFieldUpdateOperationsInput
+  }
+  TaskAnswerUpdateWithoutTaskInput: { // input type
+    answer?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+    answerModel?: NexusGenInputs['AnswerUpdateOneRequiredWithoutTaskAnswersNestedInput'] | null; // AnswerUpdateOneRequiredWithoutTaskAnswersNestedInput
+    user?: NexusGenInputs['UserUpdateOneRequiredWithoutAnswersNestedInput'] | null; // UserUpdateOneRequiredWithoutAnswersNestedInput
+    verdict?: NexusGenInputs['NullableIntFieldUpdateOperationsInput'] | null; // NullableIntFieldUpdateOperationsInput
+  }
+  TaskAnswerUpdateWithoutUserInput: { // input type
+    answer?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+    answerModel?: NexusGenInputs['AnswerUpdateOneRequiredWithoutTaskAnswersNestedInput'] | null; // AnswerUpdateOneRequiredWithoutTaskAnswersNestedInput
+    task?: NexusGenInputs['TaskUpdateOneRequiredWithoutTaskAnswersNestedInput'] | null; // TaskUpdateOneRequiredWithoutTaskAnswersNestedInput
+    verdict?: NexusGenInputs['NullableIntFieldUpdateOperationsInput'] | null; // NullableIntFieldUpdateOperationsInput
+  }
+  TaskAnswerUpsertWithWhereUniqueWithoutAnswerModelInput: { // input type
+    create: NexusGenInputs['TaskAnswerCreateWithoutAnswerModelInput']; // TaskAnswerCreateWithoutAnswerModelInput!
+    update: NexusGenInputs['TaskAnswerUpdateWithoutAnswerModelInput']; // TaskAnswerUpdateWithoutAnswerModelInput!
+    where: NexusGenInputs['TaskAnswerWhereUniqueInput']; // TaskAnswerWhereUniqueInput!
+  }
+  TaskAnswerUpsertWithWhereUniqueWithoutTaskInput: { // input type
+    create: NexusGenInputs['TaskAnswerCreateWithoutTaskInput']; // TaskAnswerCreateWithoutTaskInput!
+    update: NexusGenInputs['TaskAnswerUpdateWithoutTaskInput']; // TaskAnswerUpdateWithoutTaskInput!
+    where: NexusGenInputs['TaskAnswerWhereUniqueInput']; // TaskAnswerWhereUniqueInput!
+  }
+  TaskAnswerUpsertWithWhereUniqueWithoutUserInput: { // input type
+    create: NexusGenInputs['TaskAnswerCreateWithoutUserInput']; // TaskAnswerCreateWithoutUserInput!
+    update: NexusGenInputs['TaskAnswerUpdateWithoutUserInput']; // TaskAnswerUpdateWithoutUserInput!
+    where: NexusGenInputs['TaskAnswerWhereUniqueInput']; // TaskAnswerWhereUniqueInput!
+  }
+  TaskAnswerWhereInput: { // input type
+    AND?: Array<NexusGenInputs['TaskAnswerWhereInput'] | null> | null; // [TaskAnswerWhereInput]
+    NOT?: Array<NexusGenInputs['TaskAnswerWhereInput'] | null> | null; // [TaskAnswerWhereInput]
+    OR?: Array<NexusGenInputs['TaskAnswerWhereInput'] | null> | null; // [TaskAnswerWhereInput]
+    answer?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    answerModel?: NexusGenInputs['AnswerRelationFilter'] | null; // AnswerRelationFilter
+    answerModelId?: NexusGenInputs['IntFilter'] | null; // IntFilter
+    id?: NexusGenInputs['IntFilter'] | null; // IntFilter
+    task?: NexusGenInputs['TaskRelationFilter'] | null; // TaskRelationFilter
+    taskId?: NexusGenInputs['IntFilter'] | null; // IntFilter
+    user?: NexusGenInputs['UserRelationFilter'] | null; // UserRelationFilter
+    userId?: NexusGenInputs['IntFilter'] | null; // IntFilter
+    verdict?: NexusGenInputs['IntNullableFilter'] | null; // IntNullableFilter
+  }
+  TaskAnswerWhereUniqueInput: { // input type
+    AND?: Array<NexusGenInputs['TaskAnswerWhereInput'] | null> | null; // [TaskAnswerWhereInput]
+    NOT?: Array<NexusGenInputs['TaskAnswerWhereInput'] | null> | null; // [TaskAnswerWhereInput]
+    OR?: Array<NexusGenInputs['TaskAnswerWhereInput'] | null> | null; // [TaskAnswerWhereInput]
+    answer?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    answerModel?: NexusGenInputs['AnswerRelationFilter'] | null; // AnswerRelationFilter
+    answerModelId?: NexusGenInputs['IntFilter'] | null; // IntFilter
+    id?: number | null; // Int
+    task?: NexusGenInputs['TaskRelationFilter'] | null; // TaskRelationFilter
+    taskId?: NexusGenInputs['IntFilter'] | null; // IntFilter
+    user?: NexusGenInputs['UserRelationFilter'] | null; // UserRelationFilter
+    userId?: NexusGenInputs['IntFilter'] | null; // IntFilter
+    verdict?: NexusGenInputs['IntNullableFilter'] | null; // IntNullableFilter
   }
   TaskAvgOrderByAggregateInput: { // input type
     correctMultipleAnswer?: NexusGenEnums['SortOrder'] | null; // SortOrder
@@ -2708,6 +3250,7 @@ export interface NexusGenInputs {
     testId?: NexusGenEnums['SortOrder'] | null; // SortOrder
   }
   TaskCountOrderByAggregateInput: { // input type
+    code?: NexusGenEnums['SortOrder'] | null; // SortOrder
     correctMultipleAnswer?: NexusGenEnums['SortOrder'] | null; // SortOrder
     correctSingleAnswer?: NexusGenEnums['SortOrder'] | null; // SortOrder
     createdAt?: NexusGenEnums['SortOrder'] | null; // SortOrder
@@ -2718,15 +3261,18 @@ export interface NexusGenInputs {
     variants?: NexusGenEnums['SortOrder'] | null; // SortOrder
   }
   TaskCreateInput: { // input type
+    code?: string | null; // String
     correctMultipleAnswer?: Array<number | null> | null; // [Int]
     correctSingleAnswer?: number | null; // Int
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     question: string; // String!
+    taskAnswers?: NexusGenInputs['TaskAnswerCreateNestedManyWithoutTaskInput'] | null; // TaskAnswerCreateNestedManyWithoutTaskInput
     test?: NexusGenInputs['TestCreateNestedOneWithoutTasksInput'] | null; // TestCreateNestedOneWithoutTasksInput
     type: NexusGenEnums['TaskType']; // TaskType!
     variants?: Array<string | null> | null; // [String]
   }
   TaskCreateManyInput: { // input type
+    code?: string | null; // String
     correctMultipleAnswer?: Array<number | null> | null; // [Int]
     correctSingleAnswer?: number | null; // Int
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
@@ -2737,6 +3283,7 @@ export interface NexusGenInputs {
     variants?: Array<string | null> | null; // [String]
   }
   TaskCreateManyTestInput: { // input type
+    code?: string | null; // String
     correctMultipleAnswer?: Array<number | null> | null; // [Int]
     correctSingleAnswer?: number | null; // Int
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
@@ -2755,15 +3302,36 @@ export interface NexusGenInputs {
     create?: Array<NexusGenInputs['TaskCreateWithoutTestInput'] | null> | null; // [TaskCreateWithoutTestInput]
     createMany?: NexusGenInputs['TaskCreateManyTestInputEnvelope'] | null; // TaskCreateManyTestInputEnvelope
   }
+  TaskCreateNestedOneWithoutTaskAnswersInput: { // input type
+    connect?: NexusGenInputs['TaskWhereUniqueInput'] | null; // TaskWhereUniqueInput
+    connectOrCreate?: NexusGenInputs['TaskCreateOrConnectWithoutTaskAnswersInput'] | null; // TaskCreateOrConnectWithoutTaskAnswersInput
+    create?: NexusGenInputs['TaskCreateWithoutTaskAnswersInput'] | null; // TaskCreateWithoutTaskAnswersInput
+  }
+  TaskCreateOrConnectWithoutTaskAnswersInput: { // input type
+    create: NexusGenInputs['TaskCreateWithoutTaskAnswersInput']; // TaskCreateWithoutTaskAnswersInput!
+    where: NexusGenInputs['TaskWhereUniqueInput']; // TaskWhereUniqueInput!
+  }
   TaskCreateOrConnectWithoutTestInput: { // input type
     create: NexusGenInputs['TaskCreateWithoutTestInput']; // TaskCreateWithoutTestInput!
     where: NexusGenInputs['TaskWhereUniqueInput']; // TaskWhereUniqueInput!
   }
-  TaskCreateWithoutTestInput: { // input type
+  TaskCreateWithoutTaskAnswersInput: { // input type
+    code?: string | null; // String
     correctMultipleAnswer?: Array<number | null> | null; // [Int]
     correctSingleAnswer?: number | null; // Int
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     question: string; // String!
+    test?: NexusGenInputs['TestCreateNestedOneWithoutTasksInput'] | null; // TestCreateNestedOneWithoutTasksInput
+    type: NexusGenEnums['TaskType']; // TaskType!
+    variants?: Array<string | null> | null; // [String]
+  }
+  TaskCreateWithoutTestInput: { // input type
+    code?: string | null; // String
+    correctMultipleAnswer?: Array<number | null> | null; // [Int]
+    correctSingleAnswer?: number | null; // Int
+    createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
+    question: string; // String!
+    taskAnswers?: NexusGenInputs['TaskAnswerCreateNestedManyWithoutTaskInput'] | null; // TaskAnswerCreateNestedManyWithoutTaskInput
     type: NexusGenEnums['TaskType']; // TaskType!
     variants?: Array<string | null> | null; // [String]
   }
@@ -2779,6 +3347,7 @@ export interface NexusGenInputs {
     some?: NexusGenInputs['TaskWhereInput'] | null; // TaskWhereInput
   }
   TaskMaxOrderByAggregateInput: { // input type
+    code?: NexusGenEnums['SortOrder'] | null; // SortOrder
     correctSingleAnswer?: NexusGenEnums['SortOrder'] | null; // SortOrder
     createdAt?: NexusGenEnums['SortOrder'] | null; // SortOrder
     id?: NexusGenEnums['SortOrder'] | null; // SortOrder
@@ -2787,6 +3356,7 @@ export interface NexusGenInputs {
     type?: NexusGenEnums['SortOrder'] | null; // SortOrder
   }
   TaskMinOrderByAggregateInput: { // input type
+    code?: NexusGenEnums['SortOrder'] | null; // SortOrder
     correctSingleAnswer?: NexusGenEnums['SortOrder'] | null; // SortOrder
     createdAt?: NexusGenEnums['SortOrder'] | null; // SortOrder
     id?: NexusGenEnums['SortOrder'] | null; // SortOrder
@@ -2797,17 +3367,13 @@ export interface NexusGenInputs {
   TaskOrderByRelationAggregateInput: { // input type
     _count?: NexusGenEnums['SortOrder'] | null; // SortOrder
   }
-  TaskOrderByRelevanceInput: { // input type
-    fields: NexusGenEnums['TaskOrderByRelevanceFieldEnum']; // TaskOrderByRelevanceFieldEnum!
-    search: string; // String!
-    sort: NexusGenEnums['SortOrder']; // SortOrder!
-  }
   TaskOrderByWithAggregationInput: { // input type
     _avg?: NexusGenInputs['TaskAvgOrderByAggregateInput'] | null; // TaskAvgOrderByAggregateInput
     _count?: NexusGenInputs['TaskCountOrderByAggregateInput'] | null; // TaskCountOrderByAggregateInput
     _max?: NexusGenInputs['TaskMaxOrderByAggregateInput'] | null; // TaskMaxOrderByAggregateInput
     _min?: NexusGenInputs['TaskMinOrderByAggregateInput'] | null; // TaskMinOrderByAggregateInput
     _sum?: NexusGenInputs['TaskSumOrderByAggregateInput'] | null; // TaskSumOrderByAggregateInput
+    code?: NexusGenInputs['SortOrderInput'] | null; // SortOrderInput
     correctMultipleAnswer?: NexusGenEnums['SortOrder'] | null; // SortOrder
     correctSingleAnswer?: NexusGenInputs['SortOrderInput'] | null; // SortOrderInput
     createdAt?: NexusGenEnums['SortOrder'] | null; // SortOrder
@@ -2817,22 +3383,28 @@ export interface NexusGenInputs {
     type?: NexusGenEnums['SortOrder'] | null; // SortOrder
     variants?: NexusGenEnums['SortOrder'] | null; // SortOrder
   }
-  TaskOrderByWithRelationAndSearchRelevanceInput: { // input type
-    _relevance?: NexusGenInputs['TaskOrderByRelevanceInput'] | null; // TaskOrderByRelevanceInput
+  TaskOrderByWithRelationInput: { // input type
+    code?: NexusGenInputs['SortOrderInput'] | null; // SortOrderInput
     correctMultipleAnswer?: NexusGenEnums['SortOrder'] | null; // SortOrder
     correctSingleAnswer?: NexusGenInputs['SortOrderInput'] | null; // SortOrderInput
     createdAt?: NexusGenEnums['SortOrder'] | null; // SortOrder
     id?: NexusGenEnums['SortOrder'] | null; // SortOrder
     question?: NexusGenEnums['SortOrder'] | null; // SortOrder
-    test?: NexusGenInputs['TestOrderByWithRelationAndSearchRelevanceInput'] | null; // TestOrderByWithRelationAndSearchRelevanceInput
+    taskAnswers?: NexusGenInputs['TaskAnswerOrderByRelationAggregateInput'] | null; // TaskAnswerOrderByRelationAggregateInput
+    test?: NexusGenInputs['TestOrderByWithRelationInput'] | null; // TestOrderByWithRelationInput
     testId?: NexusGenInputs['SortOrderInput'] | null; // SortOrderInput
     type?: NexusGenEnums['SortOrder'] | null; // SortOrder
     variants?: NexusGenEnums['SortOrder'] | null; // SortOrder
+  }
+  TaskRelationFilter: { // input type
+    is?: NexusGenInputs['TaskWhereInput'] | null; // TaskWhereInput
+    isNot?: NexusGenInputs['TaskWhereInput'] | null; // TaskWhereInput
   }
   TaskScalarWhereInput: { // input type
     AND?: Array<NexusGenInputs['TaskScalarWhereInput'] | null> | null; // [TaskScalarWhereInput]
     NOT?: Array<NexusGenInputs['TaskScalarWhereInput'] | null> | null; // [TaskScalarWhereInput]
     OR?: Array<NexusGenInputs['TaskScalarWhereInput'] | null> | null; // [TaskScalarWhereInput]
+    code?: NexusGenInputs['StringNullableFilter'] | null; // StringNullableFilter
     correctMultipleAnswer?: NexusGenInputs['IntNullableListFilter'] | null; // IntNullableListFilter
     correctSingleAnswer?: NexusGenInputs['IntNullableFilter'] | null; // IntNullableFilter
     createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
@@ -2846,6 +3418,7 @@ export interface NexusGenInputs {
     AND?: Array<NexusGenInputs['TaskScalarWhereWithAggregatesInput'] | null> | null; // [TaskScalarWhereWithAggregatesInput]
     NOT?: Array<NexusGenInputs['TaskScalarWhereWithAggregatesInput'] | null> | null; // [TaskScalarWhereWithAggregatesInput]
     OR?: Array<NexusGenInputs['TaskScalarWhereWithAggregatesInput'] | null> | null; // [TaskScalarWhereWithAggregatesInput]
+    code?: NexusGenInputs['StringNullableWithAggregatesFilter'] | null; // StringNullableWithAggregatesFilter
     correctMultipleAnswer?: NexusGenInputs['IntNullableListFilter'] | null; // IntNullableListFilter
     correctSingleAnswer?: NexusGenInputs['IntNullableWithAggregatesFilter'] | null; // IntNullableWithAggregatesFilter
     createdAt?: NexusGenInputs['DateTimeWithAggregatesFilter'] | null; // DateTimeWithAggregatesFilter
@@ -2862,11 +3435,13 @@ export interface NexusGenInputs {
     testId?: NexusGenEnums['SortOrder'] | null; // SortOrder
   }
   TaskUncheckedCreateInput: { // input type
+    code?: string | null; // String
     correctMultipleAnswer?: Array<number | null> | null; // [Int]
     correctSingleAnswer?: number | null; // Int
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     id?: number | null; // Int
     question: string; // String!
+    taskAnswers?: NexusGenInputs['TaskAnswerUncheckedCreateNestedManyWithoutTaskInput'] | null; // TaskAnswerUncheckedCreateNestedManyWithoutTaskInput
     testId?: number | null; // Int
     type: NexusGenEnums['TaskType']; // TaskType!
     variants?: Array<string | null> | null; // [String]
@@ -2877,26 +3452,42 @@ export interface NexusGenInputs {
     create?: Array<NexusGenInputs['TaskCreateWithoutTestInput'] | null> | null; // [TaskCreateWithoutTestInput]
     createMany?: NexusGenInputs['TaskCreateManyTestInputEnvelope'] | null; // TaskCreateManyTestInputEnvelope
   }
-  TaskUncheckedCreateWithoutTestInput: { // input type
+  TaskUncheckedCreateWithoutTaskAnswersInput: { // input type
+    code?: string | null; // String
     correctMultipleAnswer?: Array<number | null> | null; // [Int]
     correctSingleAnswer?: number | null; // Int
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     id?: number | null; // Int
     question: string; // String!
+    testId?: number | null; // Int
+    type: NexusGenEnums['TaskType']; // TaskType!
+    variants?: Array<string | null> | null; // [String]
+  }
+  TaskUncheckedCreateWithoutTestInput: { // input type
+    code?: string | null; // String
+    correctMultipleAnswer?: Array<number | null> | null; // [Int]
+    correctSingleAnswer?: number | null; // Int
+    createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
+    id?: number | null; // Int
+    question: string; // String!
+    taskAnswers?: NexusGenInputs['TaskAnswerUncheckedCreateNestedManyWithoutTaskInput'] | null; // TaskAnswerUncheckedCreateNestedManyWithoutTaskInput
     type: NexusGenEnums['TaskType']; // TaskType!
     variants?: Array<string | null> | null; // [String]
   }
   TaskUncheckedUpdateInput: { // input type
+    code?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
     correctMultipleAnswer?: Array<number | null> | null; // [Int]
     correctSingleAnswer?: NexusGenInputs['NullableIntFieldUpdateOperationsInput'] | null; // NullableIntFieldUpdateOperationsInput
     createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
     id?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
     question?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+    taskAnswers?: NexusGenInputs['TaskAnswerUncheckedUpdateManyWithoutTaskNestedInput'] | null; // TaskAnswerUncheckedUpdateManyWithoutTaskNestedInput
     testId?: NexusGenInputs['NullableIntFieldUpdateOperationsInput'] | null; // NullableIntFieldUpdateOperationsInput
     type?: NexusGenInputs['EnumTaskTypeFieldUpdateOperationsInput'] | null; // EnumTaskTypeFieldUpdateOperationsInput
     variants?: Array<string | null> | null; // [String]
   }
   TaskUncheckedUpdateManyInput: { // input type
+    code?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
     correctMultipleAnswer?: Array<number | null> | null; // [Int]
     correctSingleAnswer?: NexusGenInputs['NullableIntFieldUpdateOperationsInput'] | null; // NullableIntFieldUpdateOperationsInput
     createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
@@ -2907,6 +3498,7 @@ export interface NexusGenInputs {
     variants?: Array<string | null> | null; // [String]
   }
   TaskUncheckedUpdateManyWithoutTestInput: { // input type
+    code?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
     correctMultipleAnswer?: Array<number | null> | null; // [Int]
     correctSingleAnswer?: NexusGenInputs['NullableIntFieldUpdateOperationsInput'] | null; // NullableIntFieldUpdateOperationsInput
     createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
@@ -2928,25 +3520,41 @@ export interface NexusGenInputs {
     updateMany?: Array<NexusGenInputs['TaskUpdateManyWithWhereWithoutTestInput'] | null> | null; // [TaskUpdateManyWithWhereWithoutTestInput]
     upsert?: Array<NexusGenInputs['TaskUpsertWithWhereUniqueWithoutTestInput'] | null> | null; // [TaskUpsertWithWhereUniqueWithoutTestInput]
   }
-  TaskUncheckedUpdateWithoutTestInput: { // input type
+  TaskUncheckedUpdateWithoutTaskAnswersInput: { // input type
+    code?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
     correctMultipleAnswer?: Array<number | null> | null; // [Int]
     correctSingleAnswer?: NexusGenInputs['NullableIntFieldUpdateOperationsInput'] | null; // NullableIntFieldUpdateOperationsInput
     createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
     id?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
     question?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+    testId?: NexusGenInputs['NullableIntFieldUpdateOperationsInput'] | null; // NullableIntFieldUpdateOperationsInput
+    type?: NexusGenInputs['EnumTaskTypeFieldUpdateOperationsInput'] | null; // EnumTaskTypeFieldUpdateOperationsInput
+    variants?: Array<string | null> | null; // [String]
+  }
+  TaskUncheckedUpdateWithoutTestInput: { // input type
+    code?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
+    correctMultipleAnswer?: Array<number | null> | null; // [Int]
+    correctSingleAnswer?: NexusGenInputs['NullableIntFieldUpdateOperationsInput'] | null; // NullableIntFieldUpdateOperationsInput
+    createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
+    id?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
+    question?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+    taskAnswers?: NexusGenInputs['TaskAnswerUncheckedUpdateManyWithoutTaskNestedInput'] | null; // TaskAnswerUncheckedUpdateManyWithoutTaskNestedInput
     type?: NexusGenInputs['EnumTaskTypeFieldUpdateOperationsInput'] | null; // EnumTaskTypeFieldUpdateOperationsInput
     variants?: Array<string | null> | null; // [String]
   }
   TaskUpdateInput: { // input type
+    code?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
     correctMultipleAnswer?: Array<number | null> | null; // [Int]
     correctSingleAnswer?: NexusGenInputs['NullableIntFieldUpdateOperationsInput'] | null; // NullableIntFieldUpdateOperationsInput
     createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
     question?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+    taskAnswers?: NexusGenInputs['TaskAnswerUpdateManyWithoutTaskNestedInput'] | null; // TaskAnswerUpdateManyWithoutTaskNestedInput
     test?: NexusGenInputs['TestUpdateOneWithoutTasksNestedInput'] | null; // TestUpdateOneWithoutTasksNestedInput
     type?: NexusGenInputs['EnumTaskTypeFieldUpdateOperationsInput'] | null; // EnumTaskTypeFieldUpdateOperationsInput
     variants?: Array<string | null> | null; // [String]
   }
   TaskUpdateManyMutationInput: { // input type
+    code?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
     correctMultipleAnswer?: Array<number | null> | null; // [Int]
     correctSingleAnswer?: NexusGenInputs['NullableIntFieldUpdateOperationsInput'] | null; // NullableIntFieldUpdateOperationsInput
     createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
@@ -2971,15 +3579,38 @@ export interface NexusGenInputs {
     updateMany?: Array<NexusGenInputs['TaskUpdateManyWithWhereWithoutTestInput'] | null> | null; // [TaskUpdateManyWithWhereWithoutTestInput]
     upsert?: Array<NexusGenInputs['TaskUpsertWithWhereUniqueWithoutTestInput'] | null> | null; // [TaskUpsertWithWhereUniqueWithoutTestInput]
   }
+  TaskUpdateOneRequiredWithoutTaskAnswersNestedInput: { // input type
+    connect?: NexusGenInputs['TaskWhereUniqueInput'] | null; // TaskWhereUniqueInput
+    connectOrCreate?: NexusGenInputs['TaskCreateOrConnectWithoutTaskAnswersInput'] | null; // TaskCreateOrConnectWithoutTaskAnswersInput
+    create?: NexusGenInputs['TaskCreateWithoutTaskAnswersInput'] | null; // TaskCreateWithoutTaskAnswersInput
+    update?: NexusGenInputs['TaskUpdateToOneWithWhereWithoutTaskAnswersInput'] | null; // TaskUpdateToOneWithWhereWithoutTaskAnswersInput
+    upsert?: NexusGenInputs['TaskUpsertWithoutTaskAnswersInput'] | null; // TaskUpsertWithoutTaskAnswersInput
+  }
+  TaskUpdateToOneWithWhereWithoutTaskAnswersInput: { // input type
+    data: NexusGenInputs['TaskUpdateWithoutTaskAnswersInput']; // TaskUpdateWithoutTaskAnswersInput!
+    where?: NexusGenInputs['TaskWhereInput'] | null; // TaskWhereInput
+  }
   TaskUpdateWithWhereUniqueWithoutTestInput: { // input type
     data: NexusGenInputs['TaskUpdateWithoutTestInput']; // TaskUpdateWithoutTestInput!
     where: NexusGenInputs['TaskWhereUniqueInput']; // TaskWhereUniqueInput!
   }
-  TaskUpdateWithoutTestInput: { // input type
+  TaskUpdateWithoutTaskAnswersInput: { // input type
+    code?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
     correctMultipleAnswer?: Array<number | null> | null; // [Int]
     correctSingleAnswer?: NexusGenInputs['NullableIntFieldUpdateOperationsInput'] | null; // NullableIntFieldUpdateOperationsInput
     createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
     question?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+    test?: NexusGenInputs['TestUpdateOneWithoutTasksNestedInput'] | null; // TestUpdateOneWithoutTasksNestedInput
+    type?: NexusGenInputs['EnumTaskTypeFieldUpdateOperationsInput'] | null; // EnumTaskTypeFieldUpdateOperationsInput
+    variants?: Array<string | null> | null; // [String]
+  }
+  TaskUpdateWithoutTestInput: { // input type
+    code?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
+    correctMultipleAnswer?: Array<number | null> | null; // [Int]
+    correctSingleAnswer?: NexusGenInputs['NullableIntFieldUpdateOperationsInput'] | null; // NullableIntFieldUpdateOperationsInput
+    createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
+    question?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+    taskAnswers?: NexusGenInputs['TaskAnswerUpdateManyWithoutTaskNestedInput'] | null; // TaskAnswerUpdateManyWithoutTaskNestedInput
     type?: NexusGenInputs['EnumTaskTypeFieldUpdateOperationsInput'] | null; // EnumTaskTypeFieldUpdateOperationsInput
     variants?: Array<string | null> | null; // [String]
   }
@@ -2996,15 +3627,22 @@ export interface NexusGenInputs {
     update: NexusGenInputs['TaskUpdateWithoutTestInput']; // TaskUpdateWithoutTestInput!
     where: NexusGenInputs['TaskWhereUniqueInput']; // TaskWhereUniqueInput!
   }
+  TaskUpsertWithoutTaskAnswersInput: { // input type
+    create: NexusGenInputs['TaskCreateWithoutTaskAnswersInput']; // TaskCreateWithoutTaskAnswersInput!
+    update: NexusGenInputs['TaskUpdateWithoutTaskAnswersInput']; // TaskUpdateWithoutTaskAnswersInput!
+    where?: NexusGenInputs['TaskWhereInput'] | null; // TaskWhereInput
+  }
   TaskWhereInput: { // input type
     AND?: Array<NexusGenInputs['TaskWhereInput'] | null> | null; // [TaskWhereInput]
     NOT?: Array<NexusGenInputs['TaskWhereInput'] | null> | null; // [TaskWhereInput]
     OR?: Array<NexusGenInputs['TaskWhereInput'] | null> | null; // [TaskWhereInput]
+    code?: NexusGenInputs['StringNullableFilter'] | null; // StringNullableFilter
     correctMultipleAnswer?: NexusGenInputs['IntNullableListFilter'] | null; // IntNullableListFilter
     correctSingleAnswer?: NexusGenInputs['IntNullableFilter'] | null; // IntNullableFilter
     createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
     id?: NexusGenInputs['IntFilter'] | null; // IntFilter
     question?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    taskAnswers?: NexusGenInputs['TaskAnswerListRelationFilter'] | null; // TaskAnswerListRelationFilter
     test?: NexusGenInputs['TestNullableRelationFilter'] | null; // TestNullableRelationFilter
     testId?: NexusGenInputs['IntNullableFilter'] | null; // IntNullableFilter
     type?: NexusGenInputs['EnumTaskTypeFilter'] | null; // EnumTaskTypeFilter
@@ -3014,11 +3652,13 @@ export interface NexusGenInputs {
     AND?: Array<NexusGenInputs['TaskWhereInput'] | null> | null; // [TaskWhereInput]
     NOT?: Array<NexusGenInputs['TaskWhereInput'] | null> | null; // [TaskWhereInput]
     OR?: Array<NexusGenInputs['TaskWhereInput'] | null> | null; // [TaskWhereInput]
+    code?: NexusGenInputs['StringNullableFilter'] | null; // StringNullableFilter
     correctMultipleAnswer?: NexusGenInputs['IntNullableListFilter'] | null; // IntNullableListFilter
     correctSingleAnswer?: NexusGenInputs['IntNullableFilter'] | null; // IntNullableFilter
     createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
     id?: number | null; // Int
     question?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    taskAnswers?: NexusGenInputs['TaskAnswerListRelationFilter'] | null; // TaskAnswerListRelationFilter
     test?: NexusGenInputs['TestNullableRelationFilter'] | null; // TestNullableRelationFilter
     testId?: NexusGenInputs['IntNullableFilter'] | null; // IntNullableFilter
     type?: NexusGenInputs['EnumTaskTypeFilter'] | null; // EnumTaskTypeFilter
@@ -3035,6 +3675,7 @@ export interface NexusGenInputs {
   TestCreateInput: { // input type
     answers?: NexusGenInputs['AnswerCreateNestedManyWithoutTestInput'] | null; // AnswerCreateNestedManyWithoutTestInput
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
+    direction?: NexusGenInputs['DirectionCreateNestedManyWithoutTestInput'] | null; // DirectionCreateNestedManyWithoutTestInput
     response?: NexusGenInputs['ResponseCreateNestedManyWithoutTestsInput'] | null; // ResponseCreateNestedManyWithoutTestsInput
     tasks?: NexusGenInputs['TaskCreateNestedManyWithoutTestInput'] | null; // TaskCreateNestedManyWithoutTestInput
     title: string; // String!
@@ -3054,6 +3695,11 @@ export interface NexusGenInputs {
     connectOrCreate?: NexusGenInputs['TestCreateOrConnectWithoutAnswersInput'] | null; // TestCreateOrConnectWithoutAnswersInput
     create?: NexusGenInputs['TestCreateWithoutAnswersInput'] | null; // TestCreateWithoutAnswersInput
   }
+  TestCreateNestedOneWithoutDirectionInput: { // input type
+    connect?: NexusGenInputs['TestWhereUniqueInput'] | null; // TestWhereUniqueInput
+    connectOrCreate?: NexusGenInputs['TestCreateOrConnectWithoutDirectionInput'] | null; // TestCreateOrConnectWithoutDirectionInput
+    create?: NexusGenInputs['TestCreateWithoutDirectionInput'] | null; // TestCreateWithoutDirectionInput
+  }
   TestCreateNestedOneWithoutTasksInput: { // input type
     connect?: NexusGenInputs['TestWhereUniqueInput'] | null; // TestWhereUniqueInput
     connectOrCreate?: NexusGenInputs['TestCreateOrConnectWithoutTasksInput'] | null; // TestCreateOrConnectWithoutTasksInput
@@ -3061,6 +3707,10 @@ export interface NexusGenInputs {
   }
   TestCreateOrConnectWithoutAnswersInput: { // input type
     create: NexusGenInputs['TestCreateWithoutAnswersInput']; // TestCreateWithoutAnswersInput!
+    where: NexusGenInputs['TestWhereUniqueInput']; // TestWhereUniqueInput!
+  }
+  TestCreateOrConnectWithoutDirectionInput: { // input type
+    create: NexusGenInputs['TestCreateWithoutDirectionInput']; // TestCreateWithoutDirectionInput!
     where: NexusGenInputs['TestWhereUniqueInput']; // TestWhereUniqueInput!
   }
   TestCreateOrConnectWithoutResponseInput: { // input type
@@ -3073,6 +3723,14 @@ export interface NexusGenInputs {
   }
   TestCreateWithoutAnswersInput: { // input type
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
+    direction?: NexusGenInputs['DirectionCreateNestedManyWithoutTestInput'] | null; // DirectionCreateNestedManyWithoutTestInput
+    response?: NexusGenInputs['ResponseCreateNestedManyWithoutTestsInput'] | null; // ResponseCreateNestedManyWithoutTestsInput
+    tasks?: NexusGenInputs['TaskCreateNestedManyWithoutTestInput'] | null; // TaskCreateNestedManyWithoutTestInput
+    title: string; // String!
+  }
+  TestCreateWithoutDirectionInput: { // input type
+    answers?: NexusGenInputs['AnswerCreateNestedManyWithoutTestInput'] | null; // AnswerCreateNestedManyWithoutTestInput
+    createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     response?: NexusGenInputs['ResponseCreateNestedManyWithoutTestsInput'] | null; // ResponseCreateNestedManyWithoutTestsInput
     tasks?: NexusGenInputs['TaskCreateNestedManyWithoutTestInput'] | null; // TaskCreateNestedManyWithoutTestInput
     title: string; // String!
@@ -3080,12 +3738,14 @@ export interface NexusGenInputs {
   TestCreateWithoutResponseInput: { // input type
     answers?: NexusGenInputs['AnswerCreateNestedManyWithoutTestInput'] | null; // AnswerCreateNestedManyWithoutTestInput
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
+    direction?: NexusGenInputs['DirectionCreateNestedManyWithoutTestInput'] | null; // DirectionCreateNestedManyWithoutTestInput
     tasks?: NexusGenInputs['TaskCreateNestedManyWithoutTestInput'] | null; // TaskCreateNestedManyWithoutTestInput
     title: string; // String!
   }
   TestCreateWithoutTasksInput: { // input type
     answers?: NexusGenInputs['AnswerCreateNestedManyWithoutTestInput'] | null; // AnswerCreateNestedManyWithoutTestInput
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
+    direction?: NexusGenInputs['DirectionCreateNestedManyWithoutTestInput'] | null; // DirectionCreateNestedManyWithoutTestInput
     response?: NexusGenInputs['ResponseCreateNestedManyWithoutTestsInput'] | null; // ResponseCreateNestedManyWithoutTestsInput
     title: string; // String!
   }
@@ -3111,11 +3771,6 @@ export interface NexusGenInputs {
   TestOrderByRelationAggregateInput: { // input type
     _count?: NexusGenEnums['SortOrder'] | null; // SortOrder
   }
-  TestOrderByRelevanceInput: { // input type
-    fields: NexusGenEnums['TestOrderByRelevanceFieldEnum']; // TestOrderByRelevanceFieldEnum!
-    search: string; // String!
-    sort: NexusGenEnums['SortOrder']; // SortOrder!
-  }
   TestOrderByWithAggregationInput: { // input type
     _avg?: NexusGenInputs['TestAvgOrderByAggregateInput'] | null; // TestAvgOrderByAggregateInput
     _count?: NexusGenInputs['TestCountOrderByAggregateInput'] | null; // TestCountOrderByAggregateInput
@@ -3126,10 +3781,10 @@ export interface NexusGenInputs {
     id?: NexusGenEnums['SortOrder'] | null; // SortOrder
     title?: NexusGenEnums['SortOrder'] | null; // SortOrder
   }
-  TestOrderByWithRelationAndSearchRelevanceInput: { // input type
-    _relevance?: NexusGenInputs['TestOrderByRelevanceInput'] | null; // TestOrderByRelevanceInput
+  TestOrderByWithRelationInput: { // input type
     answers?: NexusGenInputs['AnswerOrderByRelationAggregateInput'] | null; // AnswerOrderByRelationAggregateInput
     createdAt?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    direction?: NexusGenInputs['DirectionOrderByRelationAggregateInput'] | null; // DirectionOrderByRelationAggregateInput
     id?: NexusGenEnums['SortOrder'] | null; // SortOrder
     response?: NexusGenInputs['ResponseOrderByRelationAggregateInput'] | null; // ResponseOrderByRelationAggregateInput
     tasks?: NexusGenInputs['TaskOrderByRelationAggregateInput'] | null; // TaskOrderByRelationAggregateInput
@@ -3161,6 +3816,7 @@ export interface NexusGenInputs {
   TestUncheckedCreateInput: { // input type
     answers?: NexusGenInputs['AnswerUncheckedCreateNestedManyWithoutTestInput'] | null; // AnswerUncheckedCreateNestedManyWithoutTestInput
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
+    direction?: NexusGenInputs['DirectionUncheckedCreateNestedManyWithoutTestInput'] | null; // DirectionUncheckedCreateNestedManyWithoutTestInput
     id?: number | null; // Int
     response?: NexusGenInputs['ResponseUncheckedCreateNestedManyWithoutTestsInput'] | null; // ResponseUncheckedCreateNestedManyWithoutTestsInput
     tasks?: NexusGenInputs['TaskUncheckedCreateNestedManyWithoutTestInput'] | null; // TaskUncheckedCreateNestedManyWithoutTestInput
@@ -3173,6 +3829,15 @@ export interface NexusGenInputs {
   }
   TestUncheckedCreateWithoutAnswersInput: { // input type
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
+    direction?: NexusGenInputs['DirectionUncheckedCreateNestedManyWithoutTestInput'] | null; // DirectionUncheckedCreateNestedManyWithoutTestInput
+    id?: number | null; // Int
+    response?: NexusGenInputs['ResponseUncheckedCreateNestedManyWithoutTestsInput'] | null; // ResponseUncheckedCreateNestedManyWithoutTestsInput
+    tasks?: NexusGenInputs['TaskUncheckedCreateNestedManyWithoutTestInput'] | null; // TaskUncheckedCreateNestedManyWithoutTestInput
+    title: string; // String!
+  }
+  TestUncheckedCreateWithoutDirectionInput: { // input type
+    answers?: NexusGenInputs['AnswerUncheckedCreateNestedManyWithoutTestInput'] | null; // AnswerUncheckedCreateNestedManyWithoutTestInput
+    createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     id?: number | null; // Int
     response?: NexusGenInputs['ResponseUncheckedCreateNestedManyWithoutTestsInput'] | null; // ResponseUncheckedCreateNestedManyWithoutTestsInput
     tasks?: NexusGenInputs['TaskUncheckedCreateNestedManyWithoutTestInput'] | null; // TaskUncheckedCreateNestedManyWithoutTestInput
@@ -3181,6 +3846,7 @@ export interface NexusGenInputs {
   TestUncheckedCreateWithoutResponseInput: { // input type
     answers?: NexusGenInputs['AnswerUncheckedCreateNestedManyWithoutTestInput'] | null; // AnswerUncheckedCreateNestedManyWithoutTestInput
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
+    direction?: NexusGenInputs['DirectionUncheckedCreateNestedManyWithoutTestInput'] | null; // DirectionUncheckedCreateNestedManyWithoutTestInput
     id?: number | null; // Int
     tasks?: NexusGenInputs['TaskUncheckedCreateNestedManyWithoutTestInput'] | null; // TaskUncheckedCreateNestedManyWithoutTestInput
     title: string; // String!
@@ -3188,6 +3854,7 @@ export interface NexusGenInputs {
   TestUncheckedCreateWithoutTasksInput: { // input type
     answers?: NexusGenInputs['AnswerUncheckedCreateNestedManyWithoutTestInput'] | null; // AnswerUncheckedCreateNestedManyWithoutTestInput
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
+    direction?: NexusGenInputs['DirectionUncheckedCreateNestedManyWithoutTestInput'] | null; // DirectionUncheckedCreateNestedManyWithoutTestInput
     id?: number | null; // Int
     response?: NexusGenInputs['ResponseUncheckedCreateNestedManyWithoutTestsInput'] | null; // ResponseUncheckedCreateNestedManyWithoutTestsInput
     title: string; // String!
@@ -3195,6 +3862,7 @@ export interface NexusGenInputs {
   TestUncheckedUpdateInput: { // input type
     answers?: NexusGenInputs['AnswerUncheckedUpdateManyWithoutTestNestedInput'] | null; // AnswerUncheckedUpdateManyWithoutTestNestedInput
     createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
+    direction?: NexusGenInputs['DirectionUncheckedUpdateManyWithoutTestNestedInput'] | null; // DirectionUncheckedUpdateManyWithoutTestNestedInput
     id?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
     response?: NexusGenInputs['ResponseUncheckedUpdateManyWithoutTestsNestedInput'] | null; // ResponseUncheckedUpdateManyWithoutTestsNestedInput
     tasks?: NexusGenInputs['TaskUncheckedUpdateManyWithoutTestNestedInput'] | null; // TaskUncheckedUpdateManyWithoutTestNestedInput
@@ -3224,6 +3892,15 @@ export interface NexusGenInputs {
   }
   TestUncheckedUpdateWithoutAnswersInput: { // input type
     createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
+    direction?: NexusGenInputs['DirectionUncheckedUpdateManyWithoutTestNestedInput'] | null; // DirectionUncheckedUpdateManyWithoutTestNestedInput
+    id?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
+    response?: NexusGenInputs['ResponseUncheckedUpdateManyWithoutTestsNestedInput'] | null; // ResponseUncheckedUpdateManyWithoutTestsNestedInput
+    tasks?: NexusGenInputs['TaskUncheckedUpdateManyWithoutTestNestedInput'] | null; // TaskUncheckedUpdateManyWithoutTestNestedInput
+    title?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+  }
+  TestUncheckedUpdateWithoutDirectionInput: { // input type
+    answers?: NexusGenInputs['AnswerUncheckedUpdateManyWithoutTestNestedInput'] | null; // AnswerUncheckedUpdateManyWithoutTestNestedInput
+    createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
     id?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
     response?: NexusGenInputs['ResponseUncheckedUpdateManyWithoutTestsNestedInput'] | null; // ResponseUncheckedUpdateManyWithoutTestsNestedInput
     tasks?: NexusGenInputs['TaskUncheckedUpdateManyWithoutTestNestedInput'] | null; // TaskUncheckedUpdateManyWithoutTestNestedInput
@@ -3232,6 +3909,7 @@ export interface NexusGenInputs {
   TestUncheckedUpdateWithoutResponseInput: { // input type
     answers?: NexusGenInputs['AnswerUncheckedUpdateManyWithoutTestNestedInput'] | null; // AnswerUncheckedUpdateManyWithoutTestNestedInput
     createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
+    direction?: NexusGenInputs['DirectionUncheckedUpdateManyWithoutTestNestedInput'] | null; // DirectionUncheckedUpdateManyWithoutTestNestedInput
     id?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
     tasks?: NexusGenInputs['TaskUncheckedUpdateManyWithoutTestNestedInput'] | null; // TaskUncheckedUpdateManyWithoutTestNestedInput
     title?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
@@ -3239,6 +3917,7 @@ export interface NexusGenInputs {
   TestUncheckedUpdateWithoutTasksInput: { // input type
     answers?: NexusGenInputs['AnswerUncheckedUpdateManyWithoutTestNestedInput'] | null; // AnswerUncheckedUpdateManyWithoutTestNestedInput
     createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
+    direction?: NexusGenInputs['DirectionUncheckedUpdateManyWithoutTestNestedInput'] | null; // DirectionUncheckedUpdateManyWithoutTestNestedInput
     id?: NexusGenInputs['IntFieldUpdateOperationsInput'] | null; // IntFieldUpdateOperationsInput
     response?: NexusGenInputs['ResponseUncheckedUpdateManyWithoutTestsNestedInput'] | null; // ResponseUncheckedUpdateManyWithoutTestsNestedInput
     title?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
@@ -3246,6 +3925,7 @@ export interface NexusGenInputs {
   TestUpdateInput: { // input type
     answers?: NexusGenInputs['AnswerUpdateManyWithoutTestNestedInput'] | null; // AnswerUpdateManyWithoutTestNestedInput
     createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
+    direction?: NexusGenInputs['DirectionUpdateManyWithoutTestNestedInput'] | null; // DirectionUpdateManyWithoutTestNestedInput
     response?: NexusGenInputs['ResponseUpdateManyWithoutTestsNestedInput'] | null; // ResponseUpdateManyWithoutTestsNestedInput
     tasks?: NexusGenInputs['TaskUpdateManyWithoutTestNestedInput'] | null; // TaskUpdateManyWithoutTestNestedInput
     title?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
@@ -3277,6 +3957,15 @@ export interface NexusGenInputs {
     update?: NexusGenInputs['TestUpdateToOneWithWhereWithoutAnswersInput'] | null; // TestUpdateToOneWithWhereWithoutAnswersInput
     upsert?: NexusGenInputs['TestUpsertWithoutAnswersInput'] | null; // TestUpsertWithoutAnswersInput
   }
+  TestUpdateOneWithoutDirectionNestedInput: { // input type
+    connect?: NexusGenInputs['TestWhereUniqueInput'] | null; // TestWhereUniqueInput
+    connectOrCreate?: NexusGenInputs['TestCreateOrConnectWithoutDirectionInput'] | null; // TestCreateOrConnectWithoutDirectionInput
+    create?: NexusGenInputs['TestCreateWithoutDirectionInput'] | null; // TestCreateWithoutDirectionInput
+    delete?: NexusGenInputs['TestWhereInput'] | null; // TestWhereInput
+    disconnect?: NexusGenInputs['TestWhereInput'] | null; // TestWhereInput
+    update?: NexusGenInputs['TestUpdateToOneWithWhereWithoutDirectionInput'] | null; // TestUpdateToOneWithWhereWithoutDirectionInput
+    upsert?: NexusGenInputs['TestUpsertWithoutDirectionInput'] | null; // TestUpsertWithoutDirectionInput
+  }
   TestUpdateOneWithoutTasksNestedInput: { // input type
     connect?: NexusGenInputs['TestWhereUniqueInput'] | null; // TestWhereUniqueInput
     connectOrCreate?: NexusGenInputs['TestCreateOrConnectWithoutTasksInput'] | null; // TestCreateOrConnectWithoutTasksInput
@@ -3290,6 +3979,10 @@ export interface NexusGenInputs {
     data: NexusGenInputs['TestUpdateWithoutAnswersInput']; // TestUpdateWithoutAnswersInput!
     where?: NexusGenInputs['TestWhereInput'] | null; // TestWhereInput
   }
+  TestUpdateToOneWithWhereWithoutDirectionInput: { // input type
+    data: NexusGenInputs['TestUpdateWithoutDirectionInput']; // TestUpdateWithoutDirectionInput!
+    where?: NexusGenInputs['TestWhereInput'] | null; // TestWhereInput
+  }
   TestUpdateToOneWithWhereWithoutTasksInput: { // input type
     data: NexusGenInputs['TestUpdateWithoutTasksInput']; // TestUpdateWithoutTasksInput!
     where?: NexusGenInputs['TestWhereInput'] | null; // TestWhereInput
@@ -3300,6 +3993,14 @@ export interface NexusGenInputs {
   }
   TestUpdateWithoutAnswersInput: { // input type
     createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
+    direction?: NexusGenInputs['DirectionUpdateManyWithoutTestNestedInput'] | null; // DirectionUpdateManyWithoutTestNestedInput
+    response?: NexusGenInputs['ResponseUpdateManyWithoutTestsNestedInput'] | null; // ResponseUpdateManyWithoutTestsNestedInput
+    tasks?: NexusGenInputs['TaskUpdateManyWithoutTestNestedInput'] | null; // TaskUpdateManyWithoutTestNestedInput
+    title?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
+  }
+  TestUpdateWithoutDirectionInput: { // input type
+    answers?: NexusGenInputs['AnswerUpdateManyWithoutTestNestedInput'] | null; // AnswerUpdateManyWithoutTestNestedInput
+    createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
     response?: NexusGenInputs['ResponseUpdateManyWithoutTestsNestedInput'] | null; // ResponseUpdateManyWithoutTestsNestedInput
     tasks?: NexusGenInputs['TaskUpdateManyWithoutTestNestedInput'] | null; // TaskUpdateManyWithoutTestNestedInput
     title?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
@@ -3307,12 +4008,14 @@ export interface NexusGenInputs {
   TestUpdateWithoutResponseInput: { // input type
     answers?: NexusGenInputs['AnswerUpdateManyWithoutTestNestedInput'] | null; // AnswerUpdateManyWithoutTestNestedInput
     createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
+    direction?: NexusGenInputs['DirectionUpdateManyWithoutTestNestedInput'] | null; // DirectionUpdateManyWithoutTestNestedInput
     tasks?: NexusGenInputs['TaskUpdateManyWithoutTestNestedInput'] | null; // TaskUpdateManyWithoutTestNestedInput
     title?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
   }
   TestUpdateWithoutTasksInput: { // input type
     answers?: NexusGenInputs['AnswerUpdateManyWithoutTestNestedInput'] | null; // AnswerUpdateManyWithoutTestNestedInput
     createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
+    direction?: NexusGenInputs['DirectionUpdateManyWithoutTestNestedInput'] | null; // DirectionUpdateManyWithoutTestNestedInput
     response?: NexusGenInputs['ResponseUpdateManyWithoutTestsNestedInput'] | null; // ResponseUpdateManyWithoutTestsNestedInput
     title?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
   }
@@ -3326,6 +4029,11 @@ export interface NexusGenInputs {
     update: NexusGenInputs['TestUpdateWithoutAnswersInput']; // TestUpdateWithoutAnswersInput!
     where?: NexusGenInputs['TestWhereInput'] | null; // TestWhereInput
   }
+  TestUpsertWithoutDirectionInput: { // input type
+    create: NexusGenInputs['TestCreateWithoutDirectionInput']; // TestCreateWithoutDirectionInput!
+    update: NexusGenInputs['TestUpdateWithoutDirectionInput']; // TestUpdateWithoutDirectionInput!
+    where?: NexusGenInputs['TestWhereInput'] | null; // TestWhereInput
+  }
   TestUpsertWithoutTasksInput: { // input type
     create: NexusGenInputs['TestCreateWithoutTasksInput']; // TestCreateWithoutTasksInput!
     update: NexusGenInputs['TestUpdateWithoutTasksInput']; // TestUpdateWithoutTasksInput!
@@ -3337,6 +4045,7 @@ export interface NexusGenInputs {
     OR?: Array<NexusGenInputs['TestWhereInput'] | null> | null; // [TestWhereInput]
     answers?: NexusGenInputs['AnswerListRelationFilter'] | null; // AnswerListRelationFilter
     createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
+    direction?: NexusGenInputs['DirectionListRelationFilter'] | null; // DirectionListRelationFilter
     id?: NexusGenInputs['IntFilter'] | null; // IntFilter
     response?: NexusGenInputs['ResponseListRelationFilter'] | null; // ResponseListRelationFilter
     tasks?: NexusGenInputs['TaskListRelationFilter'] | null; // TaskListRelationFilter
@@ -3348,6 +4057,7 @@ export interface NexusGenInputs {
     OR?: Array<NexusGenInputs['TestWhereInput'] | null> | null; // [TestWhereInput]
     answers?: NexusGenInputs['AnswerListRelationFilter'] | null; // AnswerListRelationFilter
     createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
+    direction?: NexusGenInputs['DirectionListRelationFilter'] | null; // DirectionListRelationFilter
     id?: number | null; // Int
     response?: NexusGenInputs['ResponseListRelationFilter'] | null; // ResponseListRelationFilter
     tasks?: NexusGenInputs['TaskListRelationFilter'] | null; // TaskListRelationFilter
@@ -3398,7 +4108,7 @@ export interface NexusGenInputs {
     vkLink?: NexusGenEnums['SortOrder'] | null; // SortOrder
   }
   UserCreateInput: { // input type
-    answers?: NexusGenInputs['AnswerCreateNestedManyWithoutUserInput'] | null; // AnswerCreateNestedManyWithoutUserInput
+    answers?: NexusGenInputs['TaskAnswerCreateNestedManyWithoutUserInput'] | null; // TaskAnswerCreateNestedManyWithoutUserInput
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     email: string; // String!
     fullname?: string | null; // String
@@ -3475,7 +4185,7 @@ export interface NexusGenInputs {
     vkLink?: string | null; // String
   }
   UserCreateWithoutGroupsInput: { // input type
-    answers?: NexusGenInputs['AnswerCreateNestedManyWithoutUserInput'] | null; // AnswerCreateNestedManyWithoutUserInput
+    answers?: NexusGenInputs['TaskAnswerCreateNestedManyWithoutUserInput'] | null; // TaskAnswerCreateNestedManyWithoutUserInput
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     email: string; // String!
     fullname?: string | null; // String
@@ -3489,7 +4199,7 @@ export interface NexusGenInputs {
     vkLink?: string | null; // String
   }
   UserCreateWithoutMessagesInput: { // input type
-    answers?: NexusGenInputs['AnswerCreateNestedManyWithoutUserInput'] | null; // AnswerCreateNestedManyWithoutUserInput
+    answers?: NexusGenInputs['TaskAnswerCreateNestedManyWithoutUserInput'] | null; // TaskAnswerCreateNestedManyWithoutUserInput
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     email: string; // String!
     fullname?: string | null; // String
@@ -3503,7 +4213,7 @@ export interface NexusGenInputs {
     vkLink?: string | null; // String
   }
   UserCreateWithoutResponsesInput: { // input type
-    answers?: NexusGenInputs['AnswerCreateNestedManyWithoutUserInput'] | null; // AnswerCreateNestedManyWithoutUserInput
+    answers?: NexusGenInputs['TaskAnswerCreateNestedManyWithoutUserInput'] | null; // TaskAnswerCreateNestedManyWithoutUserInput
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     email: string; // String!
     fullname?: string | null; // String
@@ -3548,11 +4258,6 @@ export interface NexusGenInputs {
   UserOrderByRelationAggregateInput: { // input type
     _count?: NexusGenEnums['SortOrder'] | null; // SortOrder
   }
-  UserOrderByRelevanceInput: { // input type
-    fields: NexusGenEnums['UserOrderByRelevanceFieldEnum']; // UserOrderByRelevanceFieldEnum!
-    search: string; // String!
-    sort: NexusGenEnums['SortOrder']; // SortOrder!
-  }
   UserOrderByWithAggregationInput: { // input type
     _avg?: NexusGenInputs['UserAvgOrderByAggregateInput'] | null; // UserAvgOrderByAggregateInput
     _count?: NexusGenInputs['UserCountOrderByAggregateInput'] | null; // UserCountOrderByAggregateInput
@@ -3570,9 +4275,8 @@ export interface NexusGenInputs {
     tgLink?: NexusGenInputs['SortOrderInput'] | null; // SortOrderInput
     vkLink?: NexusGenInputs['SortOrderInput'] | null; // SortOrderInput
   }
-  UserOrderByWithRelationAndSearchRelevanceInput: { // input type
-    _relevance?: NexusGenInputs['UserOrderByRelevanceInput'] | null; // UserOrderByRelevanceInput
-    answers?: NexusGenInputs['AnswerOrderByRelationAggregateInput'] | null; // AnswerOrderByRelationAggregateInput
+  UserOrderByWithRelationInput: { // input type
+    answers?: NexusGenInputs['TaskAnswerOrderByRelationAggregateInput'] | null; // TaskAnswerOrderByRelationAggregateInput
     createdAt?: NexusGenEnums['SortOrder'] | null; // SortOrder
     email?: NexusGenEnums['SortOrder'] | null; // SortOrder
     fullname?: NexusGenInputs['SortOrderInput'] | null; // SortOrderInput
@@ -3625,7 +4329,7 @@ export interface NexusGenInputs {
     id?: NexusGenEnums['SortOrder'] | null; // SortOrder
   }
   UserUncheckedCreateInput: { // input type
-    answers?: NexusGenInputs['AnswerUncheckedCreateNestedManyWithoutUserInput'] | null; // AnswerUncheckedCreateNestedManyWithoutUserInput
+    answers?: NexusGenInputs['TaskAnswerUncheckedCreateNestedManyWithoutUserInput'] | null; // TaskAnswerUncheckedCreateNestedManyWithoutUserInput
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     email: string; // String!
     fullname?: string | null; // String
@@ -3661,7 +4365,7 @@ export interface NexusGenInputs {
     vkLink?: string | null; // String
   }
   UserUncheckedCreateWithoutGroupsInput: { // input type
-    answers?: NexusGenInputs['AnswerUncheckedCreateNestedManyWithoutUserInput'] | null; // AnswerUncheckedCreateNestedManyWithoutUserInput
+    answers?: NexusGenInputs['TaskAnswerUncheckedCreateNestedManyWithoutUserInput'] | null; // TaskAnswerUncheckedCreateNestedManyWithoutUserInput
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     email: string; // String!
     fullname?: string | null; // String
@@ -3676,7 +4380,7 @@ export interface NexusGenInputs {
     vkLink?: string | null; // String
   }
   UserUncheckedCreateWithoutMessagesInput: { // input type
-    answers?: NexusGenInputs['AnswerUncheckedCreateNestedManyWithoutUserInput'] | null; // AnswerUncheckedCreateNestedManyWithoutUserInput
+    answers?: NexusGenInputs['TaskAnswerUncheckedCreateNestedManyWithoutUserInput'] | null; // TaskAnswerUncheckedCreateNestedManyWithoutUserInput
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     email: string; // String!
     fullname?: string | null; // String
@@ -3691,7 +4395,7 @@ export interface NexusGenInputs {
     vkLink?: string | null; // String
   }
   UserUncheckedCreateWithoutResponsesInput: { // input type
-    answers?: NexusGenInputs['AnswerUncheckedCreateNestedManyWithoutUserInput'] | null; // AnswerUncheckedCreateNestedManyWithoutUserInput
+    answers?: NexusGenInputs['TaskAnswerUncheckedCreateNestedManyWithoutUserInput'] | null; // TaskAnswerUncheckedCreateNestedManyWithoutUserInput
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     email: string; // String!
     fullname?: string | null; // String
@@ -3706,7 +4410,7 @@ export interface NexusGenInputs {
     vkLink?: string | null; // String
   }
   UserUncheckedUpdateInput: { // input type
-    answers?: NexusGenInputs['AnswerUncheckedUpdateManyWithoutUserNestedInput'] | null; // AnswerUncheckedUpdateManyWithoutUserNestedInput
+    answers?: NexusGenInputs['TaskAnswerUncheckedUpdateManyWithoutUserNestedInput'] | null; // TaskAnswerUncheckedUpdateManyWithoutUserNestedInput
     createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
     email?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     fullname?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
@@ -3773,7 +4477,7 @@ export interface NexusGenInputs {
     vkLink?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
   }
   UserUncheckedUpdateWithoutGroupsInput: { // input type
-    answers?: NexusGenInputs['AnswerUncheckedUpdateManyWithoutUserNestedInput'] | null; // AnswerUncheckedUpdateManyWithoutUserNestedInput
+    answers?: NexusGenInputs['TaskAnswerUncheckedUpdateManyWithoutUserNestedInput'] | null; // TaskAnswerUncheckedUpdateManyWithoutUserNestedInput
     createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
     email?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     fullname?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
@@ -3788,7 +4492,7 @@ export interface NexusGenInputs {
     vkLink?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
   }
   UserUncheckedUpdateWithoutMessagesInput: { // input type
-    answers?: NexusGenInputs['AnswerUncheckedUpdateManyWithoutUserNestedInput'] | null; // AnswerUncheckedUpdateManyWithoutUserNestedInput
+    answers?: NexusGenInputs['TaskAnswerUncheckedUpdateManyWithoutUserNestedInput'] | null; // TaskAnswerUncheckedUpdateManyWithoutUserNestedInput
     createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
     email?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     fullname?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
@@ -3803,7 +4507,7 @@ export interface NexusGenInputs {
     vkLink?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
   }
   UserUncheckedUpdateWithoutResponsesInput: { // input type
-    answers?: NexusGenInputs['AnswerUncheckedUpdateManyWithoutUserNestedInput'] | null; // AnswerUncheckedUpdateManyWithoutUserNestedInput
+    answers?: NexusGenInputs['TaskAnswerUncheckedUpdateManyWithoutUserNestedInput'] | null; // TaskAnswerUncheckedUpdateManyWithoutUserNestedInput
     createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
     email?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     fullname?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
@@ -3818,7 +4522,7 @@ export interface NexusGenInputs {
     vkLink?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
   }
   UserUpdateInput: { // input type
-    answers?: NexusGenInputs['AnswerUpdateManyWithoutUserNestedInput'] | null; // AnswerUpdateManyWithoutUserNestedInput
+    answers?: NexusGenInputs['TaskAnswerUpdateManyWithoutUserNestedInput'] | null; // TaskAnswerUpdateManyWithoutUserNestedInput
     createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
     email?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     fullname?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
@@ -3911,7 +4615,7 @@ export interface NexusGenInputs {
     vkLink?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
   }
   UserUpdateWithoutGroupsInput: { // input type
-    answers?: NexusGenInputs['AnswerUpdateManyWithoutUserNestedInput'] | null; // AnswerUpdateManyWithoutUserNestedInput
+    answers?: NexusGenInputs['TaskAnswerUpdateManyWithoutUserNestedInput'] | null; // TaskAnswerUpdateManyWithoutUserNestedInput
     createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
     email?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     fullname?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
@@ -3925,7 +4629,7 @@ export interface NexusGenInputs {
     vkLink?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
   }
   UserUpdateWithoutMessagesInput: { // input type
-    answers?: NexusGenInputs['AnswerUpdateManyWithoutUserNestedInput'] | null; // AnswerUpdateManyWithoutUserNestedInput
+    answers?: NexusGenInputs['TaskAnswerUpdateManyWithoutUserNestedInput'] | null; // TaskAnswerUpdateManyWithoutUserNestedInput
     createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
     email?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     fullname?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
@@ -3939,7 +4643,7 @@ export interface NexusGenInputs {
     vkLink?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
   }
   UserUpdateWithoutResponsesInput: { // input type
-    answers?: NexusGenInputs['AnswerUpdateManyWithoutUserNestedInput'] | null; // AnswerUpdateManyWithoutUserNestedInput
+    answers?: NexusGenInputs['TaskAnswerUpdateManyWithoutUserNestedInput'] | null; // TaskAnswerUpdateManyWithoutUserNestedInput
     createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
     email?: NexusGenInputs['StringFieldUpdateOperationsInput'] | null; // StringFieldUpdateOperationsInput
     fullname?: NexusGenInputs['NullableStringFieldUpdateOperationsInput'] | null; // NullableStringFieldUpdateOperationsInput
@@ -3976,7 +4680,7 @@ export interface NexusGenInputs {
     AND?: Array<NexusGenInputs['UserWhereInput'] | null> | null; // [UserWhereInput]
     NOT?: Array<NexusGenInputs['UserWhereInput'] | null> | null; // [UserWhereInput]
     OR?: Array<NexusGenInputs['UserWhereInput'] | null> | null; // [UserWhereInput]
-    answers?: NexusGenInputs['AnswerListRelationFilter'] | null; // AnswerListRelationFilter
+    answers?: NexusGenInputs['TaskAnswerListRelationFilter'] | null; // TaskAnswerListRelationFilter
     createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
     email?: NexusGenInputs['StringFilter'] | null; // StringFilter
     fullname?: NexusGenInputs['StringNullableFilter'] | null; // StringNullableFilter
@@ -3995,7 +4699,7 @@ export interface NexusGenInputs {
     AND?: Array<NexusGenInputs['UserWhereInput'] | null> | null; // [UserWhereInput]
     NOT?: Array<NexusGenInputs['UserWhereInput'] | null> | null; // [UserWhereInput]
     OR?: Array<NexusGenInputs['UserWhereInput'] | null> | null; // [UserWhereInput]
-    answers?: NexusGenInputs['AnswerListRelationFilter'] | null; // AnswerListRelationFilter
+    answers?: NexusGenInputs['TaskAnswerListRelationFilter'] | null; // TaskAnswerListRelationFilter
     createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
     email?: string | null; // String
     fullname?: NexusGenInputs['StringNullableFilter'] | null; // StringNullableFilter
@@ -4013,30 +4717,22 @@ export interface NexusGenInputs {
 }
 
 export interface NexusGenEnums {
-  AnswerOrderByRelevanceFieldEnum: "answer"
-  AnswerScalarFieldEnum: "answer" | "createdAt" | "id" | "testId" | "userId"
-  DirectionOrderByRelevanceFieldEnum: "description" | "title"
-  DirectionScalarFieldEnum: "createdAt" | "description" | "id" | "specializationId" | "title" | "type"
+  AnswerScalarFieldEnum: "answer" | "createdAt" | "id" | "testId"
+  DirectionScalarFieldEnum: "createdAt" | "description" | "id" | "specializationId" | "testId" | "title" | "type"
   DirectionType: "internship" | "practice"
   KindEnum: "enum" | "object" | "scalar"
-  MessageOrderByRelevanceFieldEnum: "files" | "text"
   MessageScalarFieldEnum: "createdAt" | "files" | "groupId" | "id" | "senderId" | "text"
-  MessagerGroupOrderByRelevanceFieldEnum: "icon" | "title"
   MessagerGroupScalarFieldEnum: "active" | "createdAt" | "creatorId" | "icon" | "id" | "title"
   NullsOrder: "first" | "last"
   QueryMode: "default" | "insensitive"
-  ResponseOrderByRelevanceFieldEnum: "text"
-  ResponseScalarFieldEnum: "createdAt" | "directionId" | "id" | "text" | "userId"
+  ResponseScalarFieldEnum: "createdAt" | "directionId" | "id" | "text" | "userId" | "verdict"
   SortOrder: "asc" | "desc"
-  SpecializationOrderByRelevanceFieldEnum: "title"
   SpecializationScalarFieldEnum: "createdAt" | "id" | "title"
-  TaskOrderByRelevanceFieldEnum: "question" | "variants"
-  TaskScalarFieldEnum: "correctMultipleAnswer" | "correctSingleAnswer" | "createdAt" | "id" | "question" | "testId" | "type" | "variants"
+  TaskAnswerScalarFieldEnum: "answer" | "answerModelId" | "id" | "taskId" | "userId" | "verdict"
+  TaskScalarFieldEnum: "code" | "correctMultipleAnswer" | "correctSingleAnswer" | "createdAt" | "id" | "question" | "testId" | "type" | "variants"
   TaskType: "codeResponse" | "detailedResponse" | "multipleResponse" | "singleResponse"
-  TestOrderByRelevanceFieldEnum: "title"
   TestScalarFieldEnum: "createdAt" | "id" | "title"
   TransactionIsolationLevel: "ReadCommitted" | "ReadUncommitted" | "RepeatableRead" | "Serializable"
-  UserOrderByRelevanceFieldEnum: "email" | "fullname" | "logo" | "passwordHash" | "phone" | "tgLink" | "vkLink"
   UserRoleEnum: "customer" | "hr"
   UserScalarFieldEnum: "createdAt" | "email" | "fullname" | "id" | "logo" | "passwordHash" | "phone" | "role" | "tgLink" | "vkLink"
 }
@@ -4104,6 +4800,13 @@ export interface NexusGenObjects {
     _min?: NexusGenRootTypes['TaskMinAggregateOutputType'] | null; // TaskMinAggregateOutputType
     _sum?: NexusGenRootTypes['TaskSumAggregateOutputType'] | null; // TaskSumAggregateOutputType
   }
+  AggregateTaskAnswer: { // root type
+    _avg?: NexusGenRootTypes['TaskAnswerAvgAggregateOutputType'] | null; // TaskAnswerAvgAggregateOutputType
+    _count?: NexusGenRootTypes['TaskAnswerCountAggregateOutputType'] | null; // TaskAnswerCountAggregateOutputType
+    _max?: NexusGenRootTypes['TaskAnswerMaxAggregateOutputType'] | null; // TaskAnswerMaxAggregateOutputType
+    _min?: NexusGenRootTypes['TaskAnswerMinAggregateOutputType'] | null; // TaskAnswerMinAggregateOutputType
+    _sum?: NexusGenRootTypes['TaskAnswerSumAggregateOutputType'] | null; // TaskAnswerSumAggregateOutputType
+  }
   AggregateTest: { // root type
     _avg?: NexusGenRootTypes['TestAvgAggregateOutputType'] | null; // TestAvgAggregateOutputType
     _count?: NexusGenRootTypes['TestCountAggregateOutputType'] | null; // TestCountAggregateOutputType
@@ -4123,12 +4826,10 @@ export interface NexusGenObjects {
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     id: number; // Int!
     testId: number; // Int!
-    userId: number; // Int!
   }
   AnswerAvgAggregateOutputType: { // root type
     id?: number | null; // Float
     testId?: number | null; // Float
-    userId?: number | null; // Float
   }
   AnswerCountAggregateOutputType: { // root type
     _all: number; // Int!
@@ -4136,29 +4837,26 @@ export interface NexusGenObjects {
     createdAt: number; // Int!
     id: number; // Int!
     testId: number; // Int!
-    userId: number; // Int!
   }
   AnswerCountOutputType: { // root type
     response: number; // Int!
+    taskAnswers: number; // Int!
   }
   AnswerMaxAggregateOutputType: { // root type
     answer?: string | null; // String
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     id?: number | null; // Int
     testId?: number | null; // Int
-    userId?: number | null; // Int
   }
   AnswerMinAggregateOutputType: { // root type
     answer?: string | null; // String
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     id?: number | null; // Int
     testId?: number | null; // Int
-    userId?: number | null; // Int
   }
   AnswerSumAggregateOutputType: { // root type
     id?: number | null; // Int
     testId?: number | null; // Int
-    userId?: number | null; // Int
   }
   BatchPayload: { // root type
     count: number; // Int!
@@ -4168,12 +4866,14 @@ export interface NexusGenObjects {
     description: string; // String!
     id: number; // Int!
     specializationId: number; // Int!
+    testId?: number | null; // Int
     title: string; // String!
     type?: NexusGenEnums['DirectionType'] | null; // DirectionType
   }
   DirectionAvgAggregateOutputType: { // root type
     id?: number | null; // Float
     specializationId?: number | null; // Float
+    testId?: number | null; // Float
   }
   DirectionCountAggregateOutputType: { // root type
     _all: number; // Int!
@@ -4181,6 +4881,7 @@ export interface NexusGenObjects {
     description: number; // Int!
     id: number; // Int!
     specializationId: number; // Int!
+    testId: number; // Int!
     title: number; // Int!
     type: number; // Int!
   }
@@ -4192,6 +4893,7 @@ export interface NexusGenObjects {
     description?: string | null; // String
     id?: number | null; // Int
     specializationId?: number | null; // Int
+    testId?: number | null; // Int
     title?: string | null; // String
     type?: NexusGenEnums['DirectionType'] | null; // DirectionType
   }
@@ -4200,12 +4902,14 @@ export interface NexusGenObjects {
     description?: string | null; // String
     id?: number | null; // Int
     specializationId?: number | null; // Int
+    testId?: number | null; // Int
     title?: string | null; // String
     type?: NexusGenEnums['DirectionType'] | null; // DirectionType
   }
   DirectionSumAggregateOutputType: { // root type
     id?: number | null; // Int
     specializationId?: number | null; // Int
+    testId?: number | null; // Int
   }
   Enum: { // root type
     fields: string[]; // [String!]!
@@ -4335,6 +5039,7 @@ export interface NexusGenObjects {
     id: number; // Int!
     text?: string | null; // String
     userId: number; // Int!
+    verdict?: string | null; // String
   }
   ResponseAvgAggregateOutputType: { // root type
     directionId?: number | null; // Float
@@ -4348,6 +5053,7 @@ export interface NexusGenObjects {
     id: number; // Int!
     text: number; // Int!
     userId: number; // Int!
+    verdict: number; // Int!
   }
   ResponseCountOutputType: { // root type
     answers: number; // Int!
@@ -4359,6 +5065,7 @@ export interface NexusGenObjects {
     id?: number | null; // Int
     text?: string | null; // String
     userId?: number | null; // Int
+    verdict?: string | null; // String
   }
   ResponseMinAggregateOutputType: { // root type
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
@@ -4366,6 +5073,7 @@ export interface NexusGenObjects {
     id?: number | null; // Int
     text?: string | null; // String
     userId?: number | null; // Int
+    verdict?: string | null; // String
   }
   ResponseSumAggregateOutputType: { // root type
     directionId?: number | null; // Int
@@ -4407,6 +5115,7 @@ export interface NexusGenObjects {
     id?: number | null; // Int
   }
   Task: { // root type
+    code?: string | null; // String
     correctMultipleAnswer: number[]; // [Int!]!
     correctSingleAnswer?: number | null; // Int
     createdAt: NexusGenScalars['DateTime']; // DateTime!
@@ -4416,6 +5125,53 @@ export interface NexusGenObjects {
     type: NexusGenEnums['TaskType']; // TaskType!
     variants: string[]; // [String!]!
   }
+  TaskAnswer: { // root type
+    answer: string; // String!
+    answerModelId: number; // Int!
+    id: number; // Int!
+    taskId: number; // Int!
+    userId: number; // Int!
+    verdict?: number | null; // Int
+  }
+  TaskAnswerAvgAggregateOutputType: { // root type
+    answerModelId?: number | null; // Float
+    id?: number | null; // Float
+    taskId?: number | null; // Float
+    userId?: number | null; // Float
+    verdict?: number | null; // Float
+  }
+  TaskAnswerCountAggregateOutputType: { // root type
+    _all: number; // Int!
+    answer: number; // Int!
+    answerModelId: number; // Int!
+    id: number; // Int!
+    taskId: number; // Int!
+    userId: number; // Int!
+    verdict: number; // Int!
+  }
+  TaskAnswerMaxAggregateOutputType: { // root type
+    answer?: string | null; // String
+    answerModelId?: number | null; // Int
+    id?: number | null; // Int
+    taskId?: number | null; // Int
+    userId?: number | null; // Int
+    verdict?: number | null; // Int
+  }
+  TaskAnswerMinAggregateOutputType: { // root type
+    answer?: string | null; // String
+    answerModelId?: number | null; // Int
+    id?: number | null; // Int
+    taskId?: number | null; // Int
+    userId?: number | null; // Int
+    verdict?: number | null; // Int
+  }
+  TaskAnswerSumAggregateOutputType: { // root type
+    answerModelId?: number | null; // Int
+    id?: number | null; // Int
+    taskId?: number | null; // Int
+    userId?: number | null; // Int
+    verdict?: number | null; // Int
+  }
   TaskAvgAggregateOutputType: { // root type
     correctMultipleAnswer?: number | null; // Float
     correctSingleAnswer?: number | null; // Float
@@ -4424,6 +5180,7 @@ export interface NexusGenObjects {
   }
   TaskCountAggregateOutputType: { // root type
     _all: number; // Int!
+    code: number; // Int!
     correctMultipleAnswer: number; // Int!
     correctSingleAnswer: number; // Int!
     createdAt: number; // Int!
@@ -4433,7 +5190,11 @@ export interface NexusGenObjects {
     type: number; // Int!
     variants: number; // Int!
   }
+  TaskCountOutputType: { // root type
+    taskAnswers: number; // Int!
+  }
   TaskMaxAggregateOutputType: { // root type
+    code?: string | null; // String
     correctSingleAnswer?: number | null; // Int
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     id?: number | null; // Int
@@ -4442,6 +5203,7 @@ export interface NexusGenObjects {
     type?: NexusGenEnums['TaskType'] | null; // TaskType
   }
   TaskMinAggregateOutputType: { // root type
+    code?: string | null; // String
     correctSingleAnswer?: number | null; // Int
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     id?: number | null; // Int
@@ -4471,6 +5233,7 @@ export interface NexusGenObjects {
   }
   TestCountOutputType: { // root type
     answers: number; // Int!
+    direction: number; // Int!
     response: number; // Int!
     tasks: number; // Int!
   }
@@ -4610,6 +5373,13 @@ export interface NexusGenFieldTypes {
     _min: NexusGenRootTypes['TaskMinAggregateOutputType'] | null; // TaskMinAggregateOutputType
     _sum: NexusGenRootTypes['TaskSumAggregateOutputType'] | null; // TaskSumAggregateOutputType
   }
+  AggregateTaskAnswer: { // field return type
+    _avg: NexusGenRootTypes['TaskAnswerAvgAggregateOutputType'] | null; // TaskAnswerAvgAggregateOutputType
+    _count: NexusGenRootTypes['TaskAnswerCountAggregateOutputType'] | null; // TaskAnswerCountAggregateOutputType
+    _max: NexusGenRootTypes['TaskAnswerMaxAggregateOutputType'] | null; // TaskAnswerMaxAggregateOutputType
+    _min: NexusGenRootTypes['TaskAnswerMinAggregateOutputType'] | null; // TaskAnswerMinAggregateOutputType
+    _sum: NexusGenRootTypes['TaskAnswerSumAggregateOutputType'] | null; // TaskAnswerSumAggregateOutputType
+  }
   AggregateTest: { // field return type
     _avg: NexusGenRootTypes['TestAvgAggregateOutputType'] | null; // TestAvgAggregateOutputType
     _count: NexusGenRootTypes['TestCountAggregateOutputType'] | null; // TestCountAggregateOutputType
@@ -4630,15 +5400,13 @@ export interface NexusGenFieldTypes {
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     id: number; // Int!
     response: NexusGenRootTypes['Response'][]; // [Response!]!
+    taskAnswers: NexusGenRootTypes['TaskAnswer'][]; // [TaskAnswer!]!
     test: NexusGenRootTypes['Test']; // Test!
     testId: number; // Int!
-    user: NexusGenRootTypes['User']; // User!
-    userId: number; // Int!
   }
   AnswerAvgAggregateOutputType: { // field return type
     id: number | null; // Float
     testId: number | null; // Float
-    userId: number | null; // Float
   }
   AnswerCountAggregateOutputType: { // field return type
     _all: number; // Int!
@@ -4646,29 +5414,26 @@ export interface NexusGenFieldTypes {
     createdAt: number; // Int!
     id: number; // Int!
     testId: number; // Int!
-    userId: number; // Int!
   }
   AnswerCountOutputType: { // field return type
     response: number; // Int!
+    taskAnswers: number; // Int!
   }
   AnswerMaxAggregateOutputType: { // field return type
     answer: string | null; // String
     createdAt: NexusGenScalars['DateTime'] | null; // DateTime
     id: number | null; // Int
     testId: number | null; // Int
-    userId: number | null; // Int
   }
   AnswerMinAggregateOutputType: { // field return type
     answer: string | null; // String
     createdAt: NexusGenScalars['DateTime'] | null; // DateTime
     id: number | null; // Int
     testId: number | null; // Int
-    userId: number | null; // Int
   }
   AnswerSumAggregateOutputType: { // field return type
     id: number | null; // Int
     testId: number | null; // Int
-    userId: number | null; // Int
   }
   BatchPayload: { // field return type
     count: number; // Int!
@@ -4681,12 +5446,15 @@ export interface NexusGenFieldTypes {
     responses: NexusGenRootTypes['Response'][]; // [Response!]!
     specialization: NexusGenRootTypes['Specialization']; // Specialization!
     specializationId: number; // Int!
+    test: NexusGenRootTypes['Test'] | null; // Test
+    testId: number | null; // Int
     title: string; // String!
     type: NexusGenEnums['DirectionType'] | null; // DirectionType
   }
   DirectionAvgAggregateOutputType: { // field return type
     id: number | null; // Float
     specializationId: number | null; // Float
+    testId: number | null; // Float
   }
   DirectionCountAggregateOutputType: { // field return type
     _all: number; // Int!
@@ -4694,6 +5462,7 @@ export interface NexusGenFieldTypes {
     description: number; // Int!
     id: number; // Int!
     specializationId: number; // Int!
+    testId: number; // Int!
     title: number; // Int!
     type: number; // Int!
   }
@@ -4705,6 +5474,7 @@ export interface NexusGenFieldTypes {
     description: string | null; // String
     id: number | null; // Int
     specializationId: number | null; // Int
+    testId: number | null; // Int
     title: string | null; // String
     type: NexusGenEnums['DirectionType'] | null; // DirectionType
   }
@@ -4713,12 +5483,14 @@ export interface NexusGenFieldTypes {
     description: string | null; // String
     id: number | null; // Int
     specializationId: number | null; // Int
+    testId: number | null; // Int
     title: string | null; // String
     type: NexusGenEnums['DirectionType'] | null; // DirectionType
   }
   DirectionSumAggregateOutputType: { // field return type
     id: number | null; // Int
     specializationId: number | null; // Int
+    testId: number | null; // Int
   }
   Enum: { // field return type
     fields: string[]; // [String!]!
@@ -4853,6 +5625,7 @@ export interface NexusGenFieldTypes {
     createOneResponse: NexusGenRootTypes['Response']; // Response!
     createOneSpecialization: NexusGenRootTypes['Specialization']; // Specialization!
     createOneTask: NexusGenRootTypes['Task']; // Task!
+    createOneTaskAnswer: NexusGenRootTypes['TaskAnswer']; // TaskAnswer!
     createOneTest: NexusGenRootTypes['Test']; // Test!
     createOneUser: NexusGenRootTypes['User']; // User!
     deleteManyAnswer: NexusGenRootTypes['BatchPayload']; // BatchPayload!
@@ -4862,6 +5635,7 @@ export interface NexusGenFieldTypes {
     deleteManyResponse: NexusGenRootTypes['BatchPayload']; // BatchPayload!
     deleteManySpecialization: NexusGenRootTypes['BatchPayload']; // BatchPayload!
     deleteManyTask: NexusGenRootTypes['BatchPayload']; // BatchPayload!
+    deleteManyTaskAnswer: NexusGenRootTypes['BatchPayload']; // BatchPayload!
     deleteManyTest: NexusGenRootTypes['BatchPayload']; // BatchPayload!
     deleteManyUser: NexusGenRootTypes['BatchPayload']; // BatchPayload!
     deleteOneAnswer: NexusGenRootTypes['Answer'] | null; // Answer
@@ -4871,8 +5645,12 @@ export interface NexusGenFieldTypes {
     deleteOneResponse: NexusGenRootTypes['Response'] | null; // Response
     deleteOneSpecialization: NexusGenRootTypes['Specialization'] | null; // Specialization
     deleteOneTask: NexusGenRootTypes['Task'] | null; // Task
+    deleteOneTaskAnswer: NexusGenRootTypes['TaskAnswer'] | null; // TaskAnswer
     deleteOneTest: NexusGenRootTypes['Test'] | null; // Test
     deleteOneUser: NexusGenRootTypes['User'] | null; // User
+    login: NexusGenRootTypes['User'] | null; // User
+    logout: boolean | null; // Boolean
+    signup: NexusGenRootTypes['User'] | null; // User
     updateField: NexusGenRootTypes['Field']; // Field!
     updateManyAnswer: NexusGenRootTypes['BatchPayload']; // BatchPayload!
     updateManyDirection: NexusGenRootTypes['BatchPayload']; // BatchPayload!
@@ -4881,6 +5659,7 @@ export interface NexusGenFieldTypes {
     updateManyResponse: NexusGenRootTypes['BatchPayload']; // BatchPayload!
     updateManySpecialization: NexusGenRootTypes['BatchPayload']; // BatchPayload!
     updateManyTask: NexusGenRootTypes['BatchPayload']; // BatchPayload!
+    updateManyTaskAnswer: NexusGenRootTypes['BatchPayload']; // BatchPayload!
     updateManyTest: NexusGenRootTypes['BatchPayload']; // BatchPayload!
     updateManyUser: NexusGenRootTypes['BatchPayload']; // BatchPayload!
     updateModel: NexusGenRootTypes['Model']; // Model!
@@ -4891,8 +5670,10 @@ export interface NexusGenFieldTypes {
     updateOneResponse: NexusGenRootTypes['Response']; // Response!
     updateOneSpecialization: NexusGenRootTypes['Specialization']; // Specialization!
     updateOneTask: NexusGenRootTypes['Task']; // Task!
+    updateOneTaskAnswer: NexusGenRootTypes['TaskAnswer']; // TaskAnswer!
     updateOneTest: NexusGenRootTypes['Test']; // Test!
     updateOneUser: NexusGenRootTypes['User']; // User!
+    updatePassword: boolean | null; // Boolean
     upsertOneAnswer: NexusGenRootTypes['Answer']; // Answer!
     upsertOneDirection: NexusGenRootTypes['Direction']; // Direction!
     upsertOneMessage: NexusGenRootTypes['Message']; // Message!
@@ -4900,6 +5681,7 @@ export interface NexusGenFieldTypes {
     upsertOneResponse: NexusGenRootTypes['Response']; // Response!
     upsertOneSpecialization: NexusGenRootTypes['Specialization']; // Specialization!
     upsertOneTask: NexusGenRootTypes['Task']; // Task!
+    upsertOneTaskAnswer: NexusGenRootTypes['TaskAnswer']; // TaskAnswer!
     upsertOneTest: NexusGenRootTypes['Test']; // Test!
     upsertOneUser: NexusGenRootTypes['User']; // User!
   }
@@ -4911,6 +5693,7 @@ export interface NexusGenFieldTypes {
     aggregateResponse: NexusGenRootTypes['AggregateResponse'] | null; // AggregateResponse
     aggregateSpecialization: NexusGenRootTypes['AggregateSpecialization'] | null; // AggregateSpecialization
     aggregateTask: NexusGenRootTypes['AggregateTask'] | null; // AggregateTask
+    aggregateTaskAnswer: NexusGenRootTypes['AggregateTaskAnswer'] | null; // AggregateTaskAnswer
     aggregateTest: NexusGenRootTypes['AggregateTest'] | null; // AggregateTest
     aggregateUser: NexusGenRootTypes['AggregateUser'] | null; // AggregateUser
     findFirstAnswer: NexusGenRootTypes['Answer'] | null; // Answer
@@ -4920,6 +5703,7 @@ export interface NexusGenFieldTypes {
     findFirstResponse: NexusGenRootTypes['Response'] | null; // Response
     findFirstSpecialization: NexusGenRootTypes['Specialization'] | null; // Specialization
     findFirstTask: NexusGenRootTypes['Task'] | null; // Task
+    findFirstTaskAnswer: NexusGenRootTypes['TaskAnswer'] | null; // TaskAnswer
     findFirstTest: NexusGenRootTypes['Test'] | null; // Test
     findFirstUser: NexusGenRootTypes['User'] | null; // User
     findManyAnswer: NexusGenRootTypes['Answer'][]; // [Answer!]!
@@ -4935,6 +5719,8 @@ export interface NexusGenFieldTypes {
     findManySpecialization: NexusGenRootTypes['Specialization'][]; // [Specialization!]!
     findManySpecializationCount: number; // Int!
     findManyTask: NexusGenRootTypes['Task'][]; // [Task!]!
+    findManyTaskAnswer: NexusGenRootTypes['TaskAnswer'][]; // [TaskAnswer!]!
+    findManyTaskAnswerCount: number; // Int!
     findManyTaskCount: number; // Int!
     findManyTest: NexusGenRootTypes['Test'][]; // [Test!]!
     findManyTestCount: number; // Int!
@@ -4947,9 +5733,11 @@ export interface NexusGenFieldTypes {
     findUniqueResponse: NexusGenRootTypes['Response'] | null; // Response
     findUniqueSpecialization: NexusGenRootTypes['Specialization'] | null; // Specialization
     findUniqueTask: NexusGenRootTypes['Task'] | null; // Task
+    findUniqueTaskAnswer: NexusGenRootTypes['TaskAnswer'] | null; // TaskAnswer
     findUniqueTest: NexusGenRootTypes['Test'] | null; // Test
     findUniqueUser: NexusGenRootTypes['User'] | null; // User
     getSchema: NexusGenRootTypes['Schema']; // Schema!
+    me: NexusGenRootTypes['User'] | null; // User
   }
   Response: { // field return type
     _count: NexusGenRootTypes['ResponseCountOutputType']; // ResponseCountOutputType!
@@ -4962,6 +5750,7 @@ export interface NexusGenFieldTypes {
     text: string | null; // String
     user: NexusGenRootTypes['User']; // User!
     userId: number; // Int!
+    verdict: string | null; // String
   }
   ResponseAvgAggregateOutputType: { // field return type
     directionId: number | null; // Float
@@ -4975,6 +5764,7 @@ export interface NexusGenFieldTypes {
     id: number; // Int!
     text: number; // Int!
     userId: number; // Int!
+    verdict: number; // Int!
   }
   ResponseCountOutputType: { // field return type
     answers: number; // Int!
@@ -4986,6 +5776,7 @@ export interface NexusGenFieldTypes {
     id: number | null; // Int
     text: string | null; // String
     userId: number | null; // Int
+    verdict: string | null; // String
   }
   ResponseMinAggregateOutputType: { // field return type
     createdAt: NexusGenScalars['DateTime'] | null; // DateTime
@@ -4993,6 +5784,7 @@ export interface NexusGenFieldTypes {
     id: number | null; // Int
     text: string | null; // String
     userId: number | null; // Int
+    verdict: string | null; // String
   }
   ResponseSumAggregateOutputType: { // field return type
     directionId: number | null; // Int
@@ -5036,15 +5828,68 @@ export interface NexusGenFieldTypes {
     id: number | null; // Int
   }
   Task: { // field return type
+    _count: NexusGenRootTypes['TaskCountOutputType']; // TaskCountOutputType!
+    code: string | null; // String
     correctMultipleAnswer: number[]; // [Int!]!
     correctSingleAnswer: number | null; // Int
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     id: number; // Int!
     question: string; // String!
+    taskAnswers: NexusGenRootTypes['TaskAnswer'][]; // [TaskAnswer!]!
     test: NexusGenRootTypes['Test'] | null; // Test
     testId: number | null; // Int
     type: NexusGenEnums['TaskType']; // TaskType!
     variants: string[]; // [String!]!
+  }
+  TaskAnswer: { // field return type
+    answer: string; // String!
+    answerModel: NexusGenRootTypes['Answer']; // Answer!
+    answerModelId: number; // Int!
+    id: number; // Int!
+    task: NexusGenRootTypes['Task']; // Task!
+    taskId: number; // Int!
+    user: NexusGenRootTypes['User']; // User!
+    userId: number; // Int!
+    verdict: number | null; // Int
+  }
+  TaskAnswerAvgAggregateOutputType: { // field return type
+    answerModelId: number | null; // Float
+    id: number | null; // Float
+    taskId: number | null; // Float
+    userId: number | null; // Float
+    verdict: number | null; // Float
+  }
+  TaskAnswerCountAggregateOutputType: { // field return type
+    _all: number; // Int!
+    answer: number; // Int!
+    answerModelId: number; // Int!
+    id: number; // Int!
+    taskId: number; // Int!
+    userId: number; // Int!
+    verdict: number; // Int!
+  }
+  TaskAnswerMaxAggregateOutputType: { // field return type
+    answer: string | null; // String
+    answerModelId: number | null; // Int
+    id: number | null; // Int
+    taskId: number | null; // Int
+    userId: number | null; // Int
+    verdict: number | null; // Int
+  }
+  TaskAnswerMinAggregateOutputType: { // field return type
+    answer: string | null; // String
+    answerModelId: number | null; // Int
+    id: number | null; // Int
+    taskId: number | null; // Int
+    userId: number | null; // Int
+    verdict: number | null; // Int
+  }
+  TaskAnswerSumAggregateOutputType: { // field return type
+    answerModelId: number | null; // Int
+    id: number | null; // Int
+    taskId: number | null; // Int
+    userId: number | null; // Int
+    verdict: number | null; // Int
   }
   TaskAvgAggregateOutputType: { // field return type
     correctMultipleAnswer: number | null; // Float
@@ -5054,6 +5899,7 @@ export interface NexusGenFieldTypes {
   }
   TaskCountAggregateOutputType: { // field return type
     _all: number; // Int!
+    code: number; // Int!
     correctMultipleAnswer: number; // Int!
     correctSingleAnswer: number; // Int!
     createdAt: number; // Int!
@@ -5063,7 +5909,11 @@ export interface NexusGenFieldTypes {
     type: number; // Int!
     variants: number; // Int!
   }
+  TaskCountOutputType: { // field return type
+    taskAnswers: number; // Int!
+  }
   TaskMaxAggregateOutputType: { // field return type
+    code: string | null; // String
     correctSingleAnswer: number | null; // Int
     createdAt: NexusGenScalars['DateTime'] | null; // DateTime
     id: number | null; // Int
@@ -5072,6 +5922,7 @@ export interface NexusGenFieldTypes {
     type: NexusGenEnums['TaskType'] | null; // TaskType
   }
   TaskMinAggregateOutputType: { // field return type
+    code: string | null; // String
     correctSingleAnswer: number | null; // Int
     createdAt: NexusGenScalars['DateTime'] | null; // DateTime
     id: number | null; // Int
@@ -5089,6 +5940,7 @@ export interface NexusGenFieldTypes {
     _count: NexusGenRootTypes['TestCountOutputType']; // TestCountOutputType!
     answers: NexusGenRootTypes['Answer'][]; // [Answer!]!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
+    direction: NexusGenRootTypes['Direction'][]; // [Direction!]!
     id: number; // Int!
     response: NexusGenRootTypes['Response'][]; // [Response!]!
     tasks: NexusGenRootTypes['Task'][]; // [Task!]!
@@ -5105,6 +5957,7 @@ export interface NexusGenFieldTypes {
   }
   TestCountOutputType: { // field return type
     answers: number; // Int!
+    direction: number; // Int!
     response: number; // Int!
     tasks: number; // Int!
   }
@@ -5123,7 +5976,7 @@ export interface NexusGenFieldTypes {
   }
   User: { // field return type
     _count: NexusGenRootTypes['UserCountOutputType']; // UserCountOutputType!
-    answers: NexusGenRootTypes['Answer'][]; // [Answer!]!
+    answers: NexusGenRootTypes['TaskAnswer'][]; // [TaskAnswer!]!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     email: string; // String!
     fullname: string | null; // String
@@ -5239,6 +6092,13 @@ export interface NexusGenFieldTypeNames {
     _min: 'TaskMinAggregateOutputType'
     _sum: 'TaskSumAggregateOutputType'
   }
+  AggregateTaskAnswer: { // field return type name
+    _avg: 'TaskAnswerAvgAggregateOutputType'
+    _count: 'TaskAnswerCountAggregateOutputType'
+    _max: 'TaskAnswerMaxAggregateOutputType'
+    _min: 'TaskAnswerMinAggregateOutputType'
+    _sum: 'TaskAnswerSumAggregateOutputType'
+  }
   AggregateTest: { // field return type name
     _avg: 'TestAvgAggregateOutputType'
     _count: 'TestCountAggregateOutputType'
@@ -5259,15 +6119,13 @@ export interface NexusGenFieldTypeNames {
     createdAt: 'DateTime'
     id: 'Int'
     response: 'Response'
+    taskAnswers: 'TaskAnswer'
     test: 'Test'
     testId: 'Int'
-    user: 'User'
-    userId: 'Int'
   }
   AnswerAvgAggregateOutputType: { // field return type name
     id: 'Float'
     testId: 'Float'
-    userId: 'Float'
   }
   AnswerCountAggregateOutputType: { // field return type name
     _all: 'Int'
@@ -5275,29 +6133,26 @@ export interface NexusGenFieldTypeNames {
     createdAt: 'Int'
     id: 'Int'
     testId: 'Int'
-    userId: 'Int'
   }
   AnswerCountOutputType: { // field return type name
     response: 'Int'
+    taskAnswers: 'Int'
   }
   AnswerMaxAggregateOutputType: { // field return type name
     answer: 'String'
     createdAt: 'DateTime'
     id: 'Int'
     testId: 'Int'
-    userId: 'Int'
   }
   AnswerMinAggregateOutputType: { // field return type name
     answer: 'String'
     createdAt: 'DateTime'
     id: 'Int'
     testId: 'Int'
-    userId: 'Int'
   }
   AnswerSumAggregateOutputType: { // field return type name
     id: 'Int'
     testId: 'Int'
-    userId: 'Int'
   }
   BatchPayload: { // field return type name
     count: 'Int'
@@ -5310,12 +6165,15 @@ export interface NexusGenFieldTypeNames {
     responses: 'Response'
     specialization: 'Specialization'
     specializationId: 'Int'
+    test: 'Test'
+    testId: 'Int'
     title: 'String'
     type: 'DirectionType'
   }
   DirectionAvgAggregateOutputType: { // field return type name
     id: 'Float'
     specializationId: 'Float'
+    testId: 'Float'
   }
   DirectionCountAggregateOutputType: { // field return type name
     _all: 'Int'
@@ -5323,6 +6181,7 @@ export interface NexusGenFieldTypeNames {
     description: 'Int'
     id: 'Int'
     specializationId: 'Int'
+    testId: 'Int'
     title: 'Int'
     type: 'Int'
   }
@@ -5334,6 +6193,7 @@ export interface NexusGenFieldTypeNames {
     description: 'String'
     id: 'Int'
     specializationId: 'Int'
+    testId: 'Int'
     title: 'String'
     type: 'DirectionType'
   }
@@ -5342,12 +6202,14 @@ export interface NexusGenFieldTypeNames {
     description: 'String'
     id: 'Int'
     specializationId: 'Int'
+    testId: 'Int'
     title: 'String'
     type: 'DirectionType'
   }
   DirectionSumAggregateOutputType: { // field return type name
     id: 'Int'
     specializationId: 'Int'
+    testId: 'Int'
   }
   Enum: { // field return type name
     fields: 'String'
@@ -5482,6 +6344,7 @@ export interface NexusGenFieldTypeNames {
     createOneResponse: 'Response'
     createOneSpecialization: 'Specialization'
     createOneTask: 'Task'
+    createOneTaskAnswer: 'TaskAnswer'
     createOneTest: 'Test'
     createOneUser: 'User'
     deleteManyAnswer: 'BatchPayload'
@@ -5491,6 +6354,7 @@ export interface NexusGenFieldTypeNames {
     deleteManyResponse: 'BatchPayload'
     deleteManySpecialization: 'BatchPayload'
     deleteManyTask: 'BatchPayload'
+    deleteManyTaskAnswer: 'BatchPayload'
     deleteManyTest: 'BatchPayload'
     deleteManyUser: 'BatchPayload'
     deleteOneAnswer: 'Answer'
@@ -5500,8 +6364,12 @@ export interface NexusGenFieldTypeNames {
     deleteOneResponse: 'Response'
     deleteOneSpecialization: 'Specialization'
     deleteOneTask: 'Task'
+    deleteOneTaskAnswer: 'TaskAnswer'
     deleteOneTest: 'Test'
     deleteOneUser: 'User'
+    login: 'User'
+    logout: 'Boolean'
+    signup: 'User'
     updateField: 'Field'
     updateManyAnswer: 'BatchPayload'
     updateManyDirection: 'BatchPayload'
@@ -5510,6 +6378,7 @@ export interface NexusGenFieldTypeNames {
     updateManyResponse: 'BatchPayload'
     updateManySpecialization: 'BatchPayload'
     updateManyTask: 'BatchPayload'
+    updateManyTaskAnswer: 'BatchPayload'
     updateManyTest: 'BatchPayload'
     updateManyUser: 'BatchPayload'
     updateModel: 'Model'
@@ -5520,8 +6389,10 @@ export interface NexusGenFieldTypeNames {
     updateOneResponse: 'Response'
     updateOneSpecialization: 'Specialization'
     updateOneTask: 'Task'
+    updateOneTaskAnswer: 'TaskAnswer'
     updateOneTest: 'Test'
     updateOneUser: 'User'
+    updatePassword: 'Boolean'
     upsertOneAnswer: 'Answer'
     upsertOneDirection: 'Direction'
     upsertOneMessage: 'Message'
@@ -5529,6 +6400,7 @@ export interface NexusGenFieldTypeNames {
     upsertOneResponse: 'Response'
     upsertOneSpecialization: 'Specialization'
     upsertOneTask: 'Task'
+    upsertOneTaskAnswer: 'TaskAnswer'
     upsertOneTest: 'Test'
     upsertOneUser: 'User'
   }
@@ -5540,6 +6412,7 @@ export interface NexusGenFieldTypeNames {
     aggregateResponse: 'AggregateResponse'
     aggregateSpecialization: 'AggregateSpecialization'
     aggregateTask: 'AggregateTask'
+    aggregateTaskAnswer: 'AggregateTaskAnswer'
     aggregateTest: 'AggregateTest'
     aggregateUser: 'AggregateUser'
     findFirstAnswer: 'Answer'
@@ -5549,6 +6422,7 @@ export interface NexusGenFieldTypeNames {
     findFirstResponse: 'Response'
     findFirstSpecialization: 'Specialization'
     findFirstTask: 'Task'
+    findFirstTaskAnswer: 'TaskAnswer'
     findFirstTest: 'Test'
     findFirstUser: 'User'
     findManyAnswer: 'Answer'
@@ -5564,6 +6438,8 @@ export interface NexusGenFieldTypeNames {
     findManySpecialization: 'Specialization'
     findManySpecializationCount: 'Int'
     findManyTask: 'Task'
+    findManyTaskAnswer: 'TaskAnswer'
+    findManyTaskAnswerCount: 'Int'
     findManyTaskCount: 'Int'
     findManyTest: 'Test'
     findManyTestCount: 'Int'
@@ -5576,9 +6452,11 @@ export interface NexusGenFieldTypeNames {
     findUniqueResponse: 'Response'
     findUniqueSpecialization: 'Specialization'
     findUniqueTask: 'Task'
+    findUniqueTaskAnswer: 'TaskAnswer'
     findUniqueTest: 'Test'
     findUniqueUser: 'User'
     getSchema: 'Schema'
+    me: 'User'
   }
   Response: { // field return type name
     _count: 'ResponseCountOutputType'
@@ -5591,6 +6469,7 @@ export interface NexusGenFieldTypeNames {
     text: 'String'
     user: 'User'
     userId: 'Int'
+    verdict: 'String'
   }
   ResponseAvgAggregateOutputType: { // field return type name
     directionId: 'Float'
@@ -5604,6 +6483,7 @@ export interface NexusGenFieldTypeNames {
     id: 'Int'
     text: 'Int'
     userId: 'Int'
+    verdict: 'Int'
   }
   ResponseCountOutputType: { // field return type name
     answers: 'Int'
@@ -5615,6 +6495,7 @@ export interface NexusGenFieldTypeNames {
     id: 'Int'
     text: 'String'
     userId: 'Int'
+    verdict: 'String'
   }
   ResponseMinAggregateOutputType: { // field return type name
     createdAt: 'DateTime'
@@ -5622,6 +6503,7 @@ export interface NexusGenFieldTypeNames {
     id: 'Int'
     text: 'String'
     userId: 'Int'
+    verdict: 'String'
   }
   ResponseSumAggregateOutputType: { // field return type name
     directionId: 'Int'
@@ -5665,15 +6547,68 @@ export interface NexusGenFieldTypeNames {
     id: 'Int'
   }
   Task: { // field return type name
+    _count: 'TaskCountOutputType'
+    code: 'String'
     correctMultipleAnswer: 'Int'
     correctSingleAnswer: 'Int'
     createdAt: 'DateTime'
     id: 'Int'
     question: 'String'
+    taskAnswers: 'TaskAnswer'
     test: 'Test'
     testId: 'Int'
     type: 'TaskType'
     variants: 'String'
+  }
+  TaskAnswer: { // field return type name
+    answer: 'String'
+    answerModel: 'Answer'
+    answerModelId: 'Int'
+    id: 'Int'
+    task: 'Task'
+    taskId: 'Int'
+    user: 'User'
+    userId: 'Int'
+    verdict: 'Int'
+  }
+  TaskAnswerAvgAggregateOutputType: { // field return type name
+    answerModelId: 'Float'
+    id: 'Float'
+    taskId: 'Float'
+    userId: 'Float'
+    verdict: 'Float'
+  }
+  TaskAnswerCountAggregateOutputType: { // field return type name
+    _all: 'Int'
+    answer: 'Int'
+    answerModelId: 'Int'
+    id: 'Int'
+    taskId: 'Int'
+    userId: 'Int'
+    verdict: 'Int'
+  }
+  TaskAnswerMaxAggregateOutputType: { // field return type name
+    answer: 'String'
+    answerModelId: 'Int'
+    id: 'Int'
+    taskId: 'Int'
+    userId: 'Int'
+    verdict: 'Int'
+  }
+  TaskAnswerMinAggregateOutputType: { // field return type name
+    answer: 'String'
+    answerModelId: 'Int'
+    id: 'Int'
+    taskId: 'Int'
+    userId: 'Int'
+    verdict: 'Int'
+  }
+  TaskAnswerSumAggregateOutputType: { // field return type name
+    answerModelId: 'Int'
+    id: 'Int'
+    taskId: 'Int'
+    userId: 'Int'
+    verdict: 'Int'
   }
   TaskAvgAggregateOutputType: { // field return type name
     correctMultipleAnswer: 'Float'
@@ -5683,6 +6618,7 @@ export interface NexusGenFieldTypeNames {
   }
   TaskCountAggregateOutputType: { // field return type name
     _all: 'Int'
+    code: 'Int'
     correctMultipleAnswer: 'Int'
     correctSingleAnswer: 'Int'
     createdAt: 'Int'
@@ -5692,7 +6628,11 @@ export interface NexusGenFieldTypeNames {
     type: 'Int'
     variants: 'Int'
   }
+  TaskCountOutputType: { // field return type name
+    taskAnswers: 'Int'
+  }
   TaskMaxAggregateOutputType: { // field return type name
+    code: 'String'
     correctSingleAnswer: 'Int'
     createdAt: 'DateTime'
     id: 'Int'
@@ -5701,6 +6641,7 @@ export interface NexusGenFieldTypeNames {
     type: 'TaskType'
   }
   TaskMinAggregateOutputType: { // field return type name
+    code: 'String'
     correctSingleAnswer: 'Int'
     createdAt: 'DateTime'
     id: 'Int'
@@ -5718,6 +6659,7 @@ export interface NexusGenFieldTypeNames {
     _count: 'TestCountOutputType'
     answers: 'Answer'
     createdAt: 'DateTime'
+    direction: 'Direction'
     id: 'Int'
     response: 'Response'
     tasks: 'Task'
@@ -5734,6 +6676,7 @@ export interface NexusGenFieldTypeNames {
   }
   TestCountOutputType: { // field return type name
     answers: 'Int'
+    direction: 'Int'
     response: 'Int'
     tasks: 'Int'
   }
@@ -5752,7 +6695,7 @@ export interface NexusGenFieldTypeNames {
   }
   User: { // field return type name
     _count: 'UserCountOutputType'
-    answers: 'Answer'
+    answers: 'TaskAnswer'
     createdAt: 'DateTime'
     email: 'String'
     fullname: 'String'
@@ -5823,27 +6766,38 @@ export interface NexusGenArgTypes {
     response: { // args
       cursor?: NexusGenInputs['ResponseWhereUniqueInput'] | null; // ResponseWhereUniqueInput
       distinct?: Array<NexusGenEnums['ResponseScalarFieldEnum'] | null> | null; // [ResponseScalarFieldEnum]
-      orderBy?: Array<NexusGenInputs['ResponseOrderByWithRelationAndSearchRelevanceInput'] | null> | null; // [ResponseOrderByWithRelationAndSearchRelevanceInput]
+      orderBy?: Array<NexusGenInputs['ResponseOrderByWithRelationInput'] | null> | null; // [ResponseOrderByWithRelationInput]
       skip?: number | null; // Int
       take?: number | null; // Int
       where?: NexusGenInputs['ResponseWhereInput'] | null; // ResponseWhereInput
+    }
+    taskAnswers: { // args
+      cursor?: NexusGenInputs['TaskAnswerWhereUniqueInput'] | null; // TaskAnswerWhereUniqueInput
+      distinct?: Array<NexusGenEnums['TaskAnswerScalarFieldEnum'] | null> | null; // [TaskAnswerScalarFieldEnum]
+      orderBy?: Array<NexusGenInputs['TaskAnswerOrderByWithRelationInput'] | null> | null; // [TaskAnswerOrderByWithRelationInput]
+      skip?: number | null; // Int
+      take?: number | null; // Int
+      where?: NexusGenInputs['TaskAnswerWhereInput'] | null; // TaskAnswerWhereInput
     }
   }
   Direction: {
     responses: { // args
       cursor?: NexusGenInputs['ResponseWhereUniqueInput'] | null; // ResponseWhereUniqueInput
       distinct?: Array<NexusGenEnums['ResponseScalarFieldEnum'] | null> | null; // [ResponseScalarFieldEnum]
-      orderBy?: Array<NexusGenInputs['ResponseOrderByWithRelationAndSearchRelevanceInput'] | null> | null; // [ResponseOrderByWithRelationAndSearchRelevanceInput]
+      orderBy?: Array<NexusGenInputs['ResponseOrderByWithRelationInput'] | null> | null; // [ResponseOrderByWithRelationInput]
       skip?: number | null; // Int
       take?: number | null; // Int
       where?: NexusGenInputs['ResponseWhereInput'] | null; // ResponseWhereInput
+    }
+    test: { // args
+      where?: NexusGenInputs['TestWhereInput'] | null; // TestWhereInput
     }
   }
   MessagerGroup: {
     messages: { // args
       cursor?: NexusGenInputs['MessageWhereUniqueInput'] | null; // MessageWhereUniqueInput
       distinct?: Array<NexusGenEnums['MessageScalarFieldEnum'] | null> | null; // [MessageScalarFieldEnum]
-      orderBy?: Array<NexusGenInputs['MessageOrderByWithRelationAndSearchRelevanceInput'] | null> | null; // [MessageOrderByWithRelationAndSearchRelevanceInput]
+      orderBy?: Array<NexusGenInputs['MessageOrderByWithRelationInput'] | null> | null; // [MessageOrderByWithRelationInput]
       skip?: number | null; // Int
       take?: number | null; // Int
       where?: NexusGenInputs['MessageWhereInput'] | null; // MessageWhereInput
@@ -5851,7 +6805,7 @@ export interface NexusGenArgTypes {
     users: { // args
       cursor?: NexusGenInputs['UserWhereUniqueInput'] | null; // UserWhereUniqueInput
       distinct?: Array<NexusGenEnums['UserScalarFieldEnum'] | null> | null; // [UserScalarFieldEnum]
-      orderBy?: Array<NexusGenInputs['UserOrderByWithRelationAndSearchRelevanceInput'] | null> | null; // [UserOrderByWithRelationAndSearchRelevanceInput]
+      orderBy?: Array<NexusGenInputs['UserOrderByWithRelationInput'] | null> | null; // [UserOrderByWithRelationInput]
       skip?: number | null; // Int
       take?: number | null; // Int
       where?: NexusGenInputs['UserWhereInput'] | null; // UserWhereInput
@@ -5878,6 +6832,9 @@ export interface NexusGenArgTypes {
     }
     createOneTask: { // args
       data: NexusGenInputs['TaskCreateInput']; // TaskCreateInput!
+    }
+    createOneTaskAnswer: { // args
+      data: NexusGenInputs['TaskAnswerCreateInput']; // TaskAnswerCreateInput!
     }
     createOneTest: { // args
       data: NexusGenInputs['TestCreateInput']; // TestCreateInput!
@@ -5906,6 +6863,9 @@ export interface NexusGenArgTypes {
     deleteManyTask: { // args
       where?: NexusGenInputs['TaskWhereInput'] | null; // TaskWhereInput
     }
+    deleteManyTaskAnswer: { // args
+      where?: NexusGenInputs['TaskAnswerWhereInput'] | null; // TaskAnswerWhereInput
+    }
     deleteManyTest: { // args
       where?: NexusGenInputs['TestWhereInput'] | null; // TestWhereInput
     }
@@ -5933,11 +6893,23 @@ export interface NexusGenArgTypes {
     deleteOneTask: { // args
       where: NexusGenInputs['TaskWhereUniqueInput']; // TaskWhereUniqueInput!
     }
+    deleteOneTaskAnswer: { // args
+      where: NexusGenInputs['TaskAnswerWhereUniqueInput']; // TaskAnswerWhereUniqueInput!
+    }
     deleteOneTest: { // args
       where: NexusGenInputs['TestWhereUniqueInput']; // TestWhereUniqueInput!
     }
     deleteOneUser: { // args
       where: NexusGenInputs['UserWhereUniqueInput']; // UserWhereUniqueInput!
+    }
+    login: { // args
+      email: string; // String!
+      password: string; // String!
+    }
+    signup: { // args
+      email: string; // String!
+      name?: string | null; // String
+      password: string; // String!
     }
     updateField: { // args
       data: NexusGenInputs['UpdateFieldInput']; // UpdateFieldInput!
@@ -5971,6 +6943,10 @@ export interface NexusGenArgTypes {
     updateManyTask: { // args
       data: NexusGenInputs['TaskUpdateManyMutationInput']; // TaskUpdateManyMutationInput!
       where?: NexusGenInputs['TaskWhereInput'] | null; // TaskWhereInput
+    }
+    updateManyTaskAnswer: { // args
+      data: NexusGenInputs['TaskAnswerUpdateManyMutationInput']; // TaskAnswerUpdateManyMutationInput!
+      where?: NexusGenInputs['TaskAnswerWhereInput'] | null; // TaskAnswerWhereInput
     }
     updateManyTest: { // args
       data: NexusGenInputs['TestUpdateManyMutationInput']; // TestUpdateManyMutationInput!
@@ -6012,6 +6988,10 @@ export interface NexusGenArgTypes {
       data: NexusGenInputs['TaskUpdateInput']; // TaskUpdateInput!
       where: NexusGenInputs['TaskWhereUniqueInput']; // TaskWhereUniqueInput!
     }
+    updateOneTaskAnswer: { // args
+      data: NexusGenInputs['TaskAnswerUpdateInput']; // TaskAnswerUpdateInput!
+      where: NexusGenInputs['TaskAnswerWhereUniqueInput']; // TaskAnswerWhereUniqueInput!
+    }
     updateOneTest: { // args
       data: NexusGenInputs['TestUpdateInput']; // TestUpdateInput!
       where: NexusGenInputs['TestWhereUniqueInput']; // TestWhereUniqueInput!
@@ -6019,6 +6999,10 @@ export interface NexusGenArgTypes {
     updateOneUser: { // args
       data: NexusGenInputs['UserUpdateInput']; // UserUpdateInput!
       where: NexusGenInputs['UserWhereUniqueInput']; // UserWhereUniqueInput!
+    }
+    updatePassword: { // args
+      currentPassword: string; // String!
+      password: string; // String!
     }
     upsertOneAnswer: { // args
       create: NexusGenInputs['AnswerCreateInput']; // AnswerCreateInput!
@@ -6055,6 +7039,11 @@ export interface NexusGenArgTypes {
       update: NexusGenInputs['TaskUpdateInput']; // TaskUpdateInput!
       where: NexusGenInputs['TaskWhereUniqueInput']; // TaskWhereUniqueInput!
     }
+    upsertOneTaskAnswer: { // args
+      create: NexusGenInputs['TaskAnswerCreateInput']; // TaskAnswerCreateInput!
+      update: NexusGenInputs['TaskAnswerUpdateInput']; // TaskAnswerUpdateInput!
+      where: NexusGenInputs['TaskAnswerWhereUniqueInput']; // TaskAnswerWhereUniqueInput!
+    }
     upsertOneTest: { // args
       create: NexusGenInputs['TestCreateInput']; // TestCreateInput!
       update: NexusGenInputs['TestUpdateInput']; // TestUpdateInput!
@@ -6069,63 +7058,70 @@ export interface NexusGenArgTypes {
   Query: {
     aggregateAnswer: { // args
       cursor?: NexusGenInputs['AnswerWhereUniqueInput'] | null; // AnswerWhereUniqueInput
-      orderBy?: Array<NexusGenInputs['AnswerOrderByWithRelationAndSearchRelevanceInput'] | null> | null; // [AnswerOrderByWithRelationAndSearchRelevanceInput]
+      orderBy?: Array<NexusGenInputs['AnswerOrderByWithRelationInput'] | null> | null; // [AnswerOrderByWithRelationInput]
       skip?: number | null; // Int
       take?: number | null; // Int
       where?: NexusGenInputs['AnswerWhereInput'] | null; // AnswerWhereInput
     }
     aggregateDirection: { // args
       cursor?: NexusGenInputs['DirectionWhereUniqueInput'] | null; // DirectionWhereUniqueInput
-      orderBy?: Array<NexusGenInputs['DirectionOrderByWithRelationAndSearchRelevanceInput'] | null> | null; // [DirectionOrderByWithRelationAndSearchRelevanceInput]
+      orderBy?: Array<NexusGenInputs['DirectionOrderByWithRelationInput'] | null> | null; // [DirectionOrderByWithRelationInput]
       skip?: number | null; // Int
       take?: number | null; // Int
       where?: NexusGenInputs['DirectionWhereInput'] | null; // DirectionWhereInput
     }
     aggregateMessage: { // args
       cursor?: NexusGenInputs['MessageWhereUniqueInput'] | null; // MessageWhereUniqueInput
-      orderBy?: Array<NexusGenInputs['MessageOrderByWithRelationAndSearchRelevanceInput'] | null> | null; // [MessageOrderByWithRelationAndSearchRelevanceInput]
+      orderBy?: Array<NexusGenInputs['MessageOrderByWithRelationInput'] | null> | null; // [MessageOrderByWithRelationInput]
       skip?: number | null; // Int
       take?: number | null; // Int
       where?: NexusGenInputs['MessageWhereInput'] | null; // MessageWhereInput
     }
     aggregateMessagerGroup: { // args
       cursor?: NexusGenInputs['MessagerGroupWhereUniqueInput'] | null; // MessagerGroupWhereUniqueInput
-      orderBy?: Array<NexusGenInputs['MessagerGroupOrderByWithRelationAndSearchRelevanceInput'] | null> | null; // [MessagerGroupOrderByWithRelationAndSearchRelevanceInput]
+      orderBy?: Array<NexusGenInputs['MessagerGroupOrderByWithRelationInput'] | null> | null; // [MessagerGroupOrderByWithRelationInput]
       skip?: number | null; // Int
       take?: number | null; // Int
       where?: NexusGenInputs['MessagerGroupWhereInput'] | null; // MessagerGroupWhereInput
     }
     aggregateResponse: { // args
       cursor?: NexusGenInputs['ResponseWhereUniqueInput'] | null; // ResponseWhereUniqueInput
-      orderBy?: Array<NexusGenInputs['ResponseOrderByWithRelationAndSearchRelevanceInput'] | null> | null; // [ResponseOrderByWithRelationAndSearchRelevanceInput]
+      orderBy?: Array<NexusGenInputs['ResponseOrderByWithRelationInput'] | null> | null; // [ResponseOrderByWithRelationInput]
       skip?: number | null; // Int
       take?: number | null; // Int
       where?: NexusGenInputs['ResponseWhereInput'] | null; // ResponseWhereInput
     }
     aggregateSpecialization: { // args
       cursor?: NexusGenInputs['SpecializationWhereUniqueInput'] | null; // SpecializationWhereUniqueInput
-      orderBy?: Array<NexusGenInputs['SpecializationOrderByWithRelationAndSearchRelevanceInput'] | null> | null; // [SpecializationOrderByWithRelationAndSearchRelevanceInput]
+      orderBy?: Array<NexusGenInputs['SpecializationOrderByWithRelationInput'] | null> | null; // [SpecializationOrderByWithRelationInput]
       skip?: number | null; // Int
       take?: number | null; // Int
       where?: NexusGenInputs['SpecializationWhereInput'] | null; // SpecializationWhereInput
     }
     aggregateTask: { // args
       cursor?: NexusGenInputs['TaskWhereUniqueInput'] | null; // TaskWhereUniqueInput
-      orderBy?: Array<NexusGenInputs['TaskOrderByWithRelationAndSearchRelevanceInput'] | null> | null; // [TaskOrderByWithRelationAndSearchRelevanceInput]
+      orderBy?: Array<NexusGenInputs['TaskOrderByWithRelationInput'] | null> | null; // [TaskOrderByWithRelationInput]
       skip?: number | null; // Int
       take?: number | null; // Int
       where?: NexusGenInputs['TaskWhereInput'] | null; // TaskWhereInput
     }
+    aggregateTaskAnswer: { // args
+      cursor?: NexusGenInputs['TaskAnswerWhereUniqueInput'] | null; // TaskAnswerWhereUniqueInput
+      orderBy?: Array<NexusGenInputs['TaskAnswerOrderByWithRelationInput'] | null> | null; // [TaskAnswerOrderByWithRelationInput]
+      skip?: number | null; // Int
+      take?: number | null; // Int
+      where?: NexusGenInputs['TaskAnswerWhereInput'] | null; // TaskAnswerWhereInput
+    }
     aggregateTest: { // args
       cursor?: NexusGenInputs['TestWhereUniqueInput'] | null; // TestWhereUniqueInput
-      orderBy?: Array<NexusGenInputs['TestOrderByWithRelationAndSearchRelevanceInput'] | null> | null; // [TestOrderByWithRelationAndSearchRelevanceInput]
+      orderBy?: Array<NexusGenInputs['TestOrderByWithRelationInput'] | null> | null; // [TestOrderByWithRelationInput]
       skip?: number | null; // Int
       take?: number | null; // Int
       where?: NexusGenInputs['TestWhereInput'] | null; // TestWhereInput
     }
     aggregateUser: { // args
       cursor?: NexusGenInputs['UserWhereUniqueInput'] | null; // UserWhereUniqueInput
-      orderBy?: Array<NexusGenInputs['UserOrderByWithRelationAndSearchRelevanceInput'] | null> | null; // [UserOrderByWithRelationAndSearchRelevanceInput]
+      orderBy?: Array<NexusGenInputs['UserOrderByWithRelationInput'] | null> | null; // [UserOrderByWithRelationInput]
       skip?: number | null; // Int
       take?: number | null; // Int
       where?: NexusGenInputs['UserWhereInput'] | null; // UserWhereInput
@@ -6133,7 +7129,7 @@ export interface NexusGenArgTypes {
     findFirstAnswer: { // args
       cursor?: NexusGenInputs['AnswerWhereUniqueInput'] | null; // AnswerWhereUniqueInput
       distinct?: Array<NexusGenEnums['AnswerScalarFieldEnum'] | null> | null; // [AnswerScalarFieldEnum]
-      orderBy?: Array<NexusGenInputs['AnswerOrderByWithRelationAndSearchRelevanceInput'] | null> | null; // [AnswerOrderByWithRelationAndSearchRelevanceInput]
+      orderBy?: Array<NexusGenInputs['AnswerOrderByWithRelationInput'] | null> | null; // [AnswerOrderByWithRelationInput]
       skip?: number | null; // Int
       take?: number | null; // Int
       where?: NexusGenInputs['AnswerWhereInput'] | null; // AnswerWhereInput
@@ -6141,7 +7137,7 @@ export interface NexusGenArgTypes {
     findFirstDirection: { // args
       cursor?: NexusGenInputs['DirectionWhereUniqueInput'] | null; // DirectionWhereUniqueInput
       distinct?: Array<NexusGenEnums['DirectionScalarFieldEnum'] | null> | null; // [DirectionScalarFieldEnum]
-      orderBy?: Array<NexusGenInputs['DirectionOrderByWithRelationAndSearchRelevanceInput'] | null> | null; // [DirectionOrderByWithRelationAndSearchRelevanceInput]
+      orderBy?: Array<NexusGenInputs['DirectionOrderByWithRelationInput'] | null> | null; // [DirectionOrderByWithRelationInput]
       skip?: number | null; // Int
       take?: number | null; // Int
       where?: NexusGenInputs['DirectionWhereInput'] | null; // DirectionWhereInput
@@ -6149,7 +7145,7 @@ export interface NexusGenArgTypes {
     findFirstMessage: { // args
       cursor?: NexusGenInputs['MessageWhereUniqueInput'] | null; // MessageWhereUniqueInput
       distinct?: Array<NexusGenEnums['MessageScalarFieldEnum'] | null> | null; // [MessageScalarFieldEnum]
-      orderBy?: Array<NexusGenInputs['MessageOrderByWithRelationAndSearchRelevanceInput'] | null> | null; // [MessageOrderByWithRelationAndSearchRelevanceInput]
+      orderBy?: Array<NexusGenInputs['MessageOrderByWithRelationInput'] | null> | null; // [MessageOrderByWithRelationInput]
       skip?: number | null; // Int
       take?: number | null; // Int
       where?: NexusGenInputs['MessageWhereInput'] | null; // MessageWhereInput
@@ -6157,7 +7153,7 @@ export interface NexusGenArgTypes {
     findFirstMessagerGroup: { // args
       cursor?: NexusGenInputs['MessagerGroupWhereUniqueInput'] | null; // MessagerGroupWhereUniqueInput
       distinct?: Array<NexusGenEnums['MessagerGroupScalarFieldEnum'] | null> | null; // [MessagerGroupScalarFieldEnum]
-      orderBy?: Array<NexusGenInputs['MessagerGroupOrderByWithRelationAndSearchRelevanceInput'] | null> | null; // [MessagerGroupOrderByWithRelationAndSearchRelevanceInput]
+      orderBy?: Array<NexusGenInputs['MessagerGroupOrderByWithRelationInput'] | null> | null; // [MessagerGroupOrderByWithRelationInput]
       skip?: number | null; // Int
       take?: number | null; // Int
       where?: NexusGenInputs['MessagerGroupWhereInput'] | null; // MessagerGroupWhereInput
@@ -6165,7 +7161,7 @@ export interface NexusGenArgTypes {
     findFirstResponse: { // args
       cursor?: NexusGenInputs['ResponseWhereUniqueInput'] | null; // ResponseWhereUniqueInput
       distinct?: Array<NexusGenEnums['ResponseScalarFieldEnum'] | null> | null; // [ResponseScalarFieldEnum]
-      orderBy?: Array<NexusGenInputs['ResponseOrderByWithRelationAndSearchRelevanceInput'] | null> | null; // [ResponseOrderByWithRelationAndSearchRelevanceInput]
+      orderBy?: Array<NexusGenInputs['ResponseOrderByWithRelationInput'] | null> | null; // [ResponseOrderByWithRelationInput]
       skip?: number | null; // Int
       take?: number | null; // Int
       where?: NexusGenInputs['ResponseWhereInput'] | null; // ResponseWhereInput
@@ -6173,7 +7169,7 @@ export interface NexusGenArgTypes {
     findFirstSpecialization: { // args
       cursor?: NexusGenInputs['SpecializationWhereUniqueInput'] | null; // SpecializationWhereUniqueInput
       distinct?: Array<NexusGenEnums['SpecializationScalarFieldEnum'] | null> | null; // [SpecializationScalarFieldEnum]
-      orderBy?: Array<NexusGenInputs['SpecializationOrderByWithRelationAndSearchRelevanceInput'] | null> | null; // [SpecializationOrderByWithRelationAndSearchRelevanceInput]
+      orderBy?: Array<NexusGenInputs['SpecializationOrderByWithRelationInput'] | null> | null; // [SpecializationOrderByWithRelationInput]
       skip?: number | null; // Int
       take?: number | null; // Int
       where?: NexusGenInputs['SpecializationWhereInput'] | null; // SpecializationWhereInput
@@ -6181,15 +7177,23 @@ export interface NexusGenArgTypes {
     findFirstTask: { // args
       cursor?: NexusGenInputs['TaskWhereUniqueInput'] | null; // TaskWhereUniqueInput
       distinct?: Array<NexusGenEnums['TaskScalarFieldEnum'] | null> | null; // [TaskScalarFieldEnum]
-      orderBy?: Array<NexusGenInputs['TaskOrderByWithRelationAndSearchRelevanceInput'] | null> | null; // [TaskOrderByWithRelationAndSearchRelevanceInput]
+      orderBy?: Array<NexusGenInputs['TaskOrderByWithRelationInput'] | null> | null; // [TaskOrderByWithRelationInput]
       skip?: number | null; // Int
       take?: number | null; // Int
       where?: NexusGenInputs['TaskWhereInput'] | null; // TaskWhereInput
     }
+    findFirstTaskAnswer: { // args
+      cursor?: NexusGenInputs['TaskAnswerWhereUniqueInput'] | null; // TaskAnswerWhereUniqueInput
+      distinct?: Array<NexusGenEnums['TaskAnswerScalarFieldEnum'] | null> | null; // [TaskAnswerScalarFieldEnum]
+      orderBy?: Array<NexusGenInputs['TaskAnswerOrderByWithRelationInput'] | null> | null; // [TaskAnswerOrderByWithRelationInput]
+      skip?: number | null; // Int
+      take?: number | null; // Int
+      where?: NexusGenInputs['TaskAnswerWhereInput'] | null; // TaskAnswerWhereInput
+    }
     findFirstTest: { // args
       cursor?: NexusGenInputs['TestWhereUniqueInput'] | null; // TestWhereUniqueInput
       distinct?: Array<NexusGenEnums['TestScalarFieldEnum'] | null> | null; // [TestScalarFieldEnum]
-      orderBy?: Array<NexusGenInputs['TestOrderByWithRelationAndSearchRelevanceInput'] | null> | null; // [TestOrderByWithRelationAndSearchRelevanceInput]
+      orderBy?: Array<NexusGenInputs['TestOrderByWithRelationInput'] | null> | null; // [TestOrderByWithRelationInput]
       skip?: number | null; // Int
       take?: number | null; // Int
       where?: NexusGenInputs['TestWhereInput'] | null; // TestWhereInput
@@ -6197,7 +7201,7 @@ export interface NexusGenArgTypes {
     findFirstUser: { // args
       cursor?: NexusGenInputs['UserWhereUniqueInput'] | null; // UserWhereUniqueInput
       distinct?: Array<NexusGenEnums['UserScalarFieldEnum'] | null> | null; // [UserScalarFieldEnum]
-      orderBy?: Array<NexusGenInputs['UserOrderByWithRelationAndSearchRelevanceInput'] | null> | null; // [UserOrderByWithRelationAndSearchRelevanceInput]
+      orderBy?: Array<NexusGenInputs['UserOrderByWithRelationInput'] | null> | null; // [UserOrderByWithRelationInput]
       skip?: number | null; // Int
       take?: number | null; // Int
       where?: NexusGenInputs['UserWhereInput'] | null; // UserWhereInput
@@ -6205,7 +7209,7 @@ export interface NexusGenArgTypes {
     findManyAnswer: { // args
       cursor?: NexusGenInputs['AnswerWhereUniqueInput'] | null; // AnswerWhereUniqueInput
       distinct?: Array<NexusGenEnums['AnswerScalarFieldEnum'] | null> | null; // [AnswerScalarFieldEnum]
-      orderBy?: Array<NexusGenInputs['AnswerOrderByWithRelationAndSearchRelevanceInput'] | null> | null; // [AnswerOrderByWithRelationAndSearchRelevanceInput]
+      orderBy?: Array<NexusGenInputs['AnswerOrderByWithRelationInput'] | null> | null; // [AnswerOrderByWithRelationInput]
       skip?: number | null; // Int
       take?: number | null; // Int
       where?: NexusGenInputs['AnswerWhereInput'] | null; // AnswerWhereInput
@@ -6213,7 +7217,7 @@ export interface NexusGenArgTypes {
     findManyAnswerCount: { // args
       cursor?: NexusGenInputs['AnswerWhereUniqueInput'] | null; // AnswerWhereUniqueInput
       distinct?: Array<NexusGenEnums['AnswerScalarFieldEnum'] | null> | null; // [AnswerScalarFieldEnum]
-      orderBy?: Array<NexusGenInputs['AnswerOrderByWithRelationAndSearchRelevanceInput'] | null> | null; // [AnswerOrderByWithRelationAndSearchRelevanceInput]
+      orderBy?: Array<NexusGenInputs['AnswerOrderByWithRelationInput'] | null> | null; // [AnswerOrderByWithRelationInput]
       skip?: number | null; // Int
       take?: number | null; // Int
       where?: NexusGenInputs['AnswerWhereInput'] | null; // AnswerWhereInput
@@ -6221,7 +7225,7 @@ export interface NexusGenArgTypes {
     findManyDirection: { // args
       cursor?: NexusGenInputs['DirectionWhereUniqueInput'] | null; // DirectionWhereUniqueInput
       distinct?: Array<NexusGenEnums['DirectionScalarFieldEnum'] | null> | null; // [DirectionScalarFieldEnum]
-      orderBy?: Array<NexusGenInputs['DirectionOrderByWithRelationAndSearchRelevanceInput'] | null> | null; // [DirectionOrderByWithRelationAndSearchRelevanceInput]
+      orderBy?: Array<NexusGenInputs['DirectionOrderByWithRelationInput'] | null> | null; // [DirectionOrderByWithRelationInput]
       skip?: number | null; // Int
       take?: number | null; // Int
       where?: NexusGenInputs['DirectionWhereInput'] | null; // DirectionWhereInput
@@ -6229,7 +7233,7 @@ export interface NexusGenArgTypes {
     findManyDirectionCount: { // args
       cursor?: NexusGenInputs['DirectionWhereUniqueInput'] | null; // DirectionWhereUniqueInput
       distinct?: Array<NexusGenEnums['DirectionScalarFieldEnum'] | null> | null; // [DirectionScalarFieldEnum]
-      orderBy?: Array<NexusGenInputs['DirectionOrderByWithRelationAndSearchRelevanceInput'] | null> | null; // [DirectionOrderByWithRelationAndSearchRelevanceInput]
+      orderBy?: Array<NexusGenInputs['DirectionOrderByWithRelationInput'] | null> | null; // [DirectionOrderByWithRelationInput]
       skip?: number | null; // Int
       take?: number | null; // Int
       where?: NexusGenInputs['DirectionWhereInput'] | null; // DirectionWhereInput
@@ -6237,7 +7241,7 @@ export interface NexusGenArgTypes {
     findManyMessage: { // args
       cursor?: NexusGenInputs['MessageWhereUniqueInput'] | null; // MessageWhereUniqueInput
       distinct?: Array<NexusGenEnums['MessageScalarFieldEnum'] | null> | null; // [MessageScalarFieldEnum]
-      orderBy?: Array<NexusGenInputs['MessageOrderByWithRelationAndSearchRelevanceInput'] | null> | null; // [MessageOrderByWithRelationAndSearchRelevanceInput]
+      orderBy?: Array<NexusGenInputs['MessageOrderByWithRelationInput'] | null> | null; // [MessageOrderByWithRelationInput]
       skip?: number | null; // Int
       take?: number | null; // Int
       where?: NexusGenInputs['MessageWhereInput'] | null; // MessageWhereInput
@@ -6245,7 +7249,7 @@ export interface NexusGenArgTypes {
     findManyMessageCount: { // args
       cursor?: NexusGenInputs['MessageWhereUniqueInput'] | null; // MessageWhereUniqueInput
       distinct?: Array<NexusGenEnums['MessageScalarFieldEnum'] | null> | null; // [MessageScalarFieldEnum]
-      orderBy?: Array<NexusGenInputs['MessageOrderByWithRelationAndSearchRelevanceInput'] | null> | null; // [MessageOrderByWithRelationAndSearchRelevanceInput]
+      orderBy?: Array<NexusGenInputs['MessageOrderByWithRelationInput'] | null> | null; // [MessageOrderByWithRelationInput]
       skip?: number | null; // Int
       take?: number | null; // Int
       where?: NexusGenInputs['MessageWhereInput'] | null; // MessageWhereInput
@@ -6253,7 +7257,7 @@ export interface NexusGenArgTypes {
     findManyMessagerGroup: { // args
       cursor?: NexusGenInputs['MessagerGroupWhereUniqueInput'] | null; // MessagerGroupWhereUniqueInput
       distinct?: Array<NexusGenEnums['MessagerGroupScalarFieldEnum'] | null> | null; // [MessagerGroupScalarFieldEnum]
-      orderBy?: Array<NexusGenInputs['MessagerGroupOrderByWithRelationAndSearchRelevanceInput'] | null> | null; // [MessagerGroupOrderByWithRelationAndSearchRelevanceInput]
+      orderBy?: Array<NexusGenInputs['MessagerGroupOrderByWithRelationInput'] | null> | null; // [MessagerGroupOrderByWithRelationInput]
       skip?: number | null; // Int
       take?: number | null; // Int
       where?: NexusGenInputs['MessagerGroupWhereInput'] | null; // MessagerGroupWhereInput
@@ -6261,7 +7265,7 @@ export interface NexusGenArgTypes {
     findManyMessagerGroupCount: { // args
       cursor?: NexusGenInputs['MessagerGroupWhereUniqueInput'] | null; // MessagerGroupWhereUniqueInput
       distinct?: Array<NexusGenEnums['MessagerGroupScalarFieldEnum'] | null> | null; // [MessagerGroupScalarFieldEnum]
-      orderBy?: Array<NexusGenInputs['MessagerGroupOrderByWithRelationAndSearchRelevanceInput'] | null> | null; // [MessagerGroupOrderByWithRelationAndSearchRelevanceInput]
+      orderBy?: Array<NexusGenInputs['MessagerGroupOrderByWithRelationInput'] | null> | null; // [MessagerGroupOrderByWithRelationInput]
       skip?: number | null; // Int
       take?: number | null; // Int
       where?: NexusGenInputs['MessagerGroupWhereInput'] | null; // MessagerGroupWhereInput
@@ -6269,7 +7273,7 @@ export interface NexusGenArgTypes {
     findManyResponse: { // args
       cursor?: NexusGenInputs['ResponseWhereUniqueInput'] | null; // ResponseWhereUniqueInput
       distinct?: Array<NexusGenEnums['ResponseScalarFieldEnum'] | null> | null; // [ResponseScalarFieldEnum]
-      orderBy?: Array<NexusGenInputs['ResponseOrderByWithRelationAndSearchRelevanceInput'] | null> | null; // [ResponseOrderByWithRelationAndSearchRelevanceInput]
+      orderBy?: Array<NexusGenInputs['ResponseOrderByWithRelationInput'] | null> | null; // [ResponseOrderByWithRelationInput]
       skip?: number | null; // Int
       take?: number | null; // Int
       where?: NexusGenInputs['ResponseWhereInput'] | null; // ResponseWhereInput
@@ -6277,7 +7281,7 @@ export interface NexusGenArgTypes {
     findManyResponseCount: { // args
       cursor?: NexusGenInputs['ResponseWhereUniqueInput'] | null; // ResponseWhereUniqueInput
       distinct?: Array<NexusGenEnums['ResponseScalarFieldEnum'] | null> | null; // [ResponseScalarFieldEnum]
-      orderBy?: Array<NexusGenInputs['ResponseOrderByWithRelationAndSearchRelevanceInput'] | null> | null; // [ResponseOrderByWithRelationAndSearchRelevanceInput]
+      orderBy?: Array<NexusGenInputs['ResponseOrderByWithRelationInput'] | null> | null; // [ResponseOrderByWithRelationInput]
       skip?: number | null; // Int
       take?: number | null; // Int
       where?: NexusGenInputs['ResponseWhereInput'] | null; // ResponseWhereInput
@@ -6285,7 +7289,7 @@ export interface NexusGenArgTypes {
     findManySpecialization: { // args
       cursor?: NexusGenInputs['SpecializationWhereUniqueInput'] | null; // SpecializationWhereUniqueInput
       distinct?: Array<NexusGenEnums['SpecializationScalarFieldEnum'] | null> | null; // [SpecializationScalarFieldEnum]
-      orderBy?: Array<NexusGenInputs['SpecializationOrderByWithRelationAndSearchRelevanceInput'] | null> | null; // [SpecializationOrderByWithRelationAndSearchRelevanceInput]
+      orderBy?: Array<NexusGenInputs['SpecializationOrderByWithRelationInput'] | null> | null; // [SpecializationOrderByWithRelationInput]
       skip?: number | null; // Int
       take?: number | null; // Int
       where?: NexusGenInputs['SpecializationWhereInput'] | null; // SpecializationWhereInput
@@ -6293,7 +7297,7 @@ export interface NexusGenArgTypes {
     findManySpecializationCount: { // args
       cursor?: NexusGenInputs['SpecializationWhereUniqueInput'] | null; // SpecializationWhereUniqueInput
       distinct?: Array<NexusGenEnums['SpecializationScalarFieldEnum'] | null> | null; // [SpecializationScalarFieldEnum]
-      orderBy?: Array<NexusGenInputs['SpecializationOrderByWithRelationAndSearchRelevanceInput'] | null> | null; // [SpecializationOrderByWithRelationAndSearchRelevanceInput]
+      orderBy?: Array<NexusGenInputs['SpecializationOrderByWithRelationInput'] | null> | null; // [SpecializationOrderByWithRelationInput]
       skip?: number | null; // Int
       take?: number | null; // Int
       where?: NexusGenInputs['SpecializationWhereInput'] | null; // SpecializationWhereInput
@@ -6301,15 +7305,31 @@ export interface NexusGenArgTypes {
     findManyTask: { // args
       cursor?: NexusGenInputs['TaskWhereUniqueInput'] | null; // TaskWhereUniqueInput
       distinct?: Array<NexusGenEnums['TaskScalarFieldEnum'] | null> | null; // [TaskScalarFieldEnum]
-      orderBy?: Array<NexusGenInputs['TaskOrderByWithRelationAndSearchRelevanceInput'] | null> | null; // [TaskOrderByWithRelationAndSearchRelevanceInput]
+      orderBy?: Array<NexusGenInputs['TaskOrderByWithRelationInput'] | null> | null; // [TaskOrderByWithRelationInput]
       skip?: number | null; // Int
       take?: number | null; // Int
       where?: NexusGenInputs['TaskWhereInput'] | null; // TaskWhereInput
     }
+    findManyTaskAnswer: { // args
+      cursor?: NexusGenInputs['TaskAnswerWhereUniqueInput'] | null; // TaskAnswerWhereUniqueInput
+      distinct?: Array<NexusGenEnums['TaskAnswerScalarFieldEnum'] | null> | null; // [TaskAnswerScalarFieldEnum]
+      orderBy?: Array<NexusGenInputs['TaskAnswerOrderByWithRelationInput'] | null> | null; // [TaskAnswerOrderByWithRelationInput]
+      skip?: number | null; // Int
+      take?: number | null; // Int
+      where?: NexusGenInputs['TaskAnswerWhereInput'] | null; // TaskAnswerWhereInput
+    }
+    findManyTaskAnswerCount: { // args
+      cursor?: NexusGenInputs['TaskAnswerWhereUniqueInput'] | null; // TaskAnswerWhereUniqueInput
+      distinct?: Array<NexusGenEnums['TaskAnswerScalarFieldEnum'] | null> | null; // [TaskAnswerScalarFieldEnum]
+      orderBy?: Array<NexusGenInputs['TaskAnswerOrderByWithRelationInput'] | null> | null; // [TaskAnswerOrderByWithRelationInput]
+      skip?: number | null; // Int
+      take?: number | null; // Int
+      where?: NexusGenInputs['TaskAnswerWhereInput'] | null; // TaskAnswerWhereInput
+    }
     findManyTaskCount: { // args
       cursor?: NexusGenInputs['TaskWhereUniqueInput'] | null; // TaskWhereUniqueInput
       distinct?: Array<NexusGenEnums['TaskScalarFieldEnum'] | null> | null; // [TaskScalarFieldEnum]
-      orderBy?: Array<NexusGenInputs['TaskOrderByWithRelationAndSearchRelevanceInput'] | null> | null; // [TaskOrderByWithRelationAndSearchRelevanceInput]
+      orderBy?: Array<NexusGenInputs['TaskOrderByWithRelationInput'] | null> | null; // [TaskOrderByWithRelationInput]
       skip?: number | null; // Int
       take?: number | null; // Int
       where?: NexusGenInputs['TaskWhereInput'] | null; // TaskWhereInput
@@ -6317,7 +7337,7 @@ export interface NexusGenArgTypes {
     findManyTest: { // args
       cursor?: NexusGenInputs['TestWhereUniqueInput'] | null; // TestWhereUniqueInput
       distinct?: Array<NexusGenEnums['TestScalarFieldEnum'] | null> | null; // [TestScalarFieldEnum]
-      orderBy?: Array<NexusGenInputs['TestOrderByWithRelationAndSearchRelevanceInput'] | null> | null; // [TestOrderByWithRelationAndSearchRelevanceInput]
+      orderBy?: Array<NexusGenInputs['TestOrderByWithRelationInput'] | null> | null; // [TestOrderByWithRelationInput]
       skip?: number | null; // Int
       take?: number | null; // Int
       where?: NexusGenInputs['TestWhereInput'] | null; // TestWhereInput
@@ -6325,7 +7345,7 @@ export interface NexusGenArgTypes {
     findManyTestCount: { // args
       cursor?: NexusGenInputs['TestWhereUniqueInput'] | null; // TestWhereUniqueInput
       distinct?: Array<NexusGenEnums['TestScalarFieldEnum'] | null> | null; // [TestScalarFieldEnum]
-      orderBy?: Array<NexusGenInputs['TestOrderByWithRelationAndSearchRelevanceInput'] | null> | null; // [TestOrderByWithRelationAndSearchRelevanceInput]
+      orderBy?: Array<NexusGenInputs['TestOrderByWithRelationInput'] | null> | null; // [TestOrderByWithRelationInput]
       skip?: number | null; // Int
       take?: number | null; // Int
       where?: NexusGenInputs['TestWhereInput'] | null; // TestWhereInput
@@ -6333,7 +7353,7 @@ export interface NexusGenArgTypes {
     findManyUser: { // args
       cursor?: NexusGenInputs['UserWhereUniqueInput'] | null; // UserWhereUniqueInput
       distinct?: Array<NexusGenEnums['UserScalarFieldEnum'] | null> | null; // [UserScalarFieldEnum]
-      orderBy?: Array<NexusGenInputs['UserOrderByWithRelationAndSearchRelevanceInput'] | null> | null; // [UserOrderByWithRelationAndSearchRelevanceInput]
+      orderBy?: Array<NexusGenInputs['UserOrderByWithRelationInput'] | null> | null; // [UserOrderByWithRelationInput]
       skip?: number | null; // Int
       take?: number | null; // Int
       where?: NexusGenInputs['UserWhereInput'] | null; // UserWhereInput
@@ -6341,7 +7361,7 @@ export interface NexusGenArgTypes {
     findManyUserCount: { // args
       cursor?: NexusGenInputs['UserWhereUniqueInput'] | null; // UserWhereUniqueInput
       distinct?: Array<NexusGenEnums['UserScalarFieldEnum'] | null> | null; // [UserScalarFieldEnum]
-      orderBy?: Array<NexusGenInputs['UserOrderByWithRelationAndSearchRelevanceInput'] | null> | null; // [UserOrderByWithRelationAndSearchRelevanceInput]
+      orderBy?: Array<NexusGenInputs['UserOrderByWithRelationInput'] | null> | null; // [UserOrderByWithRelationInput]
       skip?: number | null; // Int
       take?: number | null; // Int
       where?: NexusGenInputs['UserWhereInput'] | null; // UserWhereInput
@@ -6367,6 +7387,9 @@ export interface NexusGenArgTypes {
     findUniqueTask: { // args
       where: NexusGenInputs['TaskWhereUniqueInput']; // TaskWhereUniqueInput!
     }
+    findUniqueTaskAnswer: { // args
+      where: NexusGenInputs['TaskAnswerWhereUniqueInput']; // TaskAnswerWhereUniqueInput!
+    }
     findUniqueTest: { // args
       where: NexusGenInputs['TestWhereUniqueInput']; // TestWhereUniqueInput!
     }
@@ -6378,7 +7401,7 @@ export interface NexusGenArgTypes {
     answers: { // args
       cursor?: NexusGenInputs['AnswerWhereUniqueInput'] | null; // AnswerWhereUniqueInput
       distinct?: Array<NexusGenEnums['AnswerScalarFieldEnum'] | null> | null; // [AnswerScalarFieldEnum]
-      orderBy?: Array<NexusGenInputs['AnswerOrderByWithRelationAndSearchRelevanceInput'] | null> | null; // [AnswerOrderByWithRelationAndSearchRelevanceInput]
+      orderBy?: Array<NexusGenInputs['AnswerOrderByWithRelationInput'] | null> | null; // [AnswerOrderByWithRelationInput]
       skip?: number | null; // Int
       take?: number | null; // Int
       where?: NexusGenInputs['AnswerWhereInput'] | null; // AnswerWhereInput
@@ -6386,7 +7409,7 @@ export interface NexusGenArgTypes {
     tests: { // args
       cursor?: NexusGenInputs['TestWhereUniqueInput'] | null; // TestWhereUniqueInput
       distinct?: Array<NexusGenEnums['TestScalarFieldEnum'] | null> | null; // [TestScalarFieldEnum]
-      orderBy?: Array<NexusGenInputs['TestOrderByWithRelationAndSearchRelevanceInput'] | null> | null; // [TestOrderByWithRelationAndSearchRelevanceInput]
+      orderBy?: Array<NexusGenInputs['TestOrderByWithRelationInput'] | null> | null; // [TestOrderByWithRelationInput]
       skip?: number | null; // Int
       take?: number | null; // Int
       where?: NexusGenInputs['TestWhereInput'] | null; // TestWhereInput
@@ -6396,13 +7419,21 @@ export interface NexusGenArgTypes {
     directions: { // args
       cursor?: NexusGenInputs['DirectionWhereUniqueInput'] | null; // DirectionWhereUniqueInput
       distinct?: Array<NexusGenEnums['DirectionScalarFieldEnum'] | null> | null; // [DirectionScalarFieldEnum]
-      orderBy?: Array<NexusGenInputs['DirectionOrderByWithRelationAndSearchRelevanceInput'] | null> | null; // [DirectionOrderByWithRelationAndSearchRelevanceInput]
+      orderBy?: Array<NexusGenInputs['DirectionOrderByWithRelationInput'] | null> | null; // [DirectionOrderByWithRelationInput]
       skip?: number | null; // Int
       take?: number | null; // Int
       where?: NexusGenInputs['DirectionWhereInput'] | null; // DirectionWhereInput
     }
   }
   Task: {
+    taskAnswers: { // args
+      cursor?: NexusGenInputs['TaskAnswerWhereUniqueInput'] | null; // TaskAnswerWhereUniqueInput
+      distinct?: Array<NexusGenEnums['TaskAnswerScalarFieldEnum'] | null> | null; // [TaskAnswerScalarFieldEnum]
+      orderBy?: Array<NexusGenInputs['TaskAnswerOrderByWithRelationInput'] | null> | null; // [TaskAnswerOrderByWithRelationInput]
+      skip?: number | null; // Int
+      take?: number | null; // Int
+      where?: NexusGenInputs['TaskAnswerWhereInput'] | null; // TaskAnswerWhereInput
+    }
     test: { // args
       where?: NexusGenInputs['TestWhereInput'] | null; // TestWhereInput
     }
@@ -6411,15 +7442,23 @@ export interface NexusGenArgTypes {
     answers: { // args
       cursor?: NexusGenInputs['AnswerWhereUniqueInput'] | null; // AnswerWhereUniqueInput
       distinct?: Array<NexusGenEnums['AnswerScalarFieldEnum'] | null> | null; // [AnswerScalarFieldEnum]
-      orderBy?: Array<NexusGenInputs['AnswerOrderByWithRelationAndSearchRelevanceInput'] | null> | null; // [AnswerOrderByWithRelationAndSearchRelevanceInput]
+      orderBy?: Array<NexusGenInputs['AnswerOrderByWithRelationInput'] | null> | null; // [AnswerOrderByWithRelationInput]
       skip?: number | null; // Int
       take?: number | null; // Int
       where?: NexusGenInputs['AnswerWhereInput'] | null; // AnswerWhereInput
     }
+    direction: { // args
+      cursor?: NexusGenInputs['DirectionWhereUniqueInput'] | null; // DirectionWhereUniqueInput
+      distinct?: Array<NexusGenEnums['DirectionScalarFieldEnum'] | null> | null; // [DirectionScalarFieldEnum]
+      orderBy?: Array<NexusGenInputs['DirectionOrderByWithRelationInput'] | null> | null; // [DirectionOrderByWithRelationInput]
+      skip?: number | null; // Int
+      take?: number | null; // Int
+      where?: NexusGenInputs['DirectionWhereInput'] | null; // DirectionWhereInput
+    }
     response: { // args
       cursor?: NexusGenInputs['ResponseWhereUniqueInput'] | null; // ResponseWhereUniqueInput
       distinct?: Array<NexusGenEnums['ResponseScalarFieldEnum'] | null> | null; // [ResponseScalarFieldEnum]
-      orderBy?: Array<NexusGenInputs['ResponseOrderByWithRelationAndSearchRelevanceInput'] | null> | null; // [ResponseOrderByWithRelationAndSearchRelevanceInput]
+      orderBy?: Array<NexusGenInputs['ResponseOrderByWithRelationInput'] | null> | null; // [ResponseOrderByWithRelationInput]
       skip?: number | null; // Int
       take?: number | null; // Int
       where?: NexusGenInputs['ResponseWhereInput'] | null; // ResponseWhereInput
@@ -6427,7 +7466,7 @@ export interface NexusGenArgTypes {
     tasks: { // args
       cursor?: NexusGenInputs['TaskWhereUniqueInput'] | null; // TaskWhereUniqueInput
       distinct?: Array<NexusGenEnums['TaskScalarFieldEnum'] | null> | null; // [TaskScalarFieldEnum]
-      orderBy?: Array<NexusGenInputs['TaskOrderByWithRelationAndSearchRelevanceInput'] | null> | null; // [TaskOrderByWithRelationAndSearchRelevanceInput]
+      orderBy?: Array<NexusGenInputs['TaskOrderByWithRelationInput'] | null> | null; // [TaskOrderByWithRelationInput]
       skip?: number | null; // Int
       take?: number | null; // Int
       where?: NexusGenInputs['TaskWhereInput'] | null; // TaskWhereInput
@@ -6435,17 +7474,17 @@ export interface NexusGenArgTypes {
   }
   User: {
     answers: { // args
-      cursor?: NexusGenInputs['AnswerWhereUniqueInput'] | null; // AnswerWhereUniqueInput
-      distinct?: Array<NexusGenEnums['AnswerScalarFieldEnum'] | null> | null; // [AnswerScalarFieldEnum]
-      orderBy?: Array<NexusGenInputs['AnswerOrderByWithRelationAndSearchRelevanceInput'] | null> | null; // [AnswerOrderByWithRelationAndSearchRelevanceInput]
+      cursor?: NexusGenInputs['TaskAnswerWhereUniqueInput'] | null; // TaskAnswerWhereUniqueInput
+      distinct?: Array<NexusGenEnums['TaskAnswerScalarFieldEnum'] | null> | null; // [TaskAnswerScalarFieldEnum]
+      orderBy?: Array<NexusGenInputs['TaskAnswerOrderByWithRelationInput'] | null> | null; // [TaskAnswerOrderByWithRelationInput]
       skip?: number | null; // Int
       take?: number | null; // Int
-      where?: NexusGenInputs['AnswerWhereInput'] | null; // AnswerWhereInput
+      where?: NexusGenInputs['TaskAnswerWhereInput'] | null; // TaskAnswerWhereInput
     }
     groups: { // args
       cursor?: NexusGenInputs['MessagerGroupWhereUniqueInput'] | null; // MessagerGroupWhereUniqueInput
       distinct?: Array<NexusGenEnums['MessagerGroupScalarFieldEnum'] | null> | null; // [MessagerGroupScalarFieldEnum]
-      orderBy?: Array<NexusGenInputs['MessagerGroupOrderByWithRelationAndSearchRelevanceInput'] | null> | null; // [MessagerGroupOrderByWithRelationAndSearchRelevanceInput]
+      orderBy?: Array<NexusGenInputs['MessagerGroupOrderByWithRelationInput'] | null> | null; // [MessagerGroupOrderByWithRelationInput]
       skip?: number | null; // Int
       take?: number | null; // Int
       where?: NexusGenInputs['MessagerGroupWhereInput'] | null; // MessagerGroupWhereInput
@@ -6453,7 +7492,7 @@ export interface NexusGenArgTypes {
     messages: { // args
       cursor?: NexusGenInputs['MessageWhereUniqueInput'] | null; // MessageWhereUniqueInput
       distinct?: Array<NexusGenEnums['MessageScalarFieldEnum'] | null> | null; // [MessageScalarFieldEnum]
-      orderBy?: Array<NexusGenInputs['MessageOrderByWithRelationAndSearchRelevanceInput'] | null> | null; // [MessageOrderByWithRelationAndSearchRelevanceInput]
+      orderBy?: Array<NexusGenInputs['MessageOrderByWithRelationInput'] | null> | null; // [MessageOrderByWithRelationInput]
       skip?: number | null; // Int
       take?: number | null; // Int
       where?: NexusGenInputs['MessageWhereInput'] | null; // MessageWhereInput
@@ -6461,7 +7500,7 @@ export interface NexusGenArgTypes {
     responses: { // args
       cursor?: NexusGenInputs['ResponseWhereUniqueInput'] | null; // ResponseWhereUniqueInput
       distinct?: Array<NexusGenEnums['ResponseScalarFieldEnum'] | null> | null; // [ResponseScalarFieldEnum]
-      orderBy?: Array<NexusGenInputs['ResponseOrderByWithRelationAndSearchRelevanceInput'] | null> | null; // [ResponseOrderByWithRelationAndSearchRelevanceInput]
+      orderBy?: Array<NexusGenInputs['ResponseOrderByWithRelationInput'] | null> | null; // [ResponseOrderByWithRelationInput]
       skip?: number | null; // Int
       take?: number | null; // Int
       where?: NexusGenInputs['ResponseWhereInput'] | null; // ResponseWhereInput

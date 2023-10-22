@@ -14,7 +14,7 @@ export const Specialization = objectType({
       type: 'Direction',
       args: {
         where: 'DirectionWhereInput',
-        orderBy: list('DirectionOrderByWithRelationAndSearchRelevanceInput'),
+        orderBy: list('DirectionOrderByWithRelationInput'),
         cursor: 'DirectionWhereUniqueInput',
         take: 'Int',
         skip: 'Int',

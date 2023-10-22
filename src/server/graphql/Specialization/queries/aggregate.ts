@@ -6,7 +6,7 @@ export const SpecializationAggregateQuery = queryField(
     type: 'AggregateSpecialization',
     args: {
       where: 'SpecializationWhereInput',
-      orderBy: list('SpecializationOrderByWithRelationAndSearchRelevanceInput'),
+      orderBy: list('SpecializationOrderByWithRelationInput'),
       cursor: 'SpecializationWhereUniqueInput',
       take: 'Int',
       skip: 'Int',

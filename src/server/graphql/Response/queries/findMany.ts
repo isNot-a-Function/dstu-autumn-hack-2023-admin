@@ -4,7 +4,7 @@ export const ResponseFindManyQuery = queryField('findManyResponse', {
   type: nonNull(list(nonNull('Response'))),
   args: {
     where: 'ResponseWhereInput',
-    orderBy: list('ResponseOrderByWithRelationAndSearchRelevanceInput'),
+    orderBy: list('ResponseOrderByWithRelationInput'),
     cursor: 'ResponseWhereUniqueInput',
     take: 'Int',
     skip: 'Int',

@@ -6,7 +6,7 @@ export const SpecializationFindFirstQuery = queryField(
     type: 'Specialization',
     args: {
       where: 'SpecializationWhereInput',
-      orderBy: list('SpecializationOrderByWithRelationAndSearchRelevanceInput'),
+      orderBy: list('SpecializationOrderByWithRelationInput'),
       cursor: 'SpecializationWhereUniqueInput',
       take: 'Int',
       skip: 'Int',

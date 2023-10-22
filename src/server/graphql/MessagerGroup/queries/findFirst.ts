@@ -6,7 +6,7 @@ export const MessagerGroupFindFirstQuery = queryField(
     type: 'MessagerGroup',
     args: {
       where: 'MessagerGroupWhereInput',
-      orderBy: list('MessagerGroupOrderByWithRelationAndSearchRelevanceInput'),
+      orderBy: list('MessagerGroupOrderByWithRelationInput'),
       cursor: 'MessagerGroupWhereUniqueInput',
       take: 'Int',
       skip: 'Int',

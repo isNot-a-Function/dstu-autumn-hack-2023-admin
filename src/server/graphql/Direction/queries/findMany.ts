@@ -4,7 +4,7 @@ export const DirectionFindManyQuery = queryField('findManyDirection', {
   type: nonNull(list(nonNull('Direction'))),
   args: {
     where: 'DirectionWhereInput',
-    orderBy: list('DirectionOrderByWithRelationAndSearchRelevanceInput'),
+    orderBy: list('DirectionOrderByWithRelationInput'),
     cursor: 'DirectionWhereUniqueInput',
     take: 'Int',
     skip: 'Int',

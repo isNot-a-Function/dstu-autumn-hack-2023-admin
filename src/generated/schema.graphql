@@ -58,6 +58,14 @@ type AggregateTask {
   _sum: TaskSumAggregateOutputType
 }
 
+type AggregateTaskAnswer {
+  _avg: TaskAnswerAvgAggregateOutputType
+  _count: TaskAnswerCountAggregateOutputType
+  _max: TaskAnswerMaxAggregateOutputType
+  _min: TaskAnswerMinAggregateOutputType
+  _sum: TaskAnswerSumAggregateOutputType
+}
+
 type AggregateTest {
   _avg: TestAvgAggregateOutputType
   _count: TestCountAggregateOutputType
@@ -79,23 +87,20 @@ type Answer {
   answer: String
   createdAt: DateTime!
   id: Int!
-  response(cursor: ResponseWhereUniqueInput, distinct: [ResponseScalarFieldEnum], orderBy: [ResponseOrderByWithRelationAndSearchRelevanceInput], skip: Int, take: Int, where: ResponseWhereInput): [Response!]!
+  response(cursor: ResponseWhereUniqueInput, distinct: [ResponseScalarFieldEnum], orderBy: [ResponseOrderByWithRelationInput], skip: Int, take: Int, where: ResponseWhereInput): [Response!]!
+  taskAnswers(cursor: TaskAnswerWhereUniqueInput, distinct: [TaskAnswerScalarFieldEnum], orderBy: [TaskAnswerOrderByWithRelationInput], skip: Int, take: Int, where: TaskAnswerWhereInput): [TaskAnswer!]!
   test: Test!
   testId: Int!
-  user: User!
-  userId: Int!
 }
 
 type AnswerAvgAggregateOutputType {
   id: Float
   testId: Float
-  userId: Float
 }
 
 input AnswerAvgOrderByAggregateInput {
   id: SortOrder
   testId: SortOrder
-  userId: SortOrder
 }
 
 type AnswerCountAggregateOutputType {
@@ -104,7 +109,6 @@ type AnswerCountAggregateOutputType {
   createdAt: Int!
   id: Int!
   testId: Int!
-  userId: Int!
 }
 
 input AnswerCountOrderByAggregateInput {
@@ -112,19 +116,19 @@ input AnswerCountOrderByAggregateInput {
   createdAt: SortOrder
   id: SortOrder
   testId: SortOrder
-  userId: SortOrder
 }
 
 type AnswerCountOutputType {
   response: Int!
+  taskAnswers: Int!
 }
 
 input AnswerCreateInput {
   answer: String
   createdAt: DateTime
   response: ResponseCreateNestedManyWithoutAnswersInput
+  taskAnswers: TaskAnswerCreateNestedManyWithoutAnswerModelInput
   test: TestCreateNestedOneWithoutAnswersInput!
-  user: UserCreateNestedOneWithoutAnswersInput!
 }
 
 input AnswerCreateManyInput {
@@ -132,30 +136,16 @@ input AnswerCreateManyInput {
   createdAt: DateTime
   id: Int
   testId: Int!
-  userId: Int!
 }
 
 input AnswerCreateManyTestInput {
   answer: String
   createdAt: DateTime
   id: Int
-  userId: Int!
 }
 
 input AnswerCreateManyTestInputEnvelope {
   data: AnswerCreateManyTestInput!
-  skipDuplicates: Boolean
-}
-
-input AnswerCreateManyUserInput {
-  answer: String
-  createdAt: DateTime
-  id: Int
-  testId: Int!
-}
-
-input AnswerCreateManyUserInputEnvelope {
-  data: AnswerCreateManyUserInput!
   skipDuplicates: Boolean
 }
 
@@ -172,15 +162,19 @@ input AnswerCreateNestedManyWithoutTestInput {
   createMany: AnswerCreateManyTestInputEnvelope
 }
 
-input AnswerCreateNestedManyWithoutUserInput {
-  connect: [AnswerWhereUniqueInput]
-  connectOrCreate: [AnswerCreateOrConnectWithoutUserInput]
-  create: [AnswerCreateWithoutUserInput]
-  createMany: AnswerCreateManyUserInputEnvelope
+input AnswerCreateNestedOneWithoutTaskAnswersInput {
+  connect: AnswerWhereUniqueInput
+  connectOrCreate: AnswerCreateOrConnectWithoutTaskAnswersInput
+  create: AnswerCreateWithoutTaskAnswersInput
 }
 
 input AnswerCreateOrConnectWithoutResponseInput {
   create: AnswerCreateWithoutResponseInput!
+  where: AnswerWhereUniqueInput!
+}
+
+input AnswerCreateOrConnectWithoutTaskAnswersInput {
+  create: AnswerCreateWithoutTaskAnswersInput!
   where: AnswerWhereUniqueInput!
 }
 
@@ -189,30 +183,25 @@ input AnswerCreateOrConnectWithoutTestInput {
   where: AnswerWhereUniqueInput!
 }
 
-input AnswerCreateOrConnectWithoutUserInput {
-  create: AnswerCreateWithoutUserInput!
-  where: AnswerWhereUniqueInput!
-}
-
 input AnswerCreateWithoutResponseInput {
   answer: String
   createdAt: DateTime
+  taskAnswers: TaskAnswerCreateNestedManyWithoutAnswerModelInput
   test: TestCreateNestedOneWithoutAnswersInput!
-  user: UserCreateNestedOneWithoutAnswersInput!
+}
+
+input AnswerCreateWithoutTaskAnswersInput {
+  answer: String
+  createdAt: DateTime
+  response: ResponseCreateNestedManyWithoutAnswersInput
+  test: TestCreateNestedOneWithoutAnswersInput!
 }
 
 input AnswerCreateWithoutTestInput {
   answer: String
   createdAt: DateTime
   response: ResponseCreateNestedManyWithoutAnswersInput
-  user: UserCreateNestedOneWithoutAnswersInput!
-}
-
-input AnswerCreateWithoutUserInput {
-  answer: String
-  createdAt: DateTime
-  response: ResponseCreateNestedManyWithoutAnswersInput
-  test: TestCreateNestedOneWithoutAnswersInput!
+  taskAnswers: TaskAnswerCreateNestedManyWithoutAnswerModelInput
 }
 
 input AnswerListRelationFilter {
@@ -226,7 +215,6 @@ type AnswerMaxAggregateOutputType {
   createdAt: DateTime
   id: Int
   testId: Int
-  userId: Int
 }
 
 input AnswerMaxOrderByAggregateInput {
@@ -234,7 +222,6 @@ input AnswerMaxOrderByAggregateInput {
   createdAt: SortOrder
   id: SortOrder
   testId: SortOrder
-  userId: SortOrder
 }
 
 type AnswerMinAggregateOutputType {
@@ -242,7 +229,6 @@ type AnswerMinAggregateOutputType {
   createdAt: DateTime
   id: Int
   testId: Int
-  userId: Int
 }
 
 input AnswerMinOrderByAggregateInput {
@@ -250,21 +236,10 @@ input AnswerMinOrderByAggregateInput {
   createdAt: SortOrder
   id: SortOrder
   testId: SortOrder
-  userId: SortOrder
 }
 
 input AnswerOrderByRelationAggregateInput {
   _count: SortOrder
-}
-
-enum AnswerOrderByRelevanceFieldEnum {
-  answer
-}
-
-input AnswerOrderByRelevanceInput {
-  fields: AnswerOrderByRelevanceFieldEnum!
-  search: String!
-  sort: SortOrder!
 }
 
 input AnswerOrderByWithAggregationInput {
@@ -277,19 +252,21 @@ input AnswerOrderByWithAggregationInput {
   createdAt: SortOrder
   id: SortOrder
   testId: SortOrder
-  userId: SortOrder
 }
 
-input AnswerOrderByWithRelationAndSearchRelevanceInput {
-  _relevance: AnswerOrderByRelevanceInput
+input AnswerOrderByWithRelationInput {
   answer: SortOrderInput
   createdAt: SortOrder
   id: SortOrder
   response: ResponseOrderByRelationAggregateInput
-  test: TestOrderByWithRelationAndSearchRelevanceInput
+  taskAnswers: TaskAnswerOrderByRelationAggregateInput
+  test: TestOrderByWithRelationInput
   testId: SortOrder
-  user: UserOrderByWithRelationAndSearchRelevanceInput
-  userId: SortOrder
+}
+
+input AnswerRelationFilter {
+  is: AnswerWhereInput
+  isNot: AnswerWhereInput
 }
 
 enum AnswerScalarFieldEnum {
@@ -297,7 +274,6 @@ enum AnswerScalarFieldEnum {
   createdAt
   id
   testId
-  userId
 }
 
 input AnswerScalarWhereInput {
@@ -308,7 +284,6 @@ input AnswerScalarWhereInput {
   createdAt: DateTimeFilter
   id: IntFilter
   testId: IntFilter
-  userId: IntFilter
 }
 
 input AnswerScalarWhereWithAggregatesInput {
@@ -319,19 +294,16 @@ input AnswerScalarWhereWithAggregatesInput {
   createdAt: DateTimeWithAggregatesFilter
   id: IntWithAggregatesFilter
   testId: IntWithAggregatesFilter
-  userId: IntWithAggregatesFilter
 }
 
 type AnswerSumAggregateOutputType {
   id: Int
   testId: Int
-  userId: Int
 }
 
 input AnswerSumOrderByAggregateInput {
   id: SortOrder
   testId: SortOrder
-  userId: SortOrder
 }
 
 input AnswerUncheckedCreateInput {
@@ -339,8 +311,8 @@ input AnswerUncheckedCreateInput {
   createdAt: DateTime
   id: Int
   response: ResponseUncheckedCreateNestedManyWithoutAnswersInput
+  taskAnswers: TaskAnswerUncheckedCreateNestedManyWithoutAnswerModelInput
   testId: Int!
-  userId: Int!
 }
 
 input AnswerUncheckedCreateNestedManyWithoutResponseInput {
@@ -356,19 +328,20 @@ input AnswerUncheckedCreateNestedManyWithoutTestInput {
   createMany: AnswerCreateManyTestInputEnvelope
 }
 
-input AnswerUncheckedCreateNestedManyWithoutUserInput {
-  connect: [AnswerWhereUniqueInput]
-  connectOrCreate: [AnswerCreateOrConnectWithoutUserInput]
-  create: [AnswerCreateWithoutUserInput]
-  createMany: AnswerCreateManyUserInputEnvelope
-}
-
 input AnswerUncheckedCreateWithoutResponseInput {
   answer: String
   createdAt: DateTime
   id: Int
+  taskAnswers: TaskAnswerUncheckedCreateNestedManyWithoutAnswerModelInput
   testId: Int!
-  userId: Int!
+}
+
+input AnswerUncheckedCreateWithoutTaskAnswersInput {
+  answer: String
+  createdAt: DateTime
+  id: Int
+  response: ResponseUncheckedCreateNestedManyWithoutAnswersInput
+  testId: Int!
 }
 
 input AnswerUncheckedCreateWithoutTestInput {
@@ -376,15 +349,7 @@ input AnswerUncheckedCreateWithoutTestInput {
   createdAt: DateTime
   id: Int
   response: ResponseUncheckedCreateNestedManyWithoutAnswersInput
-  userId: Int!
-}
-
-input AnswerUncheckedCreateWithoutUserInput {
-  answer: String
-  createdAt: DateTime
-  id: Int
-  response: ResponseUncheckedCreateNestedManyWithoutAnswersInput
-  testId: Int!
+  taskAnswers: TaskAnswerUncheckedCreateNestedManyWithoutAnswerModelInput
 }
 
 input AnswerUncheckedUpdateInput {
@@ -392,8 +357,8 @@ input AnswerUncheckedUpdateInput {
   createdAt: DateTimeFieldUpdateOperationsInput
   id: IntFieldUpdateOperationsInput
   response: ResponseUncheckedUpdateManyWithoutAnswersNestedInput
+  taskAnswers: TaskAnswerUncheckedUpdateManyWithoutAnswerModelNestedInput
   testId: IntFieldUpdateOperationsInput
-  userId: IntFieldUpdateOperationsInput
 }
 
 input AnswerUncheckedUpdateManyInput {
@@ -401,7 +366,6 @@ input AnswerUncheckedUpdateManyInput {
   createdAt: DateTimeFieldUpdateOperationsInput
   id: IntFieldUpdateOperationsInput
   testId: IntFieldUpdateOperationsInput
-  userId: IntFieldUpdateOperationsInput
 }
 
 input AnswerUncheckedUpdateManyWithoutResponseInput {
@@ -409,7 +373,6 @@ input AnswerUncheckedUpdateManyWithoutResponseInput {
   createdAt: DateTimeFieldUpdateOperationsInput
   id: IntFieldUpdateOperationsInput
   testId: IntFieldUpdateOperationsInput
-  userId: IntFieldUpdateOperationsInput
 }
 
 input AnswerUncheckedUpdateManyWithoutResponseNestedInput {
@@ -429,7 +392,6 @@ input AnswerUncheckedUpdateManyWithoutTestInput {
   answer: NullableStringFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   id: IntFieldUpdateOperationsInput
-  userId: IntFieldUpdateOperationsInput
 }
 
 input AnswerUncheckedUpdateManyWithoutTestNestedInput {
@@ -446,33 +408,20 @@ input AnswerUncheckedUpdateManyWithoutTestNestedInput {
   upsert: [AnswerUpsertWithWhereUniqueWithoutTestInput]
 }
 
-input AnswerUncheckedUpdateManyWithoutUserInput {
-  answer: NullableStringFieldUpdateOperationsInput
-  createdAt: DateTimeFieldUpdateOperationsInput
-  id: IntFieldUpdateOperationsInput
-  testId: IntFieldUpdateOperationsInput
-}
-
-input AnswerUncheckedUpdateManyWithoutUserNestedInput {
-  connect: [AnswerWhereUniqueInput]
-  connectOrCreate: [AnswerCreateOrConnectWithoutUserInput]
-  create: [AnswerCreateWithoutUserInput]
-  createMany: AnswerCreateManyUserInputEnvelope
-  delete: [AnswerWhereUniqueInput]
-  deleteMany: [AnswerScalarWhereInput]
-  disconnect: [AnswerWhereUniqueInput]
-  set: [AnswerWhereUniqueInput]
-  update: [AnswerUpdateWithWhereUniqueWithoutUserInput]
-  updateMany: [AnswerUpdateManyWithWhereWithoutUserInput]
-  upsert: [AnswerUpsertWithWhereUniqueWithoutUserInput]
-}
-
 input AnswerUncheckedUpdateWithoutResponseInput {
   answer: NullableStringFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   id: IntFieldUpdateOperationsInput
+  taskAnswers: TaskAnswerUncheckedUpdateManyWithoutAnswerModelNestedInput
   testId: IntFieldUpdateOperationsInput
-  userId: IntFieldUpdateOperationsInput
+}
+
+input AnswerUncheckedUpdateWithoutTaskAnswersInput {
+  answer: NullableStringFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  id: IntFieldUpdateOperationsInput
+  response: ResponseUncheckedUpdateManyWithoutAnswersNestedInput
+  testId: IntFieldUpdateOperationsInput
 }
 
 input AnswerUncheckedUpdateWithoutTestInput {
@@ -480,23 +429,15 @@ input AnswerUncheckedUpdateWithoutTestInput {
   createdAt: DateTimeFieldUpdateOperationsInput
   id: IntFieldUpdateOperationsInput
   response: ResponseUncheckedUpdateManyWithoutAnswersNestedInput
-  userId: IntFieldUpdateOperationsInput
-}
-
-input AnswerUncheckedUpdateWithoutUserInput {
-  answer: NullableStringFieldUpdateOperationsInput
-  createdAt: DateTimeFieldUpdateOperationsInput
-  id: IntFieldUpdateOperationsInput
-  response: ResponseUncheckedUpdateManyWithoutAnswersNestedInput
-  testId: IntFieldUpdateOperationsInput
+  taskAnswers: TaskAnswerUncheckedUpdateManyWithoutAnswerModelNestedInput
 }
 
 input AnswerUpdateInput {
   answer: NullableStringFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   response: ResponseUpdateManyWithoutAnswersNestedInput
+  taskAnswers: TaskAnswerUpdateManyWithoutAnswerModelNestedInput
   test: TestUpdateOneRequiredWithoutAnswersNestedInput
-  user: UserUpdateOneRequiredWithoutAnswersNestedInput
 }
 
 input AnswerUpdateManyMutationInput {
@@ -510,11 +451,6 @@ input AnswerUpdateManyWithWhereWithoutResponseInput {
 }
 
 input AnswerUpdateManyWithWhereWithoutTestInput {
-  data: AnswerUpdateManyMutationInput!
-  where: AnswerScalarWhereInput!
-}
-
-input AnswerUpdateManyWithWhereWithoutUserInput {
   data: AnswerUpdateManyMutationInput!
   where: AnswerScalarWhereInput!
 }
@@ -546,18 +482,17 @@ input AnswerUpdateManyWithoutTestNestedInput {
   upsert: [AnswerUpsertWithWhereUniqueWithoutTestInput]
 }
 
-input AnswerUpdateManyWithoutUserNestedInput {
-  connect: [AnswerWhereUniqueInput]
-  connectOrCreate: [AnswerCreateOrConnectWithoutUserInput]
-  create: [AnswerCreateWithoutUserInput]
-  createMany: AnswerCreateManyUserInputEnvelope
-  delete: [AnswerWhereUniqueInput]
-  deleteMany: [AnswerScalarWhereInput]
-  disconnect: [AnswerWhereUniqueInput]
-  set: [AnswerWhereUniqueInput]
-  update: [AnswerUpdateWithWhereUniqueWithoutUserInput]
-  updateMany: [AnswerUpdateManyWithWhereWithoutUserInput]
-  upsert: [AnswerUpsertWithWhereUniqueWithoutUserInput]
+input AnswerUpdateOneRequiredWithoutTaskAnswersNestedInput {
+  connect: AnswerWhereUniqueInput
+  connectOrCreate: AnswerCreateOrConnectWithoutTaskAnswersInput
+  create: AnswerCreateWithoutTaskAnswersInput
+  update: AnswerUpdateToOneWithWhereWithoutTaskAnswersInput
+  upsert: AnswerUpsertWithoutTaskAnswersInput
+}
+
+input AnswerUpdateToOneWithWhereWithoutTaskAnswersInput {
+  data: AnswerUpdateWithoutTaskAnswersInput!
+  where: AnswerWhereInput
 }
 
 input AnswerUpdateWithWhereUniqueWithoutResponseInput {
@@ -570,30 +505,25 @@ input AnswerUpdateWithWhereUniqueWithoutTestInput {
   where: AnswerWhereUniqueInput!
 }
 
-input AnswerUpdateWithWhereUniqueWithoutUserInput {
-  data: AnswerUpdateWithoutUserInput!
-  where: AnswerWhereUniqueInput!
-}
-
 input AnswerUpdateWithoutResponseInput {
   answer: NullableStringFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
+  taskAnswers: TaskAnswerUpdateManyWithoutAnswerModelNestedInput
   test: TestUpdateOneRequiredWithoutAnswersNestedInput
-  user: UserUpdateOneRequiredWithoutAnswersNestedInput
+}
+
+input AnswerUpdateWithoutTaskAnswersInput {
+  answer: NullableStringFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  response: ResponseUpdateManyWithoutAnswersNestedInput
+  test: TestUpdateOneRequiredWithoutAnswersNestedInput
 }
 
 input AnswerUpdateWithoutTestInput {
   answer: NullableStringFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   response: ResponseUpdateManyWithoutAnswersNestedInput
-  user: UserUpdateOneRequiredWithoutAnswersNestedInput
-}
-
-input AnswerUpdateWithoutUserInput {
-  answer: NullableStringFieldUpdateOperationsInput
-  createdAt: DateTimeFieldUpdateOperationsInput
-  response: ResponseUpdateManyWithoutAnswersNestedInput
-  test: TestUpdateOneRequiredWithoutAnswersNestedInput
+  taskAnswers: TaskAnswerUpdateManyWithoutAnswerModelNestedInput
 }
 
 input AnswerUpsertWithWhereUniqueWithoutResponseInput {
@@ -608,10 +538,10 @@ input AnswerUpsertWithWhereUniqueWithoutTestInput {
   where: AnswerWhereUniqueInput!
 }
 
-input AnswerUpsertWithWhereUniqueWithoutUserInput {
-  create: AnswerCreateWithoutUserInput!
-  update: AnswerUpdateWithoutUserInput!
-  where: AnswerWhereUniqueInput!
+input AnswerUpsertWithoutTaskAnswersInput {
+  create: AnswerCreateWithoutTaskAnswersInput!
+  update: AnswerUpdateWithoutTaskAnswersInput!
+  where: AnswerWhereInput
 }
 
 input AnswerWhereInput {
@@ -622,10 +552,9 @@ input AnswerWhereInput {
   createdAt: DateTimeFilter
   id: IntFilter
   response: ResponseListRelationFilter
+  taskAnswers: TaskAnswerListRelationFilter
   test: TestRelationFilter
   testId: IntFilter
-  user: UserRelationFilter
-  userId: IntFilter
 }
 
 input AnswerWhereUniqueInput {
@@ -636,10 +565,9 @@ input AnswerWhereUniqueInput {
   createdAt: DateTimeFilter
   id: Int
   response: ResponseListRelationFilter
+  taskAnswers: TaskAnswerListRelationFilter
   test: TestRelationFilter
   testId: IntFilter
-  user: UserRelationFilter
-  userId: IntFilter
 }
 
 type BatchPayload {
@@ -714,9 +642,11 @@ type Direction {
   createdAt: DateTime!
   description: String!
   id: Int!
-  responses(cursor: ResponseWhereUniqueInput, distinct: [ResponseScalarFieldEnum], orderBy: [ResponseOrderByWithRelationAndSearchRelevanceInput], skip: Int, take: Int, where: ResponseWhereInput): [Response!]!
+  responses(cursor: ResponseWhereUniqueInput, distinct: [ResponseScalarFieldEnum], orderBy: [ResponseOrderByWithRelationInput], skip: Int, take: Int, where: ResponseWhereInput): [Response!]!
   specialization: Specialization!
   specializationId: Int!
+  test(where: TestWhereInput): Test
+  testId: Int
   title: String!
   type: DirectionType
 }
@@ -724,11 +654,13 @@ type Direction {
 type DirectionAvgAggregateOutputType {
   id: Float
   specializationId: Float
+  testId: Float
 }
 
 input DirectionAvgOrderByAggregateInput {
   id: SortOrder
   specializationId: SortOrder
+  testId: SortOrder
 }
 
 type DirectionCountAggregateOutputType {
@@ -737,6 +669,7 @@ type DirectionCountAggregateOutputType {
   description: Int!
   id: Int!
   specializationId: Int!
+  testId: Int!
   title: Int!
   type: Int!
 }
@@ -746,6 +679,7 @@ input DirectionCountOrderByAggregateInput {
   description: SortOrder
   id: SortOrder
   specializationId: SortOrder
+  testId: SortOrder
   title: SortOrder
   type: SortOrder
 }
@@ -759,6 +693,7 @@ input DirectionCreateInput {
   description: String!
   responses: ResponseCreateNestedManyWithoutDirectionInput
   specialization: SpecializationCreateNestedOneWithoutDirectionsInput!
+  test: TestCreateNestedOneWithoutDirectionInput
   title: String!
   type: DirectionType
 }
@@ -768,6 +703,7 @@ input DirectionCreateManyInput {
   description: String!
   id: Int
   specializationId: Int!
+  testId: Int
   title: String!
   type: DirectionType
 }
@@ -776,6 +712,7 @@ input DirectionCreateManySpecializationInput {
   createdAt: DateTime
   description: String!
   id: Int
+  testId: Int
   title: String!
   type: DirectionType
 }
@@ -785,11 +722,32 @@ input DirectionCreateManySpecializationInputEnvelope {
   skipDuplicates: Boolean
 }
 
+input DirectionCreateManyTestInput {
+  createdAt: DateTime
+  description: String!
+  id: Int
+  specializationId: Int!
+  title: String!
+  type: DirectionType
+}
+
+input DirectionCreateManyTestInputEnvelope {
+  data: DirectionCreateManyTestInput!
+  skipDuplicates: Boolean
+}
+
 input DirectionCreateNestedManyWithoutSpecializationInput {
   connect: [DirectionWhereUniqueInput]
   connectOrCreate: [DirectionCreateOrConnectWithoutSpecializationInput]
   create: [DirectionCreateWithoutSpecializationInput]
   createMany: DirectionCreateManySpecializationInputEnvelope
+}
+
+input DirectionCreateNestedManyWithoutTestInput {
+  connect: [DirectionWhereUniqueInput]
+  connectOrCreate: [DirectionCreateOrConnectWithoutTestInput]
+  create: [DirectionCreateWithoutTestInput]
+  createMany: DirectionCreateManyTestInputEnvelope
 }
 
 input DirectionCreateNestedOneWithoutResponsesInput {
@@ -808,10 +766,16 @@ input DirectionCreateOrConnectWithoutSpecializationInput {
   where: DirectionWhereUniqueInput!
 }
 
+input DirectionCreateOrConnectWithoutTestInput {
+  create: DirectionCreateWithoutTestInput!
+  where: DirectionWhereUniqueInput!
+}
+
 input DirectionCreateWithoutResponsesInput {
   createdAt: DateTime
   description: String!
   specialization: SpecializationCreateNestedOneWithoutDirectionsInput!
+  test: TestCreateNestedOneWithoutDirectionInput
   title: String!
   type: DirectionType
 }
@@ -820,6 +784,16 @@ input DirectionCreateWithoutSpecializationInput {
   createdAt: DateTime
   description: String!
   responses: ResponseCreateNestedManyWithoutDirectionInput
+  test: TestCreateNestedOneWithoutDirectionInput
+  title: String!
+  type: DirectionType
+}
+
+input DirectionCreateWithoutTestInput {
+  createdAt: DateTime
+  description: String!
+  responses: ResponseCreateNestedManyWithoutDirectionInput
+  specialization: SpecializationCreateNestedOneWithoutDirectionsInput!
   title: String!
   type: DirectionType
 }
@@ -835,6 +809,7 @@ type DirectionMaxAggregateOutputType {
   description: String
   id: Int
   specializationId: Int
+  testId: Int
   title: String
   type: DirectionType
 }
@@ -844,6 +819,7 @@ input DirectionMaxOrderByAggregateInput {
   description: SortOrder
   id: SortOrder
   specializationId: SortOrder
+  testId: SortOrder
   title: SortOrder
   type: SortOrder
 }
@@ -853,6 +829,7 @@ type DirectionMinAggregateOutputType {
   description: String
   id: Int
   specializationId: Int
+  testId: Int
   title: String
   type: DirectionType
 }
@@ -862,23 +839,13 @@ input DirectionMinOrderByAggregateInput {
   description: SortOrder
   id: SortOrder
   specializationId: SortOrder
+  testId: SortOrder
   title: SortOrder
   type: SortOrder
 }
 
 input DirectionOrderByRelationAggregateInput {
   _count: SortOrder
-}
-
-enum DirectionOrderByRelevanceFieldEnum {
-  description
-  title
-}
-
-input DirectionOrderByRelevanceInput {
-  fields: DirectionOrderByRelevanceFieldEnum!
-  search: String!
-  sort: SortOrder!
 }
 
 input DirectionOrderByWithAggregationInput {
@@ -891,18 +858,20 @@ input DirectionOrderByWithAggregationInput {
   description: SortOrder
   id: SortOrder
   specializationId: SortOrder
+  testId: SortOrderInput
   title: SortOrder
   type: SortOrderInput
 }
 
-input DirectionOrderByWithRelationAndSearchRelevanceInput {
-  _relevance: DirectionOrderByRelevanceInput
+input DirectionOrderByWithRelationInput {
   createdAt: SortOrder
   description: SortOrder
   id: SortOrder
   responses: ResponseOrderByRelationAggregateInput
-  specialization: SpecializationOrderByWithRelationAndSearchRelevanceInput
+  specialization: SpecializationOrderByWithRelationInput
   specializationId: SortOrder
+  test: TestOrderByWithRelationInput
+  testId: SortOrderInput
   title: SortOrder
   type: SortOrderInput
 }
@@ -917,6 +886,7 @@ enum DirectionScalarFieldEnum {
   description
   id
   specializationId
+  testId
   title
   type
 }
@@ -929,6 +899,7 @@ input DirectionScalarWhereInput {
   description: StringFilter
   id: IntFilter
   specializationId: IntFilter
+  testId: IntNullableFilter
   title: StringFilter
   type: EnumDirectionTypeNullableFilter
 }
@@ -941,6 +912,7 @@ input DirectionScalarWhereWithAggregatesInput {
   description: StringWithAggregatesFilter
   id: IntWithAggregatesFilter
   specializationId: IntWithAggregatesFilter
+  testId: IntNullableWithAggregatesFilter
   title: StringWithAggregatesFilter
   type: EnumDirectionTypeNullableWithAggregatesFilter
 }
@@ -948,11 +920,13 @@ input DirectionScalarWhereWithAggregatesInput {
 type DirectionSumAggregateOutputType {
   id: Int
   specializationId: Int
+  testId: Int
 }
 
 input DirectionSumOrderByAggregateInput {
   id: SortOrder
   specializationId: SortOrder
+  testId: SortOrder
 }
 
 enum DirectionType {
@@ -966,6 +940,7 @@ input DirectionUncheckedCreateInput {
   id: Int
   responses: ResponseUncheckedCreateNestedManyWithoutDirectionInput
   specializationId: Int!
+  testId: Int
   title: String!
   type: DirectionType
 }
@@ -977,11 +952,19 @@ input DirectionUncheckedCreateNestedManyWithoutSpecializationInput {
   createMany: DirectionCreateManySpecializationInputEnvelope
 }
 
+input DirectionUncheckedCreateNestedManyWithoutTestInput {
+  connect: [DirectionWhereUniqueInput]
+  connectOrCreate: [DirectionCreateOrConnectWithoutTestInput]
+  create: [DirectionCreateWithoutTestInput]
+  createMany: DirectionCreateManyTestInputEnvelope
+}
+
 input DirectionUncheckedCreateWithoutResponsesInput {
   createdAt: DateTime
   description: String!
   id: Int
   specializationId: Int!
+  testId: Int
   title: String!
   type: DirectionType
 }
@@ -991,6 +974,17 @@ input DirectionUncheckedCreateWithoutSpecializationInput {
   description: String!
   id: Int
   responses: ResponseUncheckedCreateNestedManyWithoutDirectionInput
+  testId: Int
+  title: String!
+  type: DirectionType
+}
+
+input DirectionUncheckedCreateWithoutTestInput {
+  createdAt: DateTime
+  description: String!
+  id: Int
+  responses: ResponseUncheckedCreateNestedManyWithoutDirectionInput
+  specializationId: Int!
   title: String!
   type: DirectionType
 }
@@ -1001,6 +995,7 @@ input DirectionUncheckedUpdateInput {
   id: IntFieldUpdateOperationsInput
   responses: ResponseUncheckedUpdateManyWithoutDirectionNestedInput
   specializationId: IntFieldUpdateOperationsInput
+  testId: NullableIntFieldUpdateOperationsInput
   title: StringFieldUpdateOperationsInput
   type: NullableEnumDirectionTypeFieldUpdateOperationsInput
 }
@@ -1010,6 +1005,7 @@ input DirectionUncheckedUpdateManyInput {
   description: StringFieldUpdateOperationsInput
   id: IntFieldUpdateOperationsInput
   specializationId: IntFieldUpdateOperationsInput
+  testId: NullableIntFieldUpdateOperationsInput
   title: StringFieldUpdateOperationsInput
   type: NullableEnumDirectionTypeFieldUpdateOperationsInput
 }
@@ -1018,6 +1014,7 @@ input DirectionUncheckedUpdateManyWithoutSpecializationInput {
   createdAt: DateTimeFieldUpdateOperationsInput
   description: StringFieldUpdateOperationsInput
   id: IntFieldUpdateOperationsInput
+  testId: NullableIntFieldUpdateOperationsInput
   title: StringFieldUpdateOperationsInput
   type: NullableEnumDirectionTypeFieldUpdateOperationsInput
 }
@@ -1036,11 +1033,35 @@ input DirectionUncheckedUpdateManyWithoutSpecializationNestedInput {
   upsert: [DirectionUpsertWithWhereUniqueWithoutSpecializationInput]
 }
 
+input DirectionUncheckedUpdateManyWithoutTestInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  description: StringFieldUpdateOperationsInput
+  id: IntFieldUpdateOperationsInput
+  specializationId: IntFieldUpdateOperationsInput
+  title: StringFieldUpdateOperationsInput
+  type: NullableEnumDirectionTypeFieldUpdateOperationsInput
+}
+
+input DirectionUncheckedUpdateManyWithoutTestNestedInput {
+  connect: [DirectionWhereUniqueInput]
+  connectOrCreate: [DirectionCreateOrConnectWithoutTestInput]
+  create: [DirectionCreateWithoutTestInput]
+  createMany: DirectionCreateManyTestInputEnvelope
+  delete: [DirectionWhereUniqueInput]
+  deleteMany: [DirectionScalarWhereInput]
+  disconnect: [DirectionWhereUniqueInput]
+  set: [DirectionWhereUniqueInput]
+  update: [DirectionUpdateWithWhereUniqueWithoutTestInput]
+  updateMany: [DirectionUpdateManyWithWhereWithoutTestInput]
+  upsert: [DirectionUpsertWithWhereUniqueWithoutTestInput]
+}
+
 input DirectionUncheckedUpdateWithoutResponsesInput {
   createdAt: DateTimeFieldUpdateOperationsInput
   description: StringFieldUpdateOperationsInput
   id: IntFieldUpdateOperationsInput
   specializationId: IntFieldUpdateOperationsInput
+  testId: NullableIntFieldUpdateOperationsInput
   title: StringFieldUpdateOperationsInput
   type: NullableEnumDirectionTypeFieldUpdateOperationsInput
 }
@@ -1050,6 +1071,17 @@ input DirectionUncheckedUpdateWithoutSpecializationInput {
   description: StringFieldUpdateOperationsInput
   id: IntFieldUpdateOperationsInput
   responses: ResponseUncheckedUpdateManyWithoutDirectionNestedInput
+  testId: NullableIntFieldUpdateOperationsInput
+  title: StringFieldUpdateOperationsInput
+  type: NullableEnumDirectionTypeFieldUpdateOperationsInput
+}
+
+input DirectionUncheckedUpdateWithoutTestInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  description: StringFieldUpdateOperationsInput
+  id: IntFieldUpdateOperationsInput
+  responses: ResponseUncheckedUpdateManyWithoutDirectionNestedInput
+  specializationId: IntFieldUpdateOperationsInput
   title: StringFieldUpdateOperationsInput
   type: NullableEnumDirectionTypeFieldUpdateOperationsInput
 }
@@ -1059,6 +1091,7 @@ input DirectionUpdateInput {
   description: StringFieldUpdateOperationsInput
   responses: ResponseUpdateManyWithoutDirectionNestedInput
   specialization: SpecializationUpdateOneRequiredWithoutDirectionsNestedInput
+  test: TestUpdateOneWithoutDirectionNestedInput
   title: StringFieldUpdateOperationsInput
   type: NullableEnumDirectionTypeFieldUpdateOperationsInput
 }
@@ -1075,6 +1108,11 @@ input DirectionUpdateManyWithWhereWithoutSpecializationInput {
   where: DirectionScalarWhereInput!
 }
 
+input DirectionUpdateManyWithWhereWithoutTestInput {
+  data: DirectionUpdateManyMutationInput!
+  where: DirectionScalarWhereInput!
+}
+
 input DirectionUpdateManyWithoutSpecializationNestedInput {
   connect: [DirectionWhereUniqueInput]
   connectOrCreate: [DirectionCreateOrConnectWithoutSpecializationInput]
@@ -1087,6 +1125,20 @@ input DirectionUpdateManyWithoutSpecializationNestedInput {
   update: [DirectionUpdateWithWhereUniqueWithoutSpecializationInput]
   updateMany: [DirectionUpdateManyWithWhereWithoutSpecializationInput]
   upsert: [DirectionUpsertWithWhereUniqueWithoutSpecializationInput]
+}
+
+input DirectionUpdateManyWithoutTestNestedInput {
+  connect: [DirectionWhereUniqueInput]
+  connectOrCreate: [DirectionCreateOrConnectWithoutTestInput]
+  create: [DirectionCreateWithoutTestInput]
+  createMany: DirectionCreateManyTestInputEnvelope
+  delete: [DirectionWhereUniqueInput]
+  deleteMany: [DirectionScalarWhereInput]
+  disconnect: [DirectionWhereUniqueInput]
+  set: [DirectionWhereUniqueInput]
+  update: [DirectionUpdateWithWhereUniqueWithoutTestInput]
+  updateMany: [DirectionUpdateManyWithWhereWithoutTestInput]
+  upsert: [DirectionUpsertWithWhereUniqueWithoutTestInput]
 }
 
 input DirectionUpdateOneRequiredWithoutResponsesNestedInput {
@@ -1107,10 +1159,16 @@ input DirectionUpdateWithWhereUniqueWithoutSpecializationInput {
   where: DirectionWhereUniqueInput!
 }
 
+input DirectionUpdateWithWhereUniqueWithoutTestInput {
+  data: DirectionUpdateWithoutTestInput!
+  where: DirectionWhereUniqueInput!
+}
+
 input DirectionUpdateWithoutResponsesInput {
   createdAt: DateTimeFieldUpdateOperationsInput
   description: StringFieldUpdateOperationsInput
   specialization: SpecializationUpdateOneRequiredWithoutDirectionsNestedInput
+  test: TestUpdateOneWithoutDirectionNestedInput
   title: StringFieldUpdateOperationsInput
   type: NullableEnumDirectionTypeFieldUpdateOperationsInput
 }
@@ -1119,6 +1177,16 @@ input DirectionUpdateWithoutSpecializationInput {
   createdAt: DateTimeFieldUpdateOperationsInput
   description: StringFieldUpdateOperationsInput
   responses: ResponseUpdateManyWithoutDirectionNestedInput
+  test: TestUpdateOneWithoutDirectionNestedInput
+  title: StringFieldUpdateOperationsInput
+  type: NullableEnumDirectionTypeFieldUpdateOperationsInput
+}
+
+input DirectionUpdateWithoutTestInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  description: StringFieldUpdateOperationsInput
+  responses: ResponseUpdateManyWithoutDirectionNestedInput
+  specialization: SpecializationUpdateOneRequiredWithoutDirectionsNestedInput
   title: StringFieldUpdateOperationsInput
   type: NullableEnumDirectionTypeFieldUpdateOperationsInput
 }
@@ -1126,6 +1194,12 @@ input DirectionUpdateWithoutSpecializationInput {
 input DirectionUpsertWithWhereUniqueWithoutSpecializationInput {
   create: DirectionCreateWithoutSpecializationInput!
   update: DirectionUpdateWithoutSpecializationInput!
+  where: DirectionWhereUniqueInput!
+}
+
+input DirectionUpsertWithWhereUniqueWithoutTestInput {
+  create: DirectionCreateWithoutTestInput!
+  update: DirectionUpdateWithoutTestInput!
   where: DirectionWhereUniqueInput!
 }
 
@@ -1145,6 +1219,8 @@ input DirectionWhereInput {
   responses: ResponseListRelationFilter
   specialization: SpecializationRelationFilter
   specializationId: IntFilter
+  test: TestNullableRelationFilter
+  testId: IntNullableFilter
   title: StringFilter
   type: EnumDirectionTypeNullableFilter
 }
@@ -1159,6 +1235,8 @@ input DirectionWhereUniqueInput {
   responses: ResponseListRelationFilter
   specialization: SpecializationRelationFilter
   specializationId: IntFilter
+  test: TestNullableRelationFilter
+  testId: IntNullableFilter
   title: StringFilter
   type: EnumDirectionTypeNullableFilter
 }
@@ -1498,17 +1576,6 @@ input MessageOrderByRelationAggregateInput {
   _count: SortOrder
 }
 
-enum MessageOrderByRelevanceFieldEnum {
-  files
-  text
-}
-
-input MessageOrderByRelevanceInput {
-  fields: MessageOrderByRelevanceFieldEnum!
-  search: String!
-  sort: SortOrder!
-}
-
 input MessageOrderByWithAggregationInput {
   _avg: MessageAvgOrderByAggregateInput
   _count: MessageCountOrderByAggregateInput
@@ -1523,14 +1590,13 @@ input MessageOrderByWithAggregationInput {
   text: SortOrder
 }
 
-input MessageOrderByWithRelationAndSearchRelevanceInput {
-  _relevance: MessageOrderByRelevanceInput
+input MessageOrderByWithRelationInput {
   createdAt: SortOrder
   files: SortOrder
-  group: MessagerGroupOrderByWithRelationAndSearchRelevanceInput
+  group: MessagerGroupOrderByWithRelationInput
   groupId: SortOrder
   id: SortOrder
-  sender: UserOrderByWithRelationAndSearchRelevanceInput
+  sender: UserOrderByWithRelationInput
   senderId: SortOrder
   text: SortOrder
 }
@@ -1825,9 +1891,9 @@ type MessagerGroup {
   creatorId: Int
   icon: String!
   id: Int!
-  messages(cursor: MessageWhereUniqueInput, distinct: [MessageScalarFieldEnum], orderBy: [MessageOrderByWithRelationAndSearchRelevanceInput], skip: Int, take: Int, where: MessageWhereInput): [Message!]!
+  messages(cursor: MessageWhereUniqueInput, distinct: [MessageScalarFieldEnum], orderBy: [MessageOrderByWithRelationInput], skip: Int, take: Int, where: MessageWhereInput): [Message!]!
   title: String!
-  users(cursor: UserWhereUniqueInput, distinct: [UserScalarFieldEnum], orderBy: [UserOrderByWithRelationAndSearchRelevanceInput], skip: Int, take: Int, where: UserWhereInput): [User!]!
+  users(cursor: UserWhereUniqueInput, distinct: [UserScalarFieldEnum], orderBy: [UserOrderByWithRelationInput], skip: Int, take: Int, where: UserWhereInput): [User!]!
 }
 
 type MessagerGroupAvgAggregateOutputType {
@@ -1969,17 +2035,6 @@ input MessagerGroupOrderByRelationAggregateInput {
   _count: SortOrder
 }
 
-enum MessagerGroupOrderByRelevanceFieldEnum {
-  icon
-  title
-}
-
-input MessagerGroupOrderByRelevanceInput {
-  fields: MessagerGroupOrderByRelevanceFieldEnum!
-  search: String!
-  sort: SortOrder!
-}
-
 input MessagerGroupOrderByWithAggregationInput {
   _avg: MessagerGroupAvgOrderByAggregateInput
   _count: MessagerGroupCountOrderByAggregateInput
@@ -1994,8 +2049,7 @@ input MessagerGroupOrderByWithAggregationInput {
   title: SortOrder
 }
 
-input MessagerGroupOrderByWithRelationAndSearchRelevanceInput {
-  _relevance: MessagerGroupOrderByRelevanceInput
+input MessagerGroupOrderByWithRelationInput {
   active: SortOrder
   createdAt: SortOrder
   creatorId: SortOrderInput
@@ -2284,6 +2338,7 @@ type Mutation {
   createOneResponse(data: ResponseCreateInput!): Response!
   createOneSpecialization(data: SpecializationCreateInput!): Specialization!
   createOneTask(data: TaskCreateInput!): Task!
+  createOneTaskAnswer(data: TaskAnswerCreateInput!): TaskAnswer!
   createOneTest(data: TestCreateInput!): Test!
   createOneUser(data: UserCreateInput!): User!
   deleteManyAnswer(where: AnswerWhereInput): BatchPayload!
@@ -2293,6 +2348,7 @@ type Mutation {
   deleteManyResponse(where: ResponseWhereInput): BatchPayload!
   deleteManySpecialization(where: SpecializationWhereInput): BatchPayload!
   deleteManyTask(where: TaskWhereInput): BatchPayload!
+  deleteManyTaskAnswer(where: TaskAnswerWhereInput): BatchPayload!
   deleteManyTest(where: TestWhereInput): BatchPayload!
   deleteManyUser(where: UserWhereInput): BatchPayload!
   deleteOneAnswer(where: AnswerWhereUniqueInput!): Answer
@@ -2302,8 +2358,12 @@ type Mutation {
   deleteOneResponse(where: ResponseWhereUniqueInput!): Response
   deleteOneSpecialization(where: SpecializationWhereUniqueInput!): Specialization
   deleteOneTask(where: TaskWhereUniqueInput!): Task
+  deleteOneTaskAnswer(where: TaskAnswerWhereUniqueInput!): TaskAnswer
   deleteOneTest(where: TestWhereUniqueInput!): Test
   deleteOneUser(where: UserWhereUniqueInput!): User
+  login(email: String!, password: String!): User
+  logout: Boolean
+  signup(email: String!, name: String, password: String!): User
   updateField(data: UpdateFieldInput!, id: String!, modelId: String!): Field!
   updateManyAnswer(data: AnswerUpdateManyMutationInput!, where: AnswerWhereInput): BatchPayload!
   updateManyDirection(data: DirectionUpdateManyMutationInput!, where: DirectionWhereInput): BatchPayload!
@@ -2312,6 +2372,7 @@ type Mutation {
   updateManyResponse(data: ResponseUpdateManyMutationInput!, where: ResponseWhereInput): BatchPayload!
   updateManySpecialization(data: SpecializationUpdateManyMutationInput!, where: SpecializationWhereInput): BatchPayload!
   updateManyTask(data: TaskUpdateManyMutationInput!, where: TaskWhereInput): BatchPayload!
+  updateManyTaskAnswer(data: TaskAnswerUpdateManyMutationInput!, where: TaskAnswerWhereInput): BatchPayload!
   updateManyTest(data: TestUpdateManyMutationInput!, where: TestWhereInput): BatchPayload!
   updateManyUser(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
   updateModel(data: UpdateModelInput!, id: String!): Model!
@@ -2322,8 +2383,10 @@ type Mutation {
   updateOneResponse(data: ResponseUpdateInput!, where: ResponseWhereUniqueInput!): Response!
   updateOneSpecialization(data: SpecializationUpdateInput!, where: SpecializationWhereUniqueInput!): Specialization!
   updateOneTask(data: TaskUpdateInput!, where: TaskWhereUniqueInput!): Task!
+  updateOneTaskAnswer(data: TaskAnswerUpdateInput!, where: TaskAnswerWhereUniqueInput!): TaskAnswer!
   updateOneTest(data: TestUpdateInput!, where: TestWhereUniqueInput!): Test!
   updateOneUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User!
+  updatePassword(currentPassword: String!, password: String!): Boolean
   upsertOneAnswer(create: AnswerCreateInput!, update: AnswerUpdateInput!, where: AnswerWhereUniqueInput!): Answer!
   upsertOneDirection(create: DirectionCreateInput!, update: DirectionUpdateInput!, where: DirectionWhereUniqueInput!): Direction!
   upsertOneMessage(create: MessageCreateInput!, update: MessageUpdateInput!, where: MessageWhereUniqueInput!): Message!
@@ -2331,6 +2394,7 @@ type Mutation {
   upsertOneResponse(create: ResponseCreateInput!, update: ResponseUpdateInput!, where: ResponseWhereUniqueInput!): Response!
   upsertOneSpecialization(create: SpecializationCreateInput!, update: SpecializationUpdateInput!, where: SpecializationWhereUniqueInput!): Specialization!
   upsertOneTask(create: TaskCreateInput!, update: TaskUpdateInput!, where: TaskWhereUniqueInput!): Task!
+  upsertOneTaskAnswer(create: TaskAnswerCreateInput!, update: TaskAnswerUpdateInput!, where: TaskAnswerWhereUniqueInput!): TaskAnswer!
   upsertOneTest(create: TestCreateInput!, update: TestUpdateInput!, where: TestWhereUniqueInput!): Test!
   upsertOneUser(create: UserCreateInput!, update: UserUpdateInput!, where: UserWhereUniqueInput!): User!
 }
@@ -2511,7 +2575,6 @@ input NestedStringFilter {
   lte: String
   not: NestedStringFilter
   notIn: [String]
-  search: String
   startsWith: String
 }
 
@@ -2526,7 +2589,6 @@ input NestedStringNullableFilter {
   lte: String
   not: NestedStringNullableFilter
   notIn: [String]
-  search: String
   startsWith: String
 }
 
@@ -2544,7 +2606,6 @@ input NestedStringNullableWithAggregatesFilter {
   lte: String
   not: NestedStringNullableWithAggregatesFilter
   notIn: [String]
-  search: String
   startsWith: String
 }
 
@@ -2562,7 +2623,6 @@ input NestedStringWithAggregatesFilter {
   lte: String
   not: NestedStringWithAggregatesFilter
   notIn: [String]
-  search: String
   startsWith: String
 }
 
@@ -2588,42 +2648,46 @@ enum NullsOrder {
 }
 
 type Query {
-  aggregateAnswer(cursor: AnswerWhereUniqueInput, orderBy: [AnswerOrderByWithRelationAndSearchRelevanceInput], skip: Int, take: Int, where: AnswerWhereInput): AggregateAnswer
-  aggregateDirection(cursor: DirectionWhereUniqueInput, orderBy: [DirectionOrderByWithRelationAndSearchRelevanceInput], skip: Int, take: Int, where: DirectionWhereInput): AggregateDirection
-  aggregateMessage(cursor: MessageWhereUniqueInput, orderBy: [MessageOrderByWithRelationAndSearchRelevanceInput], skip: Int, take: Int, where: MessageWhereInput): AggregateMessage
-  aggregateMessagerGroup(cursor: MessagerGroupWhereUniqueInput, orderBy: [MessagerGroupOrderByWithRelationAndSearchRelevanceInput], skip: Int, take: Int, where: MessagerGroupWhereInput): AggregateMessagerGroup
-  aggregateResponse(cursor: ResponseWhereUniqueInput, orderBy: [ResponseOrderByWithRelationAndSearchRelevanceInput], skip: Int, take: Int, where: ResponseWhereInput): AggregateResponse
-  aggregateSpecialization(cursor: SpecializationWhereUniqueInput, orderBy: [SpecializationOrderByWithRelationAndSearchRelevanceInput], skip: Int, take: Int, where: SpecializationWhereInput): AggregateSpecialization
-  aggregateTask(cursor: TaskWhereUniqueInput, orderBy: [TaskOrderByWithRelationAndSearchRelevanceInput], skip: Int, take: Int, where: TaskWhereInput): AggregateTask
-  aggregateTest(cursor: TestWhereUniqueInput, orderBy: [TestOrderByWithRelationAndSearchRelevanceInput], skip: Int, take: Int, where: TestWhereInput): AggregateTest
-  aggregateUser(cursor: UserWhereUniqueInput, orderBy: [UserOrderByWithRelationAndSearchRelevanceInput], skip: Int, take: Int, where: UserWhereInput): AggregateUser
-  findFirstAnswer(cursor: AnswerWhereUniqueInput, distinct: [AnswerScalarFieldEnum], orderBy: [AnswerOrderByWithRelationAndSearchRelevanceInput], skip: Int, take: Int, where: AnswerWhereInput): Answer
-  findFirstDirection(cursor: DirectionWhereUniqueInput, distinct: [DirectionScalarFieldEnum], orderBy: [DirectionOrderByWithRelationAndSearchRelevanceInput], skip: Int, take: Int, where: DirectionWhereInput): Direction
-  findFirstMessage(cursor: MessageWhereUniqueInput, distinct: [MessageScalarFieldEnum], orderBy: [MessageOrderByWithRelationAndSearchRelevanceInput], skip: Int, take: Int, where: MessageWhereInput): Message
-  findFirstMessagerGroup(cursor: MessagerGroupWhereUniqueInput, distinct: [MessagerGroupScalarFieldEnum], orderBy: [MessagerGroupOrderByWithRelationAndSearchRelevanceInput], skip: Int, take: Int, where: MessagerGroupWhereInput): MessagerGroup
-  findFirstResponse(cursor: ResponseWhereUniqueInput, distinct: [ResponseScalarFieldEnum], orderBy: [ResponseOrderByWithRelationAndSearchRelevanceInput], skip: Int, take: Int, where: ResponseWhereInput): Response
-  findFirstSpecialization(cursor: SpecializationWhereUniqueInput, distinct: [SpecializationScalarFieldEnum], orderBy: [SpecializationOrderByWithRelationAndSearchRelevanceInput], skip: Int, take: Int, where: SpecializationWhereInput): Specialization
-  findFirstTask(cursor: TaskWhereUniqueInput, distinct: [TaskScalarFieldEnum], orderBy: [TaskOrderByWithRelationAndSearchRelevanceInput], skip: Int, take: Int, where: TaskWhereInput): Task
-  findFirstTest(cursor: TestWhereUniqueInput, distinct: [TestScalarFieldEnum], orderBy: [TestOrderByWithRelationAndSearchRelevanceInput], skip: Int, take: Int, where: TestWhereInput): Test
-  findFirstUser(cursor: UserWhereUniqueInput, distinct: [UserScalarFieldEnum], orderBy: [UserOrderByWithRelationAndSearchRelevanceInput], skip: Int, take: Int, where: UserWhereInput): User
-  findManyAnswer(cursor: AnswerWhereUniqueInput, distinct: [AnswerScalarFieldEnum], orderBy: [AnswerOrderByWithRelationAndSearchRelevanceInput], skip: Int, take: Int, where: AnswerWhereInput): [Answer!]!
-  findManyAnswerCount(cursor: AnswerWhereUniqueInput, distinct: [AnswerScalarFieldEnum], orderBy: [AnswerOrderByWithRelationAndSearchRelevanceInput], skip: Int, take: Int, where: AnswerWhereInput): Int!
-  findManyDirection(cursor: DirectionWhereUniqueInput, distinct: [DirectionScalarFieldEnum], orderBy: [DirectionOrderByWithRelationAndSearchRelevanceInput], skip: Int, take: Int, where: DirectionWhereInput): [Direction!]!
-  findManyDirectionCount(cursor: DirectionWhereUniqueInput, distinct: [DirectionScalarFieldEnum], orderBy: [DirectionOrderByWithRelationAndSearchRelevanceInput], skip: Int, take: Int, where: DirectionWhereInput): Int!
-  findManyMessage(cursor: MessageWhereUniqueInput, distinct: [MessageScalarFieldEnum], orderBy: [MessageOrderByWithRelationAndSearchRelevanceInput], skip: Int, take: Int, where: MessageWhereInput): [Message!]!
-  findManyMessageCount(cursor: MessageWhereUniqueInput, distinct: [MessageScalarFieldEnum], orderBy: [MessageOrderByWithRelationAndSearchRelevanceInput], skip: Int, take: Int, where: MessageWhereInput): Int!
-  findManyMessagerGroup(cursor: MessagerGroupWhereUniqueInput, distinct: [MessagerGroupScalarFieldEnum], orderBy: [MessagerGroupOrderByWithRelationAndSearchRelevanceInput], skip: Int, take: Int, where: MessagerGroupWhereInput): [MessagerGroup!]!
-  findManyMessagerGroupCount(cursor: MessagerGroupWhereUniqueInput, distinct: [MessagerGroupScalarFieldEnum], orderBy: [MessagerGroupOrderByWithRelationAndSearchRelevanceInput], skip: Int, take: Int, where: MessagerGroupWhereInput): Int!
-  findManyResponse(cursor: ResponseWhereUniqueInput, distinct: [ResponseScalarFieldEnum], orderBy: [ResponseOrderByWithRelationAndSearchRelevanceInput], skip: Int, take: Int, where: ResponseWhereInput): [Response!]!
-  findManyResponseCount(cursor: ResponseWhereUniqueInput, distinct: [ResponseScalarFieldEnum], orderBy: [ResponseOrderByWithRelationAndSearchRelevanceInput], skip: Int, take: Int, where: ResponseWhereInput): Int!
-  findManySpecialization(cursor: SpecializationWhereUniqueInput, distinct: [SpecializationScalarFieldEnum], orderBy: [SpecializationOrderByWithRelationAndSearchRelevanceInput], skip: Int, take: Int, where: SpecializationWhereInput): [Specialization!]!
-  findManySpecializationCount(cursor: SpecializationWhereUniqueInput, distinct: [SpecializationScalarFieldEnum], orderBy: [SpecializationOrderByWithRelationAndSearchRelevanceInput], skip: Int, take: Int, where: SpecializationWhereInput): Int!
-  findManyTask(cursor: TaskWhereUniqueInput, distinct: [TaskScalarFieldEnum], orderBy: [TaskOrderByWithRelationAndSearchRelevanceInput], skip: Int, take: Int, where: TaskWhereInput): [Task!]!
-  findManyTaskCount(cursor: TaskWhereUniqueInput, distinct: [TaskScalarFieldEnum], orderBy: [TaskOrderByWithRelationAndSearchRelevanceInput], skip: Int, take: Int, where: TaskWhereInput): Int!
-  findManyTest(cursor: TestWhereUniqueInput, distinct: [TestScalarFieldEnum], orderBy: [TestOrderByWithRelationAndSearchRelevanceInput], skip: Int, take: Int, where: TestWhereInput): [Test!]!
-  findManyTestCount(cursor: TestWhereUniqueInput, distinct: [TestScalarFieldEnum], orderBy: [TestOrderByWithRelationAndSearchRelevanceInput], skip: Int, take: Int, where: TestWhereInput): Int!
-  findManyUser(cursor: UserWhereUniqueInput, distinct: [UserScalarFieldEnum], orderBy: [UserOrderByWithRelationAndSearchRelevanceInput], skip: Int, take: Int, where: UserWhereInput): [User!]!
-  findManyUserCount(cursor: UserWhereUniqueInput, distinct: [UserScalarFieldEnum], orderBy: [UserOrderByWithRelationAndSearchRelevanceInput], skip: Int, take: Int, where: UserWhereInput): Int!
+  aggregateAnswer(cursor: AnswerWhereUniqueInput, orderBy: [AnswerOrderByWithRelationInput], skip: Int, take: Int, where: AnswerWhereInput): AggregateAnswer
+  aggregateDirection(cursor: DirectionWhereUniqueInput, orderBy: [DirectionOrderByWithRelationInput], skip: Int, take: Int, where: DirectionWhereInput): AggregateDirection
+  aggregateMessage(cursor: MessageWhereUniqueInput, orderBy: [MessageOrderByWithRelationInput], skip: Int, take: Int, where: MessageWhereInput): AggregateMessage
+  aggregateMessagerGroup(cursor: MessagerGroupWhereUniqueInput, orderBy: [MessagerGroupOrderByWithRelationInput], skip: Int, take: Int, where: MessagerGroupWhereInput): AggregateMessagerGroup
+  aggregateResponse(cursor: ResponseWhereUniqueInput, orderBy: [ResponseOrderByWithRelationInput], skip: Int, take: Int, where: ResponseWhereInput): AggregateResponse
+  aggregateSpecialization(cursor: SpecializationWhereUniqueInput, orderBy: [SpecializationOrderByWithRelationInput], skip: Int, take: Int, where: SpecializationWhereInput): AggregateSpecialization
+  aggregateTask(cursor: TaskWhereUniqueInput, orderBy: [TaskOrderByWithRelationInput], skip: Int, take: Int, where: TaskWhereInput): AggregateTask
+  aggregateTaskAnswer(cursor: TaskAnswerWhereUniqueInput, orderBy: [TaskAnswerOrderByWithRelationInput], skip: Int, take: Int, where: TaskAnswerWhereInput): AggregateTaskAnswer
+  aggregateTest(cursor: TestWhereUniqueInput, orderBy: [TestOrderByWithRelationInput], skip: Int, take: Int, where: TestWhereInput): AggregateTest
+  aggregateUser(cursor: UserWhereUniqueInput, orderBy: [UserOrderByWithRelationInput], skip: Int, take: Int, where: UserWhereInput): AggregateUser
+  findFirstAnswer(cursor: AnswerWhereUniqueInput, distinct: [AnswerScalarFieldEnum], orderBy: [AnswerOrderByWithRelationInput], skip: Int, take: Int, where: AnswerWhereInput): Answer
+  findFirstDirection(cursor: DirectionWhereUniqueInput, distinct: [DirectionScalarFieldEnum], orderBy: [DirectionOrderByWithRelationInput], skip: Int, take: Int, where: DirectionWhereInput): Direction
+  findFirstMessage(cursor: MessageWhereUniqueInput, distinct: [MessageScalarFieldEnum], orderBy: [MessageOrderByWithRelationInput], skip: Int, take: Int, where: MessageWhereInput): Message
+  findFirstMessagerGroup(cursor: MessagerGroupWhereUniqueInput, distinct: [MessagerGroupScalarFieldEnum], orderBy: [MessagerGroupOrderByWithRelationInput], skip: Int, take: Int, where: MessagerGroupWhereInput): MessagerGroup
+  findFirstResponse(cursor: ResponseWhereUniqueInput, distinct: [ResponseScalarFieldEnum], orderBy: [ResponseOrderByWithRelationInput], skip: Int, take: Int, where: ResponseWhereInput): Response
+  findFirstSpecialization(cursor: SpecializationWhereUniqueInput, distinct: [SpecializationScalarFieldEnum], orderBy: [SpecializationOrderByWithRelationInput], skip: Int, take: Int, where: SpecializationWhereInput): Specialization
+  findFirstTask(cursor: TaskWhereUniqueInput, distinct: [TaskScalarFieldEnum], orderBy: [TaskOrderByWithRelationInput], skip: Int, take: Int, where: TaskWhereInput): Task
+  findFirstTaskAnswer(cursor: TaskAnswerWhereUniqueInput, distinct: [TaskAnswerScalarFieldEnum], orderBy: [TaskAnswerOrderByWithRelationInput], skip: Int, take: Int, where: TaskAnswerWhereInput): TaskAnswer
+  findFirstTest(cursor: TestWhereUniqueInput, distinct: [TestScalarFieldEnum], orderBy: [TestOrderByWithRelationInput], skip: Int, take: Int, where: TestWhereInput): Test
+  findFirstUser(cursor: UserWhereUniqueInput, distinct: [UserScalarFieldEnum], orderBy: [UserOrderByWithRelationInput], skip: Int, take: Int, where: UserWhereInput): User
+  findManyAnswer(cursor: AnswerWhereUniqueInput, distinct: [AnswerScalarFieldEnum], orderBy: [AnswerOrderByWithRelationInput], skip: Int, take: Int, where: AnswerWhereInput): [Answer!]!
+  findManyAnswerCount(cursor: AnswerWhereUniqueInput, distinct: [AnswerScalarFieldEnum], orderBy: [AnswerOrderByWithRelationInput], skip: Int, take: Int, where: AnswerWhereInput): Int!
+  findManyDirection(cursor: DirectionWhereUniqueInput, distinct: [DirectionScalarFieldEnum], orderBy: [DirectionOrderByWithRelationInput], skip: Int, take: Int, where: DirectionWhereInput): [Direction!]!
+  findManyDirectionCount(cursor: DirectionWhereUniqueInput, distinct: [DirectionScalarFieldEnum], orderBy: [DirectionOrderByWithRelationInput], skip: Int, take: Int, where: DirectionWhereInput): Int!
+  findManyMessage(cursor: MessageWhereUniqueInput, distinct: [MessageScalarFieldEnum], orderBy: [MessageOrderByWithRelationInput], skip: Int, take: Int, where: MessageWhereInput): [Message!]!
+  findManyMessageCount(cursor: MessageWhereUniqueInput, distinct: [MessageScalarFieldEnum], orderBy: [MessageOrderByWithRelationInput], skip: Int, take: Int, where: MessageWhereInput): Int!
+  findManyMessagerGroup(cursor: MessagerGroupWhereUniqueInput, distinct: [MessagerGroupScalarFieldEnum], orderBy: [MessagerGroupOrderByWithRelationInput], skip: Int, take: Int, where: MessagerGroupWhereInput): [MessagerGroup!]!
+  findManyMessagerGroupCount(cursor: MessagerGroupWhereUniqueInput, distinct: [MessagerGroupScalarFieldEnum], orderBy: [MessagerGroupOrderByWithRelationInput], skip: Int, take: Int, where: MessagerGroupWhereInput): Int!
+  findManyResponse(cursor: ResponseWhereUniqueInput, distinct: [ResponseScalarFieldEnum], orderBy: [ResponseOrderByWithRelationInput], skip: Int, take: Int, where: ResponseWhereInput): [Response!]!
+  findManyResponseCount(cursor: ResponseWhereUniqueInput, distinct: [ResponseScalarFieldEnum], orderBy: [ResponseOrderByWithRelationInput], skip: Int, take: Int, where: ResponseWhereInput): Int!
+  findManySpecialization(cursor: SpecializationWhereUniqueInput, distinct: [SpecializationScalarFieldEnum], orderBy: [SpecializationOrderByWithRelationInput], skip: Int, take: Int, where: SpecializationWhereInput): [Specialization!]!
+  findManySpecializationCount(cursor: SpecializationWhereUniqueInput, distinct: [SpecializationScalarFieldEnum], orderBy: [SpecializationOrderByWithRelationInput], skip: Int, take: Int, where: SpecializationWhereInput): Int!
+  findManyTask(cursor: TaskWhereUniqueInput, distinct: [TaskScalarFieldEnum], orderBy: [TaskOrderByWithRelationInput], skip: Int, take: Int, where: TaskWhereInput): [Task!]!
+  findManyTaskAnswer(cursor: TaskAnswerWhereUniqueInput, distinct: [TaskAnswerScalarFieldEnum], orderBy: [TaskAnswerOrderByWithRelationInput], skip: Int, take: Int, where: TaskAnswerWhereInput): [TaskAnswer!]!
+  findManyTaskAnswerCount(cursor: TaskAnswerWhereUniqueInput, distinct: [TaskAnswerScalarFieldEnum], orderBy: [TaskAnswerOrderByWithRelationInput], skip: Int, take: Int, where: TaskAnswerWhereInput): Int!
+  findManyTaskCount(cursor: TaskWhereUniqueInput, distinct: [TaskScalarFieldEnum], orderBy: [TaskOrderByWithRelationInput], skip: Int, take: Int, where: TaskWhereInput): Int!
+  findManyTest(cursor: TestWhereUniqueInput, distinct: [TestScalarFieldEnum], orderBy: [TestOrderByWithRelationInput], skip: Int, take: Int, where: TestWhereInput): [Test!]!
+  findManyTestCount(cursor: TestWhereUniqueInput, distinct: [TestScalarFieldEnum], orderBy: [TestOrderByWithRelationInput], skip: Int, take: Int, where: TestWhereInput): Int!
+  findManyUser(cursor: UserWhereUniqueInput, distinct: [UserScalarFieldEnum], orderBy: [UserOrderByWithRelationInput], skip: Int, take: Int, where: UserWhereInput): [User!]!
+  findManyUserCount(cursor: UserWhereUniqueInput, distinct: [UserScalarFieldEnum], orderBy: [UserOrderByWithRelationInput], skip: Int, take: Int, where: UserWhereInput): Int!
   findUniqueAnswer(where: AnswerWhereUniqueInput!): Answer
   findUniqueDirection(where: DirectionWhereUniqueInput!): Direction
   findUniqueMessage(where: MessageWhereUniqueInput!): Message
@@ -2631,9 +2695,11 @@ type Query {
   findUniqueResponse(where: ResponseWhereUniqueInput!): Response
   findUniqueSpecialization(where: SpecializationWhereUniqueInput!): Specialization
   findUniqueTask(where: TaskWhereUniqueInput!): Task
+  findUniqueTaskAnswer(where: TaskAnswerWhereUniqueInput!): TaskAnswer
   findUniqueTest(where: TestWhereUniqueInput!): Test
   findUniqueUser(where: UserWhereUniqueInput!): User
   getSchema: Schema!
+  me: User
 }
 
 enum QueryMode {
@@ -2643,15 +2709,16 @@ enum QueryMode {
 
 type Response {
   _count: ResponseCountOutputType!
-  answers(cursor: AnswerWhereUniqueInput, distinct: [AnswerScalarFieldEnum], orderBy: [AnswerOrderByWithRelationAndSearchRelevanceInput], skip: Int, take: Int, where: AnswerWhereInput): [Answer!]!
+  answers(cursor: AnswerWhereUniqueInput, distinct: [AnswerScalarFieldEnum], orderBy: [AnswerOrderByWithRelationInput], skip: Int, take: Int, where: AnswerWhereInput): [Answer!]!
   createdAt: DateTime!
   direction: Direction!
   directionId: Int!
   id: Int!
-  tests(cursor: TestWhereUniqueInput, distinct: [TestScalarFieldEnum], orderBy: [TestOrderByWithRelationAndSearchRelevanceInput], skip: Int, take: Int, where: TestWhereInput): [Test!]!
+  tests(cursor: TestWhereUniqueInput, distinct: [TestScalarFieldEnum], orderBy: [TestOrderByWithRelationInput], skip: Int, take: Int, where: TestWhereInput): [Test!]!
   text: String
   user: User!
   userId: Int!
+  verdict: String
 }
 
 type ResponseAvgAggregateOutputType {
@@ -2673,6 +2740,7 @@ type ResponseCountAggregateOutputType {
   id: Int!
   text: Int!
   userId: Int!
+  verdict: Int!
 }
 
 input ResponseCountOrderByAggregateInput {
@@ -2681,6 +2749,7 @@ input ResponseCountOrderByAggregateInput {
   id: SortOrder
   text: SortOrder
   userId: SortOrder
+  verdict: SortOrder
 }
 
 type ResponseCountOutputType {
@@ -2695,6 +2764,7 @@ input ResponseCreateInput {
   tests: TestCreateNestedManyWithoutResponseInput
   text: String
   user: UserCreateNestedOneWithoutResponsesInput!
+  verdict: String
 }
 
 input ResponseCreateManyDirectionInput {
@@ -2702,6 +2772,7 @@ input ResponseCreateManyDirectionInput {
   id: Int
   text: String
   userId: Int!
+  verdict: String
 }
 
 input ResponseCreateManyDirectionInputEnvelope {
@@ -2715,6 +2786,7 @@ input ResponseCreateManyInput {
   id: Int
   text: String
   userId: Int!
+  verdict: String
 }
 
 input ResponseCreateManyUserInput {
@@ -2722,6 +2794,7 @@ input ResponseCreateManyUserInput {
   directionId: Int!
   id: Int
   text: String
+  verdict: String
 }
 
 input ResponseCreateManyUserInputEnvelope {
@@ -2781,6 +2854,7 @@ input ResponseCreateWithoutAnswersInput {
   tests: TestCreateNestedManyWithoutResponseInput
   text: String
   user: UserCreateNestedOneWithoutResponsesInput!
+  verdict: String
 }
 
 input ResponseCreateWithoutDirectionInput {
@@ -2789,6 +2863,7 @@ input ResponseCreateWithoutDirectionInput {
   tests: TestCreateNestedManyWithoutResponseInput
   text: String
   user: UserCreateNestedOneWithoutResponsesInput!
+  verdict: String
 }
 
 input ResponseCreateWithoutTestsInput {
@@ -2797,6 +2872,7 @@ input ResponseCreateWithoutTestsInput {
   direction: DirectionCreateNestedOneWithoutResponsesInput!
   text: String
   user: UserCreateNestedOneWithoutResponsesInput!
+  verdict: String
 }
 
 input ResponseCreateWithoutUserInput {
@@ -2805,6 +2881,7 @@ input ResponseCreateWithoutUserInput {
   direction: DirectionCreateNestedOneWithoutResponsesInput!
   tests: TestCreateNestedManyWithoutResponseInput
   text: String
+  verdict: String
 }
 
 input ResponseListRelationFilter {
@@ -2819,6 +2896,7 @@ type ResponseMaxAggregateOutputType {
   id: Int
   text: String
   userId: Int
+  verdict: String
 }
 
 input ResponseMaxOrderByAggregateInput {
@@ -2827,6 +2905,7 @@ input ResponseMaxOrderByAggregateInput {
   id: SortOrder
   text: SortOrder
   userId: SortOrder
+  verdict: SortOrder
 }
 
 type ResponseMinAggregateOutputType {
@@ -2835,6 +2914,7 @@ type ResponseMinAggregateOutputType {
   id: Int
   text: String
   userId: Int
+  verdict: String
 }
 
 input ResponseMinOrderByAggregateInput {
@@ -2843,20 +2923,11 @@ input ResponseMinOrderByAggregateInput {
   id: SortOrder
   text: SortOrder
   userId: SortOrder
+  verdict: SortOrder
 }
 
 input ResponseOrderByRelationAggregateInput {
   _count: SortOrder
-}
-
-enum ResponseOrderByRelevanceFieldEnum {
-  text
-}
-
-input ResponseOrderByRelevanceInput {
-  fields: ResponseOrderByRelevanceFieldEnum!
-  search: String!
-  sort: SortOrder!
 }
 
 input ResponseOrderByWithAggregationInput {
@@ -2870,19 +2941,20 @@ input ResponseOrderByWithAggregationInput {
   id: SortOrder
   text: SortOrderInput
   userId: SortOrder
+  verdict: SortOrderInput
 }
 
-input ResponseOrderByWithRelationAndSearchRelevanceInput {
-  _relevance: ResponseOrderByRelevanceInput
+input ResponseOrderByWithRelationInput {
   answers: AnswerOrderByRelationAggregateInput
   createdAt: SortOrder
-  direction: DirectionOrderByWithRelationAndSearchRelevanceInput
+  direction: DirectionOrderByWithRelationInput
   directionId: SortOrder
   id: SortOrder
   tests: TestOrderByRelationAggregateInput
   text: SortOrderInput
-  user: UserOrderByWithRelationAndSearchRelevanceInput
+  user: UserOrderByWithRelationInput
   userId: SortOrder
+  verdict: SortOrderInput
 }
 
 enum ResponseScalarFieldEnum {
@@ -2891,6 +2963,7 @@ enum ResponseScalarFieldEnum {
   id
   text
   userId
+  verdict
 }
 
 input ResponseScalarWhereInput {
@@ -2902,6 +2975,7 @@ input ResponseScalarWhereInput {
   id: IntFilter
   text: StringNullableFilter
   userId: IntFilter
+  verdict: StringNullableFilter
 }
 
 input ResponseScalarWhereWithAggregatesInput {
@@ -2913,6 +2987,7 @@ input ResponseScalarWhereWithAggregatesInput {
   id: IntWithAggregatesFilter
   text: StringNullableWithAggregatesFilter
   userId: IntWithAggregatesFilter
+  verdict: StringNullableWithAggregatesFilter
 }
 
 type ResponseSumAggregateOutputType {
@@ -2935,6 +3010,7 @@ input ResponseUncheckedCreateInput {
   tests: TestUncheckedCreateNestedManyWithoutResponseInput
   text: String
   userId: Int!
+  verdict: String
 }
 
 input ResponseUncheckedCreateNestedManyWithoutAnswersInput {
@@ -2970,6 +3046,7 @@ input ResponseUncheckedCreateWithoutAnswersInput {
   tests: TestUncheckedCreateNestedManyWithoutResponseInput
   text: String
   userId: Int!
+  verdict: String
 }
 
 input ResponseUncheckedCreateWithoutDirectionInput {
@@ -2979,6 +3056,7 @@ input ResponseUncheckedCreateWithoutDirectionInput {
   tests: TestUncheckedCreateNestedManyWithoutResponseInput
   text: String
   userId: Int!
+  verdict: String
 }
 
 input ResponseUncheckedCreateWithoutTestsInput {
@@ -2988,6 +3066,7 @@ input ResponseUncheckedCreateWithoutTestsInput {
   id: Int
   text: String
   userId: Int!
+  verdict: String
 }
 
 input ResponseUncheckedCreateWithoutUserInput {
@@ -2997,6 +3076,7 @@ input ResponseUncheckedCreateWithoutUserInput {
   id: Int
   tests: TestUncheckedCreateNestedManyWithoutResponseInput
   text: String
+  verdict: String
 }
 
 input ResponseUncheckedUpdateInput {
@@ -3007,6 +3087,7 @@ input ResponseUncheckedUpdateInput {
   tests: TestUncheckedUpdateManyWithoutResponseNestedInput
   text: NullableStringFieldUpdateOperationsInput
   userId: IntFieldUpdateOperationsInput
+  verdict: NullableStringFieldUpdateOperationsInput
 }
 
 input ResponseUncheckedUpdateManyInput {
@@ -3015,6 +3096,7 @@ input ResponseUncheckedUpdateManyInput {
   id: IntFieldUpdateOperationsInput
   text: NullableStringFieldUpdateOperationsInput
   userId: IntFieldUpdateOperationsInput
+  verdict: NullableStringFieldUpdateOperationsInput
 }
 
 input ResponseUncheckedUpdateManyWithoutAnswersInput {
@@ -3023,6 +3105,7 @@ input ResponseUncheckedUpdateManyWithoutAnswersInput {
   id: IntFieldUpdateOperationsInput
   text: NullableStringFieldUpdateOperationsInput
   userId: IntFieldUpdateOperationsInput
+  verdict: NullableStringFieldUpdateOperationsInput
 }
 
 input ResponseUncheckedUpdateManyWithoutAnswersNestedInput {
@@ -3043,6 +3126,7 @@ input ResponseUncheckedUpdateManyWithoutDirectionInput {
   id: IntFieldUpdateOperationsInput
   text: NullableStringFieldUpdateOperationsInput
   userId: IntFieldUpdateOperationsInput
+  verdict: NullableStringFieldUpdateOperationsInput
 }
 
 input ResponseUncheckedUpdateManyWithoutDirectionNestedInput {
@@ -3065,6 +3149,7 @@ input ResponseUncheckedUpdateManyWithoutTestsInput {
   id: IntFieldUpdateOperationsInput
   text: NullableStringFieldUpdateOperationsInput
   userId: IntFieldUpdateOperationsInput
+  verdict: NullableStringFieldUpdateOperationsInput
 }
 
 input ResponseUncheckedUpdateManyWithoutTestsNestedInput {
@@ -3085,6 +3170,7 @@ input ResponseUncheckedUpdateManyWithoutUserInput {
   directionId: IntFieldUpdateOperationsInput
   id: IntFieldUpdateOperationsInput
   text: NullableStringFieldUpdateOperationsInput
+  verdict: NullableStringFieldUpdateOperationsInput
 }
 
 input ResponseUncheckedUpdateManyWithoutUserNestedInput {
@@ -3108,6 +3194,7 @@ input ResponseUncheckedUpdateWithoutAnswersInput {
   tests: TestUncheckedUpdateManyWithoutResponseNestedInput
   text: NullableStringFieldUpdateOperationsInput
   userId: IntFieldUpdateOperationsInput
+  verdict: NullableStringFieldUpdateOperationsInput
 }
 
 input ResponseUncheckedUpdateWithoutDirectionInput {
@@ -3117,6 +3204,7 @@ input ResponseUncheckedUpdateWithoutDirectionInput {
   tests: TestUncheckedUpdateManyWithoutResponseNestedInput
   text: NullableStringFieldUpdateOperationsInput
   userId: IntFieldUpdateOperationsInput
+  verdict: NullableStringFieldUpdateOperationsInput
 }
 
 input ResponseUncheckedUpdateWithoutTestsInput {
@@ -3126,6 +3214,7 @@ input ResponseUncheckedUpdateWithoutTestsInput {
   id: IntFieldUpdateOperationsInput
   text: NullableStringFieldUpdateOperationsInput
   userId: IntFieldUpdateOperationsInput
+  verdict: NullableStringFieldUpdateOperationsInput
 }
 
 input ResponseUncheckedUpdateWithoutUserInput {
@@ -3135,6 +3224,7 @@ input ResponseUncheckedUpdateWithoutUserInput {
   id: IntFieldUpdateOperationsInput
   tests: TestUncheckedUpdateManyWithoutResponseNestedInput
   text: NullableStringFieldUpdateOperationsInput
+  verdict: NullableStringFieldUpdateOperationsInput
 }
 
 input ResponseUpdateInput {
@@ -3144,11 +3234,13 @@ input ResponseUpdateInput {
   tests: TestUpdateManyWithoutResponseNestedInput
   text: NullableStringFieldUpdateOperationsInput
   user: UserUpdateOneRequiredWithoutResponsesNestedInput
+  verdict: NullableStringFieldUpdateOperationsInput
 }
 
 input ResponseUpdateManyMutationInput {
   createdAt: DateTimeFieldUpdateOperationsInput
   text: NullableStringFieldUpdateOperationsInput
+  verdict: NullableStringFieldUpdateOperationsInput
 }
 
 input ResponseUpdateManyWithWhereWithoutAnswersInput {
@@ -3251,6 +3343,7 @@ input ResponseUpdateWithoutAnswersInput {
   tests: TestUpdateManyWithoutResponseNestedInput
   text: NullableStringFieldUpdateOperationsInput
   user: UserUpdateOneRequiredWithoutResponsesNestedInput
+  verdict: NullableStringFieldUpdateOperationsInput
 }
 
 input ResponseUpdateWithoutDirectionInput {
@@ -3259,6 +3352,7 @@ input ResponseUpdateWithoutDirectionInput {
   tests: TestUpdateManyWithoutResponseNestedInput
   text: NullableStringFieldUpdateOperationsInput
   user: UserUpdateOneRequiredWithoutResponsesNestedInput
+  verdict: NullableStringFieldUpdateOperationsInput
 }
 
 input ResponseUpdateWithoutTestsInput {
@@ -3267,6 +3361,7 @@ input ResponseUpdateWithoutTestsInput {
   direction: DirectionUpdateOneRequiredWithoutResponsesNestedInput
   text: NullableStringFieldUpdateOperationsInput
   user: UserUpdateOneRequiredWithoutResponsesNestedInput
+  verdict: NullableStringFieldUpdateOperationsInput
 }
 
 input ResponseUpdateWithoutUserInput {
@@ -3275,6 +3370,7 @@ input ResponseUpdateWithoutUserInput {
   direction: DirectionUpdateOneRequiredWithoutResponsesNestedInput
   tests: TestUpdateManyWithoutResponseNestedInput
   text: NullableStringFieldUpdateOperationsInput
+  verdict: NullableStringFieldUpdateOperationsInput
 }
 
 input ResponseUpsertWithWhereUniqueWithoutAnswersInput {
@@ -3314,6 +3410,7 @@ input ResponseWhereInput {
   text: StringNullableFilter
   user: UserRelationFilter
   userId: IntFilter
+  verdict: StringNullableFilter
 }
 
 input ResponseWhereUniqueInput {
@@ -3329,6 +3426,7 @@ input ResponseWhereUniqueInput {
   text: StringNullableFilter
   user: UserRelationFilter
   userId: IntFilter
+  verdict: StringNullableFilter
 }
 
 type Schema {
@@ -3349,7 +3447,7 @@ input SortOrderInput {
 type Specialization {
   _count: SpecializationCountOutputType!
   createdAt: DateTime!
-  directions(cursor: DirectionWhereUniqueInput, distinct: [DirectionScalarFieldEnum], orderBy: [DirectionOrderByWithRelationAndSearchRelevanceInput], skip: Int, take: Int, where: DirectionWhereInput): [Direction!]!
+  directions(cursor: DirectionWhereUniqueInput, distinct: [DirectionScalarFieldEnum], orderBy: [DirectionOrderByWithRelationInput], skip: Int, take: Int, where: DirectionWhereInput): [Direction!]!
   id: Int!
   title: String!
 }
@@ -3431,16 +3529,6 @@ input SpecializationMinOrderByAggregateInput {
   title: SortOrder
 }
 
-enum SpecializationOrderByRelevanceFieldEnum {
-  title
-}
-
-input SpecializationOrderByRelevanceInput {
-  fields: SpecializationOrderByRelevanceFieldEnum!
-  search: String!
-  sort: SortOrder!
-}
-
 input SpecializationOrderByWithAggregationInput {
   _avg: SpecializationAvgOrderByAggregateInput
   _count: SpecializationCountOrderByAggregateInput
@@ -3452,8 +3540,7 @@ input SpecializationOrderByWithAggregationInput {
   title: SortOrder
 }
 
-input SpecializationOrderByWithRelationAndSearchRelevanceInput {
-  _relevance: SpecializationOrderByRelevanceInput
+input SpecializationOrderByWithRelationInput {
   createdAt: SortOrder
   directions: DirectionOrderByRelationAggregateInput
   id: SortOrder
@@ -3591,7 +3678,6 @@ input StringFilter {
   mode: QueryMode
   not: NestedStringFilter
   notIn: [String]
-  search: String
   startsWith: String
 }
 
@@ -3607,7 +3693,6 @@ input StringNullableFilter {
   mode: QueryMode
   not: NestedStringNullableFilter
   notIn: [String]
-  search: String
   startsWith: String
 }
 
@@ -3634,7 +3719,6 @@ input StringNullableWithAggregatesFilter {
   mode: QueryMode
   not: NestedStringNullableWithAggregatesFilter
   notIn: [String]
-  search: String
   startsWith: String
 }
 
@@ -3653,20 +3737,619 @@ input StringWithAggregatesFilter {
   mode: QueryMode
   not: NestedStringWithAggregatesFilter
   notIn: [String]
-  search: String
   startsWith: String
 }
 
 type Task {
+  _count: TaskCountOutputType!
+  code: String
   correctMultipleAnswer: [Int!]!
   correctSingleAnswer: Int
   createdAt: DateTime!
   id: Int!
   question: String!
+  taskAnswers(cursor: TaskAnswerWhereUniqueInput, distinct: [TaskAnswerScalarFieldEnum], orderBy: [TaskAnswerOrderByWithRelationInput], skip: Int, take: Int, where: TaskAnswerWhereInput): [TaskAnswer!]!
   test(where: TestWhereInput): Test
   testId: Int
   type: TaskType!
   variants: [String!]!
+}
+
+type TaskAnswer {
+  answer: String!
+  answerModel: Answer!
+  answerModelId: Int!
+  id: Int!
+  task: Task!
+  taskId: Int!
+  user: User!
+  userId: Int!
+  verdict: Int
+}
+
+type TaskAnswerAvgAggregateOutputType {
+  answerModelId: Float
+  id: Float
+  taskId: Float
+  userId: Float
+  verdict: Float
+}
+
+input TaskAnswerAvgOrderByAggregateInput {
+  answerModelId: SortOrder
+  id: SortOrder
+  taskId: SortOrder
+  userId: SortOrder
+  verdict: SortOrder
+}
+
+type TaskAnswerCountAggregateOutputType {
+  _all: Int!
+  answer: Int!
+  answerModelId: Int!
+  id: Int!
+  taskId: Int!
+  userId: Int!
+  verdict: Int!
+}
+
+input TaskAnswerCountOrderByAggregateInput {
+  answer: SortOrder
+  answerModelId: SortOrder
+  id: SortOrder
+  taskId: SortOrder
+  userId: SortOrder
+  verdict: SortOrder
+}
+
+input TaskAnswerCreateInput {
+  answer: String!
+  answerModel: AnswerCreateNestedOneWithoutTaskAnswersInput!
+  task: TaskCreateNestedOneWithoutTaskAnswersInput!
+  user: UserCreateNestedOneWithoutAnswersInput!
+  verdict: Int
+}
+
+input TaskAnswerCreateManyAnswerModelInput {
+  answer: String!
+  id: Int
+  taskId: Int!
+  userId: Int!
+  verdict: Int
+}
+
+input TaskAnswerCreateManyAnswerModelInputEnvelope {
+  data: TaskAnswerCreateManyAnswerModelInput!
+  skipDuplicates: Boolean
+}
+
+input TaskAnswerCreateManyInput {
+  answer: String!
+  answerModelId: Int!
+  id: Int
+  taskId: Int!
+  userId: Int!
+  verdict: Int
+}
+
+input TaskAnswerCreateManyTaskInput {
+  answer: String!
+  answerModelId: Int!
+  id: Int
+  userId: Int!
+  verdict: Int
+}
+
+input TaskAnswerCreateManyTaskInputEnvelope {
+  data: TaskAnswerCreateManyTaskInput!
+  skipDuplicates: Boolean
+}
+
+input TaskAnswerCreateManyUserInput {
+  answer: String!
+  answerModelId: Int!
+  id: Int
+  taskId: Int!
+  verdict: Int
+}
+
+input TaskAnswerCreateManyUserInputEnvelope {
+  data: TaskAnswerCreateManyUserInput!
+  skipDuplicates: Boolean
+}
+
+input TaskAnswerCreateNestedManyWithoutAnswerModelInput {
+  connect: [TaskAnswerWhereUniqueInput]
+  connectOrCreate: [TaskAnswerCreateOrConnectWithoutAnswerModelInput]
+  create: [TaskAnswerCreateWithoutAnswerModelInput]
+  createMany: TaskAnswerCreateManyAnswerModelInputEnvelope
+}
+
+input TaskAnswerCreateNestedManyWithoutTaskInput {
+  connect: [TaskAnswerWhereUniqueInput]
+  connectOrCreate: [TaskAnswerCreateOrConnectWithoutTaskInput]
+  create: [TaskAnswerCreateWithoutTaskInput]
+  createMany: TaskAnswerCreateManyTaskInputEnvelope
+}
+
+input TaskAnswerCreateNestedManyWithoutUserInput {
+  connect: [TaskAnswerWhereUniqueInput]
+  connectOrCreate: [TaskAnswerCreateOrConnectWithoutUserInput]
+  create: [TaskAnswerCreateWithoutUserInput]
+  createMany: TaskAnswerCreateManyUserInputEnvelope
+}
+
+input TaskAnswerCreateOrConnectWithoutAnswerModelInput {
+  create: TaskAnswerCreateWithoutAnswerModelInput!
+  where: TaskAnswerWhereUniqueInput!
+}
+
+input TaskAnswerCreateOrConnectWithoutTaskInput {
+  create: TaskAnswerCreateWithoutTaskInput!
+  where: TaskAnswerWhereUniqueInput!
+}
+
+input TaskAnswerCreateOrConnectWithoutUserInput {
+  create: TaskAnswerCreateWithoutUserInput!
+  where: TaskAnswerWhereUniqueInput!
+}
+
+input TaskAnswerCreateWithoutAnswerModelInput {
+  answer: String!
+  task: TaskCreateNestedOneWithoutTaskAnswersInput!
+  user: UserCreateNestedOneWithoutAnswersInput!
+  verdict: Int
+}
+
+input TaskAnswerCreateWithoutTaskInput {
+  answer: String!
+  answerModel: AnswerCreateNestedOneWithoutTaskAnswersInput!
+  user: UserCreateNestedOneWithoutAnswersInput!
+  verdict: Int
+}
+
+input TaskAnswerCreateWithoutUserInput {
+  answer: String!
+  answerModel: AnswerCreateNestedOneWithoutTaskAnswersInput!
+  task: TaskCreateNestedOneWithoutTaskAnswersInput!
+  verdict: Int
+}
+
+input TaskAnswerListRelationFilter {
+  every: TaskAnswerWhereInput
+  none: TaskAnswerWhereInput
+  some: TaskAnswerWhereInput
+}
+
+type TaskAnswerMaxAggregateOutputType {
+  answer: String
+  answerModelId: Int
+  id: Int
+  taskId: Int
+  userId: Int
+  verdict: Int
+}
+
+input TaskAnswerMaxOrderByAggregateInput {
+  answer: SortOrder
+  answerModelId: SortOrder
+  id: SortOrder
+  taskId: SortOrder
+  userId: SortOrder
+  verdict: SortOrder
+}
+
+type TaskAnswerMinAggregateOutputType {
+  answer: String
+  answerModelId: Int
+  id: Int
+  taskId: Int
+  userId: Int
+  verdict: Int
+}
+
+input TaskAnswerMinOrderByAggregateInput {
+  answer: SortOrder
+  answerModelId: SortOrder
+  id: SortOrder
+  taskId: SortOrder
+  userId: SortOrder
+  verdict: SortOrder
+}
+
+input TaskAnswerOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input TaskAnswerOrderByWithAggregationInput {
+  _avg: TaskAnswerAvgOrderByAggregateInput
+  _count: TaskAnswerCountOrderByAggregateInput
+  _max: TaskAnswerMaxOrderByAggregateInput
+  _min: TaskAnswerMinOrderByAggregateInput
+  _sum: TaskAnswerSumOrderByAggregateInput
+  answer: SortOrder
+  answerModelId: SortOrder
+  id: SortOrder
+  taskId: SortOrder
+  userId: SortOrder
+  verdict: SortOrderInput
+}
+
+input TaskAnswerOrderByWithRelationInput {
+  answer: SortOrder
+  answerModel: AnswerOrderByWithRelationInput
+  answerModelId: SortOrder
+  id: SortOrder
+  task: TaskOrderByWithRelationInput
+  taskId: SortOrder
+  user: UserOrderByWithRelationInput
+  userId: SortOrder
+  verdict: SortOrderInput
+}
+
+enum TaskAnswerScalarFieldEnum {
+  answer
+  answerModelId
+  id
+  taskId
+  userId
+  verdict
+}
+
+input TaskAnswerScalarWhereInput {
+  AND: [TaskAnswerScalarWhereInput]
+  NOT: [TaskAnswerScalarWhereInput]
+  OR: [TaskAnswerScalarWhereInput]
+  answer: StringFilter
+  answerModelId: IntFilter
+  id: IntFilter
+  taskId: IntFilter
+  userId: IntFilter
+  verdict: IntNullableFilter
+}
+
+input TaskAnswerScalarWhereWithAggregatesInput {
+  AND: [TaskAnswerScalarWhereWithAggregatesInput]
+  NOT: [TaskAnswerScalarWhereWithAggregatesInput]
+  OR: [TaskAnswerScalarWhereWithAggregatesInput]
+  answer: StringWithAggregatesFilter
+  answerModelId: IntWithAggregatesFilter
+  id: IntWithAggregatesFilter
+  taskId: IntWithAggregatesFilter
+  userId: IntWithAggregatesFilter
+  verdict: IntNullableWithAggregatesFilter
+}
+
+type TaskAnswerSumAggregateOutputType {
+  answerModelId: Int
+  id: Int
+  taskId: Int
+  userId: Int
+  verdict: Int
+}
+
+input TaskAnswerSumOrderByAggregateInput {
+  answerModelId: SortOrder
+  id: SortOrder
+  taskId: SortOrder
+  userId: SortOrder
+  verdict: SortOrder
+}
+
+input TaskAnswerUncheckedCreateInput {
+  answer: String!
+  answerModelId: Int!
+  id: Int
+  taskId: Int!
+  userId: Int!
+  verdict: Int
+}
+
+input TaskAnswerUncheckedCreateNestedManyWithoutAnswerModelInput {
+  connect: [TaskAnswerWhereUniqueInput]
+  connectOrCreate: [TaskAnswerCreateOrConnectWithoutAnswerModelInput]
+  create: [TaskAnswerCreateWithoutAnswerModelInput]
+  createMany: TaskAnswerCreateManyAnswerModelInputEnvelope
+}
+
+input TaskAnswerUncheckedCreateNestedManyWithoutTaskInput {
+  connect: [TaskAnswerWhereUniqueInput]
+  connectOrCreate: [TaskAnswerCreateOrConnectWithoutTaskInput]
+  create: [TaskAnswerCreateWithoutTaskInput]
+  createMany: TaskAnswerCreateManyTaskInputEnvelope
+}
+
+input TaskAnswerUncheckedCreateNestedManyWithoutUserInput {
+  connect: [TaskAnswerWhereUniqueInput]
+  connectOrCreate: [TaskAnswerCreateOrConnectWithoutUserInput]
+  create: [TaskAnswerCreateWithoutUserInput]
+  createMany: TaskAnswerCreateManyUserInputEnvelope
+}
+
+input TaskAnswerUncheckedCreateWithoutAnswerModelInput {
+  answer: String!
+  id: Int
+  taskId: Int!
+  userId: Int!
+  verdict: Int
+}
+
+input TaskAnswerUncheckedCreateWithoutTaskInput {
+  answer: String!
+  answerModelId: Int!
+  id: Int
+  userId: Int!
+  verdict: Int
+}
+
+input TaskAnswerUncheckedCreateWithoutUserInput {
+  answer: String!
+  answerModelId: Int!
+  id: Int
+  taskId: Int!
+  verdict: Int
+}
+
+input TaskAnswerUncheckedUpdateInput {
+  answer: StringFieldUpdateOperationsInput
+  answerModelId: IntFieldUpdateOperationsInput
+  id: IntFieldUpdateOperationsInput
+  taskId: IntFieldUpdateOperationsInput
+  userId: IntFieldUpdateOperationsInput
+  verdict: NullableIntFieldUpdateOperationsInput
+}
+
+input TaskAnswerUncheckedUpdateManyInput {
+  answer: StringFieldUpdateOperationsInput
+  answerModelId: IntFieldUpdateOperationsInput
+  id: IntFieldUpdateOperationsInput
+  taskId: IntFieldUpdateOperationsInput
+  userId: IntFieldUpdateOperationsInput
+  verdict: NullableIntFieldUpdateOperationsInput
+}
+
+input TaskAnswerUncheckedUpdateManyWithoutAnswerModelInput {
+  answer: StringFieldUpdateOperationsInput
+  id: IntFieldUpdateOperationsInput
+  taskId: IntFieldUpdateOperationsInput
+  userId: IntFieldUpdateOperationsInput
+  verdict: NullableIntFieldUpdateOperationsInput
+}
+
+input TaskAnswerUncheckedUpdateManyWithoutAnswerModelNestedInput {
+  connect: [TaskAnswerWhereUniqueInput]
+  connectOrCreate: [TaskAnswerCreateOrConnectWithoutAnswerModelInput]
+  create: [TaskAnswerCreateWithoutAnswerModelInput]
+  createMany: TaskAnswerCreateManyAnswerModelInputEnvelope
+  delete: [TaskAnswerWhereUniqueInput]
+  deleteMany: [TaskAnswerScalarWhereInput]
+  disconnect: [TaskAnswerWhereUniqueInput]
+  set: [TaskAnswerWhereUniqueInput]
+  update: [TaskAnswerUpdateWithWhereUniqueWithoutAnswerModelInput]
+  updateMany: [TaskAnswerUpdateManyWithWhereWithoutAnswerModelInput]
+  upsert: [TaskAnswerUpsertWithWhereUniqueWithoutAnswerModelInput]
+}
+
+input TaskAnswerUncheckedUpdateManyWithoutTaskInput {
+  answer: StringFieldUpdateOperationsInput
+  answerModelId: IntFieldUpdateOperationsInput
+  id: IntFieldUpdateOperationsInput
+  userId: IntFieldUpdateOperationsInput
+  verdict: NullableIntFieldUpdateOperationsInput
+}
+
+input TaskAnswerUncheckedUpdateManyWithoutTaskNestedInput {
+  connect: [TaskAnswerWhereUniqueInput]
+  connectOrCreate: [TaskAnswerCreateOrConnectWithoutTaskInput]
+  create: [TaskAnswerCreateWithoutTaskInput]
+  createMany: TaskAnswerCreateManyTaskInputEnvelope
+  delete: [TaskAnswerWhereUniqueInput]
+  deleteMany: [TaskAnswerScalarWhereInput]
+  disconnect: [TaskAnswerWhereUniqueInput]
+  set: [TaskAnswerWhereUniqueInput]
+  update: [TaskAnswerUpdateWithWhereUniqueWithoutTaskInput]
+  updateMany: [TaskAnswerUpdateManyWithWhereWithoutTaskInput]
+  upsert: [TaskAnswerUpsertWithWhereUniqueWithoutTaskInput]
+}
+
+input TaskAnswerUncheckedUpdateManyWithoutUserInput {
+  answer: StringFieldUpdateOperationsInput
+  answerModelId: IntFieldUpdateOperationsInput
+  id: IntFieldUpdateOperationsInput
+  taskId: IntFieldUpdateOperationsInput
+  verdict: NullableIntFieldUpdateOperationsInput
+}
+
+input TaskAnswerUncheckedUpdateManyWithoutUserNestedInput {
+  connect: [TaskAnswerWhereUniqueInput]
+  connectOrCreate: [TaskAnswerCreateOrConnectWithoutUserInput]
+  create: [TaskAnswerCreateWithoutUserInput]
+  createMany: TaskAnswerCreateManyUserInputEnvelope
+  delete: [TaskAnswerWhereUniqueInput]
+  deleteMany: [TaskAnswerScalarWhereInput]
+  disconnect: [TaskAnswerWhereUniqueInput]
+  set: [TaskAnswerWhereUniqueInput]
+  update: [TaskAnswerUpdateWithWhereUniqueWithoutUserInput]
+  updateMany: [TaskAnswerUpdateManyWithWhereWithoutUserInput]
+  upsert: [TaskAnswerUpsertWithWhereUniqueWithoutUserInput]
+}
+
+input TaskAnswerUncheckedUpdateWithoutAnswerModelInput {
+  answer: StringFieldUpdateOperationsInput
+  id: IntFieldUpdateOperationsInput
+  taskId: IntFieldUpdateOperationsInput
+  userId: IntFieldUpdateOperationsInput
+  verdict: NullableIntFieldUpdateOperationsInput
+}
+
+input TaskAnswerUncheckedUpdateWithoutTaskInput {
+  answer: StringFieldUpdateOperationsInput
+  answerModelId: IntFieldUpdateOperationsInput
+  id: IntFieldUpdateOperationsInput
+  userId: IntFieldUpdateOperationsInput
+  verdict: NullableIntFieldUpdateOperationsInput
+}
+
+input TaskAnswerUncheckedUpdateWithoutUserInput {
+  answer: StringFieldUpdateOperationsInput
+  answerModelId: IntFieldUpdateOperationsInput
+  id: IntFieldUpdateOperationsInput
+  taskId: IntFieldUpdateOperationsInput
+  verdict: NullableIntFieldUpdateOperationsInput
+}
+
+input TaskAnswerUpdateInput {
+  answer: StringFieldUpdateOperationsInput
+  answerModel: AnswerUpdateOneRequiredWithoutTaskAnswersNestedInput
+  task: TaskUpdateOneRequiredWithoutTaskAnswersNestedInput
+  user: UserUpdateOneRequiredWithoutAnswersNestedInput
+  verdict: NullableIntFieldUpdateOperationsInput
+}
+
+input TaskAnswerUpdateManyMutationInput {
+  answer: StringFieldUpdateOperationsInput
+  verdict: NullableIntFieldUpdateOperationsInput
+}
+
+input TaskAnswerUpdateManyWithWhereWithoutAnswerModelInput {
+  data: TaskAnswerUpdateManyMutationInput!
+  where: TaskAnswerScalarWhereInput!
+}
+
+input TaskAnswerUpdateManyWithWhereWithoutTaskInput {
+  data: TaskAnswerUpdateManyMutationInput!
+  where: TaskAnswerScalarWhereInput!
+}
+
+input TaskAnswerUpdateManyWithWhereWithoutUserInput {
+  data: TaskAnswerUpdateManyMutationInput!
+  where: TaskAnswerScalarWhereInput!
+}
+
+input TaskAnswerUpdateManyWithoutAnswerModelNestedInput {
+  connect: [TaskAnswerWhereUniqueInput]
+  connectOrCreate: [TaskAnswerCreateOrConnectWithoutAnswerModelInput]
+  create: [TaskAnswerCreateWithoutAnswerModelInput]
+  createMany: TaskAnswerCreateManyAnswerModelInputEnvelope
+  delete: [TaskAnswerWhereUniqueInput]
+  deleteMany: [TaskAnswerScalarWhereInput]
+  disconnect: [TaskAnswerWhereUniqueInput]
+  set: [TaskAnswerWhereUniqueInput]
+  update: [TaskAnswerUpdateWithWhereUniqueWithoutAnswerModelInput]
+  updateMany: [TaskAnswerUpdateManyWithWhereWithoutAnswerModelInput]
+  upsert: [TaskAnswerUpsertWithWhereUniqueWithoutAnswerModelInput]
+}
+
+input TaskAnswerUpdateManyWithoutTaskNestedInput {
+  connect: [TaskAnswerWhereUniqueInput]
+  connectOrCreate: [TaskAnswerCreateOrConnectWithoutTaskInput]
+  create: [TaskAnswerCreateWithoutTaskInput]
+  createMany: TaskAnswerCreateManyTaskInputEnvelope
+  delete: [TaskAnswerWhereUniqueInput]
+  deleteMany: [TaskAnswerScalarWhereInput]
+  disconnect: [TaskAnswerWhereUniqueInput]
+  set: [TaskAnswerWhereUniqueInput]
+  update: [TaskAnswerUpdateWithWhereUniqueWithoutTaskInput]
+  updateMany: [TaskAnswerUpdateManyWithWhereWithoutTaskInput]
+  upsert: [TaskAnswerUpsertWithWhereUniqueWithoutTaskInput]
+}
+
+input TaskAnswerUpdateManyWithoutUserNestedInput {
+  connect: [TaskAnswerWhereUniqueInput]
+  connectOrCreate: [TaskAnswerCreateOrConnectWithoutUserInput]
+  create: [TaskAnswerCreateWithoutUserInput]
+  createMany: TaskAnswerCreateManyUserInputEnvelope
+  delete: [TaskAnswerWhereUniqueInput]
+  deleteMany: [TaskAnswerScalarWhereInput]
+  disconnect: [TaskAnswerWhereUniqueInput]
+  set: [TaskAnswerWhereUniqueInput]
+  update: [TaskAnswerUpdateWithWhereUniqueWithoutUserInput]
+  updateMany: [TaskAnswerUpdateManyWithWhereWithoutUserInput]
+  upsert: [TaskAnswerUpsertWithWhereUniqueWithoutUserInput]
+}
+
+input TaskAnswerUpdateWithWhereUniqueWithoutAnswerModelInput {
+  data: TaskAnswerUpdateWithoutAnswerModelInput!
+  where: TaskAnswerWhereUniqueInput!
+}
+
+input TaskAnswerUpdateWithWhereUniqueWithoutTaskInput {
+  data: TaskAnswerUpdateWithoutTaskInput!
+  where: TaskAnswerWhereUniqueInput!
+}
+
+input TaskAnswerUpdateWithWhereUniqueWithoutUserInput {
+  data: TaskAnswerUpdateWithoutUserInput!
+  where: TaskAnswerWhereUniqueInput!
+}
+
+input TaskAnswerUpdateWithoutAnswerModelInput {
+  answer: StringFieldUpdateOperationsInput
+  task: TaskUpdateOneRequiredWithoutTaskAnswersNestedInput
+  user: UserUpdateOneRequiredWithoutAnswersNestedInput
+  verdict: NullableIntFieldUpdateOperationsInput
+}
+
+input TaskAnswerUpdateWithoutTaskInput {
+  answer: StringFieldUpdateOperationsInput
+  answerModel: AnswerUpdateOneRequiredWithoutTaskAnswersNestedInput
+  user: UserUpdateOneRequiredWithoutAnswersNestedInput
+  verdict: NullableIntFieldUpdateOperationsInput
+}
+
+input TaskAnswerUpdateWithoutUserInput {
+  answer: StringFieldUpdateOperationsInput
+  answerModel: AnswerUpdateOneRequiredWithoutTaskAnswersNestedInput
+  task: TaskUpdateOneRequiredWithoutTaskAnswersNestedInput
+  verdict: NullableIntFieldUpdateOperationsInput
+}
+
+input TaskAnswerUpsertWithWhereUniqueWithoutAnswerModelInput {
+  create: TaskAnswerCreateWithoutAnswerModelInput!
+  update: TaskAnswerUpdateWithoutAnswerModelInput!
+  where: TaskAnswerWhereUniqueInput!
+}
+
+input TaskAnswerUpsertWithWhereUniqueWithoutTaskInput {
+  create: TaskAnswerCreateWithoutTaskInput!
+  update: TaskAnswerUpdateWithoutTaskInput!
+  where: TaskAnswerWhereUniqueInput!
+}
+
+input TaskAnswerUpsertWithWhereUniqueWithoutUserInput {
+  create: TaskAnswerCreateWithoutUserInput!
+  update: TaskAnswerUpdateWithoutUserInput!
+  where: TaskAnswerWhereUniqueInput!
+}
+
+input TaskAnswerWhereInput {
+  AND: [TaskAnswerWhereInput]
+  NOT: [TaskAnswerWhereInput]
+  OR: [TaskAnswerWhereInput]
+  answer: StringFilter
+  answerModel: AnswerRelationFilter
+  answerModelId: IntFilter
+  id: IntFilter
+  task: TaskRelationFilter
+  taskId: IntFilter
+  user: UserRelationFilter
+  userId: IntFilter
+  verdict: IntNullableFilter
+}
+
+input TaskAnswerWhereUniqueInput {
+  AND: [TaskAnswerWhereInput]
+  NOT: [TaskAnswerWhereInput]
+  OR: [TaskAnswerWhereInput]
+  answer: StringFilter
+  answerModel: AnswerRelationFilter
+  answerModelId: IntFilter
+  id: Int
+  task: TaskRelationFilter
+  taskId: IntFilter
+  user: UserRelationFilter
+  userId: IntFilter
+  verdict: IntNullableFilter
 }
 
 type TaskAvgAggregateOutputType {
@@ -3685,6 +4368,7 @@ input TaskAvgOrderByAggregateInput {
 
 type TaskCountAggregateOutputType {
   _all: Int!
+  code: Int!
   correctMultipleAnswer: Int!
   correctSingleAnswer: Int!
   createdAt: Int!
@@ -3696,6 +4380,7 @@ type TaskCountAggregateOutputType {
 }
 
 input TaskCountOrderByAggregateInput {
+  code: SortOrder
   correctMultipleAnswer: SortOrder
   correctSingleAnswer: SortOrder
   createdAt: SortOrder
@@ -3706,17 +4391,24 @@ input TaskCountOrderByAggregateInput {
   variants: SortOrder
 }
 
+type TaskCountOutputType {
+  taskAnswers: Int!
+}
+
 input TaskCreateInput {
+  code: String
   correctMultipleAnswer: [Int]
   correctSingleAnswer: Int
   createdAt: DateTime
   question: String!
+  taskAnswers: TaskAnswerCreateNestedManyWithoutTaskInput
   test: TestCreateNestedOneWithoutTasksInput
   type: TaskType!
   variants: [String]
 }
 
 input TaskCreateManyInput {
+  code: String
   correctMultipleAnswer: [Int]
   correctSingleAnswer: Int
   createdAt: DateTime
@@ -3728,6 +4420,7 @@ input TaskCreateManyInput {
 }
 
 input TaskCreateManyTestInput {
+  code: String
   correctMultipleAnswer: [Int]
   correctSingleAnswer: Int
   createdAt: DateTime
@@ -3749,16 +4442,40 @@ input TaskCreateNestedManyWithoutTestInput {
   createMany: TaskCreateManyTestInputEnvelope
 }
 
+input TaskCreateNestedOneWithoutTaskAnswersInput {
+  connect: TaskWhereUniqueInput
+  connectOrCreate: TaskCreateOrConnectWithoutTaskAnswersInput
+  create: TaskCreateWithoutTaskAnswersInput
+}
+
+input TaskCreateOrConnectWithoutTaskAnswersInput {
+  create: TaskCreateWithoutTaskAnswersInput!
+  where: TaskWhereUniqueInput!
+}
+
 input TaskCreateOrConnectWithoutTestInput {
   create: TaskCreateWithoutTestInput!
   where: TaskWhereUniqueInput!
 }
 
-input TaskCreateWithoutTestInput {
+input TaskCreateWithoutTaskAnswersInput {
+  code: String
   correctMultipleAnswer: [Int]
   correctSingleAnswer: Int
   createdAt: DateTime
   question: String!
+  test: TestCreateNestedOneWithoutTasksInput
+  type: TaskType!
+  variants: [String]
+}
+
+input TaskCreateWithoutTestInput {
+  code: String
+  correctMultipleAnswer: [Int]
+  correctSingleAnswer: Int
+  createdAt: DateTime
+  question: String!
+  taskAnswers: TaskAnswerCreateNestedManyWithoutTaskInput
   type: TaskType!
   variants: [String]
 }
@@ -3778,6 +4495,7 @@ input TaskListRelationFilter {
 }
 
 type TaskMaxAggregateOutputType {
+  code: String
   correctSingleAnswer: Int
   createdAt: DateTime
   id: Int
@@ -3787,6 +4505,7 @@ type TaskMaxAggregateOutputType {
 }
 
 input TaskMaxOrderByAggregateInput {
+  code: SortOrder
   correctSingleAnswer: SortOrder
   createdAt: SortOrder
   id: SortOrder
@@ -3796,6 +4515,7 @@ input TaskMaxOrderByAggregateInput {
 }
 
 type TaskMinAggregateOutputType {
+  code: String
   correctSingleAnswer: Int
   createdAt: DateTime
   id: Int
@@ -3805,6 +4525,7 @@ type TaskMinAggregateOutputType {
 }
 
 input TaskMinOrderByAggregateInput {
+  code: SortOrder
   correctSingleAnswer: SortOrder
   createdAt: SortOrder
   id: SortOrder
@@ -3817,23 +4538,13 @@ input TaskOrderByRelationAggregateInput {
   _count: SortOrder
 }
 
-enum TaskOrderByRelevanceFieldEnum {
-  question
-  variants
-}
-
-input TaskOrderByRelevanceInput {
-  fields: TaskOrderByRelevanceFieldEnum!
-  search: String!
-  sort: SortOrder!
-}
-
 input TaskOrderByWithAggregationInput {
   _avg: TaskAvgOrderByAggregateInput
   _count: TaskCountOrderByAggregateInput
   _max: TaskMaxOrderByAggregateInput
   _min: TaskMinOrderByAggregateInput
   _sum: TaskSumOrderByAggregateInput
+  code: SortOrderInput
   correctMultipleAnswer: SortOrder
   correctSingleAnswer: SortOrderInput
   createdAt: SortOrder
@@ -3844,20 +4555,27 @@ input TaskOrderByWithAggregationInput {
   variants: SortOrder
 }
 
-input TaskOrderByWithRelationAndSearchRelevanceInput {
-  _relevance: TaskOrderByRelevanceInput
+input TaskOrderByWithRelationInput {
+  code: SortOrderInput
   correctMultipleAnswer: SortOrder
   correctSingleAnswer: SortOrderInput
   createdAt: SortOrder
   id: SortOrder
   question: SortOrder
-  test: TestOrderByWithRelationAndSearchRelevanceInput
+  taskAnswers: TaskAnswerOrderByRelationAggregateInput
+  test: TestOrderByWithRelationInput
   testId: SortOrderInput
   type: SortOrder
   variants: SortOrder
+}
+
+input TaskRelationFilter {
+  is: TaskWhereInput
+  isNot: TaskWhereInput
 }
 
 enum TaskScalarFieldEnum {
+  code
   correctMultipleAnswer
   correctSingleAnswer
   createdAt
@@ -3872,6 +4590,7 @@ input TaskScalarWhereInput {
   AND: [TaskScalarWhereInput]
   NOT: [TaskScalarWhereInput]
   OR: [TaskScalarWhereInput]
+  code: StringNullableFilter
   correctMultipleAnswer: IntNullableListFilter
   correctSingleAnswer: IntNullableFilter
   createdAt: DateTimeFilter
@@ -3886,6 +4605,7 @@ input TaskScalarWhereWithAggregatesInput {
   AND: [TaskScalarWhereWithAggregatesInput]
   NOT: [TaskScalarWhereWithAggregatesInput]
   OR: [TaskScalarWhereWithAggregatesInput]
+  code: StringNullableWithAggregatesFilter
   correctMultipleAnswer: IntNullableListFilter
   correctSingleAnswer: IntNullableWithAggregatesFilter
   createdAt: DateTimeWithAggregatesFilter
@@ -3918,11 +4638,13 @@ enum TaskType {
 }
 
 input TaskUncheckedCreateInput {
+  code: String
   correctMultipleAnswer: [Int]
   correctSingleAnswer: Int
   createdAt: DateTime
   id: Int
   question: String!
+  taskAnswers: TaskAnswerUncheckedCreateNestedManyWithoutTaskInput
   testId: Int
   type: TaskType!
   variants: [String]
@@ -3935,28 +4657,45 @@ input TaskUncheckedCreateNestedManyWithoutTestInput {
   createMany: TaskCreateManyTestInputEnvelope
 }
 
-input TaskUncheckedCreateWithoutTestInput {
+input TaskUncheckedCreateWithoutTaskAnswersInput {
+  code: String
   correctMultipleAnswer: [Int]
   correctSingleAnswer: Int
   createdAt: DateTime
   id: Int
   question: String!
+  testId: Int
+  type: TaskType!
+  variants: [String]
+}
+
+input TaskUncheckedCreateWithoutTestInput {
+  code: String
+  correctMultipleAnswer: [Int]
+  correctSingleAnswer: Int
+  createdAt: DateTime
+  id: Int
+  question: String!
+  taskAnswers: TaskAnswerUncheckedCreateNestedManyWithoutTaskInput
   type: TaskType!
   variants: [String]
 }
 
 input TaskUncheckedUpdateInput {
+  code: NullableStringFieldUpdateOperationsInput
   correctMultipleAnswer: [Int]
   correctSingleAnswer: NullableIntFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   id: IntFieldUpdateOperationsInput
   question: StringFieldUpdateOperationsInput
+  taskAnswers: TaskAnswerUncheckedUpdateManyWithoutTaskNestedInput
   testId: NullableIntFieldUpdateOperationsInput
   type: EnumTaskTypeFieldUpdateOperationsInput
   variants: [String]
 }
 
 input TaskUncheckedUpdateManyInput {
+  code: NullableStringFieldUpdateOperationsInput
   correctMultipleAnswer: [Int]
   correctSingleAnswer: NullableIntFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
@@ -3968,6 +4707,7 @@ input TaskUncheckedUpdateManyInput {
 }
 
 input TaskUncheckedUpdateManyWithoutTestInput {
+  code: NullableStringFieldUpdateOperationsInput
   correctMultipleAnswer: [Int]
   correctSingleAnswer: NullableIntFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
@@ -3991,27 +4731,44 @@ input TaskUncheckedUpdateManyWithoutTestNestedInput {
   upsert: [TaskUpsertWithWhereUniqueWithoutTestInput]
 }
 
-input TaskUncheckedUpdateWithoutTestInput {
+input TaskUncheckedUpdateWithoutTaskAnswersInput {
+  code: NullableStringFieldUpdateOperationsInput
   correctMultipleAnswer: [Int]
   correctSingleAnswer: NullableIntFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   id: IntFieldUpdateOperationsInput
   question: StringFieldUpdateOperationsInput
+  testId: NullableIntFieldUpdateOperationsInput
+  type: EnumTaskTypeFieldUpdateOperationsInput
+  variants: [String]
+}
+
+input TaskUncheckedUpdateWithoutTestInput {
+  code: NullableStringFieldUpdateOperationsInput
+  correctMultipleAnswer: [Int]
+  correctSingleAnswer: NullableIntFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  id: IntFieldUpdateOperationsInput
+  question: StringFieldUpdateOperationsInput
+  taskAnswers: TaskAnswerUncheckedUpdateManyWithoutTaskNestedInput
   type: EnumTaskTypeFieldUpdateOperationsInput
   variants: [String]
 }
 
 input TaskUpdateInput {
+  code: NullableStringFieldUpdateOperationsInput
   correctMultipleAnswer: [Int]
   correctSingleAnswer: NullableIntFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   question: StringFieldUpdateOperationsInput
+  taskAnswers: TaskAnswerUpdateManyWithoutTaskNestedInput
   test: TestUpdateOneWithoutTasksNestedInput
   type: EnumTaskTypeFieldUpdateOperationsInput
   variants: [String]
 }
 
 input TaskUpdateManyMutationInput {
+  code: NullableStringFieldUpdateOperationsInput
   correctMultipleAnswer: [Int]
   correctSingleAnswer: NullableIntFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
@@ -4039,16 +4796,42 @@ input TaskUpdateManyWithoutTestNestedInput {
   upsert: [TaskUpsertWithWhereUniqueWithoutTestInput]
 }
 
+input TaskUpdateOneRequiredWithoutTaskAnswersNestedInput {
+  connect: TaskWhereUniqueInput
+  connectOrCreate: TaskCreateOrConnectWithoutTaskAnswersInput
+  create: TaskCreateWithoutTaskAnswersInput
+  update: TaskUpdateToOneWithWhereWithoutTaskAnswersInput
+  upsert: TaskUpsertWithoutTaskAnswersInput
+}
+
+input TaskUpdateToOneWithWhereWithoutTaskAnswersInput {
+  data: TaskUpdateWithoutTaskAnswersInput!
+  where: TaskWhereInput
+}
+
 input TaskUpdateWithWhereUniqueWithoutTestInput {
   data: TaskUpdateWithoutTestInput!
   where: TaskWhereUniqueInput!
 }
 
-input TaskUpdateWithoutTestInput {
+input TaskUpdateWithoutTaskAnswersInput {
+  code: NullableStringFieldUpdateOperationsInput
   correctMultipleAnswer: [Int]
   correctSingleAnswer: NullableIntFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   question: StringFieldUpdateOperationsInput
+  test: TestUpdateOneWithoutTasksNestedInput
+  type: EnumTaskTypeFieldUpdateOperationsInput
+  variants: [String]
+}
+
+input TaskUpdateWithoutTestInput {
+  code: NullableStringFieldUpdateOperationsInput
+  correctMultipleAnswer: [Int]
+  correctSingleAnswer: NullableIntFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  question: StringFieldUpdateOperationsInput
+  taskAnswers: TaskAnswerUpdateManyWithoutTaskNestedInput
   type: EnumTaskTypeFieldUpdateOperationsInput
   variants: [String]
 }
@@ -4069,15 +4852,23 @@ input TaskUpsertWithWhereUniqueWithoutTestInput {
   where: TaskWhereUniqueInput!
 }
 
+input TaskUpsertWithoutTaskAnswersInput {
+  create: TaskCreateWithoutTaskAnswersInput!
+  update: TaskUpdateWithoutTaskAnswersInput!
+  where: TaskWhereInput
+}
+
 input TaskWhereInput {
   AND: [TaskWhereInput]
   NOT: [TaskWhereInput]
   OR: [TaskWhereInput]
+  code: StringNullableFilter
   correctMultipleAnswer: IntNullableListFilter
   correctSingleAnswer: IntNullableFilter
   createdAt: DateTimeFilter
   id: IntFilter
   question: StringFilter
+  taskAnswers: TaskAnswerListRelationFilter
   test: TestNullableRelationFilter
   testId: IntNullableFilter
   type: EnumTaskTypeFilter
@@ -4088,11 +4879,13 @@ input TaskWhereUniqueInput {
   AND: [TaskWhereInput]
   NOT: [TaskWhereInput]
   OR: [TaskWhereInput]
+  code: StringNullableFilter
   correctMultipleAnswer: IntNullableListFilter
   correctSingleAnswer: IntNullableFilter
   createdAt: DateTimeFilter
   id: Int
   question: StringFilter
+  taskAnswers: TaskAnswerListRelationFilter
   test: TestNullableRelationFilter
   testId: IntNullableFilter
   type: EnumTaskTypeFilter
@@ -4101,11 +4894,12 @@ input TaskWhereUniqueInput {
 
 type Test {
   _count: TestCountOutputType!
-  answers(cursor: AnswerWhereUniqueInput, distinct: [AnswerScalarFieldEnum], orderBy: [AnswerOrderByWithRelationAndSearchRelevanceInput], skip: Int, take: Int, where: AnswerWhereInput): [Answer!]!
+  answers(cursor: AnswerWhereUniqueInput, distinct: [AnswerScalarFieldEnum], orderBy: [AnswerOrderByWithRelationInput], skip: Int, take: Int, where: AnswerWhereInput): [Answer!]!
   createdAt: DateTime!
+  direction(cursor: DirectionWhereUniqueInput, distinct: [DirectionScalarFieldEnum], orderBy: [DirectionOrderByWithRelationInput], skip: Int, take: Int, where: DirectionWhereInput): [Direction!]!
   id: Int!
-  response(cursor: ResponseWhereUniqueInput, distinct: [ResponseScalarFieldEnum], orderBy: [ResponseOrderByWithRelationAndSearchRelevanceInput], skip: Int, take: Int, where: ResponseWhereInput): [Response!]!
-  tasks(cursor: TaskWhereUniqueInput, distinct: [TaskScalarFieldEnum], orderBy: [TaskOrderByWithRelationAndSearchRelevanceInput], skip: Int, take: Int, where: TaskWhereInput): [Task!]!
+  response(cursor: ResponseWhereUniqueInput, distinct: [ResponseScalarFieldEnum], orderBy: [ResponseOrderByWithRelationInput], skip: Int, take: Int, where: ResponseWhereInput): [Response!]!
+  tasks(cursor: TaskWhereUniqueInput, distinct: [TaskScalarFieldEnum], orderBy: [TaskOrderByWithRelationInput], skip: Int, take: Int, where: TaskWhereInput): [Task!]!
   title: String!
 }
 
@@ -4132,6 +4926,7 @@ input TestCountOrderByAggregateInput {
 
 type TestCountOutputType {
   answers: Int!
+  direction: Int!
   response: Int!
   tasks: Int!
 }
@@ -4139,6 +4934,7 @@ type TestCountOutputType {
 input TestCreateInput {
   answers: AnswerCreateNestedManyWithoutTestInput
   createdAt: DateTime
+  direction: DirectionCreateNestedManyWithoutTestInput
   response: ResponseCreateNestedManyWithoutTestsInput
   tasks: TaskCreateNestedManyWithoutTestInput
   title: String!
@@ -4162,6 +4958,12 @@ input TestCreateNestedOneWithoutAnswersInput {
   create: TestCreateWithoutAnswersInput
 }
 
+input TestCreateNestedOneWithoutDirectionInput {
+  connect: TestWhereUniqueInput
+  connectOrCreate: TestCreateOrConnectWithoutDirectionInput
+  create: TestCreateWithoutDirectionInput
+}
+
 input TestCreateNestedOneWithoutTasksInput {
   connect: TestWhereUniqueInput
   connectOrCreate: TestCreateOrConnectWithoutTasksInput
@@ -4170,6 +4972,11 @@ input TestCreateNestedOneWithoutTasksInput {
 
 input TestCreateOrConnectWithoutAnswersInput {
   create: TestCreateWithoutAnswersInput!
+  where: TestWhereUniqueInput!
+}
+
+input TestCreateOrConnectWithoutDirectionInput {
+  create: TestCreateWithoutDirectionInput!
   where: TestWhereUniqueInput!
 }
 
@@ -4185,6 +4992,15 @@ input TestCreateOrConnectWithoutTasksInput {
 
 input TestCreateWithoutAnswersInput {
   createdAt: DateTime
+  direction: DirectionCreateNestedManyWithoutTestInput
+  response: ResponseCreateNestedManyWithoutTestsInput
+  tasks: TaskCreateNestedManyWithoutTestInput
+  title: String!
+}
+
+input TestCreateWithoutDirectionInput {
+  answers: AnswerCreateNestedManyWithoutTestInput
+  createdAt: DateTime
   response: ResponseCreateNestedManyWithoutTestsInput
   tasks: TaskCreateNestedManyWithoutTestInput
   title: String!
@@ -4193,6 +5009,7 @@ input TestCreateWithoutAnswersInput {
 input TestCreateWithoutResponseInput {
   answers: AnswerCreateNestedManyWithoutTestInput
   createdAt: DateTime
+  direction: DirectionCreateNestedManyWithoutTestInput
   tasks: TaskCreateNestedManyWithoutTestInput
   title: String!
 }
@@ -4200,6 +5017,7 @@ input TestCreateWithoutResponseInput {
 input TestCreateWithoutTasksInput {
   answers: AnswerCreateNestedManyWithoutTestInput
   createdAt: DateTime
+  direction: DirectionCreateNestedManyWithoutTestInput
   response: ResponseCreateNestedManyWithoutTestsInput
   title: String!
 }
@@ -4243,16 +5061,6 @@ input TestOrderByRelationAggregateInput {
   _count: SortOrder
 }
 
-enum TestOrderByRelevanceFieldEnum {
-  title
-}
-
-input TestOrderByRelevanceInput {
-  fields: TestOrderByRelevanceFieldEnum!
-  search: String!
-  sort: SortOrder!
-}
-
 input TestOrderByWithAggregationInput {
   _avg: TestAvgOrderByAggregateInput
   _count: TestCountOrderByAggregateInput
@@ -4264,10 +5072,10 @@ input TestOrderByWithAggregationInput {
   title: SortOrder
 }
 
-input TestOrderByWithRelationAndSearchRelevanceInput {
-  _relevance: TestOrderByRelevanceInput
+input TestOrderByWithRelationInput {
   answers: AnswerOrderByRelationAggregateInput
   createdAt: SortOrder
+  direction: DirectionOrderByRelationAggregateInput
   id: SortOrder
   response: ResponseOrderByRelationAggregateInput
   tasks: TaskOrderByRelationAggregateInput
@@ -4314,6 +5122,7 @@ input TestSumOrderByAggregateInput {
 input TestUncheckedCreateInput {
   answers: AnswerUncheckedCreateNestedManyWithoutTestInput
   createdAt: DateTime
+  direction: DirectionUncheckedCreateNestedManyWithoutTestInput
   id: Int
   response: ResponseUncheckedCreateNestedManyWithoutTestsInput
   tasks: TaskUncheckedCreateNestedManyWithoutTestInput
@@ -4328,6 +5137,16 @@ input TestUncheckedCreateNestedManyWithoutResponseInput {
 
 input TestUncheckedCreateWithoutAnswersInput {
   createdAt: DateTime
+  direction: DirectionUncheckedCreateNestedManyWithoutTestInput
+  id: Int
+  response: ResponseUncheckedCreateNestedManyWithoutTestsInput
+  tasks: TaskUncheckedCreateNestedManyWithoutTestInput
+  title: String!
+}
+
+input TestUncheckedCreateWithoutDirectionInput {
+  answers: AnswerUncheckedCreateNestedManyWithoutTestInput
+  createdAt: DateTime
   id: Int
   response: ResponseUncheckedCreateNestedManyWithoutTestsInput
   tasks: TaskUncheckedCreateNestedManyWithoutTestInput
@@ -4337,6 +5156,7 @@ input TestUncheckedCreateWithoutAnswersInput {
 input TestUncheckedCreateWithoutResponseInput {
   answers: AnswerUncheckedCreateNestedManyWithoutTestInput
   createdAt: DateTime
+  direction: DirectionUncheckedCreateNestedManyWithoutTestInput
   id: Int
   tasks: TaskUncheckedCreateNestedManyWithoutTestInput
   title: String!
@@ -4345,6 +5165,7 @@ input TestUncheckedCreateWithoutResponseInput {
 input TestUncheckedCreateWithoutTasksInput {
   answers: AnswerUncheckedCreateNestedManyWithoutTestInput
   createdAt: DateTime
+  direction: DirectionUncheckedCreateNestedManyWithoutTestInput
   id: Int
   response: ResponseUncheckedCreateNestedManyWithoutTestsInput
   title: String!
@@ -4353,6 +5174,7 @@ input TestUncheckedCreateWithoutTasksInput {
 input TestUncheckedUpdateInput {
   answers: AnswerUncheckedUpdateManyWithoutTestNestedInput
   createdAt: DateTimeFieldUpdateOperationsInput
+  direction: DirectionUncheckedUpdateManyWithoutTestNestedInput
   id: IntFieldUpdateOperationsInput
   response: ResponseUncheckedUpdateManyWithoutTestsNestedInput
   tasks: TaskUncheckedUpdateManyWithoutTestNestedInput
@@ -4386,6 +5208,16 @@ input TestUncheckedUpdateManyWithoutResponseNestedInput {
 
 input TestUncheckedUpdateWithoutAnswersInput {
   createdAt: DateTimeFieldUpdateOperationsInput
+  direction: DirectionUncheckedUpdateManyWithoutTestNestedInput
+  id: IntFieldUpdateOperationsInput
+  response: ResponseUncheckedUpdateManyWithoutTestsNestedInput
+  tasks: TaskUncheckedUpdateManyWithoutTestNestedInput
+  title: StringFieldUpdateOperationsInput
+}
+
+input TestUncheckedUpdateWithoutDirectionInput {
+  answers: AnswerUncheckedUpdateManyWithoutTestNestedInput
+  createdAt: DateTimeFieldUpdateOperationsInput
   id: IntFieldUpdateOperationsInput
   response: ResponseUncheckedUpdateManyWithoutTestsNestedInput
   tasks: TaskUncheckedUpdateManyWithoutTestNestedInput
@@ -4395,6 +5227,7 @@ input TestUncheckedUpdateWithoutAnswersInput {
 input TestUncheckedUpdateWithoutResponseInput {
   answers: AnswerUncheckedUpdateManyWithoutTestNestedInput
   createdAt: DateTimeFieldUpdateOperationsInput
+  direction: DirectionUncheckedUpdateManyWithoutTestNestedInput
   id: IntFieldUpdateOperationsInput
   tasks: TaskUncheckedUpdateManyWithoutTestNestedInput
   title: StringFieldUpdateOperationsInput
@@ -4403,6 +5236,7 @@ input TestUncheckedUpdateWithoutResponseInput {
 input TestUncheckedUpdateWithoutTasksInput {
   answers: AnswerUncheckedUpdateManyWithoutTestNestedInput
   createdAt: DateTimeFieldUpdateOperationsInput
+  direction: DirectionUncheckedUpdateManyWithoutTestNestedInput
   id: IntFieldUpdateOperationsInput
   response: ResponseUncheckedUpdateManyWithoutTestsNestedInput
   title: StringFieldUpdateOperationsInput
@@ -4411,6 +5245,7 @@ input TestUncheckedUpdateWithoutTasksInput {
 input TestUpdateInput {
   answers: AnswerUpdateManyWithoutTestNestedInput
   createdAt: DateTimeFieldUpdateOperationsInput
+  direction: DirectionUpdateManyWithoutTestNestedInput
   response: ResponseUpdateManyWithoutTestsNestedInput
   tasks: TaskUpdateManyWithoutTestNestedInput
   title: StringFieldUpdateOperationsInput
@@ -4447,6 +5282,16 @@ input TestUpdateOneRequiredWithoutAnswersNestedInput {
   upsert: TestUpsertWithoutAnswersInput
 }
 
+input TestUpdateOneWithoutDirectionNestedInput {
+  connect: TestWhereUniqueInput
+  connectOrCreate: TestCreateOrConnectWithoutDirectionInput
+  create: TestCreateWithoutDirectionInput
+  delete: TestWhereInput
+  disconnect: TestWhereInput
+  update: TestUpdateToOneWithWhereWithoutDirectionInput
+  upsert: TestUpsertWithoutDirectionInput
+}
+
 input TestUpdateOneWithoutTasksNestedInput {
   connect: TestWhereUniqueInput
   connectOrCreate: TestCreateOrConnectWithoutTasksInput
@@ -4462,6 +5307,11 @@ input TestUpdateToOneWithWhereWithoutAnswersInput {
   where: TestWhereInput
 }
 
+input TestUpdateToOneWithWhereWithoutDirectionInput {
+  data: TestUpdateWithoutDirectionInput!
+  where: TestWhereInput
+}
+
 input TestUpdateToOneWithWhereWithoutTasksInput {
   data: TestUpdateWithoutTasksInput!
   where: TestWhereInput
@@ -4474,6 +5324,15 @@ input TestUpdateWithWhereUniqueWithoutResponseInput {
 
 input TestUpdateWithoutAnswersInput {
   createdAt: DateTimeFieldUpdateOperationsInput
+  direction: DirectionUpdateManyWithoutTestNestedInput
+  response: ResponseUpdateManyWithoutTestsNestedInput
+  tasks: TaskUpdateManyWithoutTestNestedInput
+  title: StringFieldUpdateOperationsInput
+}
+
+input TestUpdateWithoutDirectionInput {
+  answers: AnswerUpdateManyWithoutTestNestedInput
+  createdAt: DateTimeFieldUpdateOperationsInput
   response: ResponseUpdateManyWithoutTestsNestedInput
   tasks: TaskUpdateManyWithoutTestNestedInput
   title: StringFieldUpdateOperationsInput
@@ -4482,6 +5341,7 @@ input TestUpdateWithoutAnswersInput {
 input TestUpdateWithoutResponseInput {
   answers: AnswerUpdateManyWithoutTestNestedInput
   createdAt: DateTimeFieldUpdateOperationsInput
+  direction: DirectionUpdateManyWithoutTestNestedInput
   tasks: TaskUpdateManyWithoutTestNestedInput
   title: StringFieldUpdateOperationsInput
 }
@@ -4489,6 +5349,7 @@ input TestUpdateWithoutResponseInput {
 input TestUpdateWithoutTasksInput {
   answers: AnswerUpdateManyWithoutTestNestedInput
   createdAt: DateTimeFieldUpdateOperationsInput
+  direction: DirectionUpdateManyWithoutTestNestedInput
   response: ResponseUpdateManyWithoutTestsNestedInput
   title: StringFieldUpdateOperationsInput
 }
@@ -4505,6 +5366,12 @@ input TestUpsertWithoutAnswersInput {
   where: TestWhereInput
 }
 
+input TestUpsertWithoutDirectionInput {
+  create: TestCreateWithoutDirectionInput!
+  update: TestUpdateWithoutDirectionInput!
+  where: TestWhereInput
+}
+
 input TestUpsertWithoutTasksInput {
   create: TestCreateWithoutTasksInput!
   update: TestUpdateWithoutTasksInput!
@@ -4517,6 +5384,7 @@ input TestWhereInput {
   OR: [TestWhereInput]
   answers: AnswerListRelationFilter
   createdAt: DateTimeFilter
+  direction: DirectionListRelationFilter
   id: IntFilter
   response: ResponseListRelationFilter
   tasks: TaskListRelationFilter
@@ -4529,6 +5397,7 @@ input TestWhereUniqueInput {
   OR: [TestWhereInput]
   answers: AnswerListRelationFilter
   createdAt: DateTimeFilter
+  direction: DirectionListRelationFilter
   id: Int
   response: ResponseListRelationFilter
   tasks: TaskListRelationFilter
@@ -4575,17 +5444,17 @@ input UpdateModelInput {
 
 type User {
   _count: UserCountOutputType!
-  answers(cursor: AnswerWhereUniqueInput, distinct: [AnswerScalarFieldEnum], orderBy: [AnswerOrderByWithRelationAndSearchRelevanceInput], skip: Int, take: Int, where: AnswerWhereInput): [Answer!]!
+  answers(cursor: TaskAnswerWhereUniqueInput, distinct: [TaskAnswerScalarFieldEnum], orderBy: [TaskAnswerOrderByWithRelationInput], skip: Int, take: Int, where: TaskAnswerWhereInput): [TaskAnswer!]!
   createdAt: DateTime!
   email: String!
   fullname: String
-  groups(cursor: MessagerGroupWhereUniqueInput, distinct: [MessagerGroupScalarFieldEnum], orderBy: [MessagerGroupOrderByWithRelationAndSearchRelevanceInput], skip: Int, take: Int, where: MessagerGroupWhereInput): [MessagerGroup!]!
+  groups(cursor: MessagerGroupWhereUniqueInput, distinct: [MessagerGroupScalarFieldEnum], orderBy: [MessagerGroupOrderByWithRelationInput], skip: Int, take: Int, where: MessagerGroupWhereInput): [MessagerGroup!]!
   id: Int!
   logo: String
-  messages(cursor: MessageWhereUniqueInput, distinct: [MessageScalarFieldEnum], orderBy: [MessageOrderByWithRelationAndSearchRelevanceInput], skip: Int, take: Int, where: MessageWhereInput): [Message!]!
+  messages(cursor: MessageWhereUniqueInput, distinct: [MessageScalarFieldEnum], orderBy: [MessageOrderByWithRelationInput], skip: Int, take: Int, where: MessageWhereInput): [Message!]!
   passwordHash: String!
   phone: String
-  responses(cursor: ResponseWhereUniqueInput, distinct: [ResponseScalarFieldEnum], orderBy: [ResponseOrderByWithRelationAndSearchRelevanceInput], skip: Int, take: Int, where: ResponseWhereInput): [Response!]!
+  responses(cursor: ResponseWhereUniqueInput, distinct: [ResponseScalarFieldEnum], orderBy: [ResponseOrderByWithRelationInput], skip: Int, take: Int, where: ResponseWhereInput): [Response!]!
   role: UserRoleEnum!
   tgLink: String
   vkLink: String
@@ -4634,7 +5503,7 @@ type UserCountOutputType {
 }
 
 input UserCreateInput {
-  answers: AnswerCreateNestedManyWithoutUserInput
+  answers: TaskAnswerCreateNestedManyWithoutUserInput
   createdAt: DateTime
   email: String!
   fullname: String
@@ -4722,7 +5591,7 @@ input UserCreateWithoutAnswersInput {
 }
 
 input UserCreateWithoutGroupsInput {
-  answers: AnswerCreateNestedManyWithoutUserInput
+  answers: TaskAnswerCreateNestedManyWithoutUserInput
   createdAt: DateTime
   email: String!
   fullname: String
@@ -4737,7 +5606,7 @@ input UserCreateWithoutGroupsInput {
 }
 
 input UserCreateWithoutMessagesInput {
-  answers: AnswerCreateNestedManyWithoutUserInput
+  answers: TaskAnswerCreateNestedManyWithoutUserInput
   createdAt: DateTime
   email: String!
   fullname: String
@@ -4752,7 +5621,7 @@ input UserCreateWithoutMessagesInput {
 }
 
 input UserCreateWithoutResponsesInput {
-  answers: AnswerCreateNestedManyWithoutUserInput
+  answers: TaskAnswerCreateNestedManyWithoutUserInput
   createdAt: DateTime
   email: String!
   fullname: String
@@ -4828,22 +5697,6 @@ input UserOrderByRelationAggregateInput {
   _count: SortOrder
 }
 
-enum UserOrderByRelevanceFieldEnum {
-  email
-  fullname
-  logo
-  passwordHash
-  phone
-  tgLink
-  vkLink
-}
-
-input UserOrderByRelevanceInput {
-  fields: UserOrderByRelevanceFieldEnum!
-  search: String!
-  sort: SortOrder!
-}
-
 input UserOrderByWithAggregationInput {
   _avg: UserAvgOrderByAggregateInput
   _count: UserCountOrderByAggregateInput
@@ -4862,9 +5715,8 @@ input UserOrderByWithAggregationInput {
   vkLink: SortOrderInput
 }
 
-input UserOrderByWithRelationAndSearchRelevanceInput {
-  _relevance: UserOrderByRelevanceInput
-  answers: AnswerOrderByRelationAggregateInput
+input UserOrderByWithRelationInput {
+  answers: TaskAnswerOrderByRelationAggregateInput
   createdAt: SortOrder
   email: SortOrder
   fullname: SortOrderInput
@@ -4944,7 +5796,7 @@ input UserSumOrderByAggregateInput {
 }
 
 input UserUncheckedCreateInput {
-  answers: AnswerUncheckedCreateNestedManyWithoutUserInput
+  answers: TaskAnswerUncheckedCreateNestedManyWithoutUserInput
   createdAt: DateTime
   email: String!
   fullname: String
@@ -4983,7 +5835,7 @@ input UserUncheckedCreateWithoutAnswersInput {
 }
 
 input UserUncheckedCreateWithoutGroupsInput {
-  answers: AnswerUncheckedCreateNestedManyWithoutUserInput
+  answers: TaskAnswerUncheckedCreateNestedManyWithoutUserInput
   createdAt: DateTime
   email: String!
   fullname: String
@@ -4999,7 +5851,7 @@ input UserUncheckedCreateWithoutGroupsInput {
 }
 
 input UserUncheckedCreateWithoutMessagesInput {
-  answers: AnswerUncheckedCreateNestedManyWithoutUserInput
+  answers: TaskAnswerUncheckedCreateNestedManyWithoutUserInput
   createdAt: DateTime
   email: String!
   fullname: String
@@ -5015,7 +5867,7 @@ input UserUncheckedCreateWithoutMessagesInput {
 }
 
 input UserUncheckedCreateWithoutResponsesInput {
-  answers: AnswerUncheckedCreateNestedManyWithoutUserInput
+  answers: TaskAnswerUncheckedCreateNestedManyWithoutUserInput
   createdAt: DateTime
   email: String!
   fullname: String
@@ -5031,7 +5883,7 @@ input UserUncheckedCreateWithoutResponsesInput {
 }
 
 input UserUncheckedUpdateInput {
-  answers: AnswerUncheckedUpdateManyWithoutUserNestedInput
+  answers: TaskAnswerUncheckedUpdateManyWithoutUserNestedInput
   createdAt: DateTimeFieldUpdateOperationsInput
   email: StringFieldUpdateOperationsInput
   fullname: NullableStringFieldUpdateOperationsInput
@@ -5103,7 +5955,7 @@ input UserUncheckedUpdateWithoutAnswersInput {
 }
 
 input UserUncheckedUpdateWithoutGroupsInput {
-  answers: AnswerUncheckedUpdateManyWithoutUserNestedInput
+  answers: TaskAnswerUncheckedUpdateManyWithoutUserNestedInput
   createdAt: DateTimeFieldUpdateOperationsInput
   email: StringFieldUpdateOperationsInput
   fullname: NullableStringFieldUpdateOperationsInput
@@ -5119,7 +5971,7 @@ input UserUncheckedUpdateWithoutGroupsInput {
 }
 
 input UserUncheckedUpdateWithoutMessagesInput {
-  answers: AnswerUncheckedUpdateManyWithoutUserNestedInput
+  answers: TaskAnswerUncheckedUpdateManyWithoutUserNestedInput
   createdAt: DateTimeFieldUpdateOperationsInput
   email: StringFieldUpdateOperationsInput
   fullname: NullableStringFieldUpdateOperationsInput
@@ -5135,7 +5987,7 @@ input UserUncheckedUpdateWithoutMessagesInput {
 }
 
 input UserUncheckedUpdateWithoutResponsesInput {
-  answers: AnswerUncheckedUpdateManyWithoutUserNestedInput
+  answers: TaskAnswerUncheckedUpdateManyWithoutUserNestedInput
   createdAt: DateTimeFieldUpdateOperationsInput
   email: StringFieldUpdateOperationsInput
   fullname: NullableStringFieldUpdateOperationsInput
@@ -5151,7 +6003,7 @@ input UserUncheckedUpdateWithoutResponsesInput {
 }
 
 input UserUpdateInput {
-  answers: AnswerUpdateManyWithoutUserNestedInput
+  answers: TaskAnswerUpdateManyWithoutUserNestedInput
   createdAt: DateTimeFieldUpdateOperationsInput
   email: StringFieldUpdateOperationsInput
   fullname: NullableStringFieldUpdateOperationsInput
@@ -5256,7 +6108,7 @@ input UserUpdateWithoutAnswersInput {
 }
 
 input UserUpdateWithoutGroupsInput {
-  answers: AnswerUpdateManyWithoutUserNestedInput
+  answers: TaskAnswerUpdateManyWithoutUserNestedInput
   createdAt: DateTimeFieldUpdateOperationsInput
   email: StringFieldUpdateOperationsInput
   fullname: NullableStringFieldUpdateOperationsInput
@@ -5271,7 +6123,7 @@ input UserUpdateWithoutGroupsInput {
 }
 
 input UserUpdateWithoutMessagesInput {
-  answers: AnswerUpdateManyWithoutUserNestedInput
+  answers: TaskAnswerUpdateManyWithoutUserNestedInput
   createdAt: DateTimeFieldUpdateOperationsInput
   email: StringFieldUpdateOperationsInput
   fullname: NullableStringFieldUpdateOperationsInput
@@ -5286,7 +6138,7 @@ input UserUpdateWithoutMessagesInput {
 }
 
 input UserUpdateWithoutResponsesInput {
-  answers: AnswerUpdateManyWithoutUserNestedInput
+  answers: TaskAnswerUpdateManyWithoutUserNestedInput
   createdAt: DateTimeFieldUpdateOperationsInput
   email: StringFieldUpdateOperationsInput
   fullname: NullableStringFieldUpdateOperationsInput
@@ -5328,7 +6180,7 @@ input UserWhereInput {
   AND: [UserWhereInput]
   NOT: [UserWhereInput]
   OR: [UserWhereInput]
-  answers: AnswerListRelationFilter
+  answers: TaskAnswerListRelationFilter
   createdAt: DateTimeFilter
   email: StringFilter
   fullname: StringNullableFilter
@@ -5348,7 +6200,7 @@ input UserWhereUniqueInput {
   AND: [UserWhereInput]
   NOT: [UserWhereInput]
   OR: [UserWhereInput]
-  answers: AnswerListRelationFilter
+  answers: TaskAnswerListRelationFilter
   createdAt: DateTimeFilter
   email: String
   fullname: StringNullableFilter

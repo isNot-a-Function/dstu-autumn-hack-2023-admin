@@ -10,11 +10,25 @@ export const Test = objectType({
     t.int('id')
     t.field('createdAt', { type: 'DateTime' })
     t.string('title')
+    t.list.field('direction', {
+      type: 'Direction',
+      args: {
+        where: 'DirectionWhereInput',
+        orderBy: list('DirectionOrderByWithRelationInput'),
+        cursor: 'DirectionWhereUniqueInput',
+        take: 'Int',
+        skip: 'Int',
+        distinct: list('DirectionScalarFieldEnum'),
+      },
+      resolve(root: any) {
+        return root.direction
+      },
+    })
     t.list.field('tasks', {
       type: 'Task',
       args: {
         where: 'TaskWhereInput',
-        orderBy: list('TaskOrderByWithRelationAndSearchRelevanceInput'),
+        orderBy: list('TaskOrderByWithRelationInput'),
         cursor: 'TaskWhereUniqueInput',
         take: 'Int',
         skip: 'Int',
@@ -28,7 +42,7 @@ export const Test = objectType({
       type: 'Answer',
       args: {
         where: 'AnswerWhereInput',
-        orderBy: list('AnswerOrderByWithRelationAndSearchRelevanceInput'),
+        orderBy: list('AnswerOrderByWithRelationInput'),
         cursor: 'AnswerWhereUniqueInput',
         take: 'Int',
         skip: 'Int',
@@ -42,7 +56,7 @@ export const Test = objectType({
       type: 'Response',
       args: {
         where: 'ResponseWhereInput',
-        orderBy: list('ResponseOrderByWithRelationAndSearchRelevanceInput'),
+        orderBy: list('ResponseOrderByWithRelationInput'),
         cursor: 'ResponseWhereUniqueInput',
         take: 'Int',
         skip: 'Int',

@@ -4,7 +4,7 @@ export const TaskFindManyQuery = queryField('findManyTask', {
   type: nonNull(list(nonNull('Task'))),
   args: {
     where: 'TaskWhereInput',
-    orderBy: list('TaskOrderByWithRelationAndSearchRelevanceInput'),
+    orderBy: list('TaskOrderByWithRelationInput'),
     cursor: 'TaskWhereUniqueInput',
     take: 'Int',
     skip: 'Int',
